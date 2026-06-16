@@ -1,0 +1,34 @@
+#!/usr/bin/env bash
+# Leak guard: block committing any identity/host token (from .private-denylist) or a
+# Projects path. Real tokens live ONLY in .private-denylist (gitignored), so this hook
+# carries no identity and is itself shareable. Enable once:
+#   git config core.hooksPath .githooks
+set -euo pipefail
+ROOT="$(git rev-parse --show-toplevel)"
+
+DENY=""
+[ -f "$ROOT/.private-denylist" ] && DENY=$(grep -vE '^[[:space:]]*(#|$)' "$ROOT/.private-denylist" | paste -sd'|' -)
+
+staged=$(git diff --cached --name-only --diff-filter=ACM)
+[ -z "$staged" ] && exit 0
+
+leak=0
+while IFS= read -r f; do
+  [ -n "$f" ] || continue
+  blob=$(git show ":$f" 2>/dev/null || true)
+  if [ -n "$DENY" ] && printf '%s' "$blob" | grep -IniE "$DENY" >/dev/null 2>&1; then
+    echo "LEAK in $f (denylisted token):"
+    printf '%s' "$blob" | grep -IniE "$DENY" | head -5
+    leak=1
+  fi
+done <<< "$staged"
+
+printf '%s\n' "$staged" | grep -qiE 'projects/' && { echo "LEAK: a Projects path is staged"; leak=1; }
+[ -z "$DENY" ] && echo "NOTE: no .private-denylist found — identity guard OFF (only the Projects gate ran)."
+
+if [ "$leak" -ne 0 ]; then
+  echo "----------------------------------------------------------------"
+  echo "COMMIT BLOCKED. Re-run the sync (it scrubs) or fix by hand before committing."
+  exit 1
+fi
+echo "pre-commit tripwire clean."

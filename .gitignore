@@ -1,0 +1,29 @@
+# Shareable orchestration layer — never track data, secrets, caches, or generated indices.
+
+# source-machine-only tooling + secrets (carry real identity tokens → never shared)
+config.env
+*.env
+.private-denylist
+sync-shareable.sh
+
+# data / stores (the system installs with an EMPTY store; data never travels)
+*.db
+*.sqlite3
+*.done
+*.error
+*.lance
+store/
+
+# generated-on-target (regenerate with build-skills-manifest.py against local skills)
+system/SKILLS.json
+docs/MASTER-INDEX.md
+docs/AGENT-INDEX.md
+
+# python / OS caches
+__pycache__/
+*.pyc
+.DS_Store
+Thumbs.db
+
+# offline bundles produced by make-bundle.sh (rebuild on demand, don't track)
+/orchestration-layer-bundle.*
