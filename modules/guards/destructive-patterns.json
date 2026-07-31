@@ -1,0 +1,210 @@
+{
+  "version": "1.0.0-template",
+  "updated": "2026-07-31",
+  "notes": "TEMPLATE destructive-command policy. Generic rules ship verbatim; the example-incident-deny rule shows how to encode your own incident-derived deny classes. EDIT the protected/protected_write path patterns to YOUR vault before use. Every rule MUST keep a failing_input (a gate that cannot name a failing input is void). Verdicts: ask (escalate to human) | deny (requires incident citation).",
+  "safe_prefixes": [
+    "git status",
+    "git diff",
+    "git log",
+    "ls",
+    "cat",
+    "echo"
+  ],
+  "disposable": "(?i)(AppData[\\\\/]Local[\\\\/]Temp|[\\\\/]tmp[\\\\/]|scratchpad|node_modules|__pycache__|\\.pytest_cache|[\\\\/]dist[\\\\/]|[\\\\/]build[\\\\/])",
+  "rules": [
+    {
+      "id": "rm-recursive-force",
+      "pattern": "\\brm\\s+(-[a-zA-Z]*\\s+)*-[a-zA-Z]*[rR][a-zA-Z]*f|\\brm\\s+(-[a-zA-Z]*\\s+)*-[a-zA-Z]*f[a-zA-Z]*[rR]",
+      "effect": "recursive force delete of a directory tree",
+      "irreversibility": "HIGH",
+      "verdict": "ask",
+      "failing_input": "rm -rf /data/example-vault/Memory"
+    },
+    {
+      "id": "ps-remove-recurse",
+      "pattern": "Remove-Item\\b[^\\n]*-Recurse",
+      "effect": "recursive delete (PowerShell)",
+      "irreversibility": "HIGH",
+      "verdict": "ask",
+      "failing_input": "Remove-Item -Recurse -Force /data/example-vault\\wiki"
+    },
+    {
+      "id": "cmd-recursive-delete",
+      "pattern": "\\bdel\\s+/[sS]\\b|\\brd\\s+/[sS]\\b|\\brmdir\\s+/[sS]\\b",
+      "effect": "recursive delete (cmd)",
+      "irreversibility": "HIGH",
+      "verdict": "ask",
+      "failing_input": "rd /s /q /data/example-vault"
+    },
+    {
+      "id": "dd-block-write",
+      "pattern": "\\bdd\\s+[^\\n]*\\bof=",
+      "effect": "raw block write - can destroy a filesystem",
+      "irreversibility": "HIGH",
+      "verdict": "ask",
+      "failing_input": "dd if=/dev/zero of=/dev/sdb bs=1M"
+    },
+    {
+      "id": "filesystem-format",
+      "pattern": "\\bmkfs\\b|\\bFormat-Volume\\b|\\bformat\\s+[a-zA-Z]:",
+      "effect": "filesystem format",
+      "irreversibility": "HIGH",
+      "verdict": "ask",
+      "failing_input": "Format-Volume -DriveLetter G"
+    },
+    {
+      "id": "git-clean-force",
+      "pattern": "\\bgit\\s+clean\\b[^\\n]*-[a-zA-Z]*[dfx]",
+      "effect": "delete untracked/ignored files - not in git history",
+      "irreversibility": "HIGH",
+      "verdict": "ask",
+      "failing_input": "git clean -dfx"
+    },
+    {
+      "id": "git-reset-hard",
+      "pattern": "\\bgit\\s+reset\\b[^\\n]*--hard",
+      "effect": "discard all uncommitted work in the tree",
+      "irreversibility": "MED",
+      "verdict": "ask",
+      "failing_input": "git reset --hard origin/main"
+    },
+    {
+      "id": "git-push-force",
+      "pattern": "\\bgit\\s+push\\b[^\\n]*(--force(?!-with-lease)|\\s-f\\b)",
+      "effect": "overwrite remote history - can destroy others' commits",
+      "irreversibility": "HIGH",
+      "verdict": "ask",
+      "failing_input": "git push --force origin main"
+    },
+    {
+      "id": "git-branch-force-delete",
+      "pattern": "\\bgit\\s+branch\\b[^\\n]*\\s-D\\b",
+      "effect": "force-delete a branch (unmerged work)",
+      "irreversibility": "MED",
+      "verdict": "ask",
+      "failing_input": "git branch -D feature-x"
+    },
+    {
+      "id": "sql-drop-truncate",
+      "pattern": "\\bDROP\\s+(TABLE|DATABASE|SCHEMA)\\b|\\bTRUNCATE\\s+TABLE\\b",
+      "effect": "destroy database objects or all rows",
+      "irreversibility": "HIGH",
+      "verdict": "ask",
+      "failing_input": "DROP TABLE sessions;"
+    },
+    {
+      "id": "sql-delete-no-where",
+      "pattern": "\\bDELETE\\s+FROM\\b(?![^\\n]*\\bWHERE\\b)",
+      "effect": "delete every row (no WHERE clause)",
+      "irreversibility": "HIGH",
+      "verdict": "ask",
+      "failing_input": "DELETE FROM memories"
+    },
+    {
+      "id": "docker-prune",
+      "pattern": "\\bdocker\\s+(system\\s+prune|volume\\s+(rm|prune)|image\\s+prune)",
+      "effect": "delete docker volumes/images - persisted container data",
+      "irreversibility": "HIGH",
+      "verdict": "ask",
+      "failing_input": "docker volume prune -f"
+    },
+    {
+      "id": "package-uninstall",
+      "pattern": "\\bChoco|\\bwinget\\s+uninstall|\\bapt(-get)?\\s+(remove|purge)|\\bpip\\s+uninstall",
+      "effect": "uninstall software",
+      "irreversibility": "MED",
+      "verdict": "ask",
+      "failing_input": "pip uninstall -y youtube-transcript-api"
+    },
+    {
+      "id": "security-settings",
+      "pattern": "\\bSet-ExecutionPolicy\\b|\\bicacls\\b[^\\n]*/reset|\\btakeown\\b",
+      "effect": "change security or ACL settings",
+      "irreversibility": "MED",
+      "verdict": "ask",
+      "failing_input": "Set-ExecutionPolicy Unrestricted -Scope LocalMachine"
+    },
+    {
+      "id": "network-exposure",
+      "pattern": "\\bnetsh\\b[^\\n]*firewall|\\bNew-NetFirewallRule\\b|\\bSet-SmbShare\\b|\\bNew-SmbShare\\b",
+      "effect": "change firewall or network share exposure",
+      "irreversibility": "MED",
+      "verdict": "ask",
+      "failing_input": "New-SmbShare -Name Share2 -Path D:\\MyVault\\share -FullAccess Everyone"
+    },
+    {
+      "id": "truncating-config-overwrite",
+      "pattern": ">\\s*(?!/dev/null)[^\\s|;&]*\\.(env|key|pem|yaml|yml|json|md)\\b",
+      "effect": "truncating overwrite of a config/credential/doc file",
+      "irreversibility": "MED",
+      "verdict": "ask",
+      "failing_input": "echo x > /data/example-vault/example-app/config.yaml"
+    },
+    {
+      "id": "wsl-unregister",
+      "pattern": "\\bwsl(\\.exe)?\\s+[^\\n]*--unregister",
+      "effect": "delete a WSL distro and ALL its data (Ubuntu-restored holds the live Hermes runtime home)",
+      "irreversibility": "HIGH",
+      "verdict": "ask",
+      "failing_input": "wsl --unregister Ubuntu-restored"
+    },
+    {
+      "id": "wsl-shutdown-thin-client",
+      "pattern": "\\bwsl(\\.exe)?\\s+--shutdown",
+      "effect": "terminate all WSL distros (kills the Hermes workspace gateway if running here)",
+      "irreversibility": "MED",
+      "verdict": "ask",
+      "failing_input": "wsl --shutdown"
+    },
+    {
+      "id": "example-incident-deny",
+      "pattern": "\\bmytool\\s+daemon\\s+run\\b[^\\n]*--replace",
+      "effect": "EXAMPLE deny rule: encode YOUR incident-derived command classes like this",
+      "irreversibility": "HIGH",
+      "verdict": "deny",
+      "incident": "EXAMPLE - cite your own incident/postmortem doc here; a deny with no incident citation is policy smell",
+      "deny_message": "EXAMPLE - name the safe alternative command here.",
+      "failing_input": "mytool daemon run --replace"
+    }
+  ],
+  "protected": [
+    {
+      "pattern": "(?i)example-vault",
+      "label": "your vault (EDIT: replace with your real vault path patterns; no local backup = HIGH)"
+    },
+    {
+      "pattern": "(?i)\\.ssh[\\\\/]|id_rsa|\\.env\\b|\\.pem\\b",
+      "label": "credentials / SSH keys"
+    },
+    {
+      "pattern": "(?i)[\\\\/]\\.claude\\b",
+      "label": "harness configuration"
+    },
+    {
+      "pattern": "(?i)\\.rag[\\\\/]db|chroma|vector-store",
+      "label": "RAG / memory stores (expensive to rebuild)"
+    }
+  ],
+  "protected_write": [
+    {
+      "pattern": "(?i)\\.env$|\\.pem$|\\.key$|id_rsa",
+      "label": "credential file",
+      "failing_input": "/data/example-vault/.env"
+    },
+    {
+      "pattern": "(?i)[\\\\/]\\.claude[\\\\/]settings[^\\\\/]*\\.json$",
+      "label": "harness settings (permissions/hooks live here)",
+      "failing_input": "/home/alice/.claude/settings.json"
+    },
+    {
+      "pattern": "(?i)[\\\\/](hooks|guards)[\\\\/]",
+      "label": "the gate/hook layer itself (self-protection)",
+      "failing_input": "/home/alice/.claude/guards/destructive-patterns.json"
+    },
+    {
+      "pattern": "(?i)[\\\\/]\\.claude\\.json$",
+      "label": "Claude Code user config (MCP servers live here)",
+      "failing_input": "/home/alice/.claude.json"
+    }
+  ]
+}

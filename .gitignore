@@ -5,6 +5,10 @@ config.env
 *.env
 .private-denylist
 sync-shareable.sh
+.m10-quarantine/
+.shareable-preview/
+.sanitize-rules.local.json
+approved-public-tokens.txt
 
 # data / stores (the system installs with an EMPTY store; data never travels)
 *.db
@@ -27,3 +31,4 @@ Thumbs.db
 
 # offline bundles produced by make-bundle.sh (rebuild on demand, don't track)
 /orchestration-layer-bundle.*
+generated/

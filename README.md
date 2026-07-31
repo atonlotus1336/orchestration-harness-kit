@@ -12,6 +12,9 @@ is a placeholder (`alice`, `/mnt/d/MyVault`, `D:\MyVault`, `__STORE__`) you fill
 ## What's here
 ```
 system/   memoryweaver/ (engine) · memoryweaver-mcp/server.py · rag-orchestrator/ · tests/ · build-skills-manifest.py
+modules/  guards/ (dry-run destructive-command gate + policy template + self-test)
+          · reasoning-shapes/ (4 portable method skills for small-model reliability)
+          · recipe-miner/ (session-transcript → staged skill candidates; never auto-installs)
 docs/     AUTHORITY-CONSTITUTION · METHODOLOGY-CHARTER · RETRIEVAL-PLAYBOOK · REASONING-EFFORT
           · LLM-OPS-RUNBOOK · ORCHESTRATION-LAYER · CONNECTOR · REPLICATION-GUIDE
 sync-shareable.sh   populate/refresh this repo from the live vault (allowlist + scrub + tripwire)
@@ -27,6 +30,19 @@ make-bundle.sh      produce an offline zip/tar.gz from the committed state (git 
 > **Local-only (gitignored, never in a clone):** `sync-shareable.sh` (carries the real scrub map)
 > and `.private-denylist` (your real identity/host tokens). The tracked files carry no identity —
 > that's what makes the repo safe to publish. A recipient adds their own `.private-denylist`.
+
+## Verify before execute
+The M10 kit path derives shareable mechanics from your vault's `SURFACE-GRAPH.yaml` (e.g. `D:\MyVault\SURFACE-GRAPH.yaml`).
+Before running or packaging a generated kit:
+
+1. Run `powershell.exe -NoProfile -ExecutionPolicy Bypass -File tools/m10-generate-from-surface-graph.ps1`.
+2. Inspect `generated/PROVENANCE.json` and confirm the graph checksum matches the source graph.
+3. Review `generated/SYNC-ALLOWLIST.txt`; `privacy_class: shareable` is the only automatic copy class.
+4. Fill local capabilities from `generated/bindings.local.template.yaml` into a private `bindings.local.yaml`.
+5. Run `powershell.exe -NoProfile -ExecutionPolicy Bypass -File tools/m10-scrub-v2.ps1 -Root generated`.
+
+The legacy `sync-shareable.sh` remains a local control. New shareable previews should use
+`sync-shareable-v2.ps1`, which reads the generated allowlist and then runs scrub-v2.
 
 ## Daily workflow (keep the share current as you tinker)
 ```bash
