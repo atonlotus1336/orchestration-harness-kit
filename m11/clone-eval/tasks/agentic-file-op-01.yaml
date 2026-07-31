@@ -1,0 +1,29 @@
+﻿id: agentic-file-op-01
+class: agentic-file-op
+scorer: post_state_check
+prompt: |
+  In the working directory, move all unchecked task lines from inbox.md into
+  active.md under the existing heading. Leave checked task lines in inbox.md.
+  Preserve the exact task text.
+context_files:
+  - fixtures/agentic-file-op-01/initial/inbox.md
+  - fixtures/agentic-file-op-01/initial/active.md
+workspace_seed: fixtures/agentic-file-op-01/initial
+expected_outcome:
+  type: file_state
+  checks:
+    - file: active.md
+      contains:
+        - "- [ ] reconcile Hermes env handling"
+        - "- [ ] draft Golden Eval tasks"
+        - "- [ ] label judge seed"
+    - file: inbox.md
+      contains:
+        - "- [x] verify connector audit"
+      not_contains:
+        - "- [ ] reconcile Hermes env handling"
+        - "- [ ] draft Golden Eval tasks"
+        - "- [ ] label judge seed"
+notes: |
+  Tests atomic file editing and preservation of completed task state.
+

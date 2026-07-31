@@ -1,0 +1,29 @@
+﻿{
+    "schema_version":  1,
+    "phase":  "M11",
+    "snapshot_version":  "m11-hermes-snapshot-v1",
+    "live_parity":  false,
+    "source_state":  {
+                         "profile":  "home sanitized template",
+                         "routing_policy":  "M7 policy_version m7-v1",
+                         "plugin":  "vault-parity 1.1.0-m7",
+                         "plan_ledger":  "M10 GREEN, M11 build"
+                     },
+    "payload":  [
+                    "profile-home.template.yaml",
+                    "routing-policy.json",
+                    "council-presets.json",
+                    "vault-parity/plugin.yaml",
+                    "vault-parity/__init__.py",
+                    "vault-parity/session_ledger.py",
+                    "vault-parity/digest.py",
+                    "vault-parity/graph_gate.py",
+                    "vault-parity/routing.py",
+                    "vault-parity/standing_plan.py"
+                ],
+    "invariants":  [
+                       "No live credentials or private endpoints",
+                       "All local paths represented as ${...} slots",
+                       "Recipient-owned bindings required before execution"
+                   ]
+}

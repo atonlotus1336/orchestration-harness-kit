@@ -1,0 +1,21 @@
+# M10 scrub-v2 public-token template.
+# Copy to approved-public-tokens.txt locally and review before enforcement.
+prefix:D:\MyVault
+prefix:D:/MyVault
+prefix:/mnt/d/MyVault
+prefix:C:\Users\alice
+prefix:/home/alice
+prefix:/mnt/c/Users/alice
+example.com
+localhost
+127.0.0.1
+0.0.0.0
+10.0.0.1
+https://aka.ms
+bindings.local
+sanitize-rules.local
+C:\...\index.js
+/mnt/c/Program
+/mnt/
+prefix:G:\\MyVault
+com.com

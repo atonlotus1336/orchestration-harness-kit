@@ -1,0 +1,16 @@
+﻿id: code-fix-03
+class: code-fix
+scorer: deterministic
+prompt: |
+  The file buggy.py contains ConstraintValidator.check_growth(), derived from
+  evolution.core.constraints.ConstraintValidator._check_growth. It must enforce a
+  maximum growth threshold, allow exact-threshold growth, allow shrinkage, and not
+  crash on an empty baseline. The test suite in test_buggy.py is failing. Fix
+  buggy.py so every test passes. Do not edit test_buggy.py. Return only the
+  corrected contents of buggy.py.
+context_files:
+  - fixtures/code-fix-03/buggy.py
+  - fixtures/code-fix-03/test_buggy.py
+edit_target: fixtures/code-fix-03/buggy.py
+frozen_test: fixtures/code-fix-03/test_buggy.py
+source_derivation:\n  public_note: derived from public deterministic fixture behavior\n

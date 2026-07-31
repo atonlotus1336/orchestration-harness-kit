@@ -21,7 +21,7 @@ from .models import MemoryRecord
 
 # Bump to recompute gists on next read. Gists are PROJECTED, not stored, so a
 # version bump needs no migration (Codex ARCH/PLAN: zero-drift projection).
-GIST_VERSION = "1"
+GIST_VERSION = "2"
 
 # Deterministic gist cap. ~100 tokens is roughly ~400 chars; we cap on chars
 # (not tokens) so the projection stays fully deterministic and model-free.
@@ -40,6 +40,11 @@ class Stub:
     gist_version: str = GIST_VERSION
     score: Optional[float] = None
     provenance_status: str = "valid"   # "valid" | "quarantined" (Phase 2)
+    # Plan 01 Task 3.3 (goal-cascade D6): optional mission-domain tag, metadata
+    # passthrough ONLY - never influences gist content, so no GIST_VERSION bump.
+    # Slugs: your own mission/domain names, or
+    # community-mission | "" (untagged). Dormant hook until per-domain packs exist.
+    domain: str = ""
 
     def to_dict(self) -> dict[str, Any]:
         return asdict(self)
@@ -53,14 +58,14 @@ def _first_clause(text: str, max_chars: int = _GIST_MAX_CHARS) -> str:
     if len(flat) <= max_chars:
         return flat
     window = flat[:max_chars]
-    # Prefer the last sentence/clause boundary in the back half of the window.
-    for sep in (". ", "; ", " — ", ", "):
+    # Prefer a full sentence boundary in the back half of the window.
+    for sep in (". ", "! ", "? "):
         idx = window.rfind(sep)
         if idx >= max_chars // 2:
             return window[: idx + 1].rstrip()
     # Fall back to the last word boundary.
     idx = window.rfind(" ")
-    return (window[:idx] if idx > 0 else window).rstrip() + "…"
+    return (window[:idx] if idx > 0 else window).rstrip(" ,;:") + "..."
 
 
 def _tags_of(meta: dict) -> list[str]:
@@ -111,4 +116,5 @@ def project(item: Any) -> Stub:
         gist_version=GIST_VERSION,
         score=round(float(score), 4) if isinstance(score, (int, float)) else None,
         provenance_status=(meta.get("provenance_status") or "valid"),
+        domain=(meta.get("domain") or ""),
     )

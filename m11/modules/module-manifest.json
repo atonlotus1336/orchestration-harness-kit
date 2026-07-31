@@ -1,0 +1,70 @@
+{
+  "version": "m11-modules-v2",
+  "default_path": [
+    "memory",
+    "rag",
+    "harness",
+    "hermes-snapshot",
+    "clone-eval"
+  ],
+  "modules": [
+    {
+      "id": "memory",
+      "stage": 1,
+      "required": true,
+      "source": "../memory-orchestration-kit/bootstrap.sh",
+      "description": "Install empty MemoryWeaver runtime and MCP memory bridge."
+    },
+    {
+      "id": "rag",
+      "stage": 2,
+      "required": true,
+      "source": "system/rag-orchestrator",
+      "description": "Install RAG front-door MCP using recipient-owned corpus paths."
+    },
+    {
+      "id": "harness",
+      "stage": 3,
+      "required": true,
+      "source": "generated/bindings.local.template.yaml",
+      "description": "Create local capability bindings; concrete providers and endpoints stay local."
+    },
+    {
+      "id": "hermes-snapshot",
+      "stage": 4,
+      "required": true,
+      "source": "m11/modules/hermes-snapshot",
+      "description": "Versioned snapshot of profile template, routing policy, and parity plugin metadata."
+    },
+    {
+      "id": "clone-eval",
+      "stage": 5,
+      "required": true,
+      "source": "m11/clone-eval",
+      "description": "Public eval subset proving clone parity for code-fix and agentic-file-op only."
+    },
+    {
+      "id": "image-video",
+      "stage": 6,
+      "required": false,
+      "gpu_required": true,
+      "source": "m11/modules/image-video",
+      "description": "OPTIONAL GPU-gated ComfyUI image/video tier (M14). Installs only when preflight finds an NVIDIA GPU; skips-with-note otherwise. Ships reference workflows only - never private models/workflows."
+    },
+    {
+      "id": "domain",
+      "title": "Domain module (mission portfolio)",
+      "capability_slot": "missions",
+      "opt_in": true,
+      "contains": [
+        "MISSION.md (portable: statement, horizons, metric DEFINITIONS, backlog)",
+        "domain eval pack",
+        "domain routing/council rows",
+        "M15 seed pack"
+      ],
+      "care_exclusion": "community-mission ships structure/templates ONLY - never the consent register or any community-linked row (I2 enforced)",
+      "clone_parity": "mission-restore is added to the M11 clone-parity eval",
+      "note": "Plan 01 Task 8.3a. Exported only when the user toggles the 'missions' slot per build."
+    }
+  ]
+}

@@ -1,0 +1,14 @@
+﻿name: vault-parity
+version: 1.1.0-m7
+description: "Orchestration lifecycle parity plugin: first-turn MemoryWeaver digest injection, session ledger refresh, and M7 route hints."
+author: "Orchestration Layer"
+hooks:
+  - pre_llm_call
+  - on_session_end
+  - on_session_finalize
+  - kanban_task_completed
+metadata:
+  phase: M7
+  scaffold_only: false
+  enablement: "Enabled through managed Hermes profiles by M5."
+

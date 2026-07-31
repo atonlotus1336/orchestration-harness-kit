@@ -1,0 +1,27 @@
+﻿id: agentic-file-op-03
+class: agentic-file-op
+scorer: post_state_check
+prompt: |
+  The registry.md file must only contain registered surface rows with id and
+  owner. Add the malformed row below to quarantine.md instead of registry.md:
+  - id: unowned-surface
+  Do not alter the existing valid registry rows.
+context_files:
+  - fixtures/agentic-file-op-03/initial/registry.md
+  - fixtures/agentic-file-op-03/initial/quarantine.md
+workspace_seed: fixtures/agentic-file-op-03/initial
+expected_outcome:
+  type: file_state
+  checks:
+    - file: registry.md
+      contains:
+        - "id: hermes-gateway"
+        - "id: memoryweaver-digest"
+      not_contains:
+        - "unowned-surface"
+    - file: quarantine.md
+      contains:
+        - "id: unowned-surface"
+notes: |
+  Tests fail-closed registry behavior and quarantine routing.
+

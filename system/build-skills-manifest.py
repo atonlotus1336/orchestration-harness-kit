@@ -150,6 +150,10 @@ def categorize(name: str, description: str) -> str:
     n = name.lower()
     d = description.lower()[:400]
 
+    if n in ("file-organizer", "learning-action-loop"):
+        return "knowledge-mgmt"
+    if n in ("kaizen-checkpoint", "skill-catalog-review"):
+        return "general"
     if n.startswith("codex-gsd-"):
         return "codex-workflow"
     if n.startswith("gsd-") and "ui" not in n:
@@ -296,7 +300,7 @@ TAG_VOCAB = {
     "security", "performance", "data", "workflow", "creative",
     "design", "ui", "ux", "frontend", "backend", "obsidian", "readwise",
     "academic", "paper", "systematic", "authority", "evidence", "retrieval",
-    "memory",
+    "memory", "learning", "loop", "organizer", "catalog", "kaizen",
 }
 
 

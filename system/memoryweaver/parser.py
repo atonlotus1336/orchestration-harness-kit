@@ -16,6 +16,7 @@ from pathlib import Path
 from typing import List, Optional, Tuple
 
 from .models import MemoryRecord
+from .capture_quality import clean_memory_line, is_standalone_noise_line
 
 
 # ---------------------------------------------------------------------------
@@ -62,8 +63,8 @@ def parse_decisions_file(path: Path, project: Optional[str] = None) -> List[Memo
     """Parse a decisions-*.md file. Each line is one decision record."""
     records: List[MemoryRecord] = []
     for line in path.read_text(encoding="utf-8", errors="replace").splitlines():
-        line = line.strip()
-        if not line or line.startswith("#"):
+        line = clean_memory_line(line)
+        if is_standalone_noise_line(line):
             continue
         # Match: [YYYY-MM-DD] — decision name: rationale. Projects: ... Thread: ...
         rec = parse_decision_line(line, path, project)
@@ -94,7 +95,10 @@ def _extract_frontmatter(text: str) -> Tuple[Optional[dict], str]:
 def _records_from_frontmatter(
     fm: dict, body: str, path: Path, project: Optional[str]
 ) -> List[MemoryRecord]:
-    ts = _parse_timestamp(fm.get("date") or fm.get("timestamp"))
+    # Frontmatter notes without an explicit date fall back to the inferred timestamp
+    # (filename date -> file mtime -> now), same as the heuristic path. Without this,
+    # a dateless frontmatter note yields timestamp=None and crashes to_chroma_doc().
+    ts = _parse_timestamp(fm.get("date") or fm.get("timestamp")) or _infer_timestamp(path)
     proj = fm.get("project") or project or _infer_project(path)
     tags = fm.get("tags") or []
     if isinstance(tags, str):
@@ -189,6 +193,9 @@ def _record_from_raw(text: str, path: Path, project: Optional[str]) -> MemoryRec
 def parse_decision_line(
     line: str, path: Path, project: Optional[str]
 ) -> Optional[MemoryRecord]:
+    line = clean_memory_line(line)
+    if is_standalone_noise_line(line):
+        return None
     # Strip markdown strikethrough
     line_clean = re.sub(r"~~(.+?)~~", r"[SUPERSEDED:\1]", line)
     m = _DECISION_LINE_RE.match(line_clean.lstrip("- "))

@@ -24,7 +24,14 @@ while IFS= read -r f; do
 done <<< "$staged"
 
 printf '%s\n' "$staged" | grep -qiE 'projects/' && { echo "LEAK: a Projects path is staged"; leak=1; }
-[ -z "$DENY" ] && echo "NOTE: no .private-denylist found — identity guard OFF (only the Projects gate ran)."
+# Fail-closed: a MISSING denylist must never silently allow a commit. If the guard
+# cannot run at full strength, block until the recipient supplies their own list.
+if [ -z "$DENY" ]; then
+  echo "BLOCKED: no .private-denylist found — the identity guard cannot run."
+  echo "Create .private-denylist (your real identity/host tokens; gitignored) or run"
+  echo "sync-shareable.sh (it scrubs), then retry. Fail-closed by design."
+  leak=1
+fi
 
 if [ "$leak" -ne 0 ]; then
   echo "----------------------------------------------------------------"

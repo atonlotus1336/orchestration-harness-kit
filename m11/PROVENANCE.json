@@ -1,0 +1,269 @@
+﻿{
+    "schema_version":  1,
+    "phase":  "M11",
+    "bundle":  "orchestration-layer/m11",
+    "generated_at":  "2026-07-13T20:36:58.7362036Z",
+    "source_dependencies":  [
+                                "M7 routing-policy.json",
+                                "M10 scrub-v2 and graph-derived kit core",
+                                "memory-orchestration-kit/bootstrap.sh"
+                            ],
+    "verification":  {
+                         "checksum_algorithm":  "sha256",
+                         "clean_target":  "requires M11_CLEAN_TARGET for formal closure",
+                         "privacy_scrub":  "m10-scrub-v2 GREEN required before ship",
+                         "clone_eval_baseline":  "clone-eval/baseline.json public subset with exact task/fixture hash key sets"
+                     },
+    "files":  [
+                  {
+                      "path":  "clone-eval\\baseline.json",
+                      "sha256":  "22b9b9a5e4c6bd84241c13c1d55230765d2190831a8dbe2cdd108400d11419ec",
+                      "bytes":  6888
+                  },
+                  {
+                      "path":  "clone-eval\\eval-run.ps1",
+                      "sha256":  "ff78093c7d33b9c8a8e05ff9989471e0088849bbe0fcdb764229ba66fc48932e",
+                      "bytes":  27620
+                  },
+                  {
+                      "path":  "clone-eval\\fixtures\\agentic-file-op-01\\initial\\active.md",
+                      "sha256":  "0505f45638c5ba580faa3780dd9501f3fc730f4a51d68ad6ae788204bacaf891",
+                      "bytes":  16
+                  },
+                  {
+                      "path":  "clone-eval\\fixtures\\agentic-file-op-01\\initial\\inbox.md",
+                      "sha256":  "a4930335854965a152fc5e50044400032671c358ace2a7abe8a78ca317570208",
+                      "bytes":  127
+                  },
+                  {
+                      "path":  "clone-eval\\fixtures\\agentic-file-op-02\\initial\\config-note.md",
+                      "sha256":  "4151c1f1e8dee1112b4b981abfc359a57127ee1923438976d947fa7ed1a3f45d",
+                      "bytes":  149
+                  },
+                  {
+                      "path":  "clone-eval\\fixtures\\agentic-file-op-02\\initial\\summary.md",
+                      "sha256":  "d98199e52b51333fa053e5b9bb54af9a376115ad4ef21fff45d11ed693eeda16",
+                      "bytes":  25
+                  },
+                  {
+                      "path":  "clone-eval\\fixtures\\agentic-file-op-03\\initial\\quarantine.md",
+                      "sha256":  "189043af7cfcf84f7ccced65fb85fdaf13ef9ba1eac3d2128bbc857f7ddc448d",
+                      "bytes":  14
+                  },
+                  {
+                      "path":  "clone-eval\\fixtures\\agentic-file-op-03\\initial\\registry.md",
+                      "sha256":  "bdfc6087b8a81578f8deae087037fe1b7c84b276f9b370eb7a172131abebf8bd",
+                      "bytes":  100
+                  },
+                  {
+                      "path":  "clone-eval\\fixtures\\agentic-file-op-04\\initial\\memories.md",
+                      "sha256":  "aac9e82b53138ac5c3c10c3ec7348d5114b41449233aafd93a104ddfac00afe6",
+                      "bytes":  21
+                  },
+                  {
+                      "path":  "clone-eval\\fixtures\\agentic-file-op-04\\initial\\session.md",
+                      "sha256":  "aeed3019accc24e5e709f573201697d5b58158dee13704560ac93210c9a28074",
+                      "bytes":  227
+                  },
+                  {
+                      "path":  "clone-eval\\fixtures\\code-fix-01\\buggy.py",
+                      "sha256":  "0e434afd26f5b18a039c187d742852465542040cc2840766d6800164f254b7e8",
+                      "bytes":  1156
+                  },
+                  {
+                      "path":  "clone-eval\\fixtures\\code-fix-01\\test_buggy.py",
+                      "sha256":  "e73837941769d63fbfdfc607d51eca53431fe361cecf26aed4ce2eb555602159",
+                      "bytes":  1609
+                  },
+                  {
+                      "path":  "clone-eval\\fixtures\\code-fix-02\\buggy.py",
+                      "sha256":  "077e6e8756026a23e99913d4ac435083884bc4ee6e41fe3d95277459860a7c4b",
+                      "bytes":  850
+                  },
+                  {
+                      "path":  "clone-eval\\fixtures\\code-fix-02\\test_buggy.py",
+                      "sha256":  "088367bbad72e40522592befa3111fba8b4ea92ee77d71d0406bdd8e43665511",
+                      "bytes":  1616
+                  },
+                  {
+                      "path":  "clone-eval\\fixtures\\code-fix-03\\buggy.py",
+                      "sha256":  "4fb0967232ade2b9db0bfacc4749783919f97895654ae7b6b38bc3299a0db664",
+                      "bytes":  1088
+                  },
+                  {
+                      "path":  "clone-eval\\fixtures\\code-fix-03\\test_buggy.py",
+                      "sha256":  "50dc2108608dc449158292af3a2cbacfc9707d3865c7ae163dd3efce9607e7c2",
+                      "bytes":  1149
+                  },
+                  {
+                      "path":  "clone-eval\\fixtures\\code-fix-04\\buggy.py",
+                      "sha256":  "6cb6bed60322c91acbacce814c42905526be146e97c5b40140ab2b09f9c2fef1",
+                      "bytes":  1070
+                  },
+                  {
+                      "path":  "clone-eval\\fixtures\\code-fix-04\\test_buggy.py",
+                      "sha256":  "c9037114dd1405787a39fec4400bf851951cbdab6b332bc3bebe7dd49f1764c7",
+                      "bytes":  1680
+                  },
+                  {
+                      "path":  "clone-eval\\tasks\\agentic-file-op-01.yaml",
+                      "sha256":  "243f7de8375f6007ab23d18ccbea26f83e30626e79295cff0861452829e7e7a9",
+                      "bytes":  951
+                  },
+                  {
+                      "path":  "clone-eval\\tasks\\agentic-file-op-02.yaml",
+                      "sha256":  "4fa7b46990891d0a789c3644a94f7b09e7082757be0b8143e7a6e00bd9e84367",
+                      "bytes":  844
+                  },
+                  {
+                      "path":  "clone-eval\\tasks\\agentic-file-op-03.yaml",
+                      "sha256":  "6b5e1ebd9e4e36fece62a1421eacce45f989f8470d1d2900605402d1ef0ad9f1",
+                      "bytes":  834
+                  },
+                  {
+                      "path":  "clone-eval\\tasks\\agentic-file-op-04.yaml",
+                      "sha256":  "edd996c0560749fcb5f4870cb00a389e46172c120f89abf517a7c08bc375474a",
+                      "bytes":  882
+                  },
+                  {
+                      "path":  "clone-eval\\tasks\\code-fix-01.yaml",
+                      "sha256":  "3d372bb1d303e947aeca2f98d6f75739d5f4800490c9aa141cb0f5a61dc371b4",
+                      "bytes":  774
+                  },
+                  {
+                      "path":  "clone-eval\\tasks\\code-fix-02.yaml",
+                      "sha256":  "e5399844dd27703821f5d24d6bd567a32ada3849c5bac8e739eff4a2d78d2419",
+                      "bytes":  872
+                  },
+                  {
+                      "path":  "clone-eval\\tasks\\code-fix-03.yaml",
+                      "sha256":  "4ff07bf86693716397d3ced54c8731558bf5bbd071c358303d72ad8b9dbbcfdc",
+                      "bytes":  766
+                  },
+                  {
+                      "path":  "clone-eval\\tasks\\code-fix-04.yaml",
+                      "sha256":  "9a8a25293a0e4ce1d236b893f43c84b1cfb23462b36b05cecfad773e04ab68ec",
+                      "bytes":  821
+                  },
+                  {
+                      "path":  "coverage\\DECLARED-COVERAGE.md",
+                      "sha256":  "f46602167398b8b30097220be7dd5de36dea1e26f91da7f2b9329df07b760531",
+                      "bytes":  1302
+                  },
+                  {
+                      "path":  "m11-gate.ps1",
+                      "sha256":  "2f94a8768cd6673de42b89ddc936fd401f44cb9c8ecfb13c521479b105d66dc1",
+                      "bytes":  12763
+                  },
+                  {
+                      "path":  "modules\\harness\\README.md",
+                      "sha256":  "5466c81ab1b0e103ff70acbe7ffa92f2bf53af732cc5ef3b0cde9fa7c318a339",
+                      "bytes":  198
+                  },
+                  {
+                      "path":  "modules\\hermes-snapshot\\council-presets.json",
+                      "sha256":  "6045ddb55a087e89ebea148333bf92a300d93e815050f52f5530c71fc23e5d35",
+                      "bytes":  1951
+                  },
+                  {
+                      "path":  "modules\\hermes-snapshot\\vault-parity\\__init__.py",
+                      "sha256":  "6a0fbfc46eefcb74b4b273e59a1a3f2f2eaf782e8631222e4fbae12e4a59c045",
+                      "bytes":  3723
+                  },
+                  {
+                      "path":  "modules\\hermes-snapshot\\vault-parity\\digest.py",
+                      "sha256":  "73eeed64b4ea1789ab12d89193b2149147213f1b53ef24a9d89a5e368f9b2b2e",
+                      "bytes":  4948
+                  },
+                  {
+                      "path":  "modules\\hermes-snapshot\\vault-parity\\graph_gate.py",
+                      "sha256":  "c1b4183575e78a026eb005ee94b8867d6d4d09e7ef4109edd4aa60367e75f0fa",
+                      "bytes":  377
+                  },
+                  {
+                      "path":  "modules\\hermes-snapshot\\vault-parity\\plugin.yaml",
+                      "sha256":  "88cbb37cd405aed4e2dc5aabcd5133bf7630d6c2de6e1f2a647cc560bfff26ed",
+                      "bytes":  415
+                  },
+                  {
+                      "path":  "modules\\hermes-snapshot\\vault-parity\\routing.py",
+                      "sha256":  "4c6d4f0a08383e739752bac2ddef453b27bc79d8875c27173e67f1a0e8e00000",
+                      "bytes":  8280
+                  },
+                  {
+                      "path":  "modules\\hermes-snapshot\\vault-parity\\session_ledger.py",
+                      "sha256":  "25925d11faeb470ec5be14b7a20dd0dc0f8161ed7d566d785c2756872eae84ec",
+                      "bytes":  5372
+                  },
+                  {
+                      "path":  "modules\\hermes-snapshot\\vault-parity\\standing_plan.py",
+                      "sha256":  "1dad38471abed78e0adda301543f9c7321be2dca0912b3ca76900a0a42a7a9b8",
+                      "bytes":  12158
+                  },
+                  {
+                      "path":  "modules\\hermes-snapshot\\profile-home.template.yaml",
+                      "sha256":  "a5a8d4349cfdd5ea0da1fa31ec8eb9785cc5cfa1639d4d50f14ac94b0a33e8af",
+                      "bytes":  741
+                  },
+                  {
+                      "path":  "modules\\hermes-snapshot\\README.md",
+                      "sha256":  "4a4ad0ff8e04a2f4aabfa49164946b9458e167e613bc762f8d6192faa36b48ea",
+                      "bytes":  233
+                  },
+                  {
+                      "path":  "modules\\hermes-snapshot\\routing-policy.json",
+                      "sha256":  "7d050066e08e0f24225be7355ae834d8ba437e47fbbfd2102896559531975ee2",
+                      "bytes":  7526
+                  },
+                  {
+                      "path":  "modules\\hermes-snapshot\\SNAPSHOT.json",
+                      "sha256":  "96deaee37109c29dc256220686f52ebf12146a1f5695289ed1eebbdbc396af25",
+                      "bytes":  1250
+                  },
+                  {
+                      "path":  "modules\\image-video\\install.ps1",
+                      "sha256":  "48d6926ca31e78128573f031389e1a37ee177f111de04c9b54339ce29784581e",
+                      "bytes":  2280
+                  },
+                  {
+                      "path":  "modules\\image-video\\install.sh",
+                      "sha256":  "08d80727ac42352fde6ac2c91ea9b8d883674858b8ca59897eb6715eac2ab820",
+                      "bytes":  1820
+                  },
+                  {
+                      "path":  "modules\\image-video\\README.md",
+                      "sha256":  "6d8be51cfc3cd918dc4698872bb6b4d855988d166c9f868340ef6bede45fefd9",
+                      "bytes":  1561
+                  },
+                  {
+                      "path":  "modules\\image-video\\workflows\\reference-text2image.json",
+                      "sha256":  "9ea1b4571bc29a921dd7abe6844736d8a82f54db05b1be97257ba7fd9173a1c5",
+                      "bytes":  1418
+                  },
+                  {
+                      "path":  "modules\\memory\\README.md",
+                      "sha256":  "ea910885a0d1b4156c753de55363aa3c2e92913d31c386296d9064262a5a06a8",
+                      "bytes":  200
+                  },
+                  {
+                      "path":  "modules\\module-manifest.json",
+                      "sha256":  "bc2ab1f4e2b1aa9ee3b6b32b8e454def6ca37114d4d491c91d07b36cbfce0fb8",
+                      "bytes":  2390
+                  },
+                  {
+                      "path":  "modules\\rag\\README.md",
+                      "sha256":  "2b59daacc2dfad7d915982b286d5001fa8b8b7be9b6a7fa9fb0ae0781e0a8502",
+                      "bytes":  172
+                  },
+                  {
+                      "path":  "preflight\\preflight.ps1",
+                      "sha256":  "7351d91e75f61df5ff7560152e189d6c03d9a130fe60ea4760711221e1bc6c7c",
+                      "bytes":  2310
+                  },
+                  {
+                      "path":  "preflight\\preflight.sh",
+                      "sha256":  "a946262360c64ae9cfb55e22148a545f5d20d283555be4f6b88d92988a399736",
+                      "bytes":  578
+                  }
+              ]
+}

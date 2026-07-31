@@ -1,0 +1,10 @@
+Welcome back to the channel. Today I want to walk through llama.cpp's new speculative
+decoding support that landed in the main branch last month. The idea: you run a small
+draft model alongside your main model, the draft proposes tokens, and the big model
+verifies them in a single batched forward pass. On my 4090 I measured qwen2.5 72B going
+from 14 tokens a second to 31 tokens a second with a 0.5B draft model, and the output
+is mathematically identical to normal decoding - it's lossless. Setup is two flags:
+--model for your main gguf and --model-draft for the draft. The PR is on the official
+repo, github.com/ggml-org/llama.cpp pull 10455, and the docs page covers tuning the
+draft token count. Real benchmarks in the description. It works today with any gguf
+pair that shares a tokenizer.

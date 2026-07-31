@@ -13,6 +13,7 @@ Subcommands:
 from __future__ import annotations
 
 import argparse
+import json
 import sys
 
 
@@ -90,6 +91,9 @@ def main() -> None:
     sp_digest = sub.add_parser("digest", help="Write recent-digest.json (read-on-write snapshot)")
     sp_digest.add_argument("--n", type=int, default=8, help="How many recent stubs to include")
 
+    sp_m2 = sub.add_parser("m2-purge-bad", help="Export and optionally tombstone M2 bad capture artifacts")
+    sp_m2.add_argument("--apply", action="store_true", help="Apply soft-delete after export and backup")
+
     args = parser.parse_args()
 
     if args.command == "sync-fts":
@@ -112,6 +116,8 @@ def main() -> None:
         _cmd_harvest(args)
     elif args.command == "digest":
         _cmd_digest(args)
+    elif args.command == "m2-purge-bad":
+        _cmd_m2_purge_bad(args)
     else:
         parser.print_help()
         sys.exit(1)
@@ -189,8 +195,10 @@ def _cmd_status() -> None:
 
     store = ChromaDBAdapter()
     fts = FTS5Adapter()
-    explicit_count = store.count("explicit_memories")
-    inferred_count = store.count("inferred_memories")
+    explicit_total = store.count("explicit_memories")
+    inferred_total = store.count("inferred_memories")
+    explicit_count = store.count("explicit_memories", live=True)
+    inferred_count = store.count("inferred_memories", live=True)
     fts_count = fts.count()
 
     pending = len(list(_SPOOL_DIR.glob("*.json"))) if _SPOOL_DIR.exists() else 0
@@ -198,16 +206,19 @@ def _cmd_status() -> None:
     errors = len(list(_SPOOL_DIR.glob("*.error"))) if _SPOOL_DIR.exists() else 0
 
     fts_sync_note = ""
-    chroma_total = explicit_count + inferred_count
-    if fts_count == 0 and chroma_total > 0:
+    chroma_total = explicit_total + inferred_total
+    chroma_live = explicit_count + inferred_count
+    chroma_tombstones = max(chroma_total - chroma_live, 0)
+    if fts_count == 0 and chroma_live > 0:
         fts_sync_note = "  [WARN] FTS index empty -- run: python -m memoryweaver sync-fts"
-    elif fts_count < chroma_total:
-        fts_sync_note = f"  [WARN] FTS ({fts_count}) < Chroma ({chroma_total}) -- run: python -m memoryweaver sync-fts"
+    elif fts_count < chroma_live:
+        fts_sync_note = f"  [WARN] FTS ({fts_count}) < Chroma live ({chroma_live}) -- run: python -m memoryweaver sync-fts"
 
     print(f"MemoryWeaver Status")
-    print(f"  explicit_memories : {explicit_count}")
-    print(f"  inferred_memories : {inferred_count}")
+    print(f"  explicit_memories : {explicit_count} live / {explicit_total} total")
+    print(f"  inferred_memories : {inferred_count} live / {inferred_total} total")
     print(f"  fts_index         : {fts_count}")
+    print(f"  chroma_tombstones : {chroma_tombstones}")
     print(f"  spool pending     : {pending}")
     print(f"  spool done        : {done}")
     print(f"  spool errors      : {errors}")
@@ -267,6 +278,12 @@ def _cmd_digest(args) -> None:
     from .digest import write_recent_digest, DIGEST_PATH
     payload = write_recent_digest(n=getattr(args, "n", 8))
     print(f"Digest: {payload['count']} stubs -> {DIGEST_PATH}")
+
+
+def _cmd_m2_purge_bad(args) -> None:
+    from .m2_repair import purge_bad_memories
+    result = purge_bad_memories(apply=getattr(args, "apply", False))
+    print(json.dumps(result, ensure_ascii=False, indent=2))
 
 
 if __name__ == "__main__":

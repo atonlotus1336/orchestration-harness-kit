@@ -1,0 +1,16 @@
+﻿id: code-fix-01
+class: code-fix
+scorer: deterministic
+prompt: |
+  The file buggy.py contains parse_scoring_json(text), derived from
+  evolution.core.external_importers._parse_scoring_json. It must parse a clean
+  JSON object, reject non-dict JSON, and extract the first balanced JSON object
+  from prose while respecting quoted string literals. The test suite in
+  test_buggy.py is failing. Fix buggy.py so every test passes. Do not edit
+  test_buggy.py. Return only the corrected contents of buggy.py.
+context_files:
+  - fixtures/code-fix-01/buggy.py
+  - fixtures/code-fix-01/test_buggy.py
+edit_target: fixtures/code-fix-01/buggy.py
+frozen_test: fixtures/code-fix-01/test_buggy.py
+source_derivation:\n  public_note: derived from public deterministic fixture behavior\n

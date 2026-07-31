@@ -1,0 +1,79 @@
+﻿{
+    "ts":  "2026-07-07T00:37:02.3035936Z",
+    "route":  "ollama-cloud:glm-5.2:cloud",
+    "baseline":  false,
+    "results":  [
+                    {
+                        "id":  "agentic-file-op-01",
+                        "class":  "agentic-file-op",
+                        "score":  100,
+                        "wall_clock_s":  27.42,
+                        "tier_weight":  1,
+                        "route":  "ollama-cloud:glm-5.2:cloud"
+                    },
+                    {
+                        "id":  "agentic-file-op-02",
+                        "class":  "agentic-file-op",
+                        "score":  100,
+                        "wall_clock_s":  19.51,
+                        "tier_weight":  1,
+                        "route":  "ollama-cloud:glm-5.2:cloud"
+                    },
+                    {
+                        "id":  "agentic-file-op-03",
+                        "class":  "agentic-file-op",
+                        "score":  100,
+                        "wall_clock_s":  29,
+                        "tier_weight":  1,
+                        "route":  "ollama-cloud:glm-5.2:cloud"
+                    },
+                    {
+                        "id":  "agentic-file-op-04",
+                        "class":  "agentic-file-op",
+                        "score":  100,
+                        "wall_clock_s":  21.57,
+                        "tier_weight":  1,
+                        "route":  "ollama-cloud:glm-5.2:cloud"
+                    },
+                    {
+                        "id":  "code-fix-01",
+                        "class":  "code-fix",
+                        "score":  100,
+                        "wall_clock_s":  68.94,
+                        "tier_weight":  1,
+                        "route":  "ollama-cloud:glm-5.2:cloud"
+                    },
+                    {
+                        "id":  "code-fix-02",
+                        "class":  "code-fix",
+                        "score":  100,
+                        "wall_clock_s":  65.05,
+                        "tier_weight":  1,
+                        "route":  "ollama-cloud:glm-5.2:cloud"
+                    },
+                    {
+                        "id":  "code-fix-03",
+                        "class":  "code-fix",
+                        "score":  100,
+                        "wall_clock_s":  26.63,
+                        "tier_weight":  1,
+                        "route":  "ollama-cloud:glm-5.2:cloud"
+                    },
+                    {
+                        "id":  "code-fix-04",
+                        "class":  "code-fix",
+                        "score":  100,
+                        "wall_clock_s":  37.52,
+                        "tier_weight":  1,
+                        "route":  "ollama-cloud:glm-5.2:cloud"
+                    }
+                ],
+    "class_means":  {
+                        "agentic-file-op":  100,
+                        "code-fix":  100
+                    },
+    "informational_classes":  [
+                                  "council-reasoning",
+                                  "research-synthesis"
+                              ]
+}

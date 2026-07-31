@@ -1,0 +1,17 @@
+﻿id: code-fix-02
+class: code-fix
+scorer: deterministic
+prompt: |
+  The file buggy.py contains contains_secret(text), derived from
+  evolution.core.external_importers._contains_secret. It must detect known
+  secret-shaped strings while avoiding false positives on normal prose and short
+  token discussions. The test suite in test_buggy.py is failing. Fix buggy.py so
+  every test passes. Do not edit test_buggy.py. Return only the corrected contents
+  of buggy.py as raw Python source, never JSON-escaped. Backslashes in regex raw
+  strings must be single, exactly as in the provided buggy.py fixture.
+context_files:
+  - fixtures/code-fix-02/buggy.py
+  - fixtures/code-fix-02/test_buggy.py
+edit_target: fixtures/code-fix-02/buggy.py
+frozen_test: fixtures/code-fix-02/test_buggy.py
+source_derivation:\n  public_note: derived from public deterministic fixture behavior\n

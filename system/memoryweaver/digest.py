@@ -14,6 +14,7 @@ from __future__ import annotations
 
 import json
 import os
+from datetime import datetime, timezone
 from pathlib import Path
 from typing import Optional
 
@@ -22,7 +23,10 @@ from .stub import project as _project
 
 DIGEST_FILENAME = "recent-digest.json"
 DIGEST_PATH = MW_DATA_DIR / DIGEST_FILENAME
+BEACON_FILENAME = "freshness-beacon.json"
+BEACON_PATH = MW_DATA_DIR / BEACON_FILENAME
 _DEFAULT_N = 8
+_DEFAULT_MAX_AGE_SECONDS = 2 * 60 * 60
 
 
 def _store_default():
@@ -66,6 +70,7 @@ def write_recent_digest(store=None, n: int = _DEFAULT_N, path=None) -> dict:
         tmp = out_path.with_suffix(".tmp")
         tmp.write_text(json.dumps(payload, ensure_ascii=False, indent=1), encoding="utf-8")
         os.replace(tmp, out_path)  # atomic publish
+        write_freshness_beacon(path=BEACON_PATH, digest_path=out_path)
     except Exception:
         pass  # snapshot failure must never block ingest/session end
 
@@ -82,3 +87,61 @@ def read_recent_digest(path=None) -> Optional[dict]:
             return json.load(fh)
     except Exception:
         return None
+
+
+def write_freshness_beacon(
+    last_digest_ts: Optional[datetime] = None,
+    last_ingest_ts: Optional[datetime] = None,
+    last_success: bool = True,
+    path=None,
+    digest_path=None,
+) -> dict:
+    """Write the reader-side freshness beacon used by SessionStart hooks."""
+    out_path = Path(path) if path else BEACON_PATH
+    now = datetime.now(tz=timezone.utc)
+    last_digest_ts = last_digest_ts or now
+    last_ingest_ts = last_ingest_ts or last_digest_ts
+    payload = {
+        "schema": "memoryweaver-freshness/1",
+        "last_ingest_ts": last_ingest_ts.isoformat(),
+        "last_digest_ts": last_digest_ts.isoformat(),
+        "last_success": bool(last_success),
+        "digest_path": str(digest_path or DIGEST_PATH),
+        "capture_status_path": str(MW_DATA_DIR / "capture-status.json"),
+    }
+    try:
+        out_path.parent.mkdir(parents=True, exist_ok=True)
+        tmp = out_path.with_suffix(".tmp")
+        tmp.write_text(json.dumps(payload, ensure_ascii=False, indent=1), encoding="utf-8")
+        os.replace(tmp, out_path)
+    except Exception:
+        pass
+    return payload
+
+
+def read_freshness_beacon(path=None) -> Optional[dict]:
+    out_path = Path(path) if path else BEACON_PATH
+    try:
+        if not out_path.exists():
+            return None
+        data = json.loads(out_path.read_text(encoding="utf-8"))
+        return data if isinstance(data, dict) else None
+    except Exception:
+        return None
+
+
+def is_digest_fresh(now: Optional[datetime] = None, max_age_seconds: int = _DEFAULT_MAX_AGE_SECONDS, path=None) -> bool:
+    beacon = read_freshness_beacon(path=path)
+    if not beacon or not beacon.get("last_success"):
+        return False
+    raw_ts = beacon.get("last_digest_ts")
+    if not raw_ts:
+        return False
+    try:
+        ts = datetime.fromisoformat(str(raw_ts).replace("Z", "+00:00"))
+    except ValueError:
+        return False
+    if ts.tzinfo is None:
+        ts = ts.replace(tzinfo=timezone.utc)
+    now = now or datetime.now(tz=timezone.utc)
+    return (now - ts).total_seconds() <= max_age_seconds

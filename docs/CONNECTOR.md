@@ -2,6 +2,8 @@
 tags: connector, rag, mcp, orchestrator, backend, integration, key, quickstart, wiring
 keywords: connect, plug-in, backend, registry, lightrag, graphrag, memoryweaver, mcp-server, hermes, claude-code, codex, new-backend, python, single-source
 
+> START HERE chain, step 3 — canonical index: `ORCHESTRATION-LAYER.md` § "START HERE — Cold-Start Navigation Index" (vault root).
+
 > 🔧 **Fixing something (tools missing, RAG/memory down)?** This is a *wiring/config*
 > reference, not a fix guide. Go to **`LLM-TRIAGE-CARD.md`** (60-second triage) or
 > **`LLM-OPS-RUNBOOK.md` §4** (failure procedures) first. Use THIS doc only to
@@ -24,6 +26,14 @@ Important distinction:
   should start with `rag-orchestrator` plus `obsidian` to avoid duplicated
   wiring and split retrieval paths.
 
+Level 5 readiness default:
+- Active default MCP profile: `D:\MyVault\.mcp.json`.
+- Default servers: `local-rag`, `rag-orchestrator`, `MyVault-control-plane`.
+- Full opt-in profile: `D:\MyVault\.mcp.level5-full.json`.
+- GraphRAG is deep/opt-in only unless it passes the 90 second representative
+  query SLO.
+- Preflight: `D:\MyVault\.planning\level5-readiness-fix\level5-readiness-check.ps1`.
+
 ## Optimization contract
 
 Canonical routing: `D:\MyVault\.claude\RETRIEVAL-PLAYBOOK.md`. For lowest token
@@ -31,20 +41,27 @@ use, clients should route in this order:
 
 1. Authority/conflict: `D:\MyVault\.claude\AUTHORITY-CONSTITUTION.md`.
 2. Routing decisions: `D:\MyVault\.claude\RETRIEVAL-PLAYBOOK.md`.
-3. Skill/agent: `D:\MyVault\.claude\MASTER-INDEX.md`, then one selected skill.
-4. Exact note/path: Obsidian MCP or direct file read.
-5. Broad semantic vault search: `rag-orchestrator`.
-6. Skill semantic fallback: `skills_index` at `D:\MyVault\.rag\db` via direct
+3. Adopted contract/eval support:
+   `D:\MyVault\.claude\contracts\` and
+   `D:\MyVault\.claude\retrieval-evals\`, only after parent authority is known.
+   These files enforce routing and audit posture; they are not primary
+   authority.
+4. Skill/agent: `D:\MyVault\.claude\MASTER-INDEX.md`, then one selected skill.
+5. Exact note/path: Obsidian MCP or direct file read.
+6. Broad semantic vault search: `rag-orchestrator`.
+7. Skill semantic fallback: `skills_index` at `D:\MyVault\.rag\db` via direct
    `local-rag` only when the client exposes collection-aware search; otherwise
    `rag-orchestrator` with a skill-focused query, or the playbook's direct
    Chroma check (`D:\MyVault\.claude\scripts\query-skills-rag.py`).
-7. Relationship/community search: GraphRAG through `rag-orchestrator`, or
+8. Relationship/community search: GraphRAG through `rag-orchestrator`, or
    direct GraphRAG MCP when available.
-8. Method/process guidance after routing:
+9. Method/process guidance after routing:
    `D:\MyVault\.claude\METHODOLOGY-CHARTER.md`.
 
 Do not make full vault traversal the default path. Use broad `rg` or reindexing
 only after indexed routes fail or a full audit is explicitly requested.
+Run `python D:\MyVault\.claude\scripts\run-retrieval-evals.py --static` after
+authority, retrieval, connector, adopted contract, or RAG metadata changes.
 
 ---
 
@@ -79,12 +96,8 @@ mcp_servers:
       - D:\MyVault
 
   rag-orchestrator:
-    command: /home/alice/.local/share/rag-orchestrator/.venv/bin/python3.11
-    args: [/mnt/d/MyVault/.mcp-servers/rag-orchestrator/server.py]
-    env:
-      MEMORYWEAVER_DATA_DIR: /mnt/d/MyVault/.claude/Memory/memoryweaver
-      MEMORYWEAVER_FTS_DB_PATH: /home/alice/.local/share/memoryweaver-runtime/fts.db
-      LIGHTRAG_BASE_URL: http://10.0.0.1:9621
+    command: /mnt/d/MyVault/.mcp-servers/rag-orchestrator/launch-hermes.sh
+    args: []
 
   memoryweaver-mcp:
     command: /home/alice/.local/share/memoryweaver-mcp/venv/bin/python3.11
@@ -108,16 +121,17 @@ mcp_servers:
 
 ```json
 // Claude Code  (~/.claude/settings.json or D:\MyVault\.mcp.json)
-// NOTE: launched via wsl.exe from Windows — env blocks do NOT cross the
-// interop boundary (WSLENV unset); the server's built-in defaults apply.
+// NOTE: launched via wsl.exe from Windows. Use the harness-specific launch
+// wrapper so MyVault_HARNESS and workspace defaults are explicit inside WSL.
 {
   "mcpServers": {
     "rag-orchestrator": {
       "command": "wsl",
       "args": [
         "--",
-        "/home/alice/.local/share/rag-orchestrator/.venv/bin/python3.11",
-        "/mnt/d/MyVault/.mcp-servers/rag-orchestrator/server.py"
+        "bash",
+        "-lc",
+        "exec /mnt/d/MyVault/.mcp-servers/rag-orchestrator/launch-claude.sh"
       ]
     }
   }
@@ -130,15 +144,17 @@ symlink to `.venv` (old `venv` preserved as `venv.bak-20260612`). Always call
 `python3.11` explicitly.
 
 ```json
-// Codex  (~/.codex/config.toml  or  hooks.json)
-// Same pattern as Claude Code above
+// Codex  (~/.codex/config.toml or D:\MyVault\.codex\config.toml)
+// Same pattern as Claude Code above, but launch-codex.sh sets MyVault_HARNESS=codex
 ```
 
 Tools exposed to the app after connecting:
-- rag_query(query, mode?, limit?)       — all backends merged
-- rag_backend_query(backend, query, fallback?) — single backend, with backup backends when requested backend is offline
-- rag_status()                          — health check
-- rag_backends_list()                   — list registered backends
+- gateway_query(query, preferred_backend?, mode?, limit?, fallback?, context?) — unified endpoint with truth-state and recovery metadata
+- gateway_status(context?)               — unified health/truth-state status
+- rag_query(query, mode?, limit?, context?) — compatibility alias, all backends merged
+- rag_backend_query(backend, query, fallback?, context?) — compatibility alias, single backend with backup backends
+- rag_status(context?)                   — compatibility alias health check
+- rag_backends_list()                    — list registered backends
 
 WordPress action tools exposed by the `wordpress` MCP server:
 - wordpress_validate_token()
@@ -189,6 +205,29 @@ For profile-independent WordPress access across all Hermes agents, run the all-p
 ```
 
 Hermes startup now calls the all-profile sync before orchestration health checks, and the orchestration health checks include `hermes mcp test wordpress`.
+
+Hermes startup also checks the MyVault orchestration-contract SOUL guidance
+without adding an MCP tool. The default sync updates Windows Hermes profile
+cards; WSL runtime `SOUL.md` sync is opt-in so a slow or broken WSL profile tree
+cannot block startup.
+
+To wire WSL Hermes runtime SOUL files explicitly when the WSL profile tree is
+healthy:
+
+```bash
+# [WSL/bash]
+MyVault_SYNC_WSL_HERMES_SOUL=1 \
+  /home/alice/.hermes/hermes-agent/venv/bin/python \
+  /mnt/d/MyVault/.mcp-servers/orchestration-contracts/sync_hermes_soul_guidance.py
+```
+
+If that command cannot run, manually add the managed
+`MyVault-orchestration-contracts` block from
+`D:\MyVault\.mcp-servers\orchestration-contracts\README.md` to
+`~/.hermes/profiles/<profile>/SOUL.md`, then restart or reload that Hermes
+session. Use the WSL manual block in that README so the runtime sees WSL-mount
+(`/mnt/<drive>`) paths. This only wires discovery guidance; it does not create a new MCP server
+or change authority precedence.
 
 The helper writes:
 
@@ -582,3 +621,29 @@ bash/python3. Same tool NAMES everywhere, different execution environment — a
 - `node <22.5` → server won't start; check `node --version` in the launching runtime.
 - Tools missing in a session after wiring → reload MCP / restart the harness (same session-registration-gap rule as the rest of the stack).
 - Upgrade: `npm install -g context-mode` (Win) / `npm install -g --prefix /home/alice/.local context-mode` (WSL), or `ctx_upgrade`.
+
+## Surface graph gate
+
+M4 adds `D:\MyVault\SURFACE-GRAPH.yaml` as the registry for MCP, profile, memory,
+evaluation, document, and kit-component orchestration surfaces. Connector changes
+that add, remove, rename, or relocate MCP servers must update that graph and pass:
+
+```powershell
+powershell -NoProfile -ExecutionPolicy Bypass -File D:\MyVault\scripts\graph-gate.ps1 -Mode all
+```
+
+The scheduled audit wrapper `D:\MyVault\.mcp-servers\audit-orchestration.ps1
+-RunGraphGate` now propagates graph-gate exit codes. A quarantined, red, or
+schema-failed graph should therefore produce a nonzero scheduled task result
+rather than a false green.
+
+M5 registers the `MyVault-parity` plugin source in the surface graph and tracks
+profile enablement for `home` and `telegram`. Connector/profile changes must keep
+these rows aligned with `D:\MyVault\hermes-custom-plugins\MyVault-parity` and the
+managed profile `plugins.enabled` lists.
+
+The telegram profile sync script also stages `MyVault-parity` into the Windows
+profile plugin tree using PowerShell-native remove/copy semantics so existing
+junctions are replaced safely instead of being traversed by WSL `rm -rf`.
+
+<!-- SURFACE-GRAPH sync 2026-07-05: graph-gate hardened - semantic probes (profiles/beacon/baseline + eval-fixtures hash-drift), secret-scan + verify_cmd passes, real break-RED-restore mutation test, discovery scope documented (red-table R1-R7). Canonical gate: D:\MyVault\scripts\graph-gate.ps1 ; registry: D:\MyVault\SURFACE-GRAPH.yaml. -->

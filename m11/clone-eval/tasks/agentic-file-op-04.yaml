@@ -1,0 +1,24 @@
+﻿id: agentic-file-op-04
+class: agentic-file-op
+scorer: post_state_check
+prompt: |
+  Read session.md and append exactly two memory candidates to memories.md: one
+  decision and one procedure. Exclude the observation about M1 stopping. Each
+  appended line must start with "- decision:" or "- procedure:".
+context_files:
+  - fixtures/agentic-file-op-04/initial/session.md
+  - fixtures/agentic-file-op-04/initial/memories.md
+workspace_seed: fixtures/agentic-file-op-04/initial
+expected_outcome:
+  type: file_state
+  checks:
+    - file: memories.md
+      contains:
+        - "- decision: Use HERMES_HOME for profile-scoped Hermes CLI calls."
+        - "- procedure: Run structural validation before independent review."
+      not_contains:
+        - "Observation"
+        - "ledger closure"
+notes: |
+  Tests capture-unit precision: durable decision/procedure only, not scaffolding.
+

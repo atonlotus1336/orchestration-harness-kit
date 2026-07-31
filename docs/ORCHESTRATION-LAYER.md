@@ -1,14 +1,69 @@
-# Orchestration Layer — Complete Setup & Troubleshooting Guide
+﻿# Orchestration Layer â€” Complete Setup & Troubleshooting Guide
 
 > Reference for managing **RAG indexing**, **MCP systems**, and **memory synchronization** across Claude Code, Codex, and Hermes.
 
-> WARNING (small models): this doc is the architecture overview and some troubleshooting commands are STALE (2026-06-09). For first-response triage use `D:\MyVault\.claude\LLM-TRIAGE-CARD.md`; for literal recovery steps use `D:\MyVault\.claude\LLM-OPS-RUNBOOK.md`. Live output wins over this file.
+> Current Hermes Workspace launch baseline verified 2026-06-25: use `D:\MyVault\START-HERMES.cmd`. A healthy launch has Gateway `8642`, Dashboard `9119`, Workspace/Fusion `3000`, Ollama `11434`, and the Hermes OpenAI proxy `8105` ready. For first-response triage use `D:\MyVault\.claude\LLM-TRIAGE-CARD.md`; for literal recovery steps use `D:\MyVault\.claude\LLM-OPS-RUNBOOK.md`. Live output wins over this file.
 
 ---
 
+## START HERE — Cold-Start Navigation Index
+
+> Canonical nav chain (hermes-master-plan M12, 2026-07-07; purpose-first ordering added
+> mission-layer Phase 8, 2026-07-08). A fresh session with zero context follows this in
+> order; each doc routes deeper. Live output beats every doc.
+
+**What is this FOR? (read this first — mission layer)** Before the ops chain: the
+`D:\MyVault\.planning\missions\` portfolio holds the five domain missions this whole
+system serves — **applications, example-domain, example-projects, example-community,
+community-mission** (the last is CARE-governed: community data never leaves local
+storage). Each `<slug>\MISSION.md` states the mission, metrics, and active initiatives;
+`_digests\` holds the weekly/monthly/quarterly reviews. Purpose leads; the operational
+chain below keeps that purpose alive.
+
+| step | doc | when to use it |
+|---|---|---|
+| 1 | `D:\MyVault\.claude\LLM-TRIAGE-CARD.md` | first response — classify the symptom in 60 seconds |
+| 2 | `D:\MyVault\.claude\LLM-OPS-RUNBOOK.md` | literal recovery / setup procedures |
+| 3 | `D:\MyVault\.mcp-servers\CONNECTOR.md` | connect or configure a tool, script, or backend (shareable export: `export\orchestration-layer\docs\CONNECTOR.md`) |
+| 4 | `D:\MyVault\.claude\HERMES-PARITY-TROUBLESHOOTING.md` | Hermes vs Claude/Codex parity or quality failures |
+| 5 | `D:\MyVault\.planning\hermes-master-plan\PLAN.md` | phase gates, closure rules, invariants, future work |
+
+Standing checks a cold session should know:
+- **System health:** `powershell -NoProfile -ExecutionPolicy Bypass -File D:\MyVault\scripts\graph-gate.ps1` — statuses GREEN / RED / QUARANTINED / ACKED (ack = acknowledged external downtime, expiring).
+- **Phase closure authority:** `PHASE-LEDGER.jsonl`, read ONLY through `D:\MyVault\tests\phase-green-resolver.ps1 -Phase Mxx`. Prose never closes a phase, and no phase closes before its dependencies resolve GREEN (PLAN.md §7 dependency graph + §9 standing rules).
+- **Provider outages:** `D:\MyVault\tests\provider-health.ps1` — `BLOCKED_PROVIDER` (exit 3) means infrastructure, never a quality RED.
+
+---
+
+## Level 5 Readiness Gate
+
+Last updated: 2026-07-02.
+
+Before creating or executing the next Level 5 plan, run:
+
+```powershell
+# [PowerShell]
+powershell -NoProfile -ExecutionPolicy Bypass -File D:\MyVault\.planning\level5-readiness-fix\level5-readiness-check.ps1
+```
+
+The default Level 5 MCP surface is intentionally small: `local-rag`,
+`rag-orchestrator`, and `MyVault-control-plane`. GraphRAG, LightRAG, Obsidian,
+autoresearch, and Comfy video orchestration are opt-in deep/domain profiles.
+
+The readiness source of truth is:
+
+- `D:\MyVault\.planning\level5-readiness-fix\READINESS-MATRIX.md`
+- `D:\MyVault\.planning\level5-readiness-fix\RUNTIME-EXCEPTION-LEDGER.md`
+- `D:\MyVault\.planning\level5-readiness-fix\LEVEL5-RUNTIME-POLICY.md`
+- `D:\MyVault\.planning\level5-readiness-fix\READINESS-REPORT.md`
+
+Do not treat the old C-drive Documents-based MyVault folder as an active project root.
+Unavoidable C and WSL homes are runtime exceptions only, not MyVault project
+storage.
+
 ## Current Optimization Map
 
-Last verified: 2026-06-12.
+Last verified: 2026-06-25 for Hermes Workspace launch health; deeper RAG/GraphRAG maturity notes retain their own dated evidence below.
 
 The optimized path is **route first, read second**:
 
@@ -19,30 +74,40 @@ The optimized path is **route first, read second**:
 3. Use `D:\MyVault\.claude\RETRIEVAL-PLAYBOOK.md` to choose the cheapest source:
    Obsidian exact read, local-rag/skills index, Memoryweaver, LightRAG,
    GraphRAG, Graphify, or direct file read.
-4. Use `D:\MyVault\.claude\METHODOLOGY-CHARTER.md` for reasoning, build,
+4. Use `D:\MyVault\.claude\contracts\` and
+   `D:\MyVault\.claude\retrieval-evals\` only as subordinate contract/eval
+   support. They enforce routing and freshness posture; they do not create a
+   new authority layer.
+5. Use `D:\MyVault\.claude\METHODOLOGY-CHARTER.md` for reasoning, build,
    answer-structure, and edge-case process guidance after routing.
-5. Use `rag-orchestrator` as the preferred app-facing semantic interface.
+6. Use `rag-orchestrator` as the preferred app-facing semantic interface.
    Direct `local-rag`, `lightrag`, and `graphrag` MCPs are useful for Claude
    Code/Codex diagnostics and specialized queries, but future apps should start
    with `rag-orchestrator` plus `obsidian`.
 
 ### Where token savings come from
 
-Live counts and health change constantly — do not trust numbers written in
-docs. Check live state with `rag_status` (rag-orchestrator MCP), the local-rag
-`status` tool, or `D:\MyVault\.mcp-servers\audit-orchestration.ps1`.
+Live counts and health change constantly â€” do not trust numbers written in
+docs. Check live state with `gateway_status`/`rag_status` (rag-orchestrator
+MCP), the local-rag `status` tool, or
+`D:\MyVault\.mcp-servers\audit-orchestration.ps1`. The unified query endpoint is
+`gateway_query`; `rag_query` and `rag_backend_query` remain compatibility
+aliases. If fallback is used, the gateway reports `status: degraded` and
+surfaces recovery/remediation metadata instead of flattening the failure into a
+false healthy result.
 
 | Layer | Efficiency | How it reduces reading |
 |-------|------------|------------------------|
 | Authority constitution | Conflict pruning | Prevents stale memory or narration from causing repeated backtracking. |
 | Methodology charter | Process pruning | Gives agents a shared orient/constrain/execute/verify loop so they do not reload context to decide how to work. |
 | MASTER-INDEX.md | Skill routing | Lets agents choose from hundreds of skills/agents by category/tag before loading one full skill (counts in the index header). |
+| Adopted contracts + retrieval evals | Drift prevention | Keeps surface, registry, promotion, freshness, and Infinite Brain incorporation rules active through static evals and audit checks without adding upstream bloat. |
 | `skills_index` | Semantic skill fallback | Chroma collection at `D:\MyVault\.rag\db`. Query via `D:\MyVault\.claude\scripts\query-skills-rag.py` when no client exposes collection-aware search. |
 | Obsidian MCP | Exact note access | Reads known notes from `D:\MyVault` without scanning folders. |
 | `rg` / direct file reads | Fast exact fallback | Best when Obsidian MCP search is slow or a path is already known. |
 | local-rag | Hybrid keyword/vector corpus | General vault document corpus (NOT the skill index unless the client exposes collection selection). |
 | Memoryweaver | Session/project memory | Best for prior decisions and recurring patterns. Always-on, file-based. |
-| LightRAG | Vault semantic/graph RAG | Windows service on port 9621 (`http://10.0.0.1:9621` from WSL), input directory `D:\MyVault`. |
+| LightRAG | Vault semantic/graph RAG | Windows service on port 9621. Probe the live candidate URLs reported by `gateway_status`/audit instead of hardcoding one host alias. |
 | GraphRAG | Relationship/community queries | Query existing parquet outputs under `D:\MyVault\.rag\graphrag\output`; never auto-reindex. |
 | Graphify | Code/doc graph traversal | Use existing `D:\MyVault\graphify-out\graph.json` for local relationship exploration when present. |
 
@@ -59,11 +124,11 @@ For a new machine or rebuilt runtime, preserve this shape:
      profile cards.
    Skills three-root model: `D:\MyVault\.claude\skills` is the canonical shared
    root (junctioned from `~/.claude/skills`); `C:\Users\alice\.codex\skills`
-   is the Codex runtime root (a real directory — Codex-only skills are edited
+   is the Codex runtime root (a real directory â€” Codex-only skills are edited
    there); `D:\MyVault\.codex\skills` is the backup mirror of the Codex runtime
    root. Mirror after Codex skill changes:
    `[PowerShell] powershell -File D:\MyVault\.claude\scripts\sync-codex-skills.ps1`.
-   A new-machine restore needs `D:\MyVault` only — Codex skills restore from the
+   A new-machine restore needs `D:\MyVault` only â€” Codex skills restore from the
    mirror, not from regeneration.
 3. Point every Obsidian MCP at `D:\MyVault`.
 4. Preserve the shared routing docs:
@@ -86,9 +151,28 @@ For a new machine or rebuilt runtime, preserve this shape:
    ```powershell
    powershell -ExecutionPolicy Bypass -File D:\MyVault\.mcp-servers\audit-orchestration.ps1
    ```
-9. For process, routing, and token-efficiency drift reviews, use:
-   `D:\MyVault\.claude\ORCHESTRATION-AUDIT-PROMPT.md`.
-10. For step-by-step setup/recovery procedures executable by any model
+   The audit now prints unified gateway truth-state, backend recovery state, and
+   any explicit remediation commands.
+9. Run retrieval evals when changing authority, routing, MCP/RAG wiring, or
+   adopted contracts:
+   ```powershell
+   python D:\MyVault\.claude\scripts\run-retrieval-evals.py --static
+   ```
+10. For WSL Hermes runtime profile guidance, use the opt-in SOUL sync only when
+    the WSL profile tree is healthy:
+    ```bash
+    # [WSL/bash]
+    MyVault_SYNC_WSL_HERMES_SOUL=1 \
+      /home/alice/.hermes/hermes-agent/venv/bin/python \
+      /mnt/d/MyVault/.mcp-servers/orchestration-contracts/sync_hermes_soul_guidance.py
+    ```
+    If WSL profile traversal is not healthy, wire the managed block manually
+    from the WSL fallback section in
+    `D:\MyVault\.mcp-servers\orchestration-contracts\README.md` into the active
+    `~/.hermes/profiles/<profile>/SOUL.md`.
+11. For process, routing, and token-efficiency drift reviews, use:
+    `D:\MyVault\.claude\ORCHESTRATION-AUDIT-PROMPT.md`.
+12. For step-by-step setup/recovery procedures executable by any model
     (Sonnet-class, GPT, open-source): `D:\MyVault\.claude\LLM-OPS-RUNBOOK.md`.
 
 ### Current known optimization risks
@@ -105,40 +189,181 @@ For a new machine or rebuilt runtime, preserve this shape:
 - Hermes sessions can miss tools if a session is created before MCP registration
   completes. Use `/reload-mcp`, restart the session, or use the direct Python
   connector fallback.
+- Adopted contracts are support material. They should carry
+  `authority_rank: subordinate_contract` metadata and must not be retrieved as
+  primary authority for conflicts, routing, or Codex layout decisions.
+
+---
+
+## Hermes Workspace Launch Contract
+
+Use one user-facing launcher:
+
+```powershell
+[PowerShell] D:\MyVault\START-HERMES.cmd
+```
+
+That calls `D:\MyVault\hermes-workspace.bat`, starts or verifies the backend
+pieces, prints the local/LAN URLs, launches the community comparison UIs as
+companions, then starts the Workspace UI on port `3000`.
+
+Known-good launch state:
+
+![Hermes Workspace launch health showing all services ready](docs/assets/hermes-workspace-launch-health-ready-2026-06-25.png)
+
+The screenshot above is the visual baseline future agents should compare
+against. It means:
+
+| Card | Endpoint | Expected |
+|---|---|---|
+| Hermes Gateway | `http://127.0.0.1:8642/health` | `Ready` |
+| Workspace Dashboard | `http://127.0.0.1:9119/api/status` | `Ready` |
+| Ollama | `http://127.0.0.1:11434/api/tags` | `Ready` |
+| Hermes OpenAI Proxy | `http://127.0.0.1:8105/v1/models` | `Ready` |
+| MCP | `http://127.0.0.1:3000/api/connection-status` capability probe | `Available` |
+| RAG | Fusion context probe combining MCP, memory, and dashboard state | `Available` |
+| MEMORY | Workspace connection capability probe | `Available` |
+| ORCHESTRATION | Dashboard/conductor/kanban capability probe | `Available` |
+
+Fresh verification command:
+
+```powershell
+[PowerShell] @(
+  'http://127.0.0.1:8642/health',
+  'http://127.0.0.1:9119/api/status',
+  'http://127.0.0.1:11434/api/tags',
+  'http://127.0.0.1:8105/v1/models',
+  'http://127.0.0.1:3000/api/connection-status',
+  'http://127.0.0.1:3000/api/fusion/status'
+) | ForEach-Object {
+  try { Invoke-RestMethod -Uri $_ -TimeoutSec 5 | Out-Null; "$_ READY" }
+  catch { "$_ DOWN: $($_.Exception.Message)" }
+}
+```
+
+Known-good API interpretation from the 2026-06-25 verification:
+
+```text
+/api/connection-status:
+  status = enhanced
+  activeModel = gemma4-ollamauncensored-32k:latest
+  capabilities.mcp = true
+  capabilities.mcpNative = false
+  capabilities.mcpFallback = true
+  capabilities.memory = true
+  orchestration.mcp = config-fallback
+  orchestration.globalServicesReady = true
+
+/api/fusion/status:
+  agenticReady = true
+  advisoryReady = true
+  contextSystems.mcp = true
+  contextSystems.rag = true
+  contextSystems.memory = true
+  contextSystems.orchestration = true
+```
+
+Fusion lane/profile semantics:
+
+- The Fusion `Prompt Sent To Selected Models` destination list is the set of
+  actual Council lanes that receive the prompt.
+- The `Hermes Runtime Profile` selector is not an extra LLM lane. It is the
+  profile context used to create and dispatch those lanes through Hermes.
+- The runtime profile carries auth/provider wiring, tool and approval context,
+  MCP/RAG/Memory/Orchestration wiring, Telegram/session behavior, and the
+  profile default model as a fallback.
+- Selected Fusion models are passed as per-lane `modelOverride` values. When a
+  selected lane has a model override, that selected model wins over the runtime
+  profile's default model.
+- Agentic file access depends on agentic mode, workspace-root validation,
+  bridge/tool support, and approvals. Selecting a runtime profile alone does not
+  guarantee file writes.
+- Agentic Workspace Root can be selected from saved roots or added with the
+  Fusion screen's `Add Agentic Folder` control. That control posts the chosen
+  path to `/api/workspace`; the backend requires an existing directory, rejects
+  Hermes profile/state directories and system paths, saves the root in
+  profile-local `webui_state`, and then Fusion accepts it as an allowed root.
+
+Implementation references:
+
+- `D:\MyVault\hermes-webui\hermes-workspace\src\routes\api\fusion\runs.ts`
+  builds lanes with `profileName: model.profileName ?? plan.profileName` and
+  `modelOverride: model.modelOverride`.
+- `D:\MyVault\hermes-webui\hermes-workspace\src\routes\api\workspace.ts`
+  owns custom workspace-root persistence and validation.
+- `D:\MyVault\hermes-webui\hermes-workspace\src\server\council\controller.ts`
+  creates and sends each lane session with `profileName` and `modelOverride` as
+  separate fields.
+
+`capabilities.mcpNative=false` with `capabilities.mcpFallback=true` is not a
+red failure on this install. It means native dashboard MCP runtime endpoints are
+not exposed, but Workspace can still read configured MCP/RAG/Memory wiring
+through the dashboard/config fallback. Treat that as usable for health display,
+model selection, and handoff. Do not claim the native MCP runtime is fully
+healthy until native probes are responsive.
+
+If the Fusion cards are degraded, troubleshoot in this order:
+
+1. Verify gateway `8642` and dashboard `9119`.
+2. Verify Workspace `/api/connection-status`.
+3. Confirm the active profile still contains the global `providers`,
+   `mcp_servers`, `memory`, and `toolsets` blocks.
+4. Run `D:\MyVault\scripts\reconcile-hermes-orchestration.ps1`.
+5. Only after those pass should you inspect React display logic.
+
+Fusion Agentic note: `agenticReady=true` means Fusion can dispatch agentic
+Council lanes through the Workspace stack. Do not claim file writes are
+guaranteed until the lane bridge has passed a file-write smoke test inside the
+validated workspace root. File-changing work must stay in Hermes
+Workspace/Fusion or the regular Hermes agentic flow, not a community UI.
+
+Fusion orchestration upgrade roadmap:
+
+- Level 3 role prompts (implemented 2026-06-25):
+  `D:\MyVault\hermes-webui\hermes-workspace\docs\plans\2026-06-25-hermes-fusion-level-3-role-prompts-gsd-plan.md`
+- Level 4 phased orchestration:
+  `D:\MyVault\hermes-webui\hermes-workspace\docs\plans\2026-06-25-hermes-fusion-level-4-phased-orchestration-gsd-plan.md`
+- Level 5 rules orchestrator:
+  `D:\MyVault\hermes-webui\hermes-workspace\docs\plans\2026-06-25-hermes-fusion-level-5-rules-orchestrator-gsd-plan.md`
+
+These plans are model-agnostic by design. Role and phase assignment must be
+derived from the user's prompt, task risk, workspace context, and the selected
+model pool at run time. Do not encode fixed model-role rules such as a specific
+vendor model always being planner, writer, reviewer, or judge.
 
 ---
 
 ## Architecture Overview
 
 ```
-┌─────────────────────────────────────────────────────────────────┐
-│                    Unified RAG/MCP/Memory Backbone              │
-├─────────────────────────────────────────────────────────────────┤
-│                                                                  │
-│  ┌──────────────┐   ┌──────────────┐   ┌──────────────────┐   │
-│  │   LightRAG   │   │  GraphRAG    │   │   Local-RAG      │   │
-│  │ (10.0.0.1│   │  (Graphed    │   │  (ChromaDB       │   │
-│  │   :9621)     │   │   indexing)  │   │   local)         │   │
-│  └──────────────┘   └──────────────┘   └──────────────────┘   │
-│                                                                  │
-│  ┌──────────────┐   ┌──────────────┐   ┌──────────────────┐   │
-│  │  Obsidian    │   │ MemoryWeaver │   │  AutoResearch    │   │
-│  │  Vault MCP   │   │  (profiles)  │   │  (research)      │   │
-│  └──────────────┘   └──────────────┘   └──────────────────┘   │
-│                                                                  │
-│  ┌──────────────────────────────────────────────────────────┐  │
-│  │         RAG-Orchestrator (integration point)             │  │
-│  └──────────────────────────────────────────────────────────┘  │
-│                                                                  │
-└─────────────────────────────────────────────────────────────────┘
-         ↑                    ↑                       ↑
-         │                    │                       │
-    ┌────┴──────┐      ┌─────┴──────┐      ┌────────┴─────┐
-    │            │      │            │      │              │
-┌───▼──────┐ ┌──▼──┐ ┌─▼──────┐ ┌──▼──┐ ┌─▼────────┐ ┌──▼──┐
-│ Claude   │ │CLI  │ │Hermes  │ │WUI  │ │ Codex   │ │CLI  │
-│  Code    │ │     │ │ CLI    │ │/WS  │ │(IDE)    │ │     │
-└──────────┘ └─────┘ └────────┘ └─────┘ └─────────┘ └─────┘
+â”Œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”
+â”‚                    Unified RAG/MCP/Memory Backbone              â”‚
+â”œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¤
+â”‚                                                                  â”‚
+â”‚  â”Œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”   â”Œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”   â”Œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”   â”‚
+â”‚  â”‚   LightRAG   â”‚   â”‚  GraphRAG    â”‚   â”‚   Local-RAG      â”‚   â”‚
+â”‚  â”‚ (10.0.0.1â”‚   â”‚  (Graphed    â”‚   â”‚  (ChromaDB       â”‚   â”‚
+â”‚  â”‚   :9621)     â”‚   â”‚   indexing)  â”‚   â”‚   local)         â”‚   â”‚
+â”‚  â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”˜   â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”˜   â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”˜   â”‚
+â”‚                                                                  â”‚
+â”‚  â”Œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”   â”Œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”   â”Œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”   â”‚
+â”‚  â”‚  Obsidian    â”‚   â”‚ MemoryWeaver â”‚   â”‚  AutoResearch    â”‚   â”‚
+â”‚  â”‚  Vault MCP   â”‚   â”‚  (profiles)  â”‚   â”‚  (research)      â”‚   â”‚
+â”‚  â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”˜   â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”˜   â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”˜   â”‚
+â”‚                                                                  â”‚
+â”‚  â”Œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”  â”‚
+â”‚  â”‚         RAG-Orchestrator (integration point)             â”‚  â”‚
+â”‚  â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”˜  â”‚
+â”‚                                                                  â”‚
+â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”˜
+         â†‘                    â†‘                       â†‘
+         â”‚                    â”‚                       â”‚
+    â”Œâ”€â”€â”€â”€â”´â”€â”€â”€â”€â”€â”€â”      â”Œâ”€â”€â”€â”€â”€â”´â”€â”€â”€â”€â”€â”€â”      â”Œâ”€â”€â”€â”€â”€â”€â”€â”€â”´â”€â”€â”€â”€â”€â”
+    â”‚            â”‚      â”‚            â”‚      â”‚              â”‚
+â”Œâ”€â”€â”€â–¼â”€â”€â”€â”€â”€â”€â” â”Œâ”€â”€â–¼â”€â”€â” â”Œâ”€â–¼â”€â”€â”€â”€â”€â”€â” â”Œâ”€â”€â–¼â”€â”€â” â”Œâ”€â–¼â”€â”€â”€â”€â”€â”€â”€â”€â” â”Œâ”€â”€â–¼â”€â”€â”
+â”‚ Claude   â”‚ â”‚CLI  â”‚ â”‚Hermes  â”‚ â”‚WUI  â”‚ â”‚ Codex   â”‚ â”‚CLI  â”‚
+â”‚  Code    â”‚ â”‚     â”‚ â”‚ CLI    â”‚ â”‚/WS  â”‚ â”‚(IDE)    â”‚ â”‚     â”‚
+â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”˜ â””â”€â”€â”€â”€â”€â”˜ â””â”€â”€â”€â”€â”€â”€â”€â”€â”˜ â””â”€â”€â”€â”€â”€â”˜ â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”˜ â””â”€â”€â”€â”€â”€â”˜
 ```
 
 **Shared spine:**
@@ -150,25 +375,21 @@ For a new machine or rebuilt runtime, preserve this shape:
 
 ## Quick Health Check
 
-**Run this when troubleshooting fails to fetch errors or MCP unavailability:**
+**Run this when troubleshooting failed fetches, degraded Fusion cards, or MCP
+unavailability:**
 
-```bash
-# 1. LightRAG running?
-curl -s http://10.0.0.1:9621/health | jq '.status'
-
-# 2. Hermes gateway running? (if using WebUI/Workspace) — port varies by launcher; discover first.
-# Observed 8787 on 2026-06-14; 8642 was the older documented port. Discover the live port, then check it:
-HPORT=$(ss -ltnp 2>/dev/null | grep -Eo '127\.0\.0\.1:(8787|8642)' | grep -Eo '[0-9]+$' | head -1)
-curl -s "http://127.0.0.1:${HPORT:-8787}/health" | jq '.status'
-
-# 3. MCP servers in Claude Code loaded?
-ps aux | grep -E "mcp-obsidian|mcp-local-rag|graphrag" | grep -v grep
-
-# 4. Memory system synced?
-ls -la /mnt/d/MyVault/.claude/Memory/memoryweaver 2>/dev/null | head -5
-
-# 5. Skills indexed?
-ls -la /mnt/d/MyVault/.claude/skills/ 2>/dev/null | wc -l
+```powershell
+[PowerShell] @(
+  'http://127.0.0.1:8642/health',
+  'http://127.0.0.1:9119/api/status',
+  'http://127.0.0.1:11434/api/tags',
+  'http://127.0.0.1:8105/v1/models',
+  'http://127.0.0.1:3000/api/connection-status',
+  'http://127.0.0.1:3000/api/fusion/status'
+) | ForEach-Object {
+  try { Invoke-RestMethod -Uri $_ -TimeoutSec 5 | Out-Null; "$_ READY" }
+  catch { "$_ DOWN: $($_.Exception.Message)" }
+}
 ```
 
 ---
@@ -182,7 +403,7 @@ ls -la /mnt/d/MyVault/.claude/skills/ 2>/dev/null | wc -l
 curl -s http://10.0.0.1:9621/health | jq .
 ```
 
-**Healthy =** `.status` is `"healthy"`. Do NOT exact-match the whole body — the live response also includes `configuration` (e.g. `llm_model: mistral:latest`, `embedding_model: nomic-embed-text`), `pipeline_busy`, `api_version`, etc., and these fields/values vary. Sample shape:
+**Healthy =** `.status` is `"healthy"`. Do NOT exact-match the whole body â€” the live response also includes `configuration` (e.g. `llm_model: mistral:latest`, `embedding_model: nomic-embed-text`), `pipeline_busy`, `api_version`, etc., and these fields/values vary. Sample shape:
 ```json
 {
   "status": "healthy",
@@ -193,7 +414,7 @@ curl -s http://10.0.0.1:9621/health | jq .
 ```
 
 **If failing:**
-- LightRAG service crashed — restart on Windows: `[PowerShell] D:\MyVault\.rag\start-lightrag.bat` (must bind `--host 0.0.0.0 --port 9621`, not 127.0.0.1, or WSL clients cannot reach it). Hermes startup also auto-starts it via `[WSL/bash] bash /mnt/d/MyVault/hermes-agent-self-evolution/scripts/ensure-rag-stack.sh` (a script path, never a `hermes` subcommand).
+- LightRAG service crashed â€” restart on Windows: `[PowerShell] D:\MyVault\.rag\start-lightrag.bat` (must bind `--host 0.0.0.0 --port 9621`, not 127.0.0.1, or WSL clients cannot reach it). Hermes startup also auto-starts it via `[WSL/bash] bash /mnt/d/MyVault/hermes-agent-self-evolution/scripts/ensure-rag-stack.sh` (a script path, never a `hermes` subcommand).
 - Check disk space in `D:\MyVault\.rag\lightrag`
 - Check Ollama (LightRAG backend) is running: `curl http://10.0.0.1:11434/api/tags`
 
@@ -201,10 +422,9 @@ curl -s http://10.0.0.1:9621/health | jq .
 
 ### Hermes Gateway (WebUI/Workspace Connection)
 
-**Status check:** (Hermes WebUI/gateway port varies by launcher — observed 8787 on 2026-06-14, 8642 in older configs; discover the live port first)
-```bash
-HPORT=$(ss -ltnp 2>/dev/null | grep -Eo '127\.0\.0\.1:(8787|8642)' | grep -Eo '[0-9]+$' | head -1)
-curl -s "http://127.0.0.1:${HPORT:-8787}/health" && echo "OK" || echo "FAIL"
+**Status check:** current Workspace launcher uses gateway `8642`.
+```powershell
+[PowerShell] Invoke-RestMethod http://127.0.0.1:8642/health
 ```
 
 **If failing:**
@@ -298,16 +518,16 @@ ls /home/alice/.local/share/memoryweaver-mcp/venv 2>/dev/null || echo "Missing m
 
 **2. If services missing, install:**
 ```bash
-# LightRAG — use your existing setup
+# LightRAG â€” use your existing setup
 # (already healthy at 10.0.0.1:9621)
 
-# Ollama — already running
+# Ollama â€” already running
 # (verify with curl http://10.0.0.1:11434/api/tags)
 
 # Node MCPs
 npm install -g mcp-obsidian mcp-local-rag
 
-# Python venvs for Hermes — rag-orchestrator runs from LOCAL SOURCE (D:\MyVault\.mcp-servers\rag-orchestrator\server.py),
+# Python venvs for Hermes â€” rag-orchestrator runs from LOCAL SOURCE (D:\MyVault\.mcp-servers\rag-orchestrator\server.py),
 # it is NOT a PyPI package. The canonical env is .venv (uv-managed); see CONNECTOR.md lines 122-125 and LLM-OPS-RUNBOOK.md Section 7.
 mkdir -p /home/alice/.local/share/rag-orchestrator
 uv venv /home/alice/.local/share/rag-orchestrator/.venv --python 3.11
@@ -339,9 +559,9 @@ bash ensure-orchestration-layer.sh
 **When updating RAG/MCP configuration:**
 
 1. **Update shared sources first:**
-   - Obsidian vault → documented
-   - RAG index (LightRAG) → already centralized
-   - Skills folder → `/mnt/d/MyVault/.claude/skills`
+   - Obsidian vault â†’ documented
+   - RAG index (LightRAG) â†’ already centralized
+   - Skills folder â†’ `/mnt/d/MyVault/.claude/skills`
 
 2. **Sync to each system:**
    ```bash
@@ -352,14 +572,14 @@ bash ensure-orchestration-layer.sh
    # (restart Claude Code to reload MCP config from settings.json)
    
    # Codex
-   # (configuration-specific — check its MCP config location)
+   # (configuration-specific â€” check its MCP config location)
    ```
 
 3. **Verify each system sees changes:**
    ```bash
-   # Hermes — do NOT curl :8642/mcp/list (often NOT the live gateway port).
+   # Hermes â€” do NOT curl :8642/mcp/list (often NOT the live gateway port).
    # Discover the live port first, or check the MCP list in the Hermes UI.
-   # Correct health checks: LLM-OPS-RUNBOOK §3 / LLM-TRIAGE-CARD.
+   # Correct health checks: LLM-OPS-RUNBOOK Â§3 / LLM-TRIAGE-CARD.
    
    # Claude Code
    # (Check MCP tab in UI or terminal logs)
@@ -369,7 +589,7 @@ bash ensure-orchestration-layer.sh
 
 ## Troubleshooting: Common Failure Modes
 
-> For literal, any-model step-by-step recovery, follow `D:\MyVault\.claude\LLM-OPS-RUNBOOK.md` (Section 3 health check, Section 4 failure procedures) and the read-only audit `D:\MyVault\.mcp-servers\audit-orchestration.ps1`. Canonical MCP wiring + the .venv/symlink details live in `D:\MyVault\.mcp-servers\CONNECTOR.md` (2026-06-12). The command examples in the subsections below were last revised 2026-06-09 — when they disagree with the runbook, CONNECTOR.md, or live output, the runbook and live output win.
+> For literal, any-model step-by-step recovery, follow `D:\MyVault\.claude\LLM-OPS-RUNBOOK.md` (Section 3 health check, Section 4 failure procedures) and the read-only audit `D:\MyVault\.mcp-servers\audit-orchestration.ps1`. Canonical MCP wiring + the .venv/symlink details live in `D:\MyVault\.mcp-servers\CONNECTOR.md` (2026-06-12). The command examples in the subsections below were last revised 2026-06-09 â€” when they disagree with the runbook, CONNECTOR.md, or live output, the runbook and live output win.
 
 ### "Fails to Fetch" in Hermes WebUI/Workspace
 
@@ -377,9 +597,11 @@ bash ensure-orchestration-layer.sh
 
 **Diagnosis:**
 ```bash
-# 1. Is gateway running? (port varies — observed 8787 on 2026-06-14, 8642 in older configs; discover first)
-HPORT=$(ss -ltnp 2>/dev/null | grep -Eo '127\.0\.0\.1:(8787|8642)' | grep -Eo '[0-9]+$' | head -1)
-curl -sf "http://127.0.0.1:${HPORT:-8787}/health" || echo "Gateway DOWN (check the live port — it may be serving on 8787)"
+# 1. Is gateway running?
+curl -sf http://127.0.0.1:8642/health || echo "Gateway DOWN"
+
+# 1b. Is the dashboard running?
+curl -sf http://127.0.0.1:9119/api/status || echo "Dashboard DOWN"
 
 # 2. Are MCP servers loaded? (grep the raw YAML; the styled `hermes config` summary cannot be grepped)
 grep -A20 "mcp_servers:" "$(hermes config path)" | head -25
@@ -392,10 +614,10 @@ hermes --profile telegram gateway run --replace 2>&1 | head -50
 ```
 
 **Fix:**
-1. ✓ Ensure `API_SERVER_ENABLED=true` in `~/.hermes/.env`
-2. ✓ Start gateway (active profile is telegram): `hermes --profile telegram gateway run --replace`
-3. ✓ Sync profile: `bash /mnt/d/MyVault/hermes-agent-self-evolution/scripts/ensure-orchestration-layer.sh`
-4. ✓ Restart WebUI/Workspace
+1. âœ“ Ensure `API_SERVER_ENABLED=true` in `~/.hermes/.env`
+2. âœ“ Start gateway (active profile is telegram): `hermes --profile telegram gateway run --replace`
+3. âœ“ Sync profile: `bash /mnt/d/MyVault/hermes-agent-self-evolution/scripts/ensure-orchestration-layer.sh`
+4. âœ“ Restart WebUI/Workspace
 
 ---
 
@@ -416,9 +638,9 @@ node /mnt/g/AIStorage/npm/global/node_modules/mcp-obsidian/dist/index.js /mnt/d/
 ```
 
 **Fix:**
-1. ✓ Reinstall MCP: `npm install -g mcp-obsidian` (lands in G:\AIStorage\npm\global per C:\Users\alice\.npmrc prefix)
-2. ✓ The active config is `D:\MyVault\.mcp.json` and it already points at `G:\AIStorage\npm\global\node_modules\mcp-obsidian\dist\index.js` — do NOT edit a stale AppData path; verify .mcp.json matches the canonical G:\AIStorage root
-3. ✓ Restart Claude Code
+1. âœ“ Reinstall MCP: `npm install -g mcp-obsidian` (lands in G:\AIStorage\npm\global per C:\Users\alice\.npmrc prefix)
+2. âœ“ The active config is `D:\MyVault\.mcp.json` and it already points at `G:\AIStorage\npm\global\node_modules\mcp-obsidian\dist\index.js` â€” do NOT edit a stale AppData path; verify .mcp.json matches the canonical G:\AIStorage root
+3. âœ“ Restart Claude Code
 
 ---
 
@@ -439,9 +661,9 @@ python3 /mnt/c/Users/alice/.claude/hooks/memoryweaver-spool.py
 ```
 
 **Fix:**
-1. ✓ Verify hook in `settings.json` under `"hooks": {"Stop": ...}`
-2. ✓ Run ingest manually: `python3 memoryweaver-spool.py`
-3. ✓ Check directory exists: `mkdir -p /mnt/d/MyVault/.claude/Memory/memoryweaver`
+1. âœ“ Verify hook in `settings.json` under `"hooks": {"Stop": ...}`
+2. âœ“ Run ingest manually: `python3 memoryweaver-spool.py`
+3. âœ“ Check directory exists: `mkdir -p /mnt/d/MyVault/.claude/Memory/memoryweaver`
 
 ---
 
@@ -462,9 +684,9 @@ grep -i obsidian ~/.claude/settings.json
 ```
 
 **Fix:**
-1. ✓ Reindex LightRAG/vault (server must be up via `start-lightrag.bat`): `[PowerShell] D:\MyVault\.rag\index-vault.bat`. There is NO `POST /rebuild` HTTP endpoint — that path returns 404. If a direct call is needed, the live server exposes `curl -s -X POST http://10.0.0.1:9621/documents/scan`.
-2. ✓ Wait for indexing to complete: `curl http://10.0.0.1:9621/health | jq '.pipeline_busy'`
-3. ✓ For local-rag, re-ingest via its MCP tools (e.g. `mcp__local-rag__ingest_file` / `ingest_data`) against `BASE_DIR=D:\MyVault`. There is no `local-rag-ingest` CLI binary; local-rag is an MCP server (`mcp-local-rag`). DB at `D:\MyVault\.rag\db`, cache at `D:\MyVault\.rag\cache`.
+1. âœ“ Reindex LightRAG/vault (server must be up via `start-lightrag.bat`): `[PowerShell] D:\MyVault\.rag\index-vault.bat`. There is NO `POST /rebuild` HTTP endpoint â€” that path returns 404. If a direct call is needed, the live server exposes `curl -s -X POST http://10.0.0.1:9621/documents/scan`.
+2. âœ“ Wait for indexing to complete: `curl http://10.0.0.1:9621/health | jq '.pipeline_busy'`
+3. âœ“ For local-rag, re-ingest via its MCP tools (e.g. `mcp__local-rag__ingest_file` / `ingest_data`) against `BASE_DIR=D:\MyVault`. There is no `local-rag-ingest` CLI binary; local-rag is an MCP server (`mcp-local-rag`). DB at `D:\MyVault\.rag\db`, cache at `D:\MyVault\.rag\cache`.
 
 ---
 
@@ -482,21 +704,21 @@ grep -i obsidian ~/.claude/settings.json
 
 ---
 
-> **context-mode** (added 2026-06-14) is wired per-harness alongside the above: Claude Code via marketplace plugin, Codex via `[mcp_servers.context-mode]` in `config.toml`, Hermes via a `context-mode:` entry in the profile + root `config.yaml`. It is a context-window optimizer (11 `ctx_*` tools), NOT a RAG backend — it sits beside the RAG stack. Full per-harness matrix, store locations, and the Windows-vs-WSL sandbox split: `D:\MyVault\.mcp-servers\CONNECTOR.md` (context-mode section).
+> **context-mode** (added 2026-06-14) is wired per-harness alongside the above: Claude Code via marketplace plugin, Codex via `[mcp_servers.context-mode]` in `config.toml`, Hermes via a `context-mode:` entry in the profile + root `config.yaml`. It is a context-window optimizer (11 `ctx_*` tools), NOT a RAG backend â€” it sits beside the RAG stack. Full per-harness matrix, store locations, and the Windows-vs-WSL sandbox split: `D:\MyVault\.mcp-servers\CONNECTOR.md` (context-mode section).
 
 ## Backbone State & Maturity (verified 2026-06-15)
 
 Snapshot of which tiers are live. Re-check with `/layer-status` or `memoryweaver status`.
 
-- **GraphRAG** (`.rag/graphrag`, wired to the `graphrag` MCP): **populated** — index complete
+- **GraphRAG** (`.rag/graphrag`, wired to the `graphrag` MCP): **populated** â€” index complete
   (entities / relationships / communities / community_reports present).
 - **LightRAG** (:9621) + **local-rag** (`.rag/db`): document RAG corpus live.
 - **MemoryWeaver**: **healthy & consistent**. `memoryweaver status` reports Chroma
   explicit=6 + inferred=48 = **54 == fts_index 54**. The Chroma vector tier is populated and
-  embedded **locally** — ChromaDB's default ONNX MiniLM via `documents=` upsert, **no
-  pay-per-token API** — persisted at `Memory/memoryweaver/chroma/`; the FTS5/BM25 mirror lives
+  embedded **locally** â€” ChromaDB's default ONNX MiniLM via `documents=` upsert, **no
+  pay-per-token API** â€” persisted at `Memory/memoryweaver/chroma/`; the FTS5/BM25 mirror lives
   on the ext4 runtime path. Hybrid recall (vector RRF + BM25) is active. NOTE: a **stale empty**
-  `Memory/memoryweaver/chroma.sqlite3` sits *beside* the real `chroma/` directory — ignore it;
+  `Memory/memoryweaver/chroma.sqlite3` sits *beside* the real `chroma/` directory â€” ignore it;
   the adapter persists to the subdir (`MW_DATA_DIR/chroma`). Authoritative counts come from
   `memoryweaver status`, not a raw read of that top-level file.
 - **mempalace** (Codex `mempalace` MCP): a separate experimental graph subsystem, outside the
@@ -506,11 +728,12 @@ Snapshot of which tiers are live. Re-check with `/layer-status` or `memoryweaver
 
 **Weekly:**
 - [ ] Run LightRAG health check: `curl http://10.0.0.1:9621/health`
-- [ ] Verify gateway is running (discover the live port first — observed 8787 on 2026-06-14, 8642 in older configs): `[PowerShell] Get-NetTCPConnection -State Listen | ? LocalPort -in 8642,8787` then `curl http://127.0.0.1:<live-port>/health`
+- [ ] Verify Hermes Workspace launch health: `[PowerShell] Invoke-RestMethod http://127.0.0.1:3000/api/fusion/status`
+- [ ] Verify gateway and dashboard: `[PowerShell] Invoke-RestMethod http://127.0.0.1:8642/health; Invoke-RestMethod http://127.0.0.1:9119/api/status`
 - [ ] Check memory ingestion: `ls -la /mnt/d/MyVault/.claude/Memory/memoryweaver/`
 
 **Monthly:**
-- [ ] Rebuild RAG indexes: `[PowerShell] D:\MyVault\.rag\index-vault.bat` (LightRAG must be running first via `start-lightrag.bat`). There is no `POST /rebuild` HTTP endpoint — that URL returns 404.
+- [ ] Rebuild RAG indexes: `[PowerShell] D:\MyVault\.rag\index-vault.bat` (LightRAG must be running first via `start-lightrag.bat`). There is no `POST /rebuild` HTTP endpoint â€” that URL returns 404.
 - [ ] Sync Hermes profile to WSL: `bash /mnt/d/MyVault/hermes-agent-self-evolution/scripts/apply-hermes-profile-to-wsl.sh`
 - [ ] Update MCP packages: `npm update -g mcp-obsidian mcp-local-rag`
 - [ ] Check disk space in `D:\MyVault\.rag` (should be < 80% full)
@@ -521,19 +744,37 @@ Snapshot of which tiers are live. Re-check with `/layer-status` or `memoryweaver
 3. Document active sessions
 4. Run full sync: `bash /mnt/d/MyVault/hermes-agent-self-evolution/scripts/ensure-orchestration-layer.sh`
 
+**Surface graph gate:**
+- The orchestration surface registry lives at `D:\MyVault\SURFACE-GRAPH.yaml`.
+- Run `[PowerShell] powershell -NoProfile -ExecutionPolicy Bypass -File D:\MyVault\scripts\graph-gate.ps1 -Mode all` after changing MCP servers, profile configs, evaluation baselines, or orchestration docs.
+- The daily `MyVault-Hermes-Orchestration-Audit` scheduled task runs `D:\MyVault\.mcp-servers\audit-orchestration.ps1 -RunGraphGate` and propagates graph-gate failures so Windows Task Scheduler can show non-green runs.
+- Doc freshness is intentional: if this graph changes, update this architecture note so `doc-orchestration-layer` returns GREEN again.
+
+**Lifecycle parity plugin:**
+- M5 adds the standalone `MyVault-parity` plugin at `D:\MyVault\hermes-custom-plugins\MyVault-parity`.
+- Managed `home` and `telegram` profiles enable it through `plugins.enabled`, and rendered profile plugin directories link back to the G: source.
+- On first turn, the plugin injects a fresh MemoryWeaver digest or a `MEMORY DIGEST STALE` RED notice; session/kanban hooks append `MyVault-parity-ledger.jsonl` rows keyed by `session_id`.
+- M5 profile-presence graph probes are quiet on missing files so dry-run mutation reports stay readable while still returning RED.
+- The Codex M5 review pass tightened refresh idempotency: failed MemoryWeaver refreshes no longer leave a permanent session marker, so a later session-finalize path can retry.
+
 ---
 
 ## Key Ports & Services
 
 | Service | Host | Port | Purpose |
 |---------|------|------|---------|
-| Ollama | 10.0.0.1 | 11434 | Model inference (backend for LightRAG) |
+| Hermes Workspace UI / Fusion | 127.0.0.1 / LAN host | 3000 | Main user interface and `/fusion` |
+| Hermes Gateway | 127.0.0.1 | 8642 | OpenAI-compatible Hermes Agent gateway |
+| Hermes Dashboard | 127.0.0.1 | 9119 | Dashboard/status/session/config APIs |
+| Hermes OpenAI Proxy | 127.0.0.1 | 8105 | Local browser-safe proxy to Hermes/Ollama model catalog |
+| Ollama | 127.0.0.1 | 11434 | Local Ollama daemon and Ollama Cloud subscription catalog |
+| Ollama | 10.0.0.1 | 11434 | WSL route to Windows Ollama, used by LightRAG/Hermes-in-WSL |
 | LightRAG | 10.0.0.1 | 9621 | Vector + graph RAG indexing |
-| Hermes WebUI/Gateway | 127.0.0.1 | VERIFY LIVE — observed 8787 (health/root 200) on 2026-06-14; this table historically said 8642, which was NOT listening that day | discover before curling |
-| Hermes Dashboard | 127.0.0.1 | 9119 (historic — verify; not listening 2026-06-14) | Hermes control center |
-| Hermes Workspace UI | 127.0.0.1 | 3000 (verify) | WebUI frontend |
 
-> Ports drift between Hermes versions/launchers. VERIFY LIVE before trusting a row: `[PowerShell] Get-NetTCPConnection -State Listen | ? LocalPort -in 8642,8787,9119,3000`, or `[WSL/bash] ss -ltnp | grep -E ':(8787|8642|9119|3000)'`. Then health-check the discovered port.
+> Historical note: older launchers and notes mention `8787`. The current
+> canonical `START-HERMES.cmd` path verified on 2026-06-25 uses `8642`,
+> `9119`, `3000`, `8105`, and `11434`. If live output differs, record the
+> difference and trust the live process list.
 
 ---
 
@@ -563,5 +804,8 @@ ls -la /mnt/d/MyVault/.claude/Memory > /tmp/memory-structure.txt
 
 ---
 
-**Last updated:** 2026-06-09  
+**Last updated:** 2026-07-05  
 **Maintained by:** MyVault Orchestration Layer Team
+
+
+<!-- SURFACE-GRAPH sync 2026-07-05: graph-gate hardened - semantic probes (profiles/beacon/baseline + eval-fixtures hash-drift), secret-scan + verify_cmd passes, real break-RED-restore mutation test, discovery scope documented (red-table R1-R7). Canonical gate: D:\MyVault\scripts\graph-gate.ps1 ; registry: D:\MyVault\SURFACE-GRAPH.yaml. -->

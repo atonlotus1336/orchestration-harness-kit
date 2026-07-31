@@ -12,10 +12,10 @@ from mcp.server import Server
 from mcp.server.stdio import stdio_server
 
 DEFAULT_MEMORYWEAVER_DATA_DIR = "__STORE__"
-DEFAULT_MEMORYWEAVER_FTS_DB_PATH = "__FTS_DB__"
+DEFAULT_MEMORYWEAVER_FTS_DB_PATH = "__STORE__/fts.db"
 MEMORYWEAVER_SOURCE_DIR = "__SRC_MW__"
 
-# Set data dir and Linux-ext4 FTS DB path before importing memoryweaver.
+# Set data dir and FTS DB path before importing memoryweaver.
 os.environ["MEMORYWEAVER_DATA_DIR"] = os.environ.get(
     "MEMORYWEAVER_DATA_DIR", DEFAULT_MEMORYWEAVER_DATA_DIR
 )
@@ -33,8 +33,10 @@ def _status_text() -> str:
     from memoryweaver.store.chroma import ChromaDBAdapter
 
     store = ChromaDBAdapter()
-    explicit_count = store.count("explicit_memories")
-    inferred_count = store.count("inferred_memories")
+    explicit_total = store.count("explicit_memories")
+    inferred_total = store.count("inferred_memories")
+    explicit_count = store.count("explicit_memories", live=True)
+    inferred_count = store.count("inferred_memories", live=True)
 
     spool_dir = Path(os.environ.get("MEMORYWEAVER_DATA_DIR", DEFAULT_MEMORYWEAVER_DATA_DIR)) / "spool"
     pending = len(list(spool_dir.glob("*.json"))) if spool_dir.exists() else 0
@@ -56,20 +58,21 @@ def _status_text() -> str:
     lines = [
         "MemoryWeaver Status",
         f"  data_dir           : {os.environ.get('MEMORYWEAVER_DATA_DIR', DEFAULT_MEMORYWEAVER_DATA_DIR)}",
-        f"  explicit_memories : {explicit_count}",
-        f"  inferred_memories : {inferred_count}",
+        f"  explicit_memories : {explicit_count} live / {explicit_total} total",
+        f"  inferred_memories : {inferred_count} live / {inferred_total} total",
         f"  fts_index         : {fts_count if fts_count is not None else 'unavailable'}",
+        f"  chroma_tombstones : {max((explicit_total + inferred_total) - (explicit_count + inferred_count), 0)}",
         f"  spool pending     : {pending}",
         f"  spool done        : {done}",
         f"  spool errors      : {errors}",
     ]
-    chroma_total = explicit_count + inferred_count
+    chroma_live = explicit_count + inferred_count
     if fts_warning:
         lines.append(f"  [WARN] {fts_warning}")
-    elif fts_count == 0 and chroma_total > 0:
+    elif fts_count == 0 and chroma_live > 0:
         lines.append("  [WARN] FTS index empty -- run: python -m memoryweaver sync-fts")
-    elif fts_count is not None and fts_count < chroma_total:
-        lines.append(f"  [WARN] FTS ({fts_count}) < Chroma ({chroma_total}) -- run: python -m memoryweaver sync-fts")
+    elif fts_count is not None and fts_count < chroma_live:
+        lines.append(f"  [WARN] FTS ({fts_count}) < Chroma live ({chroma_live}) -- run: python -m memoryweaver sync-fts")
 
     try:
         from memoryweaver.producer import read_capture_status

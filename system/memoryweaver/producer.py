@@ -31,15 +31,19 @@ import hashlib
 import json
 import os
 import re
+import traceback
 from datetime import datetime, timezone
 from pathlib import Path
-from typing import List, Optional
+from typing import Any, List, Optional
 
 from ._paths import MW_DATA_DIR
+from .capture_quality import clean_memory_line, is_standalone_noise_line
 
 _SPOOL_DIR = MW_DATA_DIR / "spool"
 _SCHEMA_VERSION = "1.0"
 _CAPTURE_STATUS = MW_DATA_DIR / "capture-status.json"
+_LOG_DIR = MW_DATA_DIR / "logs"
+_SPOOL_ERROR_LOG = _LOG_DIR / "spool-errors.jsonl"
 
 
 # ---------------------------------------------------------------------------
@@ -70,7 +74,7 @@ def write_spool(
     )
     timestamp = datetime.now(tz=timezone.utc).isoformat()
 
-    decision_entries: List[str] = []
+    decision_entries: List[dict] = []
     if decisions_path and decisions_path.exists():
         decision_entries = _read_recent_decisions(decisions_path)
 
@@ -88,9 +92,10 @@ def write_spool(
     }
 
     content_hash = _hash_envelope(envelope)
-    done_path = _SPOOL_DIR / f"{content_hash}.done"
-    if done_path.exists():
-        return done_path  # idempotent — already processed
+    for suffix in (".done", ".error"):
+        existing = _SPOOL_DIR / f"{content_hash}{suffix}"
+        if existing.exists():
+            return existing  # already processed or quarantined
 
     ts_prefix = datetime.now(tz=timezone.utc).strftime("%Y%m%dT%H%M%S")
     spool_path = _SPOOL_DIR / f"{ts_prefix}-{content_hash[:12]}.json"
@@ -99,11 +104,15 @@ def write_spool(
     return spool_path
 
 
-def _read_recent_decisions(path: Path) -> List[str]:
+def _read_recent_decisions(path: Path) -> List[dict]:
     """Return decision lines added since last session (heuristic: last 20 lines)."""
     lines = path.read_text(encoding="utf-8", errors="replace").splitlines()
-    # Filter to non-empty, non-header lines
-    entries = [l.strip() for l in lines if l.strip() and not l.strip().startswith("#")]
+    entries = []
+    for idx, line in enumerate(lines, start=1):
+        cleaned = clean_memory_line(line)
+        if is_standalone_noise_line(cleaned):
+            continue
+        entries.append({"text": cleaned, "source_file": str(path), "source_line": idx})
     return entries[-20:]  # cap at 20 most recent
 
 
@@ -219,8 +228,7 @@ class SpoolConsumer:
                     summary["processed"] += 1
             except Exception as e:
                 summary["failed"] += 1
-                # Rename to .error so we don't retry indefinitely
-                spool_file.rename(spool_file.with_suffix(".error"))
+                self._mark_error(spool_file, e)
 
         return summary
 
@@ -254,12 +262,8 @@ class SpoolConsumer:
                 with warnings.catch_warnings(record=True):
                     records.extend(parse_session_file(sp, project=project))
 
-        for line in envelope.get("decision_entries", []):
-            from .parser import parse_decision_line
-            from pathlib import Path as _P
-            rec = parse_decision_line(line, _P(session_path_str or "unknown"), project)
-            if rec:
-                records.append(rec)
+        for entry in envelope.get("decision_entries", []):
+            records.extend(_records_from_decision_entry(entry, session_path_str, project, envelope))
 
         # Phase 2 — ingest-time provenance validation. QUARANTINE (never reject);
         # fail-open: a validator error must NEVER block ingest (capture contract).
@@ -282,3 +286,84 @@ class SpoolConsumer:
         # Ack: rename to .done
         spool_file.rename(done_path)
         return "processed"
+
+    def _mark_error(self, spool_file: Path, exc: Exception) -> None:
+        """Quarantine a failed envelope and append structured diagnostics."""
+        _LOG_DIR.mkdir(parents=True, exist_ok=True)
+        error_path = _error_path_for_spool(spool_file, self._spool_dir)
+        row = {
+            "ts": datetime.now(tz=timezone.utc).isoformat(),
+            "spool_file": str(spool_file),
+            "error_file": str(error_path),
+            "exception_type": type(exc).__name__,
+            "message": str(exc),
+            "traceback_tail": traceback.format_exc(limit=6),
+        }
+        try:
+            with _SPOOL_ERROR_LOG.open("a", encoding="utf-8") as fh:
+                fh.write(json.dumps(row, ensure_ascii=False) + "\n")
+        except Exception:
+            pass
+        spool_file.rename(error_path)
+
+
+def _entry_text_and_path(entry: Any, default_path: Optional[str]) -> tuple[str, str]:
+    if isinstance(entry, dict):
+        text = str(entry.get("text") or "")
+        src = str(entry.get("source_file") or default_path or "unknown")
+        line = entry.get("source_line")
+        if line:
+            src = f"{src}:{line}"
+        return text, src
+    return str(entry), default_path or "unknown"
+
+
+def _records_from_decision_entry(entry: Any, default_path: Optional[str], project: Optional[str], envelope: dict) -> list:
+    from .parser import parse_decision_line
+    from .llm_author import author_memories
+    from .models import MemoryRecord
+    from pathlib import Path as _P
+
+    line, source_path = _entry_text_and_path(entry, default_path)
+    if isinstance(entry, dict):
+        authored = author_memories(line, source_file=source_path)
+        ts = _parse_envelope_timestamp(envelope.get("timestamp"))
+        records = []
+        for item in authored:
+            records.append(
+                MemoryRecord(
+                    text=item.text,
+                    source_uri=source_path,
+                    memory_type="decision" if item.kind == "decision" else "inferred",
+                    confidence="inferred",
+                    timestamp=ts,
+                    project=project or _infer_project(_P(_strip_source_line(source_path))),
+                    category=item.kind,
+                )
+            )
+        return records
+
+    rec = parse_decision_line(line, _P(source_path), project)
+    return [rec] if rec else []
+
+
+def _parse_envelope_timestamp(value: Optional[str]) -> datetime:
+    if value:
+        try:
+            return datetime.fromisoformat(str(value).replace("Z", "+00:00"))
+        except ValueError:
+            pass
+    return datetime.now(tz=timezone.utc)
+
+
+def _strip_source_line(source_path: str) -> str:
+    match = re.match(r"^(.*):(\d+)$", source_path)
+    return match.group(1) if match else source_path
+
+
+def _error_path_for_spool(spool_file: Path, spool_dir: Path) -> Path:
+    try:
+        envelope = json.loads(spool_file.read_text(encoding="utf-8"))
+        return spool_dir / f"{_hash_envelope(envelope)}.error"
+    except Exception:
+        return spool_file.with_suffix(".error")

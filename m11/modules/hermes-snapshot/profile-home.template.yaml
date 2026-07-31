@@ -1,0 +1,25 @@
+﻿schema_version: 1
+profile: home-template
+snapshot_kind: recipient-owned-template
+routing:
+  policy_path: ${HERMES_ROUTING_POLICY_PATH}
+  route_ledger: ${HERMES_ROUTE_LEDGER_PATH}
+modules:
+  rag_orchestrator:
+    command: ${RAG_ORCHESTRATOR_COMMAND}
+    corpus_root: ${RECIPIENT_CORPUS_ROOT}
+  memoryweaver:
+    command: ${MEMORYWEAVER_MCP_COMMAND}
+    data_dir: ${MEMORYWEAVER_DATA_DIR}
+  context_mode:
+    command: ${CONTEXT_MODE_COMMAND}
+plugins:
+  - name: vault-parity
+    enabled: true
+    path: ${HERMES_PLUGIN_ROOT}/vault-parity
+skills:
+  roots:
+    - ${HERMES_SKILLS_ROOT}
+notes:
+  - This is not live parity. It is a sanitized template for clone installation.
+  - Recipients must bind all ${...} slots locally before execution.

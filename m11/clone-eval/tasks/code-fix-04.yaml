@@ -1,0 +1,17 @@
+﻿id: code-fix-04
+class: code-fix
+scorer: deterministic
+prompt: |
+  The file buggy.py contains load_skill(skill_path) and reassemble_skill(), derived
+  from evolution.skills.skill_module. load_skill must parse YAML frontmatter
+  between the first two --- markers, keep the markdown body after the second
+  marker, extract name and description, preserve raw content, and store the input
+  path. The test suite in test_buggy.py is failing. Fix buggy.py so every test
+  passes. Do not edit test_buggy.py. Return only the corrected contents of
+  buggy.py.
+context_files:
+  - fixtures/code-fix-04/buggy.py
+  - fixtures/code-fix-04/test_buggy.py
+edit_target: fixtures/code-fix-04/buggy.py
+frozen_test: fixtures/code-fix-04/test_buggy.py
+source_derivation:\n  public_note: derived from public deterministic fixture behavior\n

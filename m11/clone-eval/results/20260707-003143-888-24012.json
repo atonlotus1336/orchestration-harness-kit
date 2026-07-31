@@ -1,0 +1,60 @@
+﻿{
+    "ts":  "2026-07-07T04:31:43.7821974Z",
+    "route":  "ollama-cloud:glm-5.2:cloud",
+    "baseline":  false,
+    "results":  [
+                    {
+                        "id":  "agentic-file-op-01",
+                        "class":  "agentic-file-op",
+                        "score":  0,
+                        "wall_clock_s":  12.2,
+                        "tier_weight":  1,
+                        "route":  "ollama-cloud:glm-5.2:cloud"
+                    }
+                ],
+    "class_means":  {
+                        "agentic-file-op":  0
+                    },
+    "informational_classes":  [
+                                  "council-reasoning",
+                                  "research-synthesis"
+                              ],
+    "public_task_ids":  [
+                            "agentic-file-op-01",
+                            "agentic-file-op-02",
+                            "agentic-file-op-03",
+                            "agentic-file-op-04",
+                            "code-fix-01",
+                            "code-fix-02",
+                            "code-fix-03",
+                            "code-fix-04"
+                        ],
+    "task_hashes":  {
+                        "agentic-file-op-01.yaml":  "243f7de8375f6007ab23d18ccbea26f83e30626e79295cff0861452829e7e7a9",
+                        "agentic-file-op-02.yaml":  "4fa7b46990891d0a789c3644a94f7b09e7082757be0b8143e7a6e00bd9e84367",
+                        "agentic-file-op-03.yaml":  "6b5e1ebd9e4e36fece62a1421eacce45f989f8470d1d2900605402d1ef0ad9f1",
+                        "agentic-file-op-04.yaml":  "edd996c0560749fcb5f4870cb00a389e46172c120f89abf517a7c08bc375474a",
+                        "code-fix-01.yaml":  "3d372bb1d303e947aeca2f98d6f75739d5f4800490c9aa141cb0f5a61dc371b4",
+                        "code-fix-02.yaml":  "e5399844dd27703821f5d24d6bd567a32ada3849c5bac8e739eff4a2d78d2419",
+                        "code-fix-03.yaml":  "4ff07bf86693716397d3ced54c8731558bf5bbd071c358303d72ad8b9dbbcfdc",
+                        "code-fix-04.yaml":  "9a8a25293a0e4ce1d236b893f43c84b1cfb23462b36b05cecfad773e04ab68ec"
+                    },
+    "fixture_hashes":  {
+                           "agentic-file-op-01/initial/active.md":  "0505f45638c5ba580faa3780dd9501f3fc730f4a51d68ad6ae788204bacaf891",
+                           "agentic-file-op-01/initial/inbox.md":  "a4930335854965a152fc5e50044400032671c358ace2a7abe8a78ca317570208",
+                           "agentic-file-op-02/initial/config-note.md":  "4151c1f1e8dee1112b4b981abfc359a57127ee1923438976d947fa7ed1a3f45d",
+                           "agentic-file-op-02/initial/summary.md":  "d98199e52b51333fa053e5b9bb54af9a376115ad4ef21fff45d11ed693eeda16",
+                           "agentic-file-op-03/initial/quarantine.md":  "189043af7cfcf84f7ccced65fb85fdaf13ef9ba1eac3d2128bbc857f7ddc448d",
+                           "agentic-file-op-03/initial/registry.md":  "bdfc6087b8a81578f8deae087037fe1b7c84b276f9b370eb7a172131abebf8bd",
+                           "agentic-file-op-04/initial/memories.md":  "aac9e82b53138ac5c3c10c3ec7348d5114b41449233aafd93a104ddfac00afe6",
+                           "agentic-file-op-04/initial/session.md":  "aeed3019accc24e5e709f573201697d5b58158dee13704560ac93210c9a28074",
+                           "code-fix-01/buggy.py":  "0e434afd26f5b18a039c187d742852465542040cc2840766d6800164f254b7e8",
+                           "code-fix-01/test_buggy.py":  "e73837941769d63fbfdfc607d51eca53431fe361cecf26aed4ce2eb555602159",
+                           "code-fix-02/buggy.py":  "077e6e8756026a23e99913d4ac435083884bc4ee6e41fe3d95277459860a7c4b",
+                           "code-fix-02/test_buggy.py":  "088367bbad72e40522592befa3111fba8b4ea92ee77d71d0406bdd8e43665511",
+                           "code-fix-03/buggy.py":  "4fb0967232ade2b9db0bfacc4749783919f97895654ae7b6b38bc3299a0db664",
+                           "code-fix-03/test_buggy.py":  "50dc2108608dc449158292af3a2cbacfc9707d3865c7ae163dd3efce9607e7c2",
+                           "code-fix-04/buggy.py":  "6cb6bed60322c91acbacce814c42905526be146e97c5b40140ab2b09f9c2fef1",
+                           "code-fix-04/test_buggy.py":  "c9037114dd1405787a39fec4400bf851951cbdab6b332bc3bebe7dd49f1764c7"
+                       }
+}
