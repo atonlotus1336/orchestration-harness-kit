@@ -57,6 +57,8 @@ behavior that only works with a frontier model driving.
   Bind policy: chat/API surfaces may bind wide with auth; admin/dashboard
   surfaces stay loopback + tunnel. Verification probes must run FROM the
   remote machine (local green proves nothing about remote reach).
+  The MANUAL version of this ships today as `REMOTE-ACCESS.md` (access-surface
+  map, phone-browser setup, bind/security rules) — v2 automates that guide.
 - **Docs re-curation:** `docs/` copies lag their upstream originals; they
   are curated per-file, not auto-synced.
 - **Messaging:** more reference adapters welcome (Discord/Slack examples)
