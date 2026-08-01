@@ -1,7 +1,7 @@
 ﻿{
     "schema_version":  1,
     "phase":  "M11",
-    "snapshot_version":  "m11-hermes-snapshot-v1",
+    "snapshot_version":  "hermes-snapshot-v1",
     "live_parity":  false,
     "source_state":  {
                          "profile":  "home sanitized template",

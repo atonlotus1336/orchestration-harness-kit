@@ -10,7 +10,7 @@ Create `bindings.local.yaml` next to your kit root (it is never exported, never 
 never committed):
 
 ```yaml
-version: m13-bindings-v1
+version: n8n-bindings-v1
 slots:
   n8n_endpoint: "https://YOUR-N8N-HOST"        # your n8n base URL
   vps_host: "YOUR-N8N-HOST"                    # host for reachability checks

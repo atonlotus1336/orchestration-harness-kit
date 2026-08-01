@@ -1,5 +1,5 @@
 {
-  "version": "m11-modules-v2",
+  "version": "modules-v2",
   "default_path": [
     "memory",
     "rag",

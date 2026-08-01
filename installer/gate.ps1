@@ -178,7 +178,8 @@ if (-not $AllowSourceMachineAudit) {
         if ($cleanProof.status -ne "PASS") { $proofFailures += "status=$($cleanProof.status)" }
         if ([string]$cleanProof.source_kit_sha256 -ne $currentProvenanceHash) { $proofFailures += "source_kit_sha256_mismatch" }
         if ([string]$cleanProof.target_kit_sha256 -ne $currentProvenanceHash) { $proofFailures += "target_kit_sha256_mismatch" }
-        if (-not $cleanProof.target_installer -or -not (Test-Path -LiteralPath $cleanProof.target_m11)) { $proofFailures += "target_m11_missing" }
+        $cleanTargetDir = if ($cleanProof.target_installer) { $cleanProof.target_installer } else { $cleanProof.target_m11 }  # accept legacy field name
+        if (-not $cleanTargetDir -or -not (Test-Path -LiteralPath $cleanTargetDir)) { $proofFailures += "target_installer_missing" }
         if ([int]$cleanProof.copied_file_count -lt 1) { $proofFailures += "copied_file_count=$($cleanProof.copied_file_count)" }
         if ($cleanProof.bundle_gate.status -notin @("PENDING","GREEN")) { $proofFailures += "bundle_gate=$($cleanProof.bundle_gate.status)" }
         if ($cleanProof.bundle_gate.result_route -and $evalRoute -and [string]$cleanProof.bundle_gate.result_route -ne $evalRoute) { $proofFailures += "clean_parent_route_mismatch=$($cleanProof.bundle_gate.result_route)!=$evalRoute" }
