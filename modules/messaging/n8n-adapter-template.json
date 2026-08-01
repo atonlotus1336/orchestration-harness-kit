@@ -1,0 +1,70 @@
+{
+  "name": "generic-messenger-adapter-template",
+  "meta": {
+    "note": "TEMPLATE (see ADAPTER-CONTRACT.md). Import into n8n, then: (1) set GATEWAY_URL + MODEL in the HTTP node, (2) add your gateway API key as an n8n credential - NEVER paste it into this file, (3) replace the Webhook trigger with your messenger's trigger node (Telegram/Discord/Slack/WhatsApp/email) and map its text + sender fields, (4) keep the sender-allowlist IF node - deny by default."
+  },
+  "nodes": [
+    {
+      "parameters": { "httpMethod": "POST", "path": "adapter-inbound", "responseMode": "responseNode" },
+      "name": "Inbound Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1,
+      "position": [240, 300]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "string": [
+            { "value1": "={{ $json.body.sender_id }}", "operation": "regex", "value2": "^(REPLACE_WITH_ALLOWED_SENDER_IDS_REGEX)$" }
+          ]
+        }
+      },
+      "name": "Sender Allowlist (deny by default)",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [460, 300]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ 'REPLACE_GATEWAY_URL' + '/chat/completions' }}",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ model: 'REPLACE_MODEL', messages: [{ role: 'user', content: $json.body.text }] }) }}"
+      },
+      "name": "Call OpenAI-compatible Backend",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4,
+      "position": [680, 200]
+    },
+    {
+      "parameters": {
+        "respondWith": "text",
+        "responseBody": "={{ $json.choices[0].message.content }}"
+      },
+      "name": "Reply",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1,
+      "position": [900, 200]
+    },
+    {
+      "parameters": { "respondWith": "text", "responseBody": "denied", "options": { "responseCode": 403 } },
+      "name": "Deny Unknown Sender",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1,
+      "position": [680, 420]
+    }
+  ],
+  "connections": {
+    "Inbound Webhook": { "main": [[{ "node": "Sender Allowlist (deny by default)", "type": "main", "index": 0 }]] },
+    "Sender Allowlist (deny by default)": {
+      "main": [
+        [{ "node": "Call OpenAI-compatible Backend", "type": "main", "index": 0 }],
+        [{ "node": "Deny Unknown Sender", "type": "main", "index": 0 }]
+      ]
+    },
+    "Call OpenAI-compatible Backend": { "main": [[{ "node": "Reply", "type": "main", "index": 0 }]] }
+  }
+}
