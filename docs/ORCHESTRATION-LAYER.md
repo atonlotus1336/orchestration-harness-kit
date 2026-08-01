@@ -14,8 +14,7 @@
 
 **What is this FOR? (read this first — mission layer)** Before the ops chain: the
 `D:\MyVault\.planning\missions\` portfolio holds the five domain missions this whole
-system serves — **applications, example-domain, example-projects, example-community,
-community-mission** (the last is CARE-governed: community data never leaves local
+system serves — **your domain missions (e.g. product, education, community)** (the last is CARE-governed: community data never leaves local
 storage). Each `<slug>\MISSION.md` states the mission, metrics, and active initiatives;
 `_digests\` holds the weekly/monthly/quarterly reviews. Purpose leads; the operational
 chain below keeps that purpose alive.

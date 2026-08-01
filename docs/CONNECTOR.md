@@ -328,7 +328,7 @@ sys.path.insert(0, "/mnt/d/MyVault/.mcp-servers/rag-orchestrator")
 from connect import rag, memory, lightrag, graphrag
 
 # Query everything
-results = await rag.query("project architecture decisions")
+results = await rag.query("example-project architecture decisions")
 
 # Query one backend
 decisions = await memory.query("optimization patterns")
