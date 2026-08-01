@@ -58,6 +58,13 @@ Then the loop is: edit → commit (tripwire) → push.
   private repo with no other consumers; after any history rewrite,
   `git fetch` first or the lease check rejects with "stale info".
 - NEVER commit with `--no-verify`. A blocked commit is the system working.
+- **A staged-file scanner cannot find pre-existing leaks.** `.githooks/pre-commit`
+  reads `git diff --cached` — only files you touched. Anything committed BEFORE
+  a token joined `.private-denylist` is never re-read, so it survives forever
+  while every gate reports clean. Proven 2026-08-01: two project-name leaks
+  survived four scrub passes in untouched files. After ANY denylist addition,
+  and periodically, run `bash tools/scan-full-repo.sh` (reads every tracked
+  file). Adding a token without a full-repo rescan is a no-op for past commits.
 - NEVER put credentials, API keys, tokens, or real hostnames/IPs in ANY
   tracked file — including inside "examples". Use the approved placeholder
   vocabulary (`alice`, `example-vault`, `D:\MyVault`, `example.com`).

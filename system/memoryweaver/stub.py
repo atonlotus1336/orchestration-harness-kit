@@ -42,8 +42,9 @@ class Stub:
     provenance_status: str = "valid"   # "valid" | "quarantined" (Phase 2)
     # Plan 01 Task 3.3 (goal-cascade D6): optional mission-domain tag, metadata
     # passthrough ONLY - never influences gist content, so no GIST_VERSION bump.
-    # Slugs: your own mission/domain names, or
-    # community-mission | "" (untagged). Dormant hook until per-domain packs exist.
+    # Slugs: your own mission/domain names, or "" (untagged). Example:
+    # "research" | "product" | "community". Dormant hook until per-domain
+    # packs exist; the value is metadata passthrough only.
     domain: str = ""
 
     def to_dict(self) -> dict[str, Any]:

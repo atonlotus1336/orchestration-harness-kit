@@ -179,7 +179,14 @@ manual_lines = [
 for stage, members in stages.items():
     manual_lines.append(f"### {stage}")
     for item in members:
-        manual_lines.append(f"- {item['id']} [{item['privacy_class']}] -> {item['target_path']}")
+        # 2026-08-01: redact local-only rows. Their ids/paths name private
+        # vault folders (missions, projects); MANUAL.md is gitignored but a
+        # generated artifact must never carry names the kit deliberately
+        # excludes - a leak is a leak wherever it is written.
+        if item["privacy_class"] == "shareable":
+            manual_lines.append(f"- {item['id']} [{item['privacy_class']}] -> {item['target_path']}")
+        else:
+            manual_lines.append(f"- <local-only row redacted> [{item['privacy_class']}]")
     manual_lines.append("")
 write_text("MANUAL.md", "\n".join(manual_lines).rstrip() + "\n")
 
