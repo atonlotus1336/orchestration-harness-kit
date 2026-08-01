@@ -48,6 +48,15 @@ Then the loop is: edit → commit (tripwire) → push.
 
 ## Hard rules (do not negotiate these away)
 
+- **Commit metadata is a publish channel no scanner checks.** Author/committer
+  name+email ship with every push, and git inherits them from the machine's
+  GLOBAL config — which may be a different identity than this repo should
+  carry. Before the first commit in any clone:
+  `git config user.name <name> && git config user.email <email>` (repo-local).
+  If wrong identities already landed: rewrite history (filter-branch/
+  filter-repo env-filter) and `push --force-with-lease` — acceptable on a
+  private repo with no other consumers; after any history rewrite,
+  `git fetch` first or the lease check rejects with "stale info".
 - NEVER commit with `--no-verify`. A blocked commit is the system working.
 - NEVER put credentials, API keys, tokens, or real hostnames/IPs in ANY
   tracked file — including inside "examples". Use the approved placeholder
