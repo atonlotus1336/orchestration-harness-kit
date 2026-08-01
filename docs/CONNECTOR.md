@@ -536,6 +536,14 @@ The `ensure-orchestration-layer.sh` script now signals the running gateway to re
 7. After MCP/RAG/memory fixes, reload MCP or restart Hermes before trusting the next status or tool result from the same session.
 8. If the task must outlive the current chat session, move it to a durable mechanism instead of re-testing through an interruptible foreground conversation.
 9. **LightRAG timeout during query is not a health failure** — LightRAG's `/health` endpoint may return 200 while actual `/query` calls timeout (especially when GraphRAG subprocess is also querying). Retry the query alone.
+10. **Set a startup timeout on every WSL-spawned MCP server.** A wedged WSL
+   hangs the spawn without limit. The harness then blocks at session start.
+   Symptom: the harness "becomes unusable" at random. Users often blame
+   hooks; measure before you accept that. Set `startup_timeout_sec = 30`
+   (Codex config.toml) or `"timeout": 30000` (OpenCode jsonc). A healthy
+   server connects in ~1 second. A cold WSL boot fits inside 30. Do not set
+   less than 20 — a slow boot is not a failure. Claude Code has no per-server
+   key; its MCP spawns already fail fast.
 10. **GraphRAG UTF-8 decode errors** — Running `graphrag.exe` through Windows Python subprocess from WSL can produce encoding errors on stdout. The `execute_code` path (calling via Python connector) is more reliable than `terminal()` for GraphRAG queries.
 11. **Session tools vs. direct connector** — When MCP tools are unavailable, the `execute_code` + `connect.py` path always works as a fallback. If queries return results via the Python connector but not via MCP tools, the issue is in session tool registration, not in the backends.
 
