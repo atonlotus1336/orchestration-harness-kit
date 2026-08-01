@@ -1,112 +1,90 @@
-# Orchestration Layer — shareable, version-controlled
+# Orchestration Harness Kit
 
-The **system** behind a multi-LLM (Claude Code + Codex + Hermes) stack: a persistent
-memory engine, a RAG front-door MCP, the authority/retrieval/method doctrine, and the
-skills-index generator. This repo is the **single shareable source of truth** — track it
-in git so another machine or deploy gets your latest with `git pull`, not a stale zip.
+**Make your AI coding agents safer, more reliable, and more capable — one part at a
+time.** This kit packages a battle-tested personal stack (persistent memory, a
+destructive-command safety gate, reasoning techniques for small local models,
+messenger integration, and the operating doctrine that ties it together) so you can
+run the same system with **Claude Code, Codex, Hermes/OpenCode, or any similar agent**.
 
-It deliberately ships the **system, not the content**: no memories/data (the store installs
-empty), no `Projects/`, no proprietary skill bundles, no identity. Everything machine-specific
-is a placeholder (`alice`, `/mnt/d/MyVault`, `D:\MyVault`, `__STORE__`) you fill in once.
+It ships the **system, never the author's content**: no memories (your store starts
+empty), no private projects, no identity. Machine-specific values are placeholders
+(`alice`, `D:\MyVault`, `__STORE__`) you fill in once during install.
 
-## New here? Start in this order
-1. `docs/REPLICATION-GUIDE.md` — the install (placeholders → wiring → empty store → smoke tests).
-2. `REMOTE-ACCESS.md` — reach it from phones/other devices safely.
-3. `modules/messaging/ADAPTER-CONTRACT.md` — connect any messenger.
-4. `AGENTS.md` + `KIT-MAINTENANCE.md` — REQUIRED before changing anything (also: activate the leak guard in your clone: `git config core.hooksPath .githooks`).
+## What's in the box (plain-language tour)
 
-## Adopt it part by part (independence matrix)
+| Part | What it does | Why you'd want it |
+|---|---|---|
+| [`modules/guards/`](modules/guards/) | A safety gate that intercepts dangerous commands (recursive deletes, force-pushes, disk formats) **before they run**, predicts their effects, and asks you first — with a hard "no" for command classes that have burned you before | Your agent can never again wreck something in one keystroke |
+| [`modules/reasoning-shapes/`](modules/reasoning-shapes/) | Four written reasoning techniques (vote-and-refuse, persona panels, tree search) any model can follow | Makes small local models trustworthy; they refuse instead of confidently guessing |
+| [`modules/messaging/`](modules/messaging/) | Connect ANY messenger (Telegram, Discord, Slack, WhatsApp…) to your agent through one tiny contract | Text your AI from your phone, on whatever app you already use |
+| [`modules/recipe-miner/`](modules/recipe-miner/) | Watches your finished sessions for repeatable procedures and drafts them as skill candidates — a human always reviews before anything installs | Your skill library grows itself from work you already did |
+| [`system/`](system/) | The memory engine (remembers decisions across sessions, hybrid keyword+semantic recall) and the RAG front-door your agents query | Your agent stops forgetting everything between sessions |
+| [`docs/`](docs/) | The operating doctrine: how agents should rank evidence vs. memory, route retrieval, and dial reasoning effort — plus the full install guide | The "constitution" that makes multi-agent setups behave consistently |
+| [`installer/`](installer/) | Staged zero-to-parity installer with verification gates for the full stack | For going all-in rather than part-by-part |
+| [`n8n-integration/`](n8n-integration/) | Templates for wiring an n8n automation server to the stack | If you use n8n for workflows/webhooks |
+| [`practice-loop/`](practice-loop/) | A learning loop that turns content you consume into one action, one lesson, one rep — with quality canaries | Stops "watched a tutorial, did nothing" syndrome |
+| `hooks/` | Session hooks that write memory digests automatically | Glue between your harness and the memory engine |
+| [`tools/`](tools/) | The kit's own build/scrub/verify machinery | Only needed if you maintain or extend the kit |
 
-Nothing here is all-or-nothing. Each row works alone; install in any order.
+## Install: choose your path
+
+**Path A — cherry-pick one part (recommended first step).** Every part works alone.
+Each directory's README tells you how to install *just that part* and how to test it
+worked. The safety gate is the best first pick: two files, no dependencies,
+30 seconds:
+
+```bash
+python modules/guards/test-dry-run-gate.py   # see it pass its own 32 tests first
+```
+
+**Path B — the full stack.** Follow [`docs/REPLICATION-GUIDE.md`](docs/REPLICATION-GUIDE.md)
+top to bottom: placeholders → memory engine (empty store) → per-harness wiring →
+smoke tests. Then [`REMOTE-ACCESS.md`](REMOTE-ACCESS.md) to reach it from your phone,
+and [`modules/messaging/`](modules/messaging/) to text it.
+
+**Independence matrix** — what needs what:
 
 | Part | Depends on | Standalone test |
 |---|---|---|
-| `modules/guards/` safety gate | nothing (Python stdlib) | `python modules/guards/test-dry-run-gate.py` |
-| `modules/reasoning-shapes/` | nothing (they're documents) | drop into any skills dir; follow one |
-| `modules/messaging/` adapter | any OpenAI-compatible endpoint | `GATEWAY_URL=... python modules/messaging/generic-adapter.py "hi"` |
-| `modules/recipe-miner/` | a harness with session transcripts | run it on any transcript JSONL |
-| `docs/` doctrine | nothing | read; wire into your CLAUDE.md/AGENTS.md |
-| `system/` memory engine + RAG | Python 3.11 + the install guide §3 | guide §4 smoke tests |
-| `hooks/` session hooks | the memory engine above | guide §3.4 |
+| guards | nothing (Python stdlib) | its self-test, 32 cases |
+| reasoning-shapes | nothing (they're documents) | follow one on a hard question |
+| messaging | any OpenAI-compatible endpoint | `GATEWAY_URL=... python modules/messaging/generic-adapter.py "hi"` |
+| recipe-miner | a harness that saves transcripts | run it on any transcript file |
+| docs | nothing | read them |
+| system (memory+RAG) | Python 3.11, guide §3 | guide §4 smoke tests |
+| hooks | the memory engine | guide §3.4 |
 
-Full zero-to-parity install = REPLICATION-GUIDE.md start to finish. Cherry-picking
-one row is equally supported — the guards gate alone is a fine first download.
+## Why it's safe to share (the 30-second version)
 
-## What's here
-```
-system/   memoryweaver/ (engine) · memoryweaver-mcp/server.py · rag-orchestrator/ · tests/ · build-skills-manifest.py
-modules/  guards/ (dry-run destructive-command gate + policy template + self-test)
-          · reasoning-shapes/ (4 portable method skills for small-model reliability)
-          · recipe-miner/ (session-transcript → staged skill candidates; never auto-installs)
-          · messaging/ (messenger-agnostic adapter contract + reference adapter + n8n template)
-hooks/    memory-digest-write.sh · memory-digest.py (templated session hooks the guide wires)
-docs/     AUTHORITY-CONSTITUTION · METHODOLOGY-CHARTER · RETRIEVAL-PLAYBOOK · REASONING-EFFORT
-          · LLM-OPS-RUNBOOK · ORCHESTRATION-LAYER · CONNECTOR · REPLICATION-GUIDE
-installer/ n8n-integration/ practice-loop/   staged-install, n8n-binding, and practice-loop kit modules
-AGENTS.md · KIT-MAINTENANCE.md · REMOTE-ACCESS.md   agent dev rules · update procedure · multi-device access
-make-bundle.sh      produce an offline zip/tar.gz from the committed state (git archive)
-.githooks/pre-commit  leak guard — blocks committing identity / host paths / Projects
-```
+Three deterministic layers keep private data out, none of them "being careful":
+an **allowlist** (only named files can enter — a mistake means a missing file, never
+a leak), an **identity scrub** (usernames/paths/hosts → placeholders), and a
+**tripwire** (build aborts if any private token appears anywhere). Your clone gets a
+fourth: run `git config core.hooksPath .githooks` to arm the commit-time leak guard
+for your own tokens.
 
-## The boundary (why it's safe to share)
-1. **Allowlist-in** — `sync-shareable.sh` copies only the named infra files. Nothing else can enter.
-2. **Identity scrub** — username, vault name, site, IP, and home/vault paths → generic placeholders (case-insensitive).
-3. **Tripwire** — the sync **and** the pre-commit hook abort on any token in `.private-denylist` or a `Projects/` path.
+## Keeping it current
 
-> **Local-only (gitignored, never in a clone):** `sync-shareable.sh` (carries the real scrub map)
-> and `.private-denylist` (your real identity/host tokens). The tracked files carry no identity —
-> that's what makes the repo safe to publish. A recipient adds their own `.private-denylist`.
-
-## Verify before execute
-The M10 kit path derives shareable mechanics from your vault's `SURFACE-GRAPH.yaml` (e.g. `D:\MyVault\SURFACE-GRAPH.yaml`).
-Before running or packaging a generated kit:
-
-1. Run `powershell.exe -NoProfile -ExecutionPolicy Bypass -File tools/m10-generate-from-surface-graph.ps1`.
-2. Inspect `generated/PROVENANCE.json` and confirm the graph checksum matches the source graph.
-3. Review `generated/SYNC-ALLOWLIST.txt`; `privacy_class: shareable` is the only automatic copy class.
-4. Fill local capabilities from `generated/bindings.local.template.yaml` into a private `bindings.local.yaml`.
-5. Run `powershell.exe -NoProfile -ExecutionPolicy Bypass -File tools/m10-scrub-v2.ps1 -Root generated`.
-
-The legacy `sync-shareable.sh` remains a local control. New shareable previews should use
-`sync-shareable-v2.ps1`, which reads the generated allowlist and then runs scrub-v2.
-
-## Daily workflow (keep the share current as you tinker)
 ```bash
-# on the source machine, after editing the live vault:
-bash sync-shareable.sh        # refresh + scrub + tripwire  (re-runnable, idempotent)
-git diff                      # review what changed
-git add -A && git commit -m "sync: <what changed>"
-git push                      # once you've added a remote (see below)
+git pull        # that's it — updates arrive as commits
 ```
-> Tip: to keep the share near-continuous, call `sync-shareable.sh` from your Stop hook or a
-> daily cron, then commit. The repo then always trails the live vault by one commit.
 
-## Get the latest on another machine / a website deploy
-```bash
-git clone <your-remote> orchestration-layer    # first time
-git pull                                        # every update — this is the "carry my changes" answer
-```
-Then install: follow `docs/REPLICATION-GUIDE.md` (fills the placeholders, wires MCP/RAG per harness,
-installs the memory engine with an empty store). The engine + `server.py` use `__STORE__` / `__FTS_DB__`
-placeholders the guide substitutes.
+No git on the target? `bash make-bundle.sh` produces an offline zip of the committed
+state.
 
-## Offline / air-gapped transfer (no git on the target)
-```bash
-bash make-bundle.sh           # ../orchestration-layer-bundle.{zip,tar.gz} from the committed HEAD
-```
-Same scrubbed content, just frozen. Rebuild it any time the repo advances.
+## What is deliberately NOT here
 
-## What is NOT here (replicate separately, by design)
-- **Skills & agents** — a mix of third-party marketplace installs and your proprietary sets;
-  install the marketplaces + your private skills on the target. The generator (`build-skills-manifest.py`)
-  rebuilds `MASTER-INDEX`/`SKILLS.json` against whatever skills the target has.
-- **Memories / notes / decision journals / project data** — machine-local and private; never travels.
-- **Secrets** — live in `config.env` (gitignored), filled per machine.
+- **The author's memories, notes, projects, models, or LoRAs** — the boundary is
+  structural, not a promise.
+- **Skill/agent marketplaces** — install those from their own sources; the
+  `system/build-skills-manifest.py` generator indexes whatever skills *you* have.
+- **Secrets** — `config.env` is gitignored; every machine fills its own.
 
-## One-time setup of THIS repo
-```bash
-git init
-git config core.hooksPath .githooks      # turn on the leak guard
-git add -A && git commit -m "initial shareable orchestration layer"
-# git remote add origin <url> && git push -u origin main   # when you're ready to publish
-```
+## For AI agents and maintainers
+
+If you are an LLM (or a human) developing or updating this kit: **read
+[`AGENTS.md`](AGENTS.md) first, then [`KIT-MAINTENANCE.md`](KIT-MAINTENANCE.md)** —
+they carry the invariants (naming, scrub discipline, verification pipeline, push
+procedure) that keep this repo safe and coherent. The maintainer-side sync/verify
+workflow (surface-graph generation, scrub-v2, daily sync loop, one-time repo setup)
+lives in KIT-MAINTENANCE.md, not here — downloaders never need it.

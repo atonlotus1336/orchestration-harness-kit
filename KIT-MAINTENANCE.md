@@ -69,6 +69,16 @@ Then the loop is: edit → commit (tripwire) → push.
   — a gate that cannot name an input that would make it fail is void).
 - Messenger/integration modules never hardcode a vendor: ship the port
   (OpenAI-compatible contract), not the plug (see `modules/messaging/`).
+- **Every part directory carries a user-facing README** (convention since
+  2026-07-31): plain language, four answers — what it is, why you'd want it,
+  how to install JUST this part, how to test it worked. Written for a
+  non-professional developer; jargon (MCP, RAG, hooks) gets a one-clause
+  gloss on first use. The top-level README is the friendly tour + the
+  independence matrix; maintainer mechanics live HERE, never there. A new
+  module without its README (and its graph row) is incomplete.
+- Public vendor domains in docs (n8n.io, github.com) go on
+  `approved-public-tokens.txt` — exact token per line, human-reviewed, same
+  rule as any approved-list widening.
 
 ## Verify after any update (out-of-the-box checks a fresh clone must pass)
 
