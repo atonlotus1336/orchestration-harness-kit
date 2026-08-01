@@ -9,15 +9,24 @@ It deliberately ships the **system, not the content**: no memories/data (the sto
 empty), no `Projects/`, no proprietary skill bundles, no identity. Everything machine-specific
 is a placeholder (`alice`, `/mnt/d/MyVault`, `D:\MyVault`, `__STORE__`) you fill in once.
 
+## New here? Start in this order
+1. `docs/REPLICATION-GUIDE.md` — the install (placeholders → wiring → empty store → smoke tests).
+2. `REMOTE-ACCESS.md` — reach it from phones/other devices safely.
+3. `modules/messaging/ADAPTER-CONTRACT.md` — connect any messenger.
+4. `AGENTS.md` + `KIT-MAINTENANCE.md` — REQUIRED before changing anything (also: activate the leak guard in your clone: `git config core.hooksPath .githooks`).
+
 ## What's here
 ```
 system/   memoryweaver/ (engine) · memoryweaver-mcp/server.py · rag-orchestrator/ · tests/ · build-skills-manifest.py
 modules/  guards/ (dry-run destructive-command gate + policy template + self-test)
           · reasoning-shapes/ (4 portable method skills for small-model reliability)
           · recipe-miner/ (session-transcript → staged skill candidates; never auto-installs)
+          · messaging/ (messenger-agnostic adapter contract + reference adapter + n8n template)
+hooks/    memory-digest-write.sh · memory-digest.py (templated session hooks the guide wires)
 docs/     AUTHORITY-CONSTITUTION · METHODOLOGY-CHARTER · RETRIEVAL-PLAYBOOK · REASONING-EFFORT
           · LLM-OPS-RUNBOOK · ORCHESTRATION-LAYER · CONNECTOR · REPLICATION-GUIDE
-sync-shareable.sh   populate/refresh this repo from the live vault (allowlist + scrub + tripwire)
+m11/ m13/ m15-practice-loop/   staged-install, n8n-binding, and practice-loop kit modules
+AGENTS.md · KIT-MAINTENANCE.md · REMOTE-ACCESS.md   agent dev rules · update procedure · multi-device access
 make-bundle.sh      produce an offline zip/tar.gz from the committed state (git archive)
 .githooks/pre-commit  leak guard — blocks committing identity / host paths / Projects
 ```

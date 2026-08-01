@@ -109,15 +109,15 @@ memory_derive, memory_synthesize, memory_revoke, memory_harvest_links`.
 
 ### 3.6 Context-savings hooks (the read-on-write digest)
 Two tiny scripts (this repo's `hooks/`):
-- **Stop hook** `memory-digest-write.sh` → `<PY> -m memoryweaver digest` (writes `<STORE>/recent-digest.json`, top-N non-quarantined stubs). Pin the env.
-- **SessionStart hook** `memory-digest.py` → reads that JSON, emits it as `additionalContext`. **No chromadb import on the read path** → ~0ms, the context-savings win.
+- **Stop hook** `hooks/memory-digest-write.sh` (SHIPPED in this repo's hooks/ dir; fill its placeholder paths) → `<PY> -m memoryweaver digest` (writes `<STORE>/recent-digest.json`, top-N non-quarantined stubs). Pin the env.
+- **SessionStart hook** `hooks/memory-digest.py` (SHIPPED in hooks/) → reads that JSON, emits it as `additionalContext`. **No chromadb import on the read path** → ~0ms, the context-savings win.
 
 ### 3.7 Per-harness capture (write-on-stop)
-A Stop hook that spools session notes → `memoryweaver spool` → `memoryweaver ingest`, env pinned, run via `<PY>` (WSL-side on Windows). Mirror `stop-wrap-up.py`.
+A Stop hook that spools session notes → `memoryweaver spool` → `memoryweaver ingest`, env pinned, run via `<PY>` (WSL-side on Windows). (An example spool hook is NOT shipped — write your own against `memoryweaver spool`'s CLI; ~20 lines.)
 
 ### 3.8 Wire each harness (read + write before/after work)
 - **Claude Code:** `settings.json` `hooks.SessionStart` += digest reader; `hooks.Stop` += digest writer + spool; `mcpServers.memoryweaver` = the §3.5 command.
-- **Codex:** `config.toml` `[mcp_servers.memoryweaver-mcp]` = §3.5 (gate `memory_revoke` behind `approval_mode="approve"`); `hooks.json` SessionStart/Stop.
+- **Codex:** `config.toml` `[mcp_servers.memoryweaver-mcp]` = §3.5 (gate `memory_revoke` behind `approval_mode="approve"`); wire SessionStart/Stop in Codex's hooks config (file name varies by Codex version; NOT shipped here).
 - **Hermes:** `config.yaml` `mcp_servers.memoryweaver-mcp` = §3.5; `prefill_messages_file` = a 2-line few-shot priming "consult memory first" (fail-safe, read per-call).
 
 ### 3.9 *(optional)* RAG front-door + skill index
