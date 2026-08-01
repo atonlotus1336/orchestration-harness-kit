@@ -110,10 +110,10 @@ mcp_servers:
     command: /home/alice/.hermes/hermes-agent/venv/bin/python
     args: [/mnt/d/MyVault/.mcp-servers/wordpress/server.py]
     env:
-      WORDPRESS_SITE_BASE: https://example.com.com
-      WORDPRESS_TOKEN_URL: https://example.com.com/wp-json/api/v1/token
-      WORDPRESS_TOKEN_VALIDATE_URL: https://example.com.com/wp-json/api/v1/token-validate
-      WORDPRESS_POSTS_URL: https://example.com.com/wp-json/wp/v2/posts
+      WORDPRESS_SITE_BASE: https://example.com
+      WORDPRESS_TOKEN_URL: https://example.com/wp-json/api/v1/token
+      WORDPRESS_TOKEN_VALIDATE_URL: https://example.com/wp-json/api/v1/token-validate
+      WORDPRESS_POSTS_URL: https://example.com/wp-json/wp/v2/posts
       # Set secrets outside source control:
       # WORDPRESS_JWT_TOKEN: <redacted>
       # or WORDPRESS_USERNAME + WORDPRESS_PASSWORD
@@ -176,7 +176,7 @@ WordPress post creation defaults to `draft`. Agents should pass `status: publish
 WordPress is an action MCP server, not a RAG backend. It should be registered in the root Hermes orchestration config and every WSL profile config so profile switches do not drop website-editing access.
 
 Current known-good state:
-- Site: `https://example.com.com`
+- Site: `https://example.com`
 - MCP registration: working when `hermes mcp test wordpress` discovers 7 tools.
 - Auth path: username/password environment credentials work for real WordPress REST edits.
 - Edit smoke test: Hermes successfully listed recent posts, created draft post ID 554, then moved that same post to trash.
@@ -263,9 +263,9 @@ The WordPress MCP server explicitly loads `/home/alice/.hermes/.env` before prof
 The server uses these WordPress endpoints:
 
 ```text
-https://example.com.com/wp-json/api/v1/token
-https://example.com.com/wp-json/api/v1/token-validate
-https://example.com.com/wp-json/wp/v2/posts
+https://example.com/wp-json/api/v1/token
+https://example.com/wp-json/api/v1/token-validate
+https://example.com/wp-json/wp/v2/posts
 ```
 
 Endpoint roles:
@@ -295,7 +295,7 @@ Tools discovered: 7
 Expected end-to-end edit smoke result:
 
 ```text
-wordpress_site_config: site URL is https://example.com.com
+wordpress_site_config: site URL is https://example.com
 wordpress_list_posts: PASS
 wordpress_create_post: PASS, created draft
 wordpress_delete_post: PASS, moved draft to trash
@@ -307,7 +307,7 @@ After config or credential changes, reload MCP in the running Hermes session or 
 Agent prompt pattern:
 
 ```text
-Use the WordPress MCP tools to list drafts on example.com.com. Do not publish or delete anything.
+Use the WordPress MCP tools to list drafts on example.com. Do not publish or delete anything.
 ```
 
 For a full access check, use this safer prompt:

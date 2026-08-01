@@ -28,7 +28,7 @@ Three AI harnesses (Claude Code, Codex, Hermes) share one backend stack:
 - `obsidian` MCP â€” exact note reads from the vault `D:\MyVault`.
 - `local-rag` MCP â€” general vault document corpus (ChromaDB at
   `D:\MyVault\.rag\db`).
-- `wordpress` MCP â€” site editing for example.com.com (action server, not RAG).
+- `wordpress` MCP â€” site editing for example.com (action server, not RAG).
 
 ### Path table (canonical)
 
