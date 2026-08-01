@@ -43,7 +43,7 @@ Because both speak the same API, an adapter written once works against either
   (Webhook → HTTP Request → Respond). n8n's node catalog (Telegram, Discord,
   Slack, WhatsApp, email, SMS providers) then gives you every messenger it
   supports without this kit naming any of them. Wire your credentials in n8n
-  itself, never in this file. See also `../../m13/` for n8n binding checks.
+  itself, never in this file. See also `../../n8n-integration/` for n8n binding checks.
 
 ## Design rules (inherited from the source system's incident history)
 

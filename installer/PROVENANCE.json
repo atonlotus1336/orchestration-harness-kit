@@ -1,7 +1,7 @@
 ﻿{
     "schema_version":  1,
     "phase":  "M11",
-    "bundle":  "orchestration-layer/m11",
+    "bundle":  "orchestration-layer/installer",
     "generated_at":  "2026-07-13T20:36:58.7362036Z",
     "source_dependencies":  [
                                 "M7 routing-policy.json",
@@ -151,7 +151,7 @@
                       "bytes":  1302
                   },
                   {
-                      "path":  "m11-gate.ps1",
+                      "path":  "gate.ps1",
                       "sha256":  "2f94a8768cd6673de42b89ddc936fd401f44cb9c8ecfb13c521479b105d66dc1",
                       "bytes":  12763
                   },

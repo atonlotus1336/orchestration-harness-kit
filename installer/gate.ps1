@@ -4,8 +4,8 @@ param(
 )
 
 $ErrorActionPreference = "Continue"
-$m11 = $PSScriptRoot
-$kit = Split-Path -Parent $m11
+$installer = $PSScriptRoot
+$kit = Split-Path -Parent $installer
 $steps = New-Object System.Collections.Generic.List[object]
 $overall = "GREEN"
 
@@ -37,10 +37,10 @@ function Test-ProviderHealth($RouteValue) {
   }
 }
 
-& powershell.exe -NoProfile -ExecutionPolicy Bypass -File (Join-Path $m11 "preflight\preflight.ps1") -Json | Out-Null
+& powershell.exe -NoProfile -ExecutionPolicy Bypass -File (Join-Path $installer "preflight\preflight.ps1") -Json | Out-Null
 Add-Step "preflight-windows" $(if ($LASTEXITCODE -eq 0) { "GREEN" } else { "RED" }) @{ exit = $LASTEXITCODE }
 
-$manifestPath = Join-Path $m11 "modules\module-manifest.json"
+$manifestPath = Join-Path $installer "modules\module-manifest.json"
 try {
   $manifest = Get-Content -Raw -LiteralPath $manifestPath | ConvertFrom-Json
   $ids = @($manifest.modules | ForEach-Object { $_.id })
@@ -50,12 +50,12 @@ try {
   Add-Step "module-manifest" "RED" @{ error = $_.Exception.Message }
 }
 
-$cloneTasks = @(Get-ChildItem -LiteralPath (Join-Path $m11 "clone-eval\tasks") -Filter "*.yaml" | ForEach-Object { $_.Name })
+$cloneTasks = @(Get-ChildItem -LiteralPath (Join-Path $installer "clone-eval\tasks") -Filter "*.yaml" | ForEach-Object { $_.Name })
 $badTasks = @($cloneTasks | Where-Object { $_ -notmatch '^(code-fix|agentic-file-op)-' })
 Add-Step "clone-eval-public-classes" $(if ($cloneTasks.Count -eq 8 -and $badTasks.Count -eq 0) { "GREEN" } else { "RED" }) @{ task_count = $cloneTasks.Count; bad_tasks = @($badTasks) }
 
 $absPattern = '(?<![A-Za-z0-9_])[A-Za-z]:[\\/](?!n(?:\s|$))[A-Za-z]|/(home|mnt|Users)/'
-$privateHits = Select-String -Path (Join-Path $m11 "clone-eval\tasks\*.yaml") -Pattern "vault-qa|research-synthesis|council-reasoning|$absPattern" -ErrorAction SilentlyContinue
+$privateHits = Select-String -Path (Join-Path $installer "clone-eval\tasks\*.yaml") -Pattern "vault-qa|research-synthesis|council-reasoning|$absPattern" -ErrorAction SilentlyContinue
 Add-Step "clone-eval-private-class-exclusion" $(if (@($privateHits).Count -eq 0) { "GREEN" } else { "RED" }) @{ hit_count = @($privateHits).Count }
 
 $expectedIds = @(
@@ -65,7 +65,7 @@ $expectedIds = @(
 $baselineRoute = ""
 $baselineScores = @{}
 try {
-  $baseline = Get-Content -Raw -LiteralPath (Join-Path $m11 "clone-eval\baseline.json") | ConvertFrom-Json
+  $baseline = Get-Content -Raw -LiteralPath (Join-Path $installer "clone-eval\baseline.json") | ConvertFrom-Json
   $baselineRoute = [string]$baseline.route
   foreach ($row in @($baseline.results)) { $baselineScores[[string]$row.id] = [double]$row.score }
 } catch {}
@@ -84,7 +84,7 @@ if ($providerOk) {
 try {
   $evalArgs = @("--class", "code-fix,agentic-file-op")
   if ($env:M11_EVAL_ROUTE) { $evalArgs += @("--route", $env:M11_EVAL_ROUTE) }
-  $evalOutput = & powershell.exe -NoProfile -ExecutionPolicy Bypass -File (Join-Path $m11 "clone-eval\eval-run.ps1") @evalArgs 2>&1
+  $evalOutput = & powershell.exe -NoProfile -ExecutionPolicy Bypass -File (Join-Path $installer "clone-eval\eval-run.ps1") @evalArgs 2>&1
   $evalExit = $LASTEXITCODE
   $resultLine = @($evalOutput | Where-Object { [string]$_ -like "result_written=*" } | Select-Object -Last 1)
   $resultPath = if ($resultLine) { ([string]$resultLine).Substring("result_written=".Length) } else { "" }
@@ -128,17 +128,17 @@ try {
 }
 }
 
-& powershell.exe -NoProfile -ExecutionPolicy Bypass -File (Join-Path $kit "tools\m10-scrub-v2.ps1") -Root $m11 -Json | Out-Null
-Add-Step "m11-privacy-scrub" $(if ($LASTEXITCODE -eq 0) { "GREEN" } else { "RED" }) @{ exit = $LASTEXITCODE }
+& powershell.exe -NoProfile -ExecutionPolicy Bypass -File (Join-Path $kit "tools\m10-scrub-v2.ps1") -Root $installer -Json | Out-Null
+Add-Step "installer-privacy-scrub" $(if ($LASTEXITCODE -eq 0) { "GREEN" } else { "RED" }) @{ exit = $LASTEXITCODE }
 
-$provenance = Join-Path $m11 "PROVENANCE.json"
+$provenance = Join-Path $installer "PROVENANCE.json"
 if (Test-Path -LiteralPath $provenance) {
   try {
     $p = Get-Content -Raw -LiteralPath $provenance | ConvertFrom-Json
     $bad = @()
     $entries = @($p.files | ForEach-Object { [pscustomobject]@{ path = $_.path; sha256 = $_.sha256 } })
     foreach ($entry in $entries) {
-      $path = Join-Path $m11 $entry.path
+      $path = Join-Path $installer $entry.path
       if (-not (Test-Path -LiteralPath $path)) { $bad += $entry.path; continue }
       $actual = (Get-FileHash -Algorithm SHA256 -LiteralPath $path).Hash.ToLowerInvariant()
       if ($actual -ne [string]$entry.sha256) { $bad += $entry.path }
@@ -146,10 +146,10 @@ if (Test-Path -LiteralPath $provenance) {
     $entrySet = @{}
     foreach ($entry in $entries) { $entrySet[([string]$entry.path).Replace('/', '\').ToLowerInvariant()] = $true }
     $extra = @()
-    $m11Full = ([System.IO.Path]::GetFullPath($m11)).TrimEnd('\') + '\'
-    foreach ($file in Get-ChildItem -LiteralPath $m11 -Recurse -File -Force) {
-      $rel = $file.FullName.Substring($m11Full.Length)
-      if ($rel -eq 'PROVENANCE.json' -or $rel -eq 'm11-gate-result.json' -or $rel.StartsWith('clone-eval\results\')) { continue }
+    $installerFull = ([System.IO.Path]::GetFullPath($installer)).TrimEnd('\') + '\'
+    foreach ($file in Get-ChildItem -LiteralPath $installer -Recurse -File -Force) {
+      $rel = $file.FullName.Substring($installerFull.Length)
+      if ($rel -eq 'PROVENANCE.json' -or $rel -eq 'gate-result.json' -or $rel.StartsWith('clone-eval\results\')) { continue }
       if (-not $entrySet.ContainsKey($rel.ToLowerInvariant())) { $extra += $rel }
     }
     Add-Step "provenance-checksums" $(if ($entries.Count -gt 0 -and $bad.Count -eq 0 -and $extra.Count -eq 0) { "GREEN" } else { "RED" }) @{ file_count = $entries.Count; mismatches = @($bad); extra_files = @($extra) }
@@ -167,18 +167,18 @@ if (-not $AllowSourceMachineAudit) {
   } elseif (-not (Test-Path -LiteralPath $cleanTarget)) {
     Add-Step "clean-target-recipe" "RED" @{ target = $cleanTarget; reason = "target path not reachable" }
   } else {
-    $targetEvidence = Join-Path $cleanTarget "m11-clean-install-evidence.json"
+    $targetEvidence = Join-Path $cleanTarget "clean-install-evidence.json"
     if (-not (Test-Path -LiteralPath $targetEvidence)) {
       Add-Step "clean-target-recipe" "BLOCKED" @{ target = $cleanTarget; required_evidence = $targetEvidence; reason = "clean install evidence missing" }
     } else {
       try {
         $cleanProof = Get-Content -Raw -LiteralPath $targetEvidence | ConvertFrom-Json
-        $currentProvenanceHash = (Get-FileHash -Algorithm SHA256 -LiteralPath (Join-Path $m11 "PROVENANCE.json")).Hash.ToLowerInvariant()
+        $currentProvenanceHash = (Get-FileHash -Algorithm SHA256 -LiteralPath (Join-Path $installer "PROVENANCE.json")).Hash.ToLowerInvariant()
         $proofFailures = @()
         if ($cleanProof.status -ne "PASS") { $proofFailures += "status=$($cleanProof.status)" }
         if ([string]$cleanProof.source_kit_sha256 -ne $currentProvenanceHash) { $proofFailures += "source_kit_sha256_mismatch" }
         if ([string]$cleanProof.target_kit_sha256 -ne $currentProvenanceHash) { $proofFailures += "target_kit_sha256_mismatch" }
-        if (-not $cleanProof.target_m11 -or -not (Test-Path -LiteralPath $cleanProof.target_m11)) { $proofFailures += "target_m11_missing" }
+        if (-not $cleanProof.target_installer -or -not (Test-Path -LiteralPath $cleanProof.target_m11)) { $proofFailures += "target_m11_missing" }
         if ([int]$cleanProof.copied_file_count -lt 1) { $proofFailures += "copied_file_count=$($cleanProof.copied_file_count)" }
         if ($cleanProof.bundle_gate.status -notin @("PENDING","GREEN")) { $proofFailures += "bundle_gate=$($cleanProof.bundle_gate.status)" }
         if ($cleanProof.bundle_gate.result_route -and $evalRoute -and [string]$cleanProof.bundle_gate.result_route -ne $evalRoute) { $proofFailures += "clean_parent_route_mismatch=$($cleanProof.bundle_gate.result_route)!=$evalRoute" }
@@ -213,7 +213,7 @@ $result = @{
   status = $overall
   steps = [object[]]$steps.ToArray()
 }
-if (-not $Evidence) { $Evidence = Join-Path ([System.IO.Path]::GetTempPath()) ("m11-gate-result-" + [guid]::NewGuid().ToString() + ".json") }
+if (-not $Evidence) { $Evidence = Join-Path ([System.IO.Path]::GetTempPath()) ("gate-result-" + [guid]::NewGuid().ToString() + ".json") }
 New-Item -ItemType Directory -Force -Path (Split-Path -Parent $Evidence) | Out-Null
 $result | ConvertTo-Json -Depth 12 | Set-Content -LiteralPath $Evidence -Encoding UTF8
 $result | ConvertTo-Json -Depth 12

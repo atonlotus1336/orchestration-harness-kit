@@ -42,7 +42,7 @@ modules/  guards/ (dry-run destructive-command gate + policy template + self-tes
 hooks/    memory-digest-write.sh · memory-digest.py (templated session hooks the guide wires)
 docs/     AUTHORITY-CONSTITUTION · METHODOLOGY-CHARTER · RETRIEVAL-PLAYBOOK · REASONING-EFFORT
           · LLM-OPS-RUNBOOK · ORCHESTRATION-LAYER · CONNECTOR · REPLICATION-GUIDE
-m11/ m13/ m15-practice-loop/   staged-install, n8n-binding, and practice-loop kit modules
+installer/ n8n-integration/ practice-loop/   staged-install, n8n-binding, and practice-loop kit modules
 AGENTS.md · KIT-MAINTENANCE.md · REMOTE-ACCESS.md   agent dev rules · update procedure · multi-device access
 make-bundle.sh      produce an offline zip/tar.gz from the committed state (git archive)
 .githooks/pre-commit  leak guard — blocks committing identity / host paths / Projects

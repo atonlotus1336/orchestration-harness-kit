@@ -33,14 +33,14 @@
       "id": "hermes-snapshot",
       "stage": 4,
       "required": true,
-      "source": "m11/modules/hermes-snapshot",
+      "source": "installer/modules/hermes-snapshot",
       "description": "Versioned snapshot of profile template, routing policy, and parity plugin metadata."
     },
     {
       "id": "clone-eval",
       "stage": 5,
       "required": true,
-      "source": "m11/clone-eval",
+      "source": "installer/clone-eval",
       "description": "Public eval subset proving clone parity for code-fix and agentic-file-op only."
     },
     {
@@ -48,7 +48,7 @@
       "stage": 6,
       "required": false,
       "gpu_required": true,
-      "source": "m11/modules/image-video",
+      "source": "installer/modules/image-video",
       "description": "OPTIONAL GPU-gated ComfyUI image/video tier (M14). Installs only when preflight finds an NVIDIA GPU; skips-with-note otherwise. Ships reference workflows only - never private models/workflows."
     },
     {

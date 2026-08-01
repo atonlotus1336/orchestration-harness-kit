@@ -1,4 +1,4 @@
-# m15-practice-loop (opt-in kit module)
+# practice-loop (opt-in kit module)
 
 A curated weekly learning loop that SURFACES new AI tools/techniques for a human to
 adopt or skip. It is **digest-only by design**: the loop never writes memory, never
