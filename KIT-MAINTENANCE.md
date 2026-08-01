@@ -79,6 +79,13 @@ Then the loop is: edit → commit (tripwire) → push.
 - Public vendor domains in docs (n8n.io, github.com) go on
   `approved-public-tokens.txt` — exact token per line, human-reviewed, same
   rule as any approved-list widening.
+- **Procedural docs and error messages pass the slop linter before shipping**
+  (convention since 2026-08-01): run
+  `python modules/writing-standard/slop-lint.py --strict <file>` on runbook
+  steps, install procedures, and error/deny text; fix flagged lines. READMEs
+  are EXEMPT by name — they are voiced welcome surfaces, and the standard's
+  own scope rule forbids applying it to voice. The linter fixes form, not
+  truth; it never replaces the doc-accuracy checks.
 
 ## Verify after any update (out-of-the-box checks a fresh clone must pass)
 
