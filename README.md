@@ -15,6 +15,23 @@ is a placeholder (`alice`, `/mnt/d/MyVault`, `D:\MyVault`, `__STORE__`) you fill
 3. `modules/messaging/ADAPTER-CONTRACT.md` — connect any messenger.
 4. `AGENTS.md` + `KIT-MAINTENANCE.md` — REQUIRED before changing anything (also: activate the leak guard in your clone: `git config core.hooksPath .githooks`).
 
+## Adopt it part by part (independence matrix)
+
+Nothing here is all-or-nothing. Each row works alone; install in any order.
+
+| Part | Depends on | Standalone test |
+|---|---|---|
+| `modules/guards/` safety gate | nothing (Python stdlib) | `python modules/guards/test-dry-run-gate.py` |
+| `modules/reasoning-shapes/` | nothing (they're documents) | drop into any skills dir; follow one |
+| `modules/messaging/` adapter | any OpenAI-compatible endpoint | `GATEWAY_URL=... python modules/messaging/generic-adapter.py "hi"` |
+| `modules/recipe-miner/` | a harness with session transcripts | run it on any transcript JSONL |
+| `docs/` doctrine | nothing | read; wire into your CLAUDE.md/AGENTS.md |
+| `system/` memory engine + RAG | Python 3.11 + the install guide §3 | guide §4 smoke tests |
+| `hooks/` session hooks | the memory engine above | guide §3.4 |
+
+Full zero-to-parity install = REPLICATION-GUIDE.md start to finish. Cherry-picking
+one row is equally supported — the guards gate alone is a fine first download.
+
 ## What's here
 ```
 system/   memoryweaver/ (engine) · memoryweaver-mcp/server.py · rag-orchestrator/ · tests/ · build-skills-manifest.py
