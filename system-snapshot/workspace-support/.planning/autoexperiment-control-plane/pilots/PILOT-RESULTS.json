@@ -1,0 +1,46 @@
+{
+  "schema_version": "1.0.0",
+  "mode": "shadow-and-sandbox-fixtures",
+  "production_changes": 0,
+  "pilots": [
+    {
+      "id": "retrieval-ranking",
+      "portfolios": 9,
+      "signal": "coverage-first queue and deterministic surplus rank",
+      "false_positives": 0,
+      "reproducible": true,
+      "rate_limit_use": 0,
+      "evidence": "scheduler.tests.ps1 Ranking: 7 passed"
+    },
+    {
+      "id": "markdown-replay",
+      "portfolios": ["knowledge-retrieval", "markdown-token-efficiency"],
+      "signal": "authority-preserving candidate accepted; smaller authority-losing candidate rejected",
+      "false_positives": 0,
+      "reproducible": true,
+      "rate_limit_use": 0,
+      "evidence": "markdown.tests.ps1: 5 passed"
+    },
+    {
+      "id": "cross-layer-safety",
+      "portfolios": ["agent-prompt-quality", "reliability-recovery", "safety-privacy-governance", "efficiency-operational-cost"],
+      "signal": "good Pareto candidate accepted; regression and unjustified-cost candidates rejected; sandbox rollback preserved source hashes",
+      "false_positives": 0,
+      "reproducible": true,
+      "rate_limit_use": 0,
+      "evidence": "kernel, judge, ablation, and convergence fixtures"
+    }
+  ],
+  "candidates_evaluated": 2,
+  "candidates_accepted": 1,
+  "accepted_benefit_ratio": 0.5,
+  "regressions_caught": 1,
+  "rollback_demonstrated": true,
+  "limitations": [
+    "Fixtures demonstrate mechanics, not sustained real-world usefulness.",
+    "No week-long observation window has run.",
+    "No independent model critique was run because sub-agent delegation was not authorized.",
+    "No skill visibility or schedule activation was tested live."
+  ]
+}
+

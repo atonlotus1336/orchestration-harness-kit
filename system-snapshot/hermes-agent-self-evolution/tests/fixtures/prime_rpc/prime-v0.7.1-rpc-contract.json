@@ -1,0 +1,26 @@
+{
+  "schema_version": "1.0",
+  "source_url": "https://github.com/PrimeIntellect-ai/prime-agent/blob/95afd319a78ae017a41241d50b013d656a0685ce/packages/coding-agent/docs/rpc.md",
+  "commit": "95afd319a78ae017a41241d50b013d656a0685ce",
+  "document_path": "packages/coding-agent/docs/rpc.md",
+  "document_sha256": "5e05a76ca16ce5b85c93870742bb4f0ed5014840585a3c5ce7e27d47e4e171b1",
+  "anchors": {
+    "framing": "#framing",
+    "get_state": "#get_state",
+    "get_available_models": "#get_available_models",
+    "get_session_stats": "#get_session_stats",
+    "get_last_assistant_text": "#get_last_assistant_text",
+    "events": "#event-types",
+    "tool_execution": "#tool_execution_start--tool_execution_update--tool_execution_end"
+  },
+  "invariants": {
+    "record_delimiter": "LF",
+    "optional_trailing_cr": true,
+    "unicode_line_separators_are_content": true,
+    "request_id_scope": "response-only",
+    "prompt_response_precedes_active_events": true,
+    "tool_correlation_fields": ["toolCallId", "toolName"],
+    "active_session_start": "agent_start",
+    "active_session_end": "agent_end"
+  }
+}

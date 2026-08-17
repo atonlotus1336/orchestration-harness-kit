@@ -1,0 +1,47 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://__PRIVATE_TOKEN_02__.local/contracts/prime-capabilities.schema.json",
+  "title": "Prime capability negotiation report",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["contract_version", "rpc_protocol", "runtime", "capabilities", "restrictions"],
+  "properties": {
+    "contract_version": {"const": "1.0"},
+    "rpc_protocol": {"const": "prime-rpc-v1"},
+    "runtime": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["version", "commit", "repository", "integrity"],
+      "properties": {
+        "version": {"type": "string", "pattern": "^v?[0-9]+\\.[0-9]+\\.[0-9]+$"},
+        "commit": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+        "repository": {"const": "https://github.com/PrimeIntellect-ai/prime-agent"},
+        "integrity": {"type": "string", "pattern": "^(?:git:sha1:[0-9a-f]{40}|sha256:[0-9a-f]{64})$"}
+      }
+    },
+    "capabilities": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["prompt", "state", "usage", "abort", "event_stream", "ipython"],
+      "properties": {
+        "prompt": {"type": "boolean"},
+        "state": {"type": "boolean"},
+        "usage": {"type": "boolean"},
+        "abort": {"type": "boolean"},
+        "event_stream": {"type": "boolean"},
+        "ipython": {"type": "boolean"}
+      }
+    },
+    "restrictions": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["workspace", "mcp_access", "shared_memory_write", "profile_secret_read"],
+      "properties": {
+        "workspace": {"const": "disposable"},
+        "mcp_access": {"const": false},
+        "shared_memory_write": {"const": false},
+        "profile_secret_read": {"const": false}
+      }
+    }
+  }
+}

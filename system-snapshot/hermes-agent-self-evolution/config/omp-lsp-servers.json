@@ -1,0 +1,29 @@
+{
+  "schema_version": "1.0",
+  "enabled": true,
+  "servers": {
+    "python": {
+      "language": "python",
+      "executable": "/usr/local/bin/pyright-langserver",
+      "version": "1.1.390",
+      "digest": "sha256:f200762078eb9880faf421a5b30f9ef3055b1d85c6f10780d75db4da8d8499f1",
+      "reviewed": true,
+      "read_only": true,
+      "deny": ["workspace/applyEdit", "textDocument/rename", "textDocument/formatting", "textDocument/codeAction"]
+    },
+    "typescript": {
+      "language": "typescript",
+      "executable": "/usr/local/bin/typescript-language-server",
+      "version": "4.3.3",
+      "digest": "sha256:f314b7e050232a1b619f21955718e2259f685b7e8f85def3149e5b28c7737ca0",
+      "reviewed": true,
+      "read_only": true,
+      "deny": ["workspace/applyEdit", "textDocument/rename", "textDocument/formatting", "textDocument/codeAction"]
+    }
+  },
+  "deny_public_egress": true,
+  "deny_dynamic_download": true,
+  "deny_lspmux_auto_detection": true,
+  "deny_raw_lsp_requests": true,
+  "reject_server_initiated_edits": true
+}

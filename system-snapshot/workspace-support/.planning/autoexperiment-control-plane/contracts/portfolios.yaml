@@ -1,0 +1,16 @@
+{
+  "schema_version": "1.0.0",
+  "minimum_coverage_units": 1,
+  "portfolios": [
+    {"id":"knowledge-retrieval","name":"Knowledge and retrieval","order":1,"cadences":["daily","weekly","monthly"]},
+    {"id":"agent-prompt-quality","name":"Agent and prompt quality","order":2,"cadences":["daily","weekly","monthly"]},
+    {"id":"engineering-delivery","name":"Engineering delivery","order":3,"cadences":["daily","weekly","monthly"]},
+    {"id":"reliability-recovery","name":"Reliability and recovery","order":4,"cadences":["daily","weekly","monthly"]},
+    {"id":"safety-privacy-governance","name":"Safety, privacy, and governance","order":5,"cadences":["daily","weekly","monthly"]},
+    {"id":"learning-memory","name":"Learning and memory","order":6,"cadences":["daily","weekly","monthly"]},
+    {"id":"product-mission-outcomes","name":"Product and mission outcomes","order":7,"cadences":["daily","weekly","monthly"]},
+    {"id":"efficiency-operational-cost","name":"Efficiency and operational cost","order":8,"cadences":["daily","weekly","monthly"]},
+    {"id":"markdown-token-efficiency","name":"Markdown and token efficiency","order":9,"cadences":["daily","weekly","monthly"]}
+  ]
+}
+

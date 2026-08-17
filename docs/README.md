@@ -9,6 +9,10 @@ Small local open-source models should begin with
 [`SMALL-MODEL-START.md`](SMALL-MODEL-START.md). It reduces installation to one
 command and one pass/fail flag at a time.
 
+Owners restoring the complete recent implementation should also read
+[`PRIVATE-SYSTEM-SNAPSHOT.md`](PRIVATE-SYSTEM-SNAPSHOT.md). It documents the real
+Prime/OMP, Telegram, and auto-improvement source snapshot and its exclusions.
+
 ## Reading order for newcomers
 
 1. **`REPLICATION-GUIDE.md`** — the full-stack install, start here if you're setting up.

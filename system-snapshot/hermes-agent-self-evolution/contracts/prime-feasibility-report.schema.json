@@ -1,0 +1,140 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://__PRIVATE_TOKEN_02__.local/contracts/prime-feasibility-report.schema.json",
+  "$defs": {
+    "sha": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "component": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["status", "source_kind", "sha256", "upstream_sha256"],
+      "properties": {
+        "status": {"enum": ["PASS", "FAIL", "UNVERIFIED", "NOT_RUN"]},
+        "source_kind": {"enum": ["LIVE", "SIMULATED"]},
+        "sha256": {"$ref": "#/$defs/sha"},
+        "upstream_sha256": {"type": "string", "pattern": "^(?:[0-9a-f]{64})?$"}
+      }
+    }
+  },
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "report_id", "captured_at", "source_kind", "status", "go_eligible", "decision_options", "human_decision", "prerequisite", "components", "scan_summary", "launch", "context", "reasons"],
+  "properties": {
+    "schema_version": {"const": "1.0"},
+    "report_id": {"type": "string", "pattern": "^[0-9a-f]{32}$"},
+    "captured_at": {"type": "string", "format": "date-time"},
+    "source_kind": {"enum": ["LIVE", "SIMULATED"]},
+    "status": {"enum": ["READY", "FAIL", "UNVERIFIED"]},
+    "go_eligible": {"type": "boolean"},
+    "decision_options": {
+      "oneOf": [
+        {"const": ["NO_GO"]},
+        {"const": ["GO", "NO_GO"]}
+      ]
+    },
+    "human_decision": {"type": "null"},
+    "prerequisite": {
+      "type": "object", "additionalProperties": false,
+      "required": ["status", "go_eligible", "sha256"],
+      "properties": {
+        "status": {"enum": ["READY", "UNAVAILABLE"]},
+        "go_eligible": {"type": "boolean"},
+        "sha256": {"$ref": "#/$defs/sha"}
+      }
+    },
+    "components": {
+      "type": "object", "additionalProperties": false,
+      "required": ["provenance", "route", "image", "containment", "rpc", "scans", "native_before", "native_after", "context_preservation", "operator_authorization", "desktop"],
+      "properties": {
+        "provenance": {"$ref": "#/$defs/component"}, "route": {"$ref": "#/$defs/component"},
+        "image": {"$ref": "#/$defs/component"}, "containment": {"$ref": "#/$defs/component"},
+        "rpc": {"$ref": "#/$defs/component"}, "scans": {"$ref": "#/$defs/component"},
+        "native_before": {"$ref": "#/$defs/component"}, "native_after": {"$ref": "#/$defs/component"},
+        "context_preservation": {"$ref": "#/$defs/component"},
+        "operator_authorization": {"$ref": "#/$defs/component"}, "desktop": {"$ref": "#/$defs/component"}
+      }
+    },
+    "scan_summary": {
+      "type": "object", "additionalProperties": false,
+      "required": ["generic_status", "exact_status", "credential_values_supplied"],
+      "properties": {
+        "generic_status": {"const": "PASS"},
+        "exact_status": {"enum": ["PASS", "NOT_APPLICABLE"]},
+        "credential_values_supplied": {"type": "boolean"}
+      }
+    },
+    "launch": {
+      "type": "object", "additionalProperties": false,
+      "required": ["podman_build_started", "podman_run_started", "prime_child_started"],
+      "properties": {
+        "podman_build_started": {"type": "boolean"}, "podman_run_started": {"type": "boolean"}, "prime_child_started": {"type": "boolean"}
+      }
+    },
+    "context": {
+      "type": "object", "additionalProperties": false,
+      "required": ["provider", "model", "api", "endpoint", "image_digest", "prerequisite_sha256", "native_before_fingerprint", "native_after_fingerprint", "operator_report_id", "desktop_report_id"],
+      "properties": {
+        "provider": {"type": "string"}, "model": {"type": "string"}, "api": {"type": "string"},
+        "endpoint": {"type": "string"}, "image_digest": {"type": "string"},
+        "prerequisite_sha256": {"$ref": "#/$defs/sha"},
+        "native_before_fingerprint": {"$ref": "#/$defs/sha"}, "native_after_fingerprint": {"$ref": "#/$defs/sha"},
+        "operator_report_id": {"type": "string", "pattern": "^(?:[0-9a-f]{32})?$"},
+        "desktop_report_id": {"type": "string", "pattern": "^(?:[0-9a-f]{32})?$"}
+      }
+    },
+    "reasons": {"type": "array", "items": {"type": "string", "minLength": 1}, "uniqueItems": true}
+  },
+  "allOf": [
+    {
+      "if": {"properties": {"source_kind": {"const": "SIMULATED"}}},
+      "then": {"properties": {"status": {"const": "UNVERIFIED"}, "go_eligible": {"const": false}, "decision_options": {"const": ["NO_GO"]}}}
+    },
+    {
+      "if": {"properties": {"prerequisite": {"properties": {"status": {"const": "UNAVAILABLE"}}}}},
+      "then": {
+        "properties": {
+          "status": {"const": "UNVERIFIED"}, "go_eligible": {"const": false}, "decision_options": {"const": ["NO_GO"]},
+          "scan_summary": {"properties": {"generic_status": {"const": "PASS"}, "exact_status": {"const": "NOT_APPLICABLE"}, "credential_values_supplied": {"const": false}}},
+          "launch": {"properties": {"podman_build_started": {"const": false}, "podman_run_started": {"const": false}, "prime_child_started": {"const": false}}},
+          "components": {"properties": {"image": {"properties": {"status": {"const": "NOT_RUN"}}}, "containment": {"properties": {"status": {"const": "NOT_RUN"}}}, "rpc": {"properties": {"status": {"const": "NOT_RUN"}}}}}
+        }
+      }
+    },
+    {
+      "if": {"properties": {"status": {"const": "READY"}}},
+      "then": {
+        "properties": {
+          "source_kind": {"const": "LIVE"}, "go_eligible": {"const": true}, "decision_options": {"const": ["GO", "NO_GO"]},
+          "scan_summary": {"properties": {"generic_status": {"const": "PASS"}, "exact_status": {"const": "PASS"}, "credential_values_supplied": {"const": true}}},
+          "prerequisite": {"properties": {"status": {"const": "READY"}, "go_eligible": {"const": true}}},
+          "launch": {"properties": {"podman_build_started": {"const": false}, "podman_run_started": {"const": true}, "prime_child_started": {"const": true}}},
+          "components": {"properties": {
+            "provenance": {"properties": {"status": {"const": "PASS"}, "source_kind": {"const": "LIVE"}}}, "route": {"properties": {"status": {"const": "PASS"}, "source_kind": {"const": "LIVE"}}},
+            "image": {"properties": {"status": {"const": "PASS"}, "source_kind": {"const": "LIVE"}}}, "containment": {"properties": {"status": {"const": "PASS"}, "source_kind": {"const": "LIVE"}}},
+            "rpc": {"properties": {"status": {"const": "PASS"}, "source_kind": {"const": "LIVE"}}}, "scans": {"properties": {"status": {"const": "PASS"}, "source_kind": {"const": "LIVE"}}},
+            "native_before": {"properties": {"status": {"const": "PASS"}, "source_kind": {"const": "LIVE"}}}, "native_after": {"properties": {"status": {"const": "PASS"}, "source_kind": {"const": "LIVE"}}},
+            "context_preservation": {"properties": {"status": {"const": "PASS"}, "source_kind": {"const": "LIVE"}}},
+            "operator_authorization": {"properties": {"status": {"const": "PASS"}, "source_kind": {"const": "LIVE"}}},
+            "desktop": {"properties": {"status": {"enum": ["PASS", "UNVERIFIED"]}, "source_kind": {"const": "LIVE"}}}
+          }}
+        }
+      }
+    },
+    {
+      "if": {"properties": {"components": {"properties": {"desktop": {"properties": {"status": {"const": "UNVERIFIED"}}}}}}},
+      "then": {
+        "properties": {
+          "context": {"properties": {"desktop_report_id": {"const": ""}}},
+          "reasons": {"contains": {"const": "desktop_evidence_deferred"}}
+        }
+      }
+    },
+    {
+      "if": {"properties": {"components": {"properties": {"desktop": {"properties": {"status": {"const": "PASS"}}}}}}},
+      "then": {"properties": {"context": {"properties": {"desktop_report_id": {"pattern": "^[0-9a-f]{32}$"}}}}}
+    },
+    {
+      "if": {"properties": {"status": {"enum": ["FAIL", "UNVERIFIED"]}}},
+      "then": {"properties": {"go_eligible": {"const": false}, "decision_options": {"const": ["NO_GO"]}}}
+    }
+  ]
+}

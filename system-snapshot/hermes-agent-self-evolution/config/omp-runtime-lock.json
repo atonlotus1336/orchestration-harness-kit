@@ -1,0 +1,25 @@
+{
+  "schema_version": "1.0",
+  "package": {
+    "name": "@oh-my-pi/pi-coding-agent",
+    "version": "17.3.0",
+    "integrity": "sha512-Ad2VB+dRxmKACarbq7eM9/cjfWlZWeKBliqAP5OpWU8vrj8i4xLVtuJpTJ3q3Ile9Tau2YbzBSJeWHDNAMtIhw==",
+    "registry": "https://registry.npmjs.org/@oh-my-pi/pi-coding-agent/-/pi-coding-agent-17.3.0.tgz"
+  },
+  "bun": {
+    "minimum": "1.3.14"
+  },
+  "source": {
+    "repository": "https://github.com/can1357/oh-my-pi",
+    "tag": "v17.3.0",
+    "commit": "326d24bd40d9858e24e1036ae739c27c72eeb543",
+    "license": "MIT"
+  },
+  "image": {
+    "digest": "sha256:c5aa0c8539df62d434566f8e1bcb28e3024b01234cfd45e3cdf0e09ca357d147",
+    "sbom_sha256": "932025d3c6020839b638d1b5c1abe4e548a6d6b219cf5826219e6c79178cc3d2",
+    "sbom_path": "containers/omp/sbom.spdx.json",
+    "tag": "localhost/hermes-omp-sidecar:phase10-a"
+  },
+  "locked": true
+}

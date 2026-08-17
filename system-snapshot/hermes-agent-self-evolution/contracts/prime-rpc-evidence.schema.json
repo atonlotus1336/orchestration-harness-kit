@@ -1,0 +1,166 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://__PRIVATE_TOKEN_02__.local/contracts/prime-rpc-evidence.schema.json",
+  "title": "Contained Prime v0.7.1 RPC evidence",
+  "$defs": {
+    "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "routeFields": {
+      "type": "object",
+      "properties": {
+        "status": {"enum": ["VERIFIED", "UNVERIFIED"]},
+        "provider": {"type": "string"},
+        "model": {"type": "string"},
+        "api": {"type": "string"},
+        "endpoint": {"type": "string"}
+      },
+      "required": ["status"],
+      "additionalProperties": false
+    }
+  },
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version", "evidence_id", "status", "go_eligible", "launch_started", "reason",
+    "credential", "containment", "rpc", "route", "transcript", "state", "usage", "final_text", "scans"
+  ],
+  "properties": {
+    "schema_version": {"const": "1.0"},
+    "evidence_id": {"$ref": "#/$defs/sha256"},
+    "status": {"enum": ["READY", "NOT_RUN", "UNVERIFIED"]},
+    "go_eligible": {"type": "boolean"},
+    "launch_started": {"type": "boolean"},
+    "reason": {"type": "string", "minLength": 1, "maxLength": 256},
+    "credential": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "status", "source", "runtime_reference", "provider_id", "source_reference", "config_fingerprint_sha256",
+        "availability_status", "reachability_status", "value_present", "value_persisted"
+      ],
+      "properties": {
+        "status": {"enum": ["VERIFIED", "UNVERIFIED"]},
+        "source": {"enum": ["runtime-environment", "hermes-provider-config"]},
+        "runtime_reference": {"type": "string", "pattern": "^[A-Z][A-Z0-9_]{2,127}$"},
+        "provider_id": {"type": ["string", "null"]},
+        "source_reference": {"type": ["string", "null"], "pattern": "^[A-Z][A-Z0-9_]{2,127}$"},
+        "config_fingerprint_sha256": {"anyOf": [{"$ref": "#/$defs/sha256"}, {"type": "null"}]},
+        "availability_status": {"enum": ["VERIFIED", "UNVERIFIED"]},
+        "reachability_status": {"enum": ["VERIFIED", "UNVERIFIED", "FAIL", "NOT_RUN"]},
+        "value_present": {"type": "boolean"},
+        "value_persisted": {"const": false}
+      }
+    },
+    "containment": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["status", "upstream_sha256", "cleanup_verified", "container_absent", "cgroup_populated"],
+      "properties": {
+        "status": {"enum": ["READY", "UNAVAILABLE", "UNVERIFIED"]},
+        "upstream_sha256": {"$ref": "#/$defs/sha256"},
+        "cleanup_verified": {"type": "boolean"},
+        "container_absent": {"type": "boolean"},
+        "cgroup_populated": {"type": ["integer", "null"], "minimum": 0, "maximum": 1}
+      }
+    },
+    "rpc": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "status", "contract_commit", "contract_document_sha256", "frame_count", "request_count",
+        "agent_runs", "ipython_calls"
+      ],
+      "properties": {
+        "status": {"enum": ["PASS", "FAIL", "NOT_RUN", "UNVERIFIED"]},
+        "contract_commit": {"const": "95afd319a78ae017a41241d50b013d656a0685ce"},
+        "contract_document_sha256": {"const": "5e05a76ca16ce5b85c93870742bb4f0ed5014840585a3c5ce7e27d47e4e171b1"},
+        "frame_count": {"type": "integer", "minimum": 0},
+        "request_count": {"type": "integer", "minimum": 0},
+        "agent_runs": {"type": "integer", "minimum": 0},
+        "ipython_calls": {"type": "integer", "minimum": 0}
+      }
+    },
+    "route": {"$ref": "#/$defs/routeFields"},
+    "transcript": {"type": "array", "items": {"type": "object"}},
+    "state": {"type": ["object", "null"]},
+    "usage": {"type": ["object", "null"]},
+    "final_text": {"type": ["string", "null"]},
+    "scans": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["generic_scan", "exact_scan"],
+      "properties": {
+        "generic_scan": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["status", "matches"],
+          "properties": {
+            "status": {"const": "PASS"},
+            "matches": {"const": 0}
+          }
+        },
+        "exact_scan": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["status", "values_supplied", "raw_matches", "persisted_matches"],
+          "properties": {
+            "status": {"enum": ["PASS", "NOT_APPLICABLE"]},
+            "values_supplied": {"type": "integer", "minimum": 0},
+            "raw_matches": {"type": "integer", "minimum": 0},
+            "persisted_matches": {"const": 0}
+          }
+        }
+      }
+    }
+  },
+  "allOf": [
+    {
+      "if": {"properties": {"status": {"const": "READY"}}},
+      "then": {
+        "properties": {
+          "go_eligible": {"const": true},
+          "launch_started": {"const": true},
+          "credential": {
+            "properties": {
+              "status": {"const": "VERIFIED"},
+              "availability_status": {"const": "VERIFIED"},
+              "reachability_status": {"const": "VERIFIED"},
+              "value_present": {"const": true},
+              "value_persisted": {"const": false}
+            }
+          },
+          "containment": {
+            "properties": {
+              "status": {"const": "READY"},
+              "cleanup_verified": {"const": true},
+              "container_absent": {"const": true},
+              "cgroup_populated": {"const": 0}
+            }
+          },
+          "rpc": {
+            "properties": {
+              "status": {"const": "PASS"},
+              "request_count": {"const": 6},
+              "agent_runs": {"const": 1},
+              "ipython_calls": {"const": 1}
+            }
+          },
+          "route": {"properties": {"status": {"const": "VERIFIED"}}},
+          "final_text": {"const": "PRIME_RPC_OK:4"}
+        }
+      }
+    },
+    {
+      "if": {"properties": {"status": {"enum": ["NOT_RUN", "UNVERIFIED"]}}},
+      "then": {"properties": {"go_eligible": {"const": false}}}
+    },
+    {
+      "if": {"properties": {"status": {"const": "NOT_RUN"}}},
+      "then": {
+        "properties": {
+          "launch_started": {"const": false},
+          "rpc": {"properties": {"status": {"const": "NOT_RUN"}, "frame_count": {"const": 0}, "request_count": {"const": 0}}}
+        }
+      }
+    }
+  ]
+}

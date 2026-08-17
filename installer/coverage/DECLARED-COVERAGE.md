@@ -9,6 +9,7 @@
   authenticated remote-role contracts.
 - Telegram adapter sender-denial self-test (no live token is exercised).
 - Prime/OMP provenance preparation and backup-gated maintenance self-tests.
+- Private system snapshot file hashes, source boundary, and restore dry-run.
 - Hermes snapshot provenance and checksums.
 - Clone-eval public subset contains only `code-fix` and `agentic-file-op`.
 - Privacy scrub over the M11 kit surface.

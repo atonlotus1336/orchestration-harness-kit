@@ -1,0 +1,75 @@
+{
+  "build_started": true,
+  "builds": [
+    {
+      "application_file_count": 47698,
+      "application_manifest_sha256": "6342e5412ddd521535d3a278168e2338ca7b8cbed0cec68ebd03cccfc43704d4",
+      "base_layer_digests": [
+        "sha256:aca83606673032726b42f8e1396ceb979c32bfb26b602732baf699053e46b33e",
+        "sha256:9cec99e910cbef45442323a31a04c92b5c14dddf236dd769d02c54af99e56d6d",
+        "sha256:4858806d59148b044f1fb5491f84963f5742556eefa0ce9de13717e1a195edae",
+        "sha256:6bcbbe0b3546e8b3e707223aee64fd1c2d220d8d8c6834829e392648f38d5b6e"
+      ],
+      "image_id": "68ad2ac94f78333fe4954403d09de4c40a57464a85ad52db4fc21b744bdfa569",
+      "labels": {
+        "ai.__PRIVATE_TOKEN_02__.prime.context.sha256": "f082d42302af59ff6c1f47edf6cf78b1f47bd20c545f56c9e6833292cd82668b",
+        "ai.__PRIVATE_TOKEN_02__.prime.mode": "rpc-probe",
+        "ai.__PRIVATE_TOKEN_02__.prime.tree": "caf6fa88a48d2a4b07b903c327ae3d6b2d1b0466",
+        "io.buildah.version": "1.33.7",
+        "org.opencontainers.image.revision": "95afd319a78ae017a41241d50b013d656a0685ce",
+        "org.opencontainers.image.title": "Hermes Prime Agent probe",
+        "org.opencontainers.image.version": "0.7.1"
+      },
+      "manifest_sha256": "sha256:e23c76c3d1d5a31e268e6017b5a387d73a4b48a5f385474184bd1e6d02627a51",
+      "platform": "linux/amd64",
+      "runtime_config_sha256": "df9bbc1c04000fa10966ec4508fc83b15c55ca21b803b5a7ac17401f64d6e8d3",
+      "tag": "localhost/hermes-prime-probe:phase01-a"
+    },
+    {
+      "application_file_count": 47698,
+      "application_manifest_sha256": "6342e5412ddd521535d3a278168e2338ca7b8cbed0cec68ebd03cccfc43704d4",
+      "base_layer_digests": [
+        "sha256:aca83606673032726b42f8e1396ceb979c32bfb26b602732baf699053e46b33e",
+        "sha256:9cec99e910cbef45442323a31a04c92b5c14dddf236dd769d02c54af99e56d6d",
+        "sha256:4858806d59148b044f1fb5491f84963f5742556eefa0ce9de13717e1a195edae",
+        "sha256:6bcbbe0b3546e8b3e707223aee64fd1c2d220d8d8c6834829e392648f38d5b6e"
+      ],
+      "image_id": "a4a398b4cb95cd1175b8fd5161072d203a534846c2c6121989d3f6513e652c40",
+      "labels": {
+        "ai.__PRIVATE_TOKEN_02__.prime.context.sha256": "f082d42302af59ff6c1f47edf6cf78b1f47bd20c545f56c9e6833292cd82668b",
+        "ai.__PRIVATE_TOKEN_02__.prime.mode": "rpc-probe",
+        "ai.__PRIVATE_TOKEN_02__.prime.tree": "caf6fa88a48d2a4b07b903c327ae3d6b2d1b0466",
+        "io.buildah.version": "1.33.7",
+        "org.opencontainers.image.revision": "95afd319a78ae017a41241d50b013d656a0685ce",
+        "org.opencontainers.image.title": "Hermes Prime Agent probe",
+        "org.opencontainers.image.version": "0.7.1"
+      },
+      "manifest_sha256": "sha256:514044921e942f46740d81a4c33ba6dcafcdd77ba23b1d10756e203b347b468f",
+      "platform": "linux/amd64",
+      "runtime_config_sha256": "df9bbc1c04000fa10966ec4508fc83b15c55ca21b803b5a7ac17401f64d6e8d3",
+      "tag": "localhost/hermes-prime-probe:phase01-b"
+    }
+  ],
+  "canonical_reproducibility": true,
+  "go_eligible": true,
+  "local_image_id": "68ad2ac94f78333fe4954403d09de4c40a57464a85ad52db4fc21b744bdfa569",
+  "node_base": "docker.io/library/node@sha256:dd9d21971ec4395903fa6143c2b9267d048ae01ca6d3ea96f16cb30df6187d94",
+  "prerequisite_sha256": "db5a36beac684149dc0196d9b7fb2ef680c157d02ff2ccf4d6c80f680f4c0b51",
+  "provenance_sha256": "c1b30ca940be6ea03df0e0ebdfc77a03190406c45a0b1d05d1153ddebd8b85e0",
+  "python_base": "docker.io/library/python@sha256:519591d6871b7bc437060736b9f7456b8731f1499a57e22e6c285135ae657bf7",
+  "raw_storage_digest_equal": false,
+  "reason": "",
+  "runnable_image": "localhost/hermes-prime-probe@sha256:e23c76c3d1d5a31e268e6017b5a387d73a4b48a5f385474184bd1e6d02627a51",
+  "runtime_contract": {
+    "mutable_tag": false,
+    "pull": false,
+    "rebuild": false
+  },
+  "sbom_path": "containers/prime-probe/sbom.spdx.json",
+  "sbom_sha256": "7c5cdd70c28980188718472e899c2f68a0570a7ca5e286ab57e8f1e8df9b7764",
+  "schema_version": "1.0",
+  "source_commit": "95afd319a78ae017a41241d50b013d656a0685ce",
+  "source_context_sha256": "f082d42302af59ff6c1f47edf6cf78b1f47bd20c545f56c9e6833292cd82668b",
+  "source_tree": "caf6fa88a48d2a4b07b903c327ae3d6b2d1b0466",
+  "status": "READY"
+}

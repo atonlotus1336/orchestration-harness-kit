@@ -1,0 +1,25 @@
+{
+  "schema_version": "1.0",
+  "enabled": true,
+  "max_content_bytes": 16384,
+  "default_expiry_days": 90,
+  "shared_root": "__WSL_WORKSPACE__/.claude/auto-memory/prime-promotions",
+  "auto_global_subject_prefixes": [
+    "debug.",
+    "setup.",
+    "orchestration.",
+    "connectivity.",
+    "mount.",
+    "tailscale.",
+    "vps."
+  ],
+  "approval_subject_prefixes": [
+    "safety.",
+    "credential.",
+    "provider.",
+    "permission.",
+    "destructive.",
+    "policy."
+  ],
+  "configuration_envelopes": []
+}

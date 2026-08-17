@@ -1,0 +1,57 @@
+{
+  "schema_version": "1.0",
+  "enabled": true,
+  "approval_ttl_seconds": 900,
+  "max_argument_bytes": 65536,
+  "max_result_bytes": 65536,
+  "aliases": {
+    "memory.search": {
+      "classification": "retrieval",
+      "approval": "auto",
+      "server": "memoryweaver-mcp",
+      "tool": "memory_recall"
+    },
+    "rag.search": {
+      "classification": "retrieval",
+      "approval": "auto",
+      "server": "rag-orchestrator",
+      "tool": "rag_query"
+    },
+    "learning.record": {
+      "classification": "learning",
+      "approval": "auto",
+      "server": "prime-learning",
+      "tool": "record"
+    },
+    "learning.propose": {
+      "classification": "learning",
+      "approval": "auto",
+      "server": "prime-learning",
+      "tool": "propose"
+    },
+    "wordpress.list": {
+      "classification": "retrieval",
+      "approval": "auto",
+      "server": "wordpress",
+      "tool": "wordpress_list_posts"
+    },
+    "wordpress.update": {
+      "classification": "action",
+      "approval": "required",
+      "server": "wordpress",
+      "tool": "wordpress_update_post"
+    },
+    "omp.lsp.read": {
+      "classification": "retrieval",
+      "approval": "auto",
+      "server": "omp-adapter",
+      "tool": "lsp_read"
+    },
+    "omp.hash_edit.preview": {
+      "classification": "action",
+      "approval": "required",
+      "server": "omp-adapter",
+      "tool": "hash_edit_preview"
+    }
+  }
+}

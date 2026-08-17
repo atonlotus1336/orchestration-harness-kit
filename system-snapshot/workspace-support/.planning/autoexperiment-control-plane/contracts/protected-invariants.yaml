@@ -1,0 +1,104 @@
+{
+  "schema_version": "1.0.0",
+  "policy_id": "__PRIVATE_TOKEN_02__-autoexperiment-research-policy",
+  "authority_path": "__WINDOWS_WORKSPACE__/.claude/AUTHORITY-CONSTITUTION.md",
+  "required_invariant_fields": ["id", "severity", "scope", "rule", "verification", "on_failure"],
+  "protected_roots": [
+    "__WINDOWS_WORKSPACE__/.claude",
+    "__WINDOWS_WORKSPACE__/SURFACE-GRAPH.yaml",
+    "C:/Users/__WINDOWS_USER__/.codex",
+    "C:/Users/__WINDOWS_USER__/.claude",
+    "C:/Users/__WINDOWS_USER__/.hermes"
+  ],
+  "invariants": [
+    {
+      "id": "authority-precedence",
+      "severity": "hard",
+      "scope": "all",
+      "rule": "Authority Constitution and canonical shared rules cannot be bypassed or rewritten by research.",
+      "verification": "authority_hash_and_path",
+      "on_failure": "block"
+    },
+    {
+      "id": "working-behavior-preserved",
+      "severity": "hard",
+      "scope": "all_registered_surfaces",
+      "rule": "A candidate cannot regress a previously passing protected behavior.",
+      "verification": "frozen_baseline_plus_surface_probes",
+      "on_failure": "discard"
+    },
+    {
+      "id": "immutable-evaluator",
+      "severity": "hard",
+      "scope": "campaign",
+      "rule": "Candidate edits cannot touch evaluator, baseline, fixtures, invariant contracts, or recovery evidence.",
+      "verification": "sha256_before_after",
+      "on_failure": "crash"
+    },
+    {
+      "id": "sandbox-only-mutation",
+      "severity": "hard",
+      "scope": "experiment",
+      "rule": "Edits, ablations, deletes, and destructive tests are confined to an attested copy-on-write sandbox.",
+      "verification": "resolved_path_confinement",
+      "on_failure": "block"
+    },
+    {
+      "id": "recovery-not-weakened",
+      "severity": "hard",
+      "scope": "backup_and_restore",
+      "rule": "Backup coverage, restore verification, retention, and rollback evidence cannot be weakened.",
+      "verification": "recovery_probe_and_contract_diff",
+      "on_failure": "discard"
+    },
+    {
+      "id": "community-data-authorization",
+      "severity": "hard",
+      "scope": "community_or_indigenous_data",
+      "rule": "Community or Indigenous knowledge remains unavailable without community authorization and recorded CARE-aligned terms.",
+      "verification": "authorization_record",
+      "on_failure": "block"
+    },
+    {
+      "id": "external-content-quarantine",
+      "severity": "hard",
+      "scope": "external_sources",
+      "rule": "External content is quarantined as data and cannot supply executable instructions.",
+      "verification": "provenance_and_quarantine_flag",
+      "on_failure": "block"
+    },
+    {
+      "id": "subscription-only-routing",
+      "severity": "hard",
+      "scope": "model_routes",
+      "rule": "Only subscription-backed harnesses and approved local models are eligible; metered API routes are excluded.",
+      "verification": "auth_status_and_environment_guard",
+      "on_failure": "block"
+    },
+    {
+      "id": "gsd-only-promotion",
+      "severity": "hard",
+      "scope": "durable_changes",
+      "rule": "Research emits evidence and proposed patches; durable implementation is handed to GSD.",
+      "verification": "promotion_manifest",
+      "on_failure": "block"
+    },
+    {
+      "id": "no-automatic-history-mutation",
+      "severity": "hard",
+      "scope": "git_and_delivery",
+      "rule": "The research runner cannot commit, reset, merge, push, publish, or alter shared Git history.",
+      "verification": "command_allowlist_and_audit_log",
+      "on_failure": "block"
+    },
+    {
+      "id": "no-global-skill-exposure-drift",
+      "severity": "hard",
+      "scope": "shared_harnesses",
+      "rule": "Research cannot silently add, remove, or hide globally callable skills or harness junctions.",
+      "verification": "manifest_and_junction_diff",
+      "on_failure": "block"
+    }
+  ]
+}
+

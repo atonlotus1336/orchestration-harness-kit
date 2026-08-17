@@ -1,0 +1,81 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://__PRIVATE_TOKEN_02__.local/contracts/prime-bridge.schema.json",
+  "title": "Hermes Prime bridge contract",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "contract_version",
+    "job_id",
+    "profile",
+    "project",
+    "workspace",
+    "lifecycle",
+    "rpc",
+    "model_route",
+    "capabilities",
+    "prime_source",
+    "fallback",
+    "emergency_disable"
+  ],
+  "properties": {
+    "contract_version": {"const": "1.0"},
+    "job_id": {"type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{7,127}$"},
+    "profile": {"type": "string", "pattern": "^[a-z0-9][a-z0-9._-]{0,63}$"},
+    "project": {"type": "string", "minLength": 1, "maxLength": 128},
+    "workspace": {"type": "string", "minLength": 1, "maxLength": 4096},
+    "lifecycle": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["state", "owner", "created_at"],
+      "properties": {
+        "state": {
+          "enum": ["created", "starting", "running", "stopping", "completed", "failed", "cancelled", "orphaned"]
+        },
+        "owner": {"const": "hermes-prime-bridge"},
+        "created_at": {"type": "string", "format": "date-time"}
+      }
+    },
+    "rpc": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["protocol_version", "framing", "correlation_ids"],
+      "properties": {
+        "protocol_version": {"const": "prime-rpc-v1"},
+        "framing": {"const": "jsonl-lf"},
+        "correlation_ids": {"const": true}
+      }
+    },
+    "model_route": {"$ref": "prime-model-route.schema.json"},
+    "capabilities": {"$ref": "prime-capabilities.schema.json"},
+    "prime_source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["repository", "release", "commit", "integrity"],
+      "properties": {
+        "repository": {"const": "https://github.com/PrimeIntellect-ai/prime-agent"},
+        "release": {"type": "string", "pattern": "^v[0-9]+\\.[0-9]+\\.[0-9]+$"},
+        "commit": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+        "integrity": {"type": "string", "pattern": "^(?:git:sha1:[0-9a-f]{40}|sha256:[0-9a-f]{64})$"}
+      }
+    },
+    "fallback": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["mode", "silent_substitution"],
+      "properties": {
+        "mode": {"const": "native-hermes"},
+        "silent_substitution": {"const": false}
+      }
+    },
+    "emergency_disable": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["global", "profile"],
+      "properties": {
+        "global": {"type": "boolean"},
+        "profile": {"type": "boolean"}
+      }
+    }
+  }
+}

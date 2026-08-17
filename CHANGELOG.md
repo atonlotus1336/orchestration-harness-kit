@@ -13,8 +13,13 @@
 - Direct Telegram adapter, sender allowlist, setup guide, and failure map.
 - Small-model cold-start instructions and an honest local 8B reference result.
 - Checksum-bound Prime/OMP preparation and a backup-gated maintenance runner.
+- Private 311-file implementation snapshot covering the real Prime Agent bridge,
+  Oh My Pi worker runtime, Hermes Telegram tooling, auto-learning, autoexperiment,
+  verified maintenance, and backup/restore operations.
+- Deterministic snapshot exporter, SHA-256 manifest, and dry-run-first restore tool.
 
-### Security
+### Security and snapshot boundary
 
-- The public kit continues to ship contracts and templates only: no runtimes,
-  local paths, provider settings, credentials, memory, backups, or schedules.
+- The private repository now preserves real implementation code and operating
+  policy while excluding credentials, `.env` files, caches, runtime ledgers,
+  generated reports, machine evidence, memories, projects, and backup contents.

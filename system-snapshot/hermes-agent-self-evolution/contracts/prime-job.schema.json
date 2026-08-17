@@ -1,0 +1,78 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://__PRIVATE_TOKEN_02__.local/contracts/prime-job.schema.json",
+  "title": "Hermes-owned Prime job record",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version", "job_id", "owner", "profile", "project", "session_id",
+    "workspace", "status", "created_at", "updated_at", "started_at", "finished_at",
+    "route", "runtime", "limits", "iteration", "last_progress_at", "prime_session_id", "trace_ref",
+    "result_summary", "last_error", "recovery", "lease", "version"
+  ],
+  "properties": {
+    "schema_version": {"const": "1.0"},
+    "job_id": {"type": "string", "pattern": "^[0-9a-f]{32}$"},
+    "owner": {"$ref": "#/$defs/name"},
+    "profile": {"$ref": "#/$defs/name"},
+    "project": {"$ref": "#/$defs/name"},
+    "session_id": {"$ref": "#/$defs/name"},
+    "workspace": {"type": "string", "minLength": 1},
+    "status": {"enum": ["created", "starting", "running", "stopping", "completed", "failed", "cancelled", "orphaned"]},
+    "created_at": {"$ref": "#/$defs/time"},
+    "updated_at": {"$ref": "#/$defs/time"},
+    "started_at": {"anyOf": [{"$ref": "#/$defs/time"}, {"type": "null"}]},
+    "finished_at": {"anyOf": [{"$ref": "#/$defs/time"}, {"type": "null"}]},
+    "route": {
+      "type": "object", "additionalProperties": false,
+      "required": ["provider", "model", "api", "endpoint", "fingerprint"],
+      "properties": {
+        "provider": {"type": "string", "minLength": 1},
+        "model": {"type": "string", "minLength": 1},
+        "api": {"type": "string", "minLength": 1},
+        "endpoint": {"type": "string", "minLength": 1},
+        "fingerprint": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+      }
+    },
+    "runtime": {
+      "type": "object", "additionalProperties": false,
+      "required": ["source_commit", "image_digest", "sandbox", "command_fingerprint", "fingerprint"],
+      "properties": {
+        "source_commit": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+        "image_digest": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"},
+        "sandbox": {"const": "rootless-podman"},
+        "command_fingerprint": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "fingerprint": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+      }
+    },
+    "limits": {
+      "type": "object", "additionalProperties": false,
+      "required": ["max_iterations", "no_progress_seconds", "wall_seconds"],
+      "properties": {
+        "max_iterations": {"type": "integer", "minimum": 1},
+        "no_progress_seconds": {"type": "integer", "minimum": 1},
+        "wall_seconds": {"type": "integer", "minimum": 1}
+      }
+    },
+    "iteration": {"type": "integer", "minimum": 0},
+    "last_progress_at": {"$ref": "#/$defs/time"},
+    "prime_session_id": {"type": ["string", "null"]},
+    "trace_ref": {"type": ["string", "null"]},
+    "result_summary": {"type": ["string", "null"]},
+    "last_error": {"type": ["string", "null"]},
+    "recovery": {"type": "object"},
+    "lease": {
+      "type": "object", "additionalProperties": false,
+      "required": ["owner", "expires_at"],
+      "properties": {
+        "owner": {"type": ["string", "null"]},
+        "expires_at": {"anyOf": [{"$ref": "#/$defs/time"}, {"type": "null"}]}
+      }
+    },
+    "version": {"type": "integer", "minimum": 0}
+  },
+  "$defs": {
+    "name": {"type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{0,127}$"},
+    "time": {"type": "string", "format": "date-time"}
+  }
+}

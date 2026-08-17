@@ -1,0 +1,8 @@
+{
+  "provider": "openrouter",
+  "model": "example/model",
+  "base_url": "https://openrouter.ai/api/v1",
+  "api_mode": "openai-completions",
+  "credential": {"source": "runtime-environment", "environment_variable": "OLLAMA_API_KEY"},
+  "compatibility": {}
+}

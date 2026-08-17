@@ -1,0 +1,11 @@
+{
+  "schema_version": "1.0.0",
+  "activation": "automatic_sandbox_audit",
+  "dispatch_trigger": "verified_checkpoint_event_only",
+  "kill_switch_path": "__WINDOWS_WORKSPACE__/.planning/autoexperiment-control-plane/state/DISABLED",
+  "chains": [
+    {"id":"daily","backup_task":"WorkspaceKit-Daily-Reindex-Backup","backup_day":"daily","backup_time":"11:59 AM","improvement_clock_trigger":false,"audit_dispatch_approval":"automatic","candidate_package_approval":"automatic-gsd-package","production_implementation_approval":"manual-confirmation-required","minimum_coverage_portfolios":9,"max_campaigns":3,"max_iterations_per_campaign":5,"wall_clock_seconds":3600,"scope":"backup-covered-auto-safe"},
+    {"id":"weekly","backup_task":"WorkspaceKit-Projects-Weekly-Backup","backup_day":"Saturday","backup_time":"11:59 AM","improvement_clock_trigger":false,"audit_dispatch_approval":"verified-checkpoint","candidate_package_approval":"manual-confirmation-required","production_implementation_approval":"manual-confirmation-required","minimum_coverage_portfolios":9,"max_campaigns":5,"max_iterations_per_campaign":20,"wall_clock_seconds":21600,"scope":"verified-projects-checkpoint"},
+    {"id":"monthly","backup_task":"WorkspaceKit-Projects-Monthly-Backup","backup_day":"Monday","backup_time":"11:59 AM","improvement_clock_trigger":false,"audit_dispatch_approval":"verified-checkpoint","candidate_package_approval":"manual-confirmation-required","production_implementation_approval":"manual-confirmation-required","max_campaigns":10,"wall_clock_seconds":86400,"scope":"verified-monthly-due-checkpoint"}
+  ]
+}

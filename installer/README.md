@@ -20,6 +20,9 @@ commands and hope." Every stage leaves evidence; a failed stage names itself.
     deliberately — it tracks a known-good state, not a moving target)
   - `../../modules/topology/` — required solo-PC role contract; VPS and
     second-PC profiles are optional and disabled when rendered
+  - `../../system-snapshot/` — required private implementation snapshot for
+    Prime/OMP, Hermes Telegram, auto-learning, maintenance, autoexperiment,
+    backup, and restore operations; verified by SHA-256 before restoration
   - `image-video/` — scaffolding for wiring your own ComfyUI (structure only;
     no models ship in this kit)
   - `prime-omp/` — opt-in Prime Agent and oh-my-pi worker contract; Hermes

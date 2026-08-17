@@ -1,0 +1,3999 @@
+{
+  "SPDXID": "SPDXRef-DOCUMENT",
+  "annotations": [
+    {
+      "annotationDate": "2026-08-07T17:17:26Z",
+      "annotationType": "OTHER",
+      "annotator": "Tool: hermes-phase01-build-image",
+      "comment": "context-sha256=f082d42302af59ff6c1f47edf6cf78b1f47bd20c545f56c9e6833292cd82668b;image-id=68ad2ac94f78333fe4954403d09de4c40a57464a85ad52db4fc21b744bdfa569"
+    }
+  ],
+  "creationInfo": {
+    "created": "2026-08-07T17:17:26Z",
+    "creators": [
+      "Tool: hermes-phase01-build-image"
+    ]
+  },
+  "dataLicense": "CC0-1.0",
+  "documentNamespace": "https://__PRIVATE_TOKEN_02__.local/spdx/prime-probe/883f4f943858bdf25a0ed0fde4b6775d9000039cc2adac6245adcde6b4ab5ad2",
+  "name": "hermes-prime-agent-probe-v0.7.1",
+  "packages": [
+    {
+      "SPDXID": "SPDXRef-npm-00de97edfec23ac57546",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "ansi-styles",
+      "supplier": "NOASSERTION",
+      "versionInfo": "4.3.0"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-01c73a148e92aef87501",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "which",
+      "supplier": "NOASSERTION",
+      "versionInfo": "1.3.1"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-0398b7cb13b0e0d36502",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "bowser",
+      "supplier": "NOASSERTION",
+      "versionInfo": "2.14.1"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-03f5a3c695b4a8e1fcbe",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "pi-extension-custom-provider-anthropic",
+      "supplier": "NOASSERTION",
+      "versionInfo": "0.0.1"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-0436eefa2da13f25e242",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "is-core-module",
+      "supplier": "NOASSERTION",
+      "versionInfo": "2.16.2"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-047040d2c67786ad2f05",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "path-parse",
+      "supplier": "NOASSERTION",
+      "versionInfo": "1.0.7"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-05890f67d2c36fa16c0e",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@biomejs/cli-win32-x64",
+      "supplier": "NOASSERTION",
+      "versionInfo": "UNKNOWN"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-093fd33059dbf308b1ab",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@anthropic-ai/sdk",
+      "supplier": "NOASSERTION",
+      "versionInfo": "0.52.0"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-0a5172ffd231fb53c0e6",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "mz",
+      "supplier": "NOASSERTION",
+      "versionInfo": "2.7.0"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-0b49767d9330cdb64e54",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@smithy/signature-v4",
+      "supplier": "NOASSERTION",
+      "versionInfo": "5.6.3"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-0d1c52e3095a8017fa47",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "expect-type",
+      "supplier": "NOASSERTION",
+      "versionInfo": "1.3.0"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-0db5f7bdde12eb8b7de5",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "socks-proxy-agent",
+      "supplier": "NOASSERTION",
+      "versionInfo": "8.0.5"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-0e711c7e1faee07fc543",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "jiti",
+      "supplier": "NOASSERTION",
+      "versionInfo": "2.7.0"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-0f43c321a079cfea85dd",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "source-map",
+      "supplier": "NOASSERTION",
+      "versionInfo": "0.6.1"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-0f57e8c614188c66848c",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@anthropic-ai/sdk",
+      "supplier": "NOASSERTION",
+      "versionInfo": "0.91.1"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-0fb39b492cc8d11255c3",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "bignumber.js",
+      "supplier": "NOASSERTION",
+      "versionInfo": "9.3.1"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-0ff97797db77520fb54c",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@types/estree",
+      "supplier": "NOASSERTION",
+      "versionInfo": "1.0.9"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-103a66f319e9963074f4",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "degenerator",
+      "supplier": "NOASSERTION",
+      "versionInfo": "5.0.1"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-109535f5a9768e0c389d",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@pondwader/socks5-server",
+      "supplier": "NOASSERTION",
+      "versionInfo": "1.0.10"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-1096a1ead88defa9beff",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "tinyglobby",
+      "supplier": "NOASSERTION",
+      "versionInfo": "0.2.17"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-10d548b61dcc55fd7054",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "ansi-regex",
+      "supplier": "NOASSERTION",
+      "versionInfo": "5.0.1"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-118119b93e74368d08e7",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "cross-spawn",
+      "supplier": "NOASSERTION",
+      "versionInfo": "6.0.6"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-118a9254da14b28b1769",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "get-stream",
+      "supplier": "NOASSERTION",
+      "versionInfo": "5.2.0"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-1205f4e969b1ae64b760",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "lightningcss-win32-x64-msvc",
+      "supplier": "NOASSERTION",
+      "versionInfo": "UNKNOWN"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-1212aee12900b54ba96e",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@smithy/fetch-http-handler",
+      "supplier": "NOASSERTION",
+      "versionInfo": "5.6.4"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-1219d8d0dde1dd1eb581",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "npm-run-path",
+      "supplier": "NOASSERTION",
+      "versionInfo": "2.0.2"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-1229f62e6c6ed2a4f5ae",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@rolldown/binding-wasm32-wasi",
+      "supplier": "NOASSERTION",
+      "versionInfo": "UNKNOWN"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-123dc3444ede0384fedd",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "buffer-equal-constant-time",
+      "supplier": "NOASSERTION",
+      "versionInfo": "1.0.1"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-1252bd601dcfcbb10630",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "lightningcss-android-arm64",
+      "supplier": "NOASSERTION",
+      "versionInfo": "UNKNOWN"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-125a03360ea7dfdfea6a",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "nanoid",
+      "supplier": "NOASSERTION",
+      "versionInfo": "3.3.12"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-1305b90248f40a6ae4e1",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "fs-constants",
+      "supplier": "NOASSERTION",
+      "versionInfo": "1.0.0"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-13894879f3d023337ad1",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "pathe",
+      "supplier": "NOASSERTION",
+      "versionInfo": "2.0.3"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-139a35832d6139aeaf0f",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@types/ms",
+      "supplier": "NOASSERTION",
+      "versionInfo": "2.1.0"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-148a3475ea22fb9ae362",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "string-width",
+      "supplier": "NOASSERTION",
+      "versionInfo": "4.2.3"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-1502089364277305ebce",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@typescript/native-preview-win32-arm64",
+      "supplier": "NOASSERTION",
+      "versionInfo": "UNKNOWN"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-163bb6c39305ca9c2b7c",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "ms",
+      "supplier": "NOASSERTION",
+      "versionInfo": "2.1.3"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-16935b6df19c61a64743",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "minimist",
+      "supplier": "NOASSERTION",
+      "versionInfo": "1.2.8"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-184b1411603c903dd2b0",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "cmake-ts",
+      "supplier": "NOASSERTION",
+      "versionInfo": "1.0.2"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-18cf6009fc41f939094f",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "strip-ansi",
+      "supplier": "NOASSERTION",
+      "versionInfo": "6.0.1"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-190d290649b3bb4227cb",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@earendil-works/pi-agent-core",
+      "supplier": "NOASSERTION",
+      "versionInfo": "0.7.1"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-1991e3d405f19bf75a4d",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@vitest/expect",
+      "supplier": "NOASSERTION",
+      "versionInfo": "4.1.9"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-1a30f04425ab83da9513",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@esbuild/linux-arm",
+      "supplier": "NOASSERTION",
+      "versionInfo": "UNKNOWN"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-1b97c8a5a10c4e21a302",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@esbuild/linux-x64",
+      "supplier": "NOASSERTION",
+      "versionInfo": "0.28.1"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-1d2b61819f718a7e8218",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@mariozechner/clipboard-darwin-x64",
+      "supplier": "NOASSERTION",
+      "versionInfo": "UNKNOWN"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-200f05c40f041edff75a",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "yargs",
+      "supplier": "NOASSERTION",
+      "versionInfo": "17.7.2"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-2240da2b094a801f72f6",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@earendil-works/pi-ai",
+      "supplier": "NOASSERTION",
+      "versionInfo": "0.7.1"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-22708ebb8dafb0635398",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@types/mime-types",
+      "supplier": "NOASSERTION",
+      "versionInfo": "3.0.1"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-228bf7b9219f00a96139",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@types/retry",
+      "supplier": "NOASSERTION",
+      "versionInfo": "0.12.0"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-2292ad7adacb8cc6cd5d",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "netmask",
+      "supplier": "NOASSERTION",
+      "versionInfo": "2.1.1"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-238543c7b2ed6016414f",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@typescript/native-preview-darwin-arm64",
+      "supplier": "NOASSERTION",
+      "versionInfo": "UNKNOWN"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-24d43071c0d0c20b30f6",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "braces",
+      "supplier": "NOASSERTION",
+      "versionInfo": "3.0.3"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-2501cb27f011cecc9441",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "strip-ansi",
+      "supplier": "NOASSERTION",
+      "versionInfo": "7.2.0"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-26713feb756a3a6916fa",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@rolldown/binding-darwin-arm64",
+      "supplier": "NOASSERTION",
+      "versionInfo": "UNKNOWN"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-27508342700cbc382b51",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@protobufjs/fetch",
+      "supplier": "NOASSERTION",
+      "versionInfo": "1.1.1"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-2790f5b5badc0630312b",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "gaxios",
+      "supplier": "NOASSERTION",
+      "versionInfo": "7.1.4"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-28cacb5078baf0c684b9",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@biomejs/cli-win32-arm64",
+      "supplier": "NOASSERTION",
+      "versionInfo": "UNKNOWN"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-2990414eba569ed7ad90",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "semver",
+      "supplier": "NOASSERTION",
+      "versionInfo": "5.7.2"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-2a0a4850ddcc7d91b61b",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@mariozechner/clipboard-darwin-arm64",
+      "supplier": "NOASSERTION",
+      "versionInfo": "UNKNOWN"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-2be3ec72052361971f0a",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@vitest/browser-playwright",
+      "supplier": "NOASSERTION",
+      "versionInfo": "UNKNOWN"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-2ccaf61b2ef414851554",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "esutils",
+      "supplier": "NOASSERTION",
+      "versionInfo": "2.0.3"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-2ce7ad8795ec247c4907",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@esbuild/linux-ppc64",
+      "supplier": "NOASSERTION",
+      "versionInfo": "UNKNOWN"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-2e05f66d0d75bbbf0284",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "marked",
+      "supplier": "NOASSERTION",
+      "versionInfo": "15.0.12"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-2f2a8d6149f64089a7e9",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@xterm/headless",
+      "supplier": "NOASSERTION",
+      "versionInfo": "6.0.0"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-2fef26715be40bbd0527",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "require-directory",
+      "supplier": "NOASSERTION",
+      "versionInfo": "2.1.1"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-30286f599cc748d000d2",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "run-parallel",
+      "supplier": "NOASSERTION",
+      "versionInfo": "1.2.0"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-31265556fa49e97083f6",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@aws-sdk/client-bedrock-runtime",
+      "supplier": "NOASSERTION",
+      "versionInfo": "3.1083.0"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-31aa61207614232901c2",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "readable-stream",
+      "supplier": "NOASSERTION",
+      "versionInfo": "3.6.2"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-323500c2c85f94945cbb",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@esbuild/netbsd-x64",
+      "supplier": "NOASSERTION",
+      "versionInfo": "UNKNOWN"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-32b52547b5b0cc6cf277",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@rolldown/binding-darwin-x64",
+      "supplier": "NOASSERTION",
+      "versionInfo": "UNKNOWN"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-33dc73984d97c955a4bf",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "prebuild-install",
+      "supplier": "NOASSERTION",
+      "versionInfo": "7.1.3"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-346c906600aac2c133db",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "chalk",
+      "supplier": "NOASSERTION",
+      "versionInfo": "4.1.2"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-349f211f8cf4facfa230",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "smart-buffer",
+      "supplier": "NOASSERTION",
+      "versionInfo": "4.2.0"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-35abb7b52c57cb0371c6",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "is-fullwidth-code-point",
+      "supplier": "NOASSERTION",
+      "versionInfo": "3.0.0"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-35c62fa0a476b6458ab6",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "utf-8-validate",
+      "supplier": "NOASSERTION",
+      "versionInfo": "UNKNOWN"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-3639f7fafc6c05ac117e",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@opentelemetry/api",
+      "supplier": "NOASSERTION",
+      "versionInfo": "UNKNOWN"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-3881f43ddc48bd713279",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@protobufjs/pool",
+      "supplier": "NOASSERTION",
+      "versionInfo": "1.1.0"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-392d2772a2b14992ef80",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "rxjs",
+      "supplier": "NOASSERTION",
+      "versionInfo": "7.8.2"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-394f2a1128ae360cbaad",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "picomatch",
+      "supplier": "NOASSERTION",
+      "versionInfo": "2.3.2"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-39b62fbc988c58fdf6d4",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@biomejs/cli-linux-arm64",
+      "supplier": "NOASSERTION",
+      "versionInfo": "UNKNOWN"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-3ba944b403076d70b980",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "fill-range",
+      "supplier": "NOASSERTION",
+      "versionInfo": "7.1.1"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-3d438c073d94707f561b",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "msw",
+      "supplier": "NOASSERTION",
+      "versionInfo": "UNKNOWN"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-3d857c2a9a2b39855dbb",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "node-addon-api",
+      "supplier": "NOASSERTION",
+      "versionInfo": "8.7.0"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-3deec77b01386168bfa9",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "estree-walker",
+      "supplier": "NOASSERTION",
+      "versionInfo": "3.0.3"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-3e3dd14c085c269a486e",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "agent-base",
+      "supplier": "NOASSERTION",
+      "versionInfo": "7.1.4"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-3ee41344b22c19e14c44",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "zeromq",
+      "supplier": "NOASSERTION",
+      "versionInfo": "6.5.0"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-3f22c645d4a94cf9e9f4",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "simple-get",
+      "supplier": "NOASSERTION",
+      "versionInfo": "4.0.1"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-3f2fe1d61af818fc1e66",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@aws-sdk/types",
+      "supplier": "NOASSERTION",
+      "versionInfo": "3.974.0"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-3f9deef5eb9ad9be542e",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "typebox",
+      "supplier": "NOASSERTION",
+      "versionInfo": "1.1.38"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-410c7e54ef3a252f0b58",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@smithy/hash-node",
+      "supplier": "NOASSERTION",
+      "versionInfo": "UNKNOWN"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-41912edeb03db0bff613",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "detect-libc",
+      "supplier": "NOASSERTION",
+      "versionInfo": "2.1.2"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-42f3f5ea7ce5405d111d",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "node-fetch",
+      "supplier": "NOASSERTION",
+      "versionInfo": "3.3.2"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-43781034b86f39d44431",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "lru-cache",
+      "supplier": "NOASSERTION",
+      "versionInfo": "11.3.6"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-443a41040bdb70c5bf66",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oxc-project/types",
+      "supplier": "NOASSERTION",
+      "versionInfo": "0.133.0"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-44aec07ea342bab50acc",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "p-retry",
+      "supplier": "NOASSERTION",
+      "versionInfo": "4.6.2"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-45cf48c652991d23f840",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@types/deep-eql",
+      "supplier": "NOASSERTION",
+      "versionInfo": "4.0.2"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-45fba59bddd011b5d75e",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@types/proper-lockfile",
+      "supplier": "NOASSERTION",
+      "versionInfo": "4.1.4"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-4607b3de152ae67b08bb",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "vite",
+      "supplier": "NOASSERTION",
+      "versionInfo": "8.0.16"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-4711e3ab8d32043faffd",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@xterm/xterm",
+      "supplier": "NOASSERTION",
+      "versionInfo": "6.0.0"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-48a9a15e4ccf29a9ddb5",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "github-from-package",
+      "supplier": "NOASSERTION",
+      "versionInfo": "0.0.0"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-490213ccfd407f079074",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@typescript/native-preview-linux-x64",
+      "supplier": "NOASSERTION",
+      "versionInfo": "7.0.0-dev.20260120.1"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-497ed81b9aa483cf4fdf",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "tslib",
+      "supplier": "NOASSERTION",
+      "versionInfo": "2.8.1"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-4ab4cf25b69a89838631",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@biomejs/cli-darwin-x64",
+      "supplier": "NOASSERTION",
+      "versionInfo": "UNKNOWN"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-4b086a3f08ad6fae0970",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@edge-runtime/vm",
+      "supplier": "NOASSERTION",
+      "versionInfo": "UNKNOWN"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-4be499fefb85e7c55c90",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "concurrently",
+      "supplier": "NOASSERTION",
+      "versionInfo": "9.2.4"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-4c2ef684f48d393f6a17",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@esbuild/netbsd-arm64",
+      "supplier": "NOASSERTION",
+      "versionInfo": "UNKNOWN"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-4c54e9fce1d65c4a8449",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "rolldown",
+      "supplier": "NOASSERTION",
+      "versionInfo": "1.0.3"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-4cfdc174db669bd826a2",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@protobufjs/aspromise",
+      "supplier": "NOASSERTION",
+      "versionInfo": "1.1.2"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-4d2ef19ceac5ac1fba56",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "tinybench",
+      "supplier": "NOASSERTION",
+      "versionInfo": "2.9.0"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-4d5351d94e4a432cd02d",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@esbuild/linux-s390x",
+      "supplier": "NOASSERTION",
+      "versionInfo": "UNKNOWN"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-4d828ef273344af11ef0",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@typescript/native-preview-linux-arm",
+      "supplier": "NOASSERTION",
+      "versionInfo": "UNKNOWN"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-4db0632dda2b95aa2f5f",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@rolldown/pluginutils",
+      "supplier": "NOASSERTION",
+      "versionInfo": "1.0.1"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-4de4ffd52ce363269ccb",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "picocolors",
+      "supplier": "NOASSERTION",
+      "versionInfo": "1.1.1"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-4e303d42ef88bad8dd16",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@rolldown/binding-win32-x64-msvc",
+      "supplier": "NOASSERTION",
+      "versionInfo": "UNKNOWN"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-4f6125c9d70abed8e35a",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "parse5",
+      "supplier": "NOASSERTION",
+      "versionInfo": "5.1.1"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-4fc7bb9a83a7bc3d96a1",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "supports-preserve-symlinks-flag",
+      "supplier": "NOASSERTION",
+      "versionInfo": "1.0.0"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-4fd3b9ee660a778cb55d",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "deep-extend",
+      "supplier": "NOASSERTION",
+      "versionInfo": "0.6.0"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-500c8b6bdc652144a504",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "highlight.js",
+      "supplier": "NOASSERTION",
+      "versionInfo": "10.7.3"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-507157700af579712bd3",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "mime-db",
+      "supplier": "NOASSERTION",
+      "versionInfo": "1.54.0"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-50ece155462846852953",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "tree-kill",
+      "supplier": "NOASSERTION",
+      "versionInfo": "1.2.2"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-510e1c5d26b88bcaedac",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@esbuild/sunos-x64",
+      "supplier": "NOASSERTION",
+      "versionInfo": "UNKNOWN"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-511931b4f59d457edb3e",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@mariozechner/clipboard-linux-x64-gnu",
+      "supplier": "NOASSERTION",
+      "versionInfo": "0.3.9"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-5123cd61d4fd0e3963a4",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@esbuild/openbsd-x64",
+      "supplier": "NOASSERTION",
+      "versionInfo": "UNKNOWN"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-513cdced67709dd4880d",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "mime-types",
+      "supplier": "NOASSERTION",
+      "versionInfo": "3.0.2"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-513d1a0c341b91009b48",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@aws-sdk/middleware-websocket",
+      "supplier": "NOASSERTION",
+      "versionInfo": "3.972.39"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-51c8063db171c80281b2",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "proxy-agent",
+      "supplier": "NOASSERTION",
+      "versionInfo": "6.5.0"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-51c8c2bad7c9206dabfd",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "base64-js",
+      "supplier": "NOASSERTION",
+      "versionInfo": "1.5.1"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-51c9acfed8b0d985af89",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "cliui",
+      "supplier": "NOASSERTION",
+      "versionInfo": "7.0.4"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-52e8360a3716293e4b10",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "interpret",
+      "supplier": "NOASSERTION",
+      "versionInfo": "1.4.0"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-53635c92c8eebcdced83",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "mkdirp-classic",
+      "supplier": "NOASSERTION",
+      "versionInfo": "0.5.3"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-552bceda4519f71e3a3b",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "tunnel-agent",
+      "supplier": "NOASSERTION",
+      "versionInfo": "0.6.0"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-558eb538f20598c3082b",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "lightningcss-darwin-x64",
+      "supplier": "NOASSERTION",
+      "versionInfo": "UNKNOWN"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-57319b7b662c28e01aa2",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@mariozechner/clipboard-linux-riscv64-gnu",
+      "supplier": "NOASSERTION",
+      "versionInfo": "UNKNOWN"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-57783d64f1946654ee16",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "buffer-crc32",
+      "supplier": "NOASSERTION",
+      "versionInfo": "0.2.13"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-580d4d8d06539c366217",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "rc",
+      "supplier": "NOASSERTION",
+      "versionInfo": "1.2.8"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-58ed3f71e2101d49e483",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "assertion-error",
+      "supplier": "NOASSERTION",
+      "versionInfo": "2.0.1"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-591a0f7645571b129e36",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "color-convert",
+      "supplier": "NOASSERTION",
+      "versionInfo": "2.0.1"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-59f1428effe83a545dc8",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@esbuild/openharmony-arm64",
+      "supplier": "NOASSERTION",
+      "versionInfo": "UNKNOWN"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-5a0f7a11132ea06ccd2b",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "chownr",
+      "supplier": "NOASSERTION",
+      "versionInfo": "1.1.4"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-5a7af34ff72b1a36ce54",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@typescript/native-preview-win32-x64",
+      "supplier": "NOASSERTION",
+      "versionInfo": "UNKNOWN"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-5adf7de0df7a87b87ccd",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "extract-zip",
+      "supplier": "NOASSERTION",
+      "versionInfo": "2.0.1"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-5ce290d21a170b30444b",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@esbuild/darwin-x64",
+      "supplier": "NOASSERTION",
+      "versionInfo": "UNKNOWN"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-5d24c004db4ce54fa7c6",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "lightningcss-linux-arm-gnueabihf",
+      "supplier": "NOASSERTION",
+      "versionInfo": "UNKNOWN"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-5d784b1ed2050aa078a7",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "lru-cache",
+      "supplier": "NOASSERTION",
+      "versionInfo": "7.18.3"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-5e46ddb44f97847a7837",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@rolldown/binding-linux-arm64-gnu",
+      "supplier": "NOASSERTION",
+      "versionInfo": "UNKNOWN"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-5e4af6a49bd62b1dcefb",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "rechoir",
+      "supplier": "NOASSERTION",
+      "versionInfo": "0.6.2"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-5f005643812bb0b01f63",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@mariozechner/clipboard-linux-arm64-musl",
+      "supplier": "NOASSERTION",
+      "versionInfo": "UNKNOWN"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-5f016f247e3456a706a5",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "stackback",
+      "supplier": "NOASSERTION",
+      "versionInfo": "0.0.2"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-5fc8a6f105c5d48418f1",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "tinyexec",
+      "supplier": "NOASSERTION",
+      "versionInfo": "1.2.4"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-602553c34b424a22968d",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "vitest",
+      "supplier": "NOASSERTION",
+      "versionInfo": "4.1.9"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-60564d951769e070fc27",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "http-proxy-agent",
+      "supplier": "NOASSERTION",
+      "versionInfo": "7.0.2"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-605b07162abb6ca77ac9",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@rolldown/binding-linux-x64-gnu",
+      "supplier": "NOASSERTION",
+      "versionInfo": "1.0.3"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-6076d9aaffd231d052b8",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "json-bigint",
+      "supplier": "NOASSERTION",
+      "versionInfo": "1.0.0"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-60835212dea7819a3f67",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "less",
+      "supplier": "NOASSERTION",
+      "versionInfo": "UNKNOWN"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-609da262bff8e22001a7",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@protobufjs/eventemitter",
+      "supplier": "NOASSERTION",
+      "versionInfo": "1.1.1"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-61550f733103a3c5dd3f",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "tsx",
+      "supplier": "NOASSERTION",
+      "versionInfo": "4.23.1"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-61954777d1f457060a34",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@biomejs/cli-linux-x64-musl",
+      "supplier": "NOASSERTION",
+      "versionInfo": "2.3.5"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-61ed66b1a6038cdafe9f",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "lightningcss-win32-arm64-msvc",
+      "supplier": "NOASSERTION",
+      "versionInfo": "UNKNOWN"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-62cd70809b722159127c",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "once",
+      "supplier": "NOASSERTION",
+      "versionInfo": "1.4.0"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-64407da9845ffdad196c",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@earendil-works/pi-coding-agent",
+      "supplier": "NOASSERTION",
+      "versionInfo": "0.7.1"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-655f870d99732ac64124",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "ws",
+      "supplier": "NOASSERTION",
+      "versionInfo": "8.21.0"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-6577fbcc8d3d1c312199",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@protobufjs/float",
+      "supplier": "NOASSERTION",
+      "versionInfo": "1.0.2"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-662f4d934fcdec46a737",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@esbuild/linux-ia32",
+      "supplier": "NOASSERTION",
+      "versionInfo": "UNKNOWN"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-67221dd394d99a9237c7",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "cliui",
+      "supplier": "NOASSERTION",
+      "versionInfo": "8.0.1"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-677d318354ad410fc36c",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@vitest/spy",
+      "supplier": "NOASSERTION",
+      "versionInfo": "4.1.9"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-678949aa92d6af783a7d",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "siginfo",
+      "supplier": "NOASSERTION",
+      "versionInfo": "2.0.0"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-6acedc09bb1512230978",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "file-type",
+      "supplier": "NOASSERTION",
+      "versionInfo": "21.3.4"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-6aea3248738f9a7c6bbd",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "undici",
+      "supplier": "NOASSERTION",
+      "versionInfo": "7.28.0"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-6b09a49e896a439c315f",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@aws-sdk/credential-provider-env",
+      "supplier": "NOASSERTION",
+      "versionInfo": "3.972.57"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-6b22e23e8ec34e488f06",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@smithy/credential-provider-imds",
+      "supplier": "NOASSERTION",
+      "versionInfo": "4.4.7"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-6b3991ce90e5385391e8",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "node-domexception",
+      "supplier": "NOASSERTION",
+      "versionInfo": "1.0.0"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-6bf75607d0d53b328c6b",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@types/node",
+      "supplier": "NOASSERTION",
+      "versionInfo": "24.12.2"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-6c287d6e6f358ffbf9f3",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "nice-try",
+      "supplier": "NOASSERTION",
+      "versionInfo": "1.0.5"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-6c7bb23f4b822c551fb8",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@vitest/coverage-v8",
+      "supplier": "NOASSERTION",
+      "versionInfo": "UNKNOWN"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-6cb15148e590a44424c4",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "typescript",
+      "supplier": "NOASSERTION",
+      "versionInfo": "5.9.3"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-6d128d0c7e8448ff25ac",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "yargs-parser",
+      "supplier": "NOASSERTION",
+      "versionInfo": "21.1.1"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-6d2a0424e384a340e0ce",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "bufferutil",
+      "supplier": "NOASSERTION",
+      "versionInfo": "UNKNOWN"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-6d931d19e60fe3eedf84",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "terser",
+      "supplier": "NOASSERTION",
+      "versionInfo": "UNKNOWN"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-6daa4b665efe34b1fa59",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@aws-sdk/credential-provider-login",
+      "supplier": "NOASSERTION",
+      "versionInfo": "3.972.63"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-6e8e58f3b62a24b0aadd",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "lightningcss-freebsd-x64",
+      "supplier": "NOASSERTION",
+      "versionInfo": "UNKNOWN"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-6f70fa80f8ffb35130c6",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "uuid",
+      "supplier": "NOASSERTION",
+      "versionInfo": "14.0.0"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-707e6054fdae925c35bc",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "is-number",
+      "supplier": "NOASSERTION",
+      "versionInfo": "7.0.0"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-71881d128c082ac30f4e",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "zod",
+      "supplier": "NOASSERTION",
+      "versionInfo": "3.25.76"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-71d7297299ba445a17f8",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "wrappy",
+      "supplier": "NOASSERTION",
+      "versionInfo": "1.0.2"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-7385e506a6511a41a765",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "jws",
+      "supplier": "NOASSERTION",
+      "versionInfo": "4.0.1"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-73d35df5fe5e5d0775ae",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@esbuild/win32-arm64",
+      "supplier": "NOASSERTION",
+      "versionInfo": "UNKNOWN"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-75f4934d9e4a1b142fdc",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@esbuild/openbsd-arm64",
+      "supplier": "NOASSERTION",
+      "versionInfo": "UNKNOWN"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-764a7a2204adb2f572b3",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "retry",
+      "supplier": "NOASSERTION",
+      "versionInfo": "0.13.1"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-77d106b2d326a81a983a",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "diff",
+      "supplier": "NOASSERTION",
+      "versionInfo": "9.0.0"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-789dfccdfe2a5f639f4d",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "node-forge",
+      "supplier": "NOASSERTION",
+      "versionInfo": "1.4.0"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-79036cb49bc15cb497ce",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@rolldown/binding-linux-arm-gnueabihf",
+      "supplier": "NOASSERTION",
+      "versionInfo": "UNKNOWN"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-7a8aa91f50ce4cc42a55",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@vitest/runner",
+      "supplier": "NOASSERTION",
+      "versionInfo": "4.1.9"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-7abc939cb2d11a2f7db3",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "proxy-from-env",
+      "supplier": "NOASSERTION",
+      "versionInfo": "1.1.0"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-7af199016030db3fb5a0",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@biomejs/cli-darwin-arm64",
+      "supplier": "NOASSERTION",
+      "versionInfo": "UNKNOWN"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-7bdedc3d94811b2976d4",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "proper-lockfile",
+      "supplier": "NOASSERTION",
+      "versionInfo": "4.1.2"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-7cf4ba75ec5e57bdb861",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@rolldown/binding-freebsd-x64",
+      "supplier": "NOASSERTION",
+      "versionInfo": "UNKNOWN"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-7d2a8cc804514ba0ed44",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "strip-json-comments",
+      "supplier": "NOASSERTION",
+      "versionInfo": "2.0.1"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-7e3e4b58c71c48fdcf4e",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "pac-proxy-agent",
+      "supplier": "NOASSERTION",
+      "versionInfo": "7.2.0"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-7e56a91c66829e641f09",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "is-glob",
+      "supplier": "NOASSERTION",
+      "versionInfo": "4.0.3"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-7ea93ae17486f901639a",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "path-key",
+      "supplier": "NOASSERTION",
+      "versionInfo": "2.0.1"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-7ee5a1c9aec71ea7e4da",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@aws/lambda-invoke-store",
+      "supplier": "NOASSERTION",
+      "versionInfo": "0.3.0"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-7f01b47469202dba6498",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "magic-string",
+      "supplier": "NOASSERTION",
+      "versionInfo": "0.30.21"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-80474d36bd2c6a84feb5",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "shell-quote",
+      "supplier": "NOASSERTION",
+      "versionInfo": "1.10.0"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-81e94a46b0a080ef0611",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "brace-expansion",
+      "supplier": "NOASSERTION",
+      "versionInfo": "5.0.7"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-821564c6cdb4de10668d",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "balanced-match",
+      "supplier": "NOASSERTION",
+      "versionInfo": "4.0.4"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-827c3cbefc353e10caa0",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@mariozechner/clipboard",
+      "supplier": "NOASSERTION",
+      "versionInfo": "0.3.9"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-8378bc1393b5e031519f",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "obug",
+      "supplier": "NOASSERTION",
+      "versionInfo": "2.1.2"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-838136bbd784d4a14a02",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "lightningcss",
+      "supplier": "NOASSERTION",
+      "versionInfo": "1.32.0"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-843b3c5ebf1aad35a744",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "formdata-polyfill",
+      "supplier": "NOASSERTION",
+      "versionInfo": "4.0.10"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-84e914e14e1970a1066f",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "esprima",
+      "supplier": "NOASSERTION",
+      "versionInfo": "4.0.1"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-851b40fc2a8acb8162d2",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "chalk",
+      "supplier": "NOASSERTION",
+      "versionInfo": "5.6.2"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-858ad74fc5d1d6277de2",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@vitest/ui",
+      "supplier": "NOASSERTION",
+      "versionInfo": "UNKNOWN"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-862e8f048915d3e912cd",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@rolldown/binding-win32-arm64-msvc",
+      "supplier": "NOASSERTION",
+      "versionInfo": "UNKNOWN"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-87a0bbdcdf64ef59623b",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "tar-stream",
+      "supplier": "NOASSERTION",
+      "versionInfo": "2.2.0"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-87bd5b80781fd26914e6",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "picomatch",
+      "supplier": "NOASSERTION",
+      "versionInfo": "4.0.4"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-87bfbd4244e03a6ed257",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "ts-algebra",
+      "supplier": "NOASSERTION",
+      "versionInfo": "2.0.0"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-87fd10fcf022694ddcd3",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@tokenizer/inflate",
+      "supplier": "NOASSERTION",
+      "versionInfo": "0.4.1"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-886444e952d279aed0e0",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "color-name",
+      "supplier": "NOASSERTION",
+      "versionInfo": "1.1.4"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-886e726fc234b4046326",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "fdir",
+      "supplier": "NOASSERTION",
+      "versionInfo": "6.5.0"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-8893c3af7032226e05e3",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "cli-highlight",
+      "supplier": "NOASSERTION",
+      "versionInfo": "2.1.11"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-88c7ae1db1b04e4d5bc5",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@smithy/types",
+      "supplier": "NOASSERTION",
+      "versionInfo": "4.16.0"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-8c3b0103114e810aa897",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@aws-sdk/credential-provider-node",
+      "supplier": "NOASSERTION",
+      "versionInfo": "3.972.66"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-8c437dc02bc1797a43f8",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "bl",
+      "supplier": "NOASSERTION",
+      "versionInfo": "4.1.0"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-8c857d676274d08816f9",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "ansi-regex",
+      "supplier": "NOASSERTION",
+      "versionInfo": "6.2.2"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-8cafbd890b51a42bdef2",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "function-bind",
+      "supplier": "NOASSERTION",
+      "versionInfo": "1.1.2"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-8cea30d70473c11cd900",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@biomejs/biome",
+      "supplier": "NOASSERTION",
+      "versionInfo": "2.3.5"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-8d16571d00bec4285ad1",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "hasown",
+      "supplier": "NOASSERTION",
+      "versionInfo": "2.0.3"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-8d86f45bce03c713f7f1",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "get-stream",
+      "supplier": "NOASSERTION",
+      "versionInfo": "4.1.0"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-90039406bd6f6c09cef9",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "long",
+      "supplier": "NOASSERTION",
+      "versionInfo": "5.3.2"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-911d5cd76996a12c9638",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@typescript/native-preview-linux-arm64",
+      "supplier": "NOASSERTION",
+      "versionInfo": "UNKNOWN"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-91ee6e77752cf754bf6a",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "escodegen",
+      "supplier": "NOASSERTION",
+      "versionInfo": "2.1.0"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-91fcad752ef81770098d",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "path-scurry",
+      "supplier": "NOASSERTION",
+      "versionInfo": "2.0.2"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-923ff84cf823bd3de186",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "glob-parent",
+      "supplier": "NOASSERTION",
+      "versionInfo": "5.1.2"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-92747731aff4b7a00916",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "thenify-all",
+      "supplier": "NOASSERTION",
+      "versionInfo": "1.6.0"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-92c0822e6f4fd69c4477",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "end-of-stream",
+      "supplier": "NOASSERTION",
+      "versionInfo": "1.4.5"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-9379d87feced3d1b524c",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "data-uri-to-buffer",
+      "supplier": "NOASSERTION",
+      "versionInfo": "4.0.1"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-94dfc6ac665a4a1a4758",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@esbuild/freebsd-x64",
+      "supplier": "NOASSERTION",
+      "versionInfo": "UNKNOWN"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-951fd64c097c4bfe18f9",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "get-caller-file",
+      "supplier": "NOASSERTION",
+      "versionInfo": "2.0.5"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-95e6f4dc703085f66b0a",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "lightningcss-linux-arm64-musl",
+      "supplier": "NOASSERTION",
+      "versionInfo": "UNKNOWN"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-977f97322fc4a3df51d7",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "estraverse",
+      "supplier": "NOASSERTION",
+      "versionInfo": "5.3.0"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-9925699850323c8c2c66",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "has-flag",
+      "supplier": "NOASSERTION",
+      "versionInfo": "4.0.0"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-997bc0a1a2ea5e7f90ce",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "extend",
+      "supplier": "NOASSERTION",
+      "versionInfo": "3.0.2"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-9a0e9b7c66374a1d3cef",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@jridgewell/sourcemap-codec",
+      "supplier": "NOASSERTION",
+      "versionInfo": "1.5.5"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-9a107faf74c2a6627554",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@esbuild/darwin-arm64",
+      "supplier": "NOASSERTION",
+      "versionInfo": "UNKNOWN"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-9a51170eaaa6f500bd8a",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "canvas",
+      "supplier": "NOASSERTION",
+      "versionInfo": "3.2.3"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-9b200721010c0fd2cb81",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@rolldown/binding-linux-arm64-musl",
+      "supplier": "NOASSERTION",
+      "versionInfo": "UNKNOWN"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-9ba23de6d27fc48e4448",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "shebang-regex",
+      "supplier": "NOASSERTION",
+      "versionInfo": "1.0.0"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-9c05a5d297457904b75d",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "stylus",
+      "supplier": "NOASSERTION",
+      "versionInfo": "UNKNOWN"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-9c583e0a1816528a79ba",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "to-regex-range",
+      "supplier": "NOASSERTION",
+      "versionInfo": "5.0.1"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-9c79b0786ed73f090596",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "commander",
+      "supplier": "NOASSERTION",
+      "versionInfo": "12.1.0"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-9c8d7ad29ea4913f1178",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "lightningcss-linux-arm64-gnu",
+      "supplier": "NOASSERTION",
+      "versionInfo": "UNKNOWN"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-9d6fe14d36adbb7cf166",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@vitest/coverage-istanbul",
+      "supplier": "NOASSERTION",
+      "versionInfo": "UNKNOWN"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-9de53f9e19ce06ed27d4",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@types/retry",
+      "supplier": "NOASSERTION",
+      "versionInfo": "0.12.5"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-9dee993a612e96285e69",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@mariozechner/clipboard-darwin-universal",
+      "supplier": "NOASSERTION",
+      "versionInfo": "UNKNOWN"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-9e40855896044f984c58",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "ast-types",
+      "supplier": "NOASSERTION",
+      "versionInfo": "0.13.4"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-a02897feb34c67a3636c",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "string_decoder",
+      "supplier": "NOASSERTION",
+      "versionInfo": "1.3.0"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-a0377a1548b877234d8a",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "pend",
+      "supplier": "NOASSERTION",
+      "versionInfo": "1.2.0"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-a06aedfa8f13f9ed5aa3",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "ignore",
+      "supplier": "NOASSERTION",
+      "versionInfo": "7.0.5"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-a0b128c17d8939964abb",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "shelljs",
+      "supplier": "NOASSERTION",
+      "versionInfo": "0.9.2"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-a0b741f84a198d0ce2d2",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "pi-extension-custom-provider-gitlab-duo",
+      "supplier": "NOASSERTION",
+      "versionInfo": "0.0.1"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-a0c153ed097e2622a88e",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "reusify",
+      "supplier": "NOASSERTION",
+      "versionInfo": "1.1.0"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-a32cfa26825fb46d5bf1",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "https-proxy-agent",
+      "supplier": "NOASSERTION",
+      "versionInfo": "7.0.6"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-a3881b61c6b1b9c0c658",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "debug",
+      "supplier": "NOASSERTION",
+      "versionInfo": "4.4.3"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-a4cf3271a72ed34cf0a7",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "emoji-regex",
+      "supplier": "NOASSERTION",
+      "versionInfo": "8.0.0"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-a51af71c63fd48c5bb92",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "parse5-htmlparser2-tree-adapter",
+      "supplier": "NOASSERTION",
+      "versionInfo": "6.0.1"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-a59f364520c0697ab599",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@aws-sdk/nested-clients",
+      "supplier": "NOASSERTION",
+      "versionInfo": "3.997.31"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-a6449c61e4b72395543c",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@aws-sdk/credential-provider-web-identity",
+      "supplier": "NOASSERTION",
+      "versionInfo": "3.972.63"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-a65005d77f79cb37c4f8",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "undici-types",
+      "supplier": "NOASSERTION",
+      "versionInfo": "6.21.0"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-a67812b8ce8ae50e8b54",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@aws-sdk/xml-builder",
+      "supplier": "NOASSERTION",
+      "versionInfo": "3.972.34"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-a72465991d0d1a25df49",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@vitest/browser-preview",
+      "supplier": "NOASSERTION",
+      "versionInfo": "UNKNOWN"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-a772308694d96be964b9",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "std-env",
+      "supplier": "NOASSERTION",
+      "versionInfo": "4.1.0"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-a791c71959d43d05975d",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "fd-slicer",
+      "supplier": "NOASSERTION",
+      "versionInfo": "1.1.0"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-a87df119e59ee94de6e7",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@mariozechner/clipboard-win32-arm64-msvc",
+      "supplier": "NOASSERTION",
+      "versionInfo": "UNKNOWN"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-a884a40934b4bd66849b",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "fetch-blob",
+      "supplier": "NOASSERTION",
+      "versionInfo": "3.2.0"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-a972def4544a5d365ad7",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "chai",
+      "supplier": "NOASSERTION",
+      "versionInfo": "6.2.2"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-aa23c04048084d0364b9",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "thenify",
+      "supplier": "NOASSERTION",
+      "versionInfo": "3.3.1"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-aa55b7e545364c24be75",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "supports-color",
+      "supplier": "NOASSERTION",
+      "versionInfo": "7.2.0"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-aad450523b36e4644de9",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "node-addon-api",
+      "supplier": "NOASSERTION",
+      "versionInfo": "7.1.1"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-aaf45e8857154d895c4a",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "shx",
+      "supplier": "NOASSERTION",
+      "versionInfo": "0.4.0"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-ab81c152281df261cbf3",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "ieee754",
+      "supplier": "NOASSERTION",
+      "versionInfo": "1.2.1"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-ac21c8e9d8640789ce71",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "fsevents",
+      "supplier": "NOASSERTION",
+      "versionInfo": "UNKNOWN"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-ac38e0ba5f0230adfa6a",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@aws-sdk/signature-v4-multi-region",
+      "supplier": "NOASSERTION",
+      "versionInfo": "3.996.39"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-ac74cab5bc4e46ccb88d",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@esbuild/win32-x64",
+      "supplier": "NOASSERTION",
+      "versionInfo": "UNKNOWN"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-ac81654e816fe611833e",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "wrap-ansi",
+      "supplier": "NOASSERTION",
+      "versionInfo": "7.0.0"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-ad1e998f1dd0faec7edd",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "isexe",
+      "supplier": "NOASSERTION",
+      "versionInfo": "2.0.0"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-ad505de635a9d4b0cd3c",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "is-extglob",
+      "supplier": "NOASSERTION",
+      "versionInfo": "2.1.1"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-ad6d624c27b763f913df",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "object-assign",
+      "supplier": "NOASSERTION",
+      "versionInfo": "4.1.1"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-adcf00dc40318fd9d772",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@earendil-works/pi-tui",
+      "supplier": "NOASSERTION",
+      "versionInfo": "0.7.1"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-ae4257ec73583f783fbf",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@esbuild/android-x64",
+      "supplier": "NOASSERTION",
+      "versionInfo": "UNKNOWN"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-ae72b33b929457b3b19d",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@protobufjs/codegen",
+      "supplier": "NOASSERTION",
+      "versionInfo": "2.0.5"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-afa61f5c2f91b6793b0f",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@google/genai",
+      "supplier": "NOASSERTION",
+      "versionInfo": "1.52.0"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-b001abd2d9fdfcb420aa",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "pi-extension-sandbox",
+      "supplier": "NOASSERTION",
+      "versionInfo": "1.4.0"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-b0591307e64c4eea3e76",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@rolldown/binding-linux-x64-musl",
+      "supplier": "NOASSERTION",
+      "versionInfo": "UNKNOWN"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-b0882237d51ab627262e",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "queue-microtask",
+      "supplier": "NOASSERTION",
+      "versionInfo": "1.2.3"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-b23dd59a081d157b3102",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "zod",
+      "supplier": "NOASSERTION",
+      "versionInfo": "4.4.3"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-b247d41186bd10f6774a",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@tootallnate/quickjs-emscripten",
+      "supplier": "NOASSERTION",
+      "versionInfo": "0.23.0"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-b2584c0ab47d94e577e6",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@types/chai",
+      "supplier": "NOASSERTION",
+      "versionInfo": "5.2.3"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-b27aeebe257ca7a15ae6",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "retry",
+      "supplier": "NOASSERTION",
+      "versionInfo": "0.12.0"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-b2bae2b77d6953db936a",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@esbuild/linux-mips64el",
+      "supplier": "NOASSERTION",
+      "versionInfo": "UNKNOWN"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-b2c2579127b0dca2a5e3",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "execa",
+      "supplier": "NOASSERTION",
+      "versionInfo": "1.0.0"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-b3e985ff2e51107da510",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@standard-schema/spec",
+      "supplier": "NOASSERTION",
+      "versionInfo": "1.1.0"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-b413692094a74f28c049",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@esbuild/freebsd-arm64",
+      "supplier": "NOASSERTION",
+      "versionInfo": "UNKNOWN"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-b62bf8bb5e0848c1064d",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "socks",
+      "supplier": "NOASSERTION",
+      "versionInfo": "2.8.8"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-b68be2d93d5a3bc2551f",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@esbuild/android-arm",
+      "supplier": "NOASSERTION",
+      "versionInfo": "UNKNOWN"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-b7d82ac8829d59283520",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "minimatch",
+      "supplier": "NOASSERTION",
+      "versionInfo": "10.2.5"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-b84edfb5a5582eb81409",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@biomejs/cli-linux-arm64-musl",
+      "supplier": "NOASSERTION",
+      "versionInfo": "UNKNOWN"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-ba6d6417b699b66bcddc",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@protobufjs/utf8",
+      "supplier": "NOASSERTION",
+      "versionInfo": "1.1.1"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-baabeb1729c32e319896",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "glob",
+      "supplier": "NOASSERTION",
+      "versionInfo": "13.0.6"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-bb0a4323427372fdb541",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@nodelib/fs.scandir",
+      "supplier": "NOASSERTION",
+      "versionInfo": "2.1.5"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-bc6ba8032d9b79f55ac0",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "any-promise",
+      "supplier": "NOASSERTION",
+      "versionInfo": "1.3.0"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-bd16313463ea1de35053",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "jwa",
+      "supplier": "NOASSERTION",
+      "versionInfo": "2.0.1"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-be69a35f5a7b69694622",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "expand-template",
+      "supplier": "NOASSERTION",
+      "versionInfo": "2.0.3"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-bfa0f932e19001a4d8d6",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "ip-address",
+      "supplier": "NOASSERTION",
+      "versionInfo": "10.2.0"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-bfdb8c65ac80b30fb5cc",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "y18n",
+      "supplier": "NOASSERTION",
+      "versionInfo": "5.0.8"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-c020a7f40c9f5f2ea2e3",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@rolldown/binding-openharmony-arm64",
+      "supplier": "NOASSERTION",
+      "versionInfo": "UNKNOWN"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-c0f7d76d220b0bf9ab01",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "protobufjs",
+      "supplier": "NOASSERTION",
+      "versionInfo": "7.6.4"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-c1873af0cd0eb932fe5f",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@nodelib/fs.stat",
+      "supplier": "NOASSERTION",
+      "versionInfo": "2.0.5"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-c1acd5a90f622577b65a",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@types/node",
+      "supplier": "NOASSERTION",
+      "versionInfo": "22.19.17"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-c2cd245c657ccb809e8e",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "simple-concat",
+      "supplier": "NOASSERTION",
+      "versionInfo": "1.0.1"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-c2fa4ba9241f34f3d191",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "es-module-lexer",
+      "supplier": "NOASSERTION",
+      "versionInfo": "2.1.0"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-c3bdff9eaf58b5a58cca",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "get-uri",
+      "supplier": "NOASSERTION",
+      "versionInfo": "6.0.5"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-c4021ad920610a4b98fe",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "uint8array-extras",
+      "supplier": "NOASSERTION",
+      "versionInfo": "1.5.0"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-c44733193cca36923448",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "ecdsa-sig-formatter",
+      "supplier": "NOASSERTION",
+      "versionInfo": "1.0.11"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-c48851f4e3d86271b205",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "hosted-git-info",
+      "supplier": "NOASSERTION",
+      "versionInfo": "9.0.3"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-c4ac3a1b098414cde673",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "sass",
+      "supplier": "NOASSERTION",
+      "versionInfo": "UNKNOWN"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-c55c4612170f05d945dc",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "buffer",
+      "supplier": "NOASSERTION",
+      "versionInfo": "5.7.1"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-c5c313fdfacd33cdd89e",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@mariozechner/clipboard-linux-arm64-gnu",
+      "supplier": "NOASSERTION",
+      "versionInfo": "UNKNOWN"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-c69e170b2ca3da4f13ad",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "convert-source-map",
+      "supplier": "NOASSERTION",
+      "versionInfo": "2.0.0"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-c7323e90a4da5da7fbab",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "happy-dom",
+      "supplier": "NOASSERTION",
+      "versionInfo": "UNKNOWN"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-c84ff68773c6a6091d2e",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@esbuild/win32-ia32",
+      "supplier": "NOASSERTION",
+      "versionInfo": "UNKNOWN"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-c89f3d90a2a8d86021cd",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@esbuild/linux-riscv64",
+      "supplier": "NOASSERTION",
+      "versionInfo": "UNKNOWN"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-c9244efdc4ac5402e436",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@tokenizer/token",
+      "supplier": "NOASSERTION",
+      "versionInfo": "0.3.0"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-cb5881a6e48f0bff9a1c",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@esbuild/android-arm64",
+      "supplier": "NOASSERTION",
+      "versionInfo": "UNKNOWN"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-cbe0ed73414749b3e829",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@babel/runtime",
+      "supplier": "NOASSERTION",
+      "versionInfo": "7.29.2"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-cc144769bac4c1916765",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "inherits",
+      "supplier": "NOASSERTION",
+      "versionInfo": "2.0.4"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-cc4aee67399e7e266a78",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "shebang-command",
+      "supplier": "NOASSERTION",
+      "versionInfo": "1.2.0"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-cca68b6e3174e382b3a2",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@smithy/node-http-handler",
+      "supplier": "NOASSERTION",
+      "versionInfo": "4.9.4"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-cd252e6c8fb34d25e32b",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "strip-eof",
+      "supplier": "NOASSERTION",
+      "versionInfo": "1.0.0"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-cdb6f9b398af8c750970",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "p-finally",
+      "supplier": "NOASSERTION",
+      "versionInfo": "1.0.0"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-ced0bcebddcd1d9cc59e",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "yargs-parser",
+      "supplier": "NOASSERTION",
+      "versionInfo": "20.2.9"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-cf9065b999efde0d73cd",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "napi-build-utils",
+      "supplier": "NOASSERTION",
+      "versionInfo": "2.0.0"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-cf92789c13ade0ccb8ef",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "tinyrainbow",
+      "supplier": "NOASSERTION",
+      "versionInfo": "3.1.0"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-d0a91e6953efea76a62c",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "graceful-fs",
+      "supplier": "NOASSERTION",
+      "versionInfo": "4.2.11"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-d0fa96251d59b3363eb3",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@smithy/core",
+      "supplier": "NOASSERTION",
+      "versionInfo": "3.29.2"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-d27341dd6f09d445c526",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "mimic-response",
+      "supplier": "NOASSERTION",
+      "versionInfo": "3.1.0"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-d3db6426c9fa587ec5be",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@anthropic-ai/sandbox-runtime",
+      "supplier": "NOASSERTION",
+      "versionInfo": "0.0.55"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-d3e3cd36e5949b8e27fc",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@aws-sdk/credential-provider-process",
+      "supplier": "NOASSERTION",
+      "versionInfo": "3.972.57"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-d4127f66b4f454009d02",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "pi-extension-with-deps",
+      "supplier": "NOASSERTION",
+      "versionInfo": "0.0.1"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-d4e99c3590c54383a64a",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@nodelib/fs.walk",
+      "supplier": "NOASSERTION",
+      "versionInfo": "1.2.8"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-d64b78253fa34dd10fea",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "micromatch",
+      "supplier": "NOASSERTION",
+      "versionInfo": "4.0.8"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-d74c805a2fde9068c8bd",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "data-uri-to-buffer",
+      "supplier": "NOASSERTION",
+      "versionInfo": "6.0.2"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-d75e99aed90d440402fb",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "pump",
+      "supplier": "NOASSERTION",
+      "versionInfo": "3.0.4"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-d867c3af1345e3db8be0",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "undici-types",
+      "supplier": "NOASSERTION",
+      "versionInfo": "7.16.0"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-d871564b5f7a4779cbe5",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "web-streams-polyfill",
+      "supplier": "NOASSERTION",
+      "versionInfo": "3.3.3"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-d8c44bde68646fcdd3de",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@rolldown/binding-linux-ppc64-gnu",
+      "supplier": "NOASSERTION",
+      "versionInfo": "UNKNOWN"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-d8e9043002368065d51f",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@esbuild/linux-arm64",
+      "supplier": "NOASSERTION",
+      "versionInfo": "UNKNOWN"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-d8f374fd1b8768b53248",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "basic-ftp",
+      "supplier": "NOASSERTION",
+      "versionInfo": "5.3.1"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-d95e7f7b4b4fcfbff238",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@typescript/native-preview-darwin-x64",
+      "supplier": "NOASSERTION",
+      "versionInfo": "UNKNOWN"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-d99b252d25d4f8fb846d",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@aws-sdk/credential-provider-http",
+      "supplier": "NOASSERTION",
+      "versionInfo": "3.972.59"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-da00847b66f512a61f46",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@protobufjs/base64",
+      "supplier": "NOASSERTION",
+      "versionInfo": "1.1.2"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-da261f99638a00993a81",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "decompress-response",
+      "supplier": "NOASSERTION",
+      "versionInfo": "6.0.0"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-da381fcadd642c20eed4",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "source-map-js",
+      "supplier": "NOASSERTION",
+      "versionInfo": "1.2.1"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-da8c696f76b09273941b",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@vitejs/devtools",
+      "supplier": "NOASSERTION",
+      "versionInfo": "UNKNOWN"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-daee9fd5db5e6e206ed8",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "json-schema-to-ts",
+      "supplier": "NOASSERTION",
+      "versionInfo": "3.1.1"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-db18c17bfc4146d33ed4",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "resolve",
+      "supplier": "NOASSERTION",
+      "versionInfo": "1.22.12"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-db934ab39b182a709ece",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@biomejs/cli-linux-x64",
+      "supplier": "NOASSERTION",
+      "versionInfo": "2.3.5"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-dc206db62b3a1694d2a8",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "husky",
+      "supplier": "NOASSERTION",
+      "versionInfo": "9.1.7"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-dc307405d566f80e3943",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "postcss",
+      "supplier": "NOASSERTION",
+      "versionInfo": "8.5.15"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-dc3d7bf1502adf65a261",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "safe-buffer",
+      "supplier": "NOASSERTION",
+      "versionInfo": "5.2.1"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-dd4c08f998c68c13f7de",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "strtok3",
+      "supplier": "NOASSERTION",
+      "versionInfo": "10.3.5"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-ddf4961122d9e94a7e93",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "parse5",
+      "supplier": "NOASSERTION",
+      "versionInfo": "6.0.1"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-de92acbb36f0080a24a4",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "token-types",
+      "supplier": "NOASSERTION",
+      "versionInfo": "6.1.2"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-df351de621c91c1e095a",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "lightningcss-darwin-arm64",
+      "supplier": "NOASSERTION",
+      "versionInfo": "UNKNOWN"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-dfd7e71e6081bccc2d6c",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@mariozechner/clipboard-win32-x64-msvc",
+      "supplier": "NOASSERTION",
+      "versionInfo": "UNKNOWN"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-dfecdb5e31dbd546e198",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "zod-to-json-schema",
+      "supplier": "NOASSERTION",
+      "versionInfo": "3.25.2"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-e174dbd702be20fb648c",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "pac-resolver",
+      "supplier": "NOASSERTION",
+      "versionInfo": "7.0.1"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-e1b7f19ab2b9c388928f",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "koffi",
+      "supplier": "NOASSERTION",
+      "versionInfo": "2.16.2"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-e2fc51ffc6f4ef3db0cc",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@mariozechner/clipboard-linux-x64-musl",
+      "supplier": "NOASSERTION",
+      "versionInfo": "UNKNOWN"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-e32ed305730d617bb583",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@aws-sdk/core",
+      "supplier": "NOASSERTION",
+      "versionInfo": "3.975.1"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-e36c2782f38621e8d6b4",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@protobufjs/path",
+      "supplier": "NOASSERTION",
+      "versionInfo": "1.1.2"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-e377e5c82a110a93a373",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "yauzl",
+      "supplier": "NOASSERTION",
+      "versionInfo": "2.10.0"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-e4245f9f20df3b8d6dc6",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "esbuild",
+      "supplier": "NOASSERTION",
+      "versionInfo": "0.28.1"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-e431b6231a04d1a1d56e",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "signal-exit",
+      "supplier": "NOASSERTION",
+      "versionInfo": "3.0.7"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-e443832cdc4f048d8c6a",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "sugarss",
+      "supplier": "NOASSERTION",
+      "versionInfo": "UNKNOWN"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-e534b25595e98859f205",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "openai",
+      "supplier": "NOASSERTION",
+      "versionInfo": "6.47.0"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-e5c200df1c584cfa2592",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@types/yauzl",
+      "supplier": "NOASSERTION",
+      "versionInfo": "2.10.3"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-e5c4a4ecf94491a4c6f5",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@esbuild/linux-loong64",
+      "supplier": "NOASSERTION",
+      "versionInfo": "UNKNOWN"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-e6c6513afcea5015c0d3",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@aws-sdk/credential-provider-ini",
+      "supplier": "NOASSERTION",
+      "versionInfo": "3.973.1"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-e7928041c67236db4405",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "lightningcss-linux-x64-gnu",
+      "supplier": "NOASSERTION",
+      "versionInfo": "1.32.0"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-e7e361f3bbaa9ea2464d",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@aws-sdk/eventstream-handler-node",
+      "supplier": "NOASSERTION",
+      "versionInfo": "3.972.26"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-e7ed73a2a9e6dfcc0163",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "why-is-node-running",
+      "supplier": "NOASSERTION",
+      "versionInfo": "2.3.0"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-e97c6304af8e2c96a952",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "es-errors",
+      "supplier": "NOASSERTION",
+      "versionInfo": "1.3.0"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-e9892e9dc1cbbd65778c",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@modelcontextprotocol/sdk",
+      "supplier": "NOASSERTION",
+      "versionInfo": "UNKNOWN"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-e9b2764bb29d65044dfb",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "partial-json",
+      "supplier": "NOASSERTION",
+      "versionInfo": "0.1.7"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-ea62bbeefc9c8d656ea3",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "jsdom",
+      "supplier": "NOASSERTION",
+      "versionInfo": "UNKNOWN"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-ea72c69c08b5bfc27db1",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@aws-sdk/middleware-eventstream",
+      "supplier": "NOASSERTION",
+      "versionInfo": "3.972.22"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-eab656d8bcc2d81a79ec",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@vitest/utils",
+      "supplier": "NOASSERTION",
+      "versionInfo": "4.1.9"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-eb265b882aea7cc1bb31",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "escalade",
+      "supplier": "NOASSERTION",
+      "versionInfo": "3.2.0"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-eb7aa5dce81d714c1c06",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "google-auth-library",
+      "supplier": "NOASSERTION",
+      "versionInfo": "10.6.2"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-ec2c615c048e05f52af6",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "yaml",
+      "supplier": "NOASSERTION",
+      "versionInfo": "2.9.0"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-ed91b75bce1ce1bec052",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "tar-fs",
+      "supplier": "NOASSERTION",
+      "versionInfo": "2.1.4"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-eda4bcfc49c058713a99",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@vitest/snapshot",
+      "supplier": "NOASSERTION",
+      "versionInfo": "4.1.9"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-eda566a2d5a8c0a73099",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@types/diff",
+      "supplier": "NOASSERTION",
+      "versionInfo": "7.0.2"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-ee5fa3a8b5cbfc5f19bd",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "semver",
+      "supplier": "NOASSERTION",
+      "versionInfo": "7.7.4"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-ee690ad386620ab90652",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "fast-glob",
+      "supplier": "NOASSERTION",
+      "versionInfo": "3.3.3"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-ef6ebe3b665f43e8eae7",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@borewit/text-codec",
+      "supplier": "NOASSERTION",
+      "versionInfo": "0.2.2"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-ef9902fd6d4b522cfeec",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "util-deprecate",
+      "supplier": "NOASSERTION",
+      "versionInfo": "1.0.2"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-f0280db6779200099973",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "supports-color",
+      "supplier": "NOASSERTION",
+      "versionInfo": "8.1.1"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-f04945b6100589b1dd2a",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@esbuild/aix-ppc64",
+      "supplier": "NOASSERTION",
+      "versionInfo": "UNKNOWN"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-f095504004ae9bf154f8",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@rolldown/binding-android-arm64",
+      "supplier": "NOASSERTION",
+      "versionInfo": "UNKNOWN"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-f152223a86a7967342ae",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@vitest/browser-webdriverio",
+      "supplier": "NOASSERTION",
+      "versionInfo": "UNKNOWN"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-f24224d9cbaec8bbfdc8",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "yargs",
+      "supplier": "NOASSERTION",
+      "versionInfo": "16.2.0"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-f29b69f5ada3be2901bb",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "is-stream",
+      "supplier": "NOASSERTION",
+      "versionInfo": "1.1.0"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-f32c4b6ec77c1022c1fd",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "lightningcss-linux-x64-musl",
+      "supplier": "NOASSERTION",
+      "versionInfo": "UNKNOWN"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-f434ac42219e46eb062f",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "minipass",
+      "supplier": "NOASSERTION",
+      "versionInfo": "7.1.3"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-f4ef018a8cb3b42d48cb",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "fastq",
+      "supplier": "NOASSERTION",
+      "versionInfo": "1.20.1"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-f6cca3fdc32c4d0e020c",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@aws-sdk/token-providers",
+      "supplier": "NOASSERTION",
+      "versionInfo": "3.1083.0"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-f78a74f7fe114baece9b",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "ini",
+      "supplier": "NOASSERTION",
+      "versionInfo": "1.3.8"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-f7e8d9772a8a77c55776",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "get-east-asian-width",
+      "supplier": "NOASSERTION",
+      "versionInfo": "1.6.0"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-f9c95d2cf4b7641142a9",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@agentclientprotocol/sdk",
+      "supplier": "NOASSERTION",
+      "versionInfo": "1.3.0"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-fa83551731485b432ed4",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "sass-embedded",
+      "supplier": "NOASSERTION",
+      "versionInfo": "UNKNOWN"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-fa9f30feecd10004b0b3",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@typescript/native-preview",
+      "supplier": "NOASSERTION",
+      "versionInfo": "7.0.0-dev.20260120.1"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-fabceb1ba1bd13907f63",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "node-abi",
+      "supplier": "NOASSERTION",
+      "versionInfo": "3.92.0"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-faf0033a50a5b3e569c0",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@mistralai/mistralai",
+      "supplier": "NOASSERTION",
+      "versionInfo": "2.2.1"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-fb29c82e3ff30642947b",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "merge2",
+      "supplier": "NOASSERTION",
+      "versionInfo": "1.4.1"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-fb30c6569b6bb202faaf",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@silvia-odwyer/photon-node",
+      "supplier": "NOASSERTION",
+      "versionInfo": "0.3.4"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-fcb1b87e48b72af924cc",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@vitest/mocker",
+      "supplier": "NOASSERTION",
+      "versionInfo": "4.1.9"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-fde1d6a94eb7f8a3f02a",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "google-logging-utils",
+      "supplier": "NOASSERTION",
+      "versionInfo": "1.1.3"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-fdfb2165deaaa3fc67e5",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@vitest/pretty-format",
+      "supplier": "NOASSERTION",
+      "versionInfo": "4.1.9"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-fe45c3d5c79b46182059",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@rolldown/binding-linux-s390x-gnu",
+      "supplier": "NOASSERTION",
+      "versionInfo": "UNKNOWN"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-feae445fc661353d5407",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@types/hosted-git-info",
+      "supplier": "NOASSERTION",
+      "versionInfo": "3.0.5"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-feb19d8e6ebf80789fbc",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@aws-sdk/credential-provider-sso",
+      "supplier": "NOASSERTION",
+      "versionInfo": "3.973.1"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-ff027c1916ff699d9d4d",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "gcp-metadata",
+      "supplier": "NOASSERTION",
+      "versionInfo": "8.1.2"
+    },
+    {
+      "SPDXID": "SPDXRef-pypi-03a7d6fcb84c1283ec66",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "trove-classifiers",
+      "supplier": "NOASSERTION",
+      "versionInfo": "2026.6.1.19"
+    },
+    {
+      "SPDXID": "SPDXRef-pypi-12e8cab53d4a0dba1948",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "asttokens",
+      "supplier": "NOASSERTION",
+      "versionInfo": "3.0.2"
+    },
+    {
+      "SPDXID": "SPDXRef-pypi-13f2470a1606d9b6600a",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "ipython",
+      "supplier": "NOASSERTION",
+      "versionInfo": "9.16.1"
+    },
+    {
+      "SPDXID": "SPDXRef-pypi-182010005cd08ddb26cf",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "tornado",
+      "supplier": "NOASSERTION",
+      "versionInfo": "6.5.8"
+    },
+    {
+      "SPDXID": "SPDXRef-pypi-1c50579a3c2519a0c2e5",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "jupyter_core",
+      "supplier": "NOASSERTION",
+      "versionInfo": "5.9.1"
+    },
+    {
+      "SPDXID": "SPDXRef-pypi-24ac31c0cd497b8b913c",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "prime-agent-runtime",
+      "supplier": "NOASSERTION",
+      "versionInfo": "0.1.0"
+    },
+    {
+      "SPDXID": "SPDXRef-pypi-30682873bafbfcd69c06",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "anyio",
+      "supplier": "NOASSERTION",
+      "versionInfo": "4.14.2"
+    },
+    {
+      "SPDXID": "SPDXRef-pypi-311c7c95f13970e7954a",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "wcwidth",
+      "supplier": "NOASSERTION",
+      "versionInfo": "0.8.2"
+    },
+    {
+      "SPDXID": "SPDXRef-pypi-375aaea016baedad0b54",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "python-dateutil",
+      "supplier": "NOASSERTION",
+      "versionInfo": "2.9.0.post0"
+    },
+    {
+      "SPDXID": "SPDXRef-pypi-380125794279f61c4dfb",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "httpx",
+      "supplier": "NOASSERTION",
+      "versionInfo": "0.28.1"
+    },
+    {
+      "SPDXID": "SPDXRef-pypi-3ab0c47305e015b41527",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "tomli",
+      "supplier": "NOASSERTION",
+      "versionInfo": "2.4.1"
+    },
+    {
+      "SPDXID": "SPDXRef-pypi-3b13d52df9c85b380a04",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "dill",
+      "supplier": "NOASSERTION",
+      "versionInfo": "0.4.1"
+    },
+    {
+      "SPDXID": "SPDXRef-pypi-3c93fa159527d40a9ef2",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "platformdirs",
+      "supplier": "NOASSERTION",
+      "versionInfo": "4.11.2"
+    },
+    {
+      "SPDXID": "SPDXRef-pypi-3d2dd4d6ca48c1361b06",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "pydantic_core",
+      "supplier": "NOASSERTION",
+      "versionInfo": "2.46.4"
+    },
+    {
+      "SPDXID": "SPDXRef-pypi-44d3933e103ed0d0d4ff",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "pure_eval",
+      "supplier": "NOASSERTION",
+      "versionInfo": "0.2.3"
+    },
+    {
+      "SPDXID": "SPDXRef-pypi-4889595af7c9e59d575d",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "h11",
+      "supplier": "NOASSERTION",
+      "versionInfo": "0.16.0"
+    },
+    {
+      "SPDXID": "SPDXRef-pypi-53ebe8321e2ef5d02fdf",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "PyYAML",
+      "supplier": "NOASSERTION",
+      "versionInfo": "6.0.3"
+    },
+    {
+      "SPDXID": "SPDXRef-pypi-5421e4640034eeeff3f1",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "numpy",
+      "supplier": "NOASSERTION",
+      "versionInfo": "2.5.2"
+    },
+    {
+      "SPDXID": "SPDXRef-pypi-557d7de4df34df8f5beb",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "typing_extensions",
+      "supplier": "NOASSERTION",
+      "versionInfo": "4.16.0"
+    },
+    {
+      "SPDXID": "SPDXRef-pypi-580731feeca8ac83dbb4",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "six",
+      "supplier": "NOASSERTION",
+      "versionInfo": "1.17.0"
+    },
+    {
+      "SPDXID": "SPDXRef-pypi-595ace0351558f9e4ed2",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "annotated-types",
+      "supplier": "NOASSERTION",
+      "versionInfo": "0.8.0"
+    },
+    {
+      "SPDXID": "SPDXRef-pypi-5982cf6e4ed11862a577",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "docstring_parser",
+      "supplier": "NOASSERTION",
+      "versionInfo": "0.18.0"
+    },
+    {
+      "SPDXID": "SPDXRef-pypi-61b096bac624bd70cbd5",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "idna",
+      "supplier": "NOASSERTION",
+      "versionInfo": "3.18"
+    },
+    {
+      "SPDXID": "SPDXRef-pypi-62f9912d5de54f7ca634",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "pexpect",
+      "supplier": "NOASSERTION",
+      "versionInfo": "4.9.0"
+    },
+    {
+      "SPDXID": "SPDXRef-pypi-69116cecd36250a37e32",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "parso",
+      "supplier": "NOASSERTION",
+      "versionInfo": "0.8.7"
+    },
+    {
+      "SPDXID": "SPDXRef-pypi-6a50105e41af8369e8a3",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "matplotlib-inline",
+      "supplier": "NOASSERTION",
+      "versionInfo": "0.2.2"
+    },
+    {
+      "SPDXID": "SPDXRef-pypi-702ce8e0fd439654079b",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "stack-data",
+      "supplier": "NOASSERTION",
+      "versionInfo": "0.6.3"
+    },
+    {
+      "SPDXID": "SPDXRef-pypi-736c9f11dfb74c53d69e",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "nest-asyncio",
+      "supplier": "NOASSERTION",
+      "versionInfo": "1.6.0"
+    },
+    {
+      "SPDXID": "SPDXRef-pypi-77e12122ba6f01fdce4b",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "pandas",
+      "supplier": "NOASSERTION",
+      "versionInfo": "3.0.5"
+    },
+    {
+      "SPDXID": "SPDXRef-pypi-7c56e8c6a2a613a48315",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "markdown-it-py",
+      "supplier": "NOASSERTION",
+      "versionInfo": "4.2.0"
+    },
+    {
+      "SPDXID": "SPDXRef-pypi-7ce84f241a72fa6671b3",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "charset-normalizer",
+      "supplier": "NOASSERTION",
+      "versionInfo": "3.4.9"
+    },
+    {
+      "SPDXID": "SPDXRef-pypi-7ec617ee28cbb39fac56",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "requests",
+      "supplier": "NOASSERTION",
+      "versionInfo": "2.34.2"
+    },
+    {
+      "SPDXID": "SPDXRef-pypi-81476dd268a2d396b0af",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "certifi",
+      "supplier": "NOASSERTION",
+      "versionInfo": "2026.7.22"
+    },
+    {
+      "SPDXID": "SPDXRef-pypi-84407c5636a0f783dbf7",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "packaging",
+      "supplier": "NOASSERTION",
+      "versionInfo": "26.3"
+    },
+    {
+      "SPDXID": "SPDXRef-pypi-86e52b47b7312017f09f",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "scipy",
+      "supplier": "NOASSERTION",
+      "versionInfo": "1.18.0"
+    },
+    {
+      "SPDXID": "SPDXRef-pypi-86e8383c40ff49ba2011",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "tyro",
+      "supplier": "NOASSERTION",
+      "versionInfo": "0.9.35"
+    },
+    {
+      "SPDXID": "SPDXRef-pypi-8bbd2426054107ef9e95",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "traitlets",
+      "supplier": "NOASSERTION",
+      "versionInfo": "5.16.1"
+    },
+    {
+      "SPDXID": "SPDXRef-pypi-8d41a94a63bdf2fa8a88",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "pathspec",
+      "supplier": "NOASSERTION",
+      "versionInfo": "1.1.1"
+    },
+    {
+      "SPDXID": "SPDXRef-pypi-97f3e329a9d41f96b8d1",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "comm",
+      "supplier": "NOASSERTION",
+      "versionInfo": "0.2.3"
+    },
+    {
+      "SPDXID": "SPDXRef-pypi-a806616a402ebbf681c7",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "pluggy",
+      "supplier": "NOASSERTION",
+      "versionInfo": "1.6.0"
+    },
+    {
+      "SPDXID": "SPDXRef-pypi-ac8bc4e7a1fbf2fb1f29",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "pydantic",
+      "supplier": "NOASSERTION",
+      "versionInfo": "2.13.4"
+    },
+    {
+      "SPDXID": "SPDXRef-pypi-adc2173c98399bc55a47",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "Pygments",
+      "supplier": "NOASSERTION",
+      "versionInfo": "2.20.0"
+    },
+    {
+      "SPDXID": "SPDXRef-pypi-b4bff37e78d624c6da73",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "executing",
+      "supplier": "NOASSERTION",
+      "versionInfo": "2.2.1"
+    },
+    {
+      "SPDXID": "SPDXRef-pypi-beb1716d242aa37f9e0d",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "debugpy",
+      "supplier": "NOASSERTION",
+      "versionInfo": "1.8.21"
+    },
+    {
+      "SPDXID": "SPDXRef-pypi-beba3d2c2a6dd293f1c0",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "jupyter_client",
+      "supplier": "NOASSERTION",
+      "versionInfo": "8.9.1"
+    },
+    {
+      "SPDXID": "SPDXRef-pypi-c02b6e63fb14e772d052",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "pip",
+      "supplier": "NOASSERTION",
+      "versionInfo": "25.0.1"
+    },
+    {
+      "SPDXID": "SPDXRef-pypi-c963a94313b5187e7328",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "shtab",
+      "supplier": "NOASSERTION",
+      "versionInfo": "1.10.0"
+    },
+    {
+      "SPDXID": "SPDXRef-pypi-cc99d9fb701a1b8d0d7c",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "hatchling",
+      "supplier": "NOASSERTION",
+      "versionInfo": "1.27.0"
+    },
+    {
+      "SPDXID": "SPDXRef-pypi-cdd5efd71abd25d1b434",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "jedi",
+      "supplier": "NOASSERTION",
+      "versionInfo": "0.20.0"
+    },
+    {
+      "SPDXID": "SPDXRef-pypi-d2919debe4ae7cc883b7",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "python-dotenv",
+      "supplier": "NOASSERTION",
+      "versionInfo": "1.2.2"
+    },
+    {
+      "SPDXID": "SPDXRef-pypi-d592454d7f1e87c14416",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "typing-inspection",
+      "supplier": "NOASSERTION",
+      "versionInfo": "0.4.3"
+    },
+    {
+      "SPDXID": "SPDXRef-pypi-d6226e35744c594e1409",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "ptyprocess",
+      "supplier": "NOASSERTION",
+      "versionInfo": "0.7.0"
+    },
+    {
+      "SPDXID": "SPDXRef-pypi-d754b23302ca8a232ac2",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "prompt_toolkit",
+      "supplier": "NOASSERTION",
+      "versionInfo": "3.0.53"
+    },
+    {
+      "SPDXID": "SPDXRef-pypi-ded03320a7d1bec74ce8",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "ipykernel",
+      "supplier": "NOASSERTION",
+      "versionInfo": "6.30.1"
+    },
+    {
+      "SPDXID": "SPDXRef-pypi-dfdbc9734a1bc64a6a26",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "beautifulsoup4",
+      "supplier": "NOASSERTION",
+      "versionInfo": "4.15.0"
+    },
+    {
+      "SPDXID": "SPDXRef-pypi-e214cf7abe0ff79ae033",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "psutil",
+      "supplier": "NOASSERTION",
+      "versionInfo": "7.2.2"
+    },
+    {
+      "SPDXID": "SPDXRef-pypi-e72eac95b2030aaf1029",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "lxml",
+      "supplier": "NOASSERTION",
+      "versionInfo": "6.1.1"
+    },
+    {
+      "SPDXID": "SPDXRef-pypi-e9ac21a8c390b4fe7817",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "ipython_pygments_lexers",
+      "supplier": "NOASSERTION",
+      "versionInfo": "1.1.1"
+    },
+    {
+      "SPDXID": "SPDXRef-pypi-ee0e7863206f8ef36a5e",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "soupsieve",
+      "supplier": "NOASSERTION",
+      "versionInfo": "2.9.2"
+    },
+    {
+      "SPDXID": "SPDXRef-pypi-f2ee16e5bbb8d4e012bb",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "rich",
+      "supplier": "NOASSERTION",
+      "versionInfo": "15.0.0"
+    },
+    {
+      "SPDXID": "SPDXRef-pypi-f49a5483ac8fc8f0efd2",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "mdurl",
+      "supplier": "NOASSERTION",
+      "versionInfo": "0.1.2"
+    },
+    {
+      "SPDXID": "SPDXRef-pypi-f4a85643ec1d445477a3",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "urllib3",
+      "supplier": "NOASSERTION",
+      "versionInfo": "2.7.0"
+    },
+    {
+      "SPDXID": "SPDXRef-pypi-f50fe390e43cd7d97449",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "httpcore",
+      "supplier": "NOASSERTION",
+      "versionInfo": "1.0.9"
+    },
+    {
+      "SPDXID": "SPDXRef-pypi-f87ddcfe6a5bd12efe98",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "pyzmq",
+      "supplier": "NOASSERTION",
+      "versionInfo": "27.1.0"
+    },
+    {
+      "SPDXID": "SPDXRef-pypi-f8c9ef2a8a8241b45c8f",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "typeguard",
+      "supplier": "NOASSERTION",
+      "versionInfo": "4.6.0"
+    }
+  ],
+  "spdxVersion": "SPDX-2.3"
+}

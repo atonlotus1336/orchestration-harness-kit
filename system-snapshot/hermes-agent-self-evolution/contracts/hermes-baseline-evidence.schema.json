@@ -1,0 +1,167 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://__PRIVATE_TOKEN_02__.local/contracts/hermes-baseline-evidence.schema.json",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version", "captured_at", "run_nonce", "source_kind", "status", "go_eligible",
+    "health", "listener_identity", "authority", "readiness", "bindings", "remote_reachability",
+    "canonical_fingerprint_sha256"
+  ],
+  "properties": {
+    "schema_version": {"const": "2.0"},
+    "captured_at": {"type": "string", "format": "date-time"},
+    "run_nonce": {"type": "string", "pattern": "^[0-9a-f]{32}$"},
+    "source_kind": {"const": "LIVE"},
+    "status": {"enum": ["READY", "UNVERIFIED"]},
+    "go_eligible": {"type": "boolean"},
+    "health": {
+      "type": "object", "additionalProperties": false,
+      "required": ["status", "http_status", "url", "body_base64", "body_sha256"],
+      "properties": {
+        "status": {"enum": ["READY", "UNAVAILABLE", "UNVERIFIED"]},
+        "http_status": {"type": ["integer", "null"]},
+        "url": {"type": "string"},
+        "body_base64": {"type": "string"},
+        "body_sha256": {"type": "string", "pattern": "^(?:[0-9a-f]{64})?$"}
+      }
+    },
+    "listener_identity": {
+      "oneOf": [
+        {"type": "object", "additionalProperties": false, "required": ["status"], "properties": {"status": {"const": "UNVERIFIED"}}},
+        {
+          "type": "object", "additionalProperties": false,
+          "required": ["status", "pid", "start_ticks", "uid", "profile", "cmdline_sha256", "executable", "hermes_entrypoint"],
+          "properties": {
+            "status": {"enum": ["READY", "UNVERIFIED"]},
+            "pid": {"type": "integer", "minimum": 1},
+            "start_ticks": {"type": "integer", "minimum": 1},
+            "uid": {"type": "integer", "minimum": 0},
+            "profile": {"type": "string", "pattern": "^[a-z0-9][a-z0-9._-]{0,63}$"},
+            "cmdline_sha256": {"$ref": "#/$defs/sha"},
+            "executable": {"$ref": "#/$defs/file"},
+            "hermes_entrypoint": {"anyOf": [{"$ref": "#/$defs/file"}, {"type": "null"}]}
+          }
+        }
+      ]
+    },
+    "authority": {
+      "oneOf": [
+        {"type": "object", "additionalProperties": false, "required": ["status"], "properties": {"status": {"const": "UNVERIFIED"}}},
+        {
+          "type": "object", "additionalProperties": false,
+          "required": ["status", "profile", "runtime_config", "managed_source", "sections"],
+          "properties": {
+            "status": {"enum": ["READY", "UNVERIFIED"]},
+            "profile": {"type": "string"},
+            "runtime_config": {"$ref": "#/$defs/file"},
+            "managed_source": {"$ref": "#/$defs/file"},
+            "sections": {
+              "type": "object", "additionalProperties": false,
+              "required": ["providers", "mcp_servers", "memory", "toolsets"],
+              "properties": {
+                "providers": {"$ref": "#/$defs/section"},
+                "mcp_servers": {"$ref": "#/$defs/section"},
+                "memory": {"$ref": "#/$defs/section"},
+                "toolsets": {"$ref": "#/$defs/section"}
+              }
+            }
+          }
+        }
+      ]
+    },
+    "readiness": {
+      "type": "object", "additionalProperties": false,
+      "required": ["gateway_liveness", "mcp", "rag", "memory", "toolsets"],
+      "properties": {
+        "gateway_liveness": {"enum": ["READY", "UNAVAILABLE", "UNVERIFIED"]},
+        "mcp": {"enum": ["READY", "UNVERIFIED"]},
+        "rag": {"enum": ["READY", "UNVERIFIED"]},
+        "memory": {"enum": ["READY", "UNVERIFIED"]},
+        "toolsets": {"enum": ["READY", "UNVERIFIED"]}
+      }
+    },
+    "bindings": {
+      "type": "object", "additionalProperties": false,
+      "required": ["gateway_8642", "dashboard_9119"],
+      "properties": {"gateway_8642": {"$ref": "#/$defs/listener"}, "dashboard_9119": {"$ref": "#/$defs/listener"}}
+    },
+    "remote_reachability": {
+      "type": "object", "additionalProperties": false,
+      "required": ["status", "attestation_sha256"],
+      "properties": {"status": {"enum": ["READY", "FAIL", "UNVERIFIED"]}, "attestation_sha256": {"type": "string", "pattern": "^(?:[0-9a-f]{64})?$"}}
+    },
+    "canonical_fingerprint_sha256": {"$ref": "#/$defs/sha"}
+  },
+  "$defs": {
+    "sha": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "section": {
+      "type": "object", "additionalProperties": false, "required": ["present", "sha256"],
+      "properties": {"present": {"type": "boolean"}, "sha256": {"type": "string", "pattern": "^(?:[0-9a-f]{64})?$"}}
+    },
+    "file": {
+      "type": "object", "additionalProperties": false,
+      "required": ["path", "sha256", "uid", "gid", "mode", "inode", "size", "mtime_ns"],
+      "properties": {
+        "path": {"type": "string", "pattern": "^/"}, "sha256": {"$ref": "#/$defs/sha"},
+        "uid": {"type": "integer", "minimum": 0}, "gid": {"type": "integer", "minimum": 0},
+        "mode": {"type": "integer", "minimum": 0, "maximum": 4095}, "inode": {"type": "integer", "minimum": 1},
+        "size": {"type": "integer", "minimum": 1}, "mtime_ns": {"type": "integer", "minimum": 1}
+      }
+    },
+    "listener": {
+      "type": "object", "additionalProperties": false,
+      "required": ["status", "port", "address", "pid", "expected", "match"],
+      "properties": {
+        "status": {"enum": ["OBSERVED", "NOT_LISTENING", "UNVERIFIED"]}, "port": {"type": "integer"},
+        "address": {"type": "string"}, "pid": {"type": ["integer", "null"]}, "expected": {"type": "string"}, "match": {"type": "boolean"}
+      }
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "status": {"const": "READY"}
+        }
+      },
+      "then": {
+        "properties": {
+          "go_eligible": {"const": true},
+          "health": {
+            "properties": {
+              "status": {"const": "READY"},
+              "http_status": {"const": 200},
+              "url": {"const": "http://127.0.0.1:8642/health"}
+            }
+          },
+          "listener_identity": {"properties": {"status": {"const": "READY"}}},
+          "authority": {"properties": {"status": {"const": "READY"}}},
+          "readiness": {
+            "properties": {
+              "gateway_liveness": {"const": "READY"},
+              "mcp": {"const": "READY"},
+              "rag": {"const": "READY"},
+              "memory": {"const": "READY"},
+              "toolsets": {"const": "READY"}
+            }
+          },
+          "bindings": {
+            "properties": {
+              "gateway_8642": {"properties": {"match": {"const": true}}},
+              "dashboard_9119": {"properties": {"match": {"const": true}}}
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "status": {"const": "UNVERIFIED"}
+        }
+      },
+      "then": {"properties": {"go_eligible": {"const": false}}}
+    }
+  ]
+}

@@ -1,0 +1,32 @@
+{
+  "schema_version": "1.0",
+  "enabled": true,
+  "eligible_modes": ["prime-available", "prime-default"],
+  "excluded_profiles": [],
+  "families": {
+    "gsd_plan": ["gsd plan", "make a gsd plan", "create a gsd plan", "run a gsd plan"],
+    "gsd_execute": ["execute phase", "run phase", "execute plan", "run plan", "continue phase", "continue with phase", "complete phase", "implement phase", "run gsd plan", "execute gsd plan"],
+    "phase_check": ["check phase", "check if phase", "verify phase", "phase check", "is phase"],
+    "doublecheck": ["doublecheck", "double check", "doublecheck phase", "double check phase"],
+    "audit": ["audit"],
+    "debug": ["debug", "troubleshoot", "investigate this", "find the issue"],
+    "diagnose": ["diagnose", "diagnosis", "diagnose this"],
+    "bug_fix": ["bug fix", "fix bug", "fix the bug", "fix this bug", "fix this error"],
+    "ponytail_invocation": [
+      "run ponytail", "use ponytail", "$ponytail", "[$ponytail:ponytail]"
+    ],
+    "code_task": [
+      "analyze the repository", "analyze this repository", "analyze the code",
+      "implement", "change the code", "refactor", "create tests", "run tests",
+      "write tests", "code review", "review the code", "review this code",
+      "gsd work", "audit the code", "doublecheck the code", "debug the code",
+      "diagnose the code", "fix the bug", "bug fix"
+    ]
+  },
+  "ponytail": {
+    "canonical_relative_path": "skills-shared/ponytail/skills/ponytail/SKILL.md",
+    "intensity": "full",
+    "required": true
+  },
+  "native_fallback": true
+}

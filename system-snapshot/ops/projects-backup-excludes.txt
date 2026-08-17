@@ -1,0 +1,29 @@
+# Rebuildable dependency, cache, and generated-output directories.
+node_modules/
+.venv/
+venv/
+__pycache__/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.cache/
+.gradle/
+.next/
+.nuxt/
+Library/
+Temp/
+Logs/
+bin/
+obj/
+build/
+dist/
+*.pyc
+
+# Credentials stay local rather than being copied as plaintext to the VPS.
+.env
+.env.*
+auth.json
+id_ed25519*
+id_rsa*
+*.key
+*.pem

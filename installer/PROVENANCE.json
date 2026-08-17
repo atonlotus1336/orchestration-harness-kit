@@ -1,12 +1,13 @@
-﻿{
+{
     "schema_version":  1,
     "phase":  "M11-patched",
     "bundle":  "orchestration-layer/installer",
-    "generated_at":  "2026-08-17T20:52:36.3657459Z",
+    "generated_at":  "2026-08-17T21:39:54.5705105Z",
     "source_dependencies":  [
                                 "solo-first topology contract",
                                 "Prime/OMP governed-worker contract",
                                 "backup-gated maintenance contract",
+                                "private real-system implementation snapshot",
                                 "MemoryWeaver and RAG portable core"
                             ],
     "verification":  {
@@ -153,13 +154,13 @@
                   },
                   {
                       "path":  "coverage\\DECLARED-COVERAGE.md",
-                      "sha256":  "513751a249a4bfa326e2236509c666211270799a02f4af29a06967ea9f4072eb",
-                      "bytes":  1718
+                      "sha256":  "9b03abb147ae3957b40de94faad1ba32f0e5648b22c666dc314dd73849ca2b94",
+                      "bytes":  1795
                   },
                   {
                       "path":  "gate.ps1",
-                      "sha256":  "eb34a1ee108ecd60af6a6527e564c099de92bc82ff448503d8afbb72d298c0b8",
-                      "bytes":  13593
+                      "sha256":  "28a37eb1315ff69f8d36c5fdd923a1722cd2b0522490122f3b0734479d40d9d9",
+                      "bytes":  14026
                   },
                   {
                       "path":  "modules\\harness\\README.md",
@@ -283,8 +284,8 @@
                   },
                   {
                       "path":  "modules\\module-manifest.json",
-                      "sha256":  "f0afa3355fec2dca999c293d640bd1c2eb9bbee393ca99b2137cb83fd1c53612",
-                      "bytes":  3481
+                      "sha256":  "fd6ddf11a4d05b43be197ccd16d03b4e5e6c18ec9906b9b982523b07fce8e999",
+                      "bytes":  3812
                   },
                   {
                       "path":  "modules\\rag\\README.md",
@@ -303,8 +304,8 @@
                   },
                   {
                       "path":  "README.md",
-                      "sha256":  "c60b09597bcaeae92f2f627260dbacbec03d6bb6435afa7bb57503266495ee55",
-                      "bytes":  2374
+                      "sha256":  "5e9b0d01718174a9e9149d986a70530bdcfb5b4a4be66b530b920728f6423ba3",
+                      "bytes":  2603
                   }
               ]
 }

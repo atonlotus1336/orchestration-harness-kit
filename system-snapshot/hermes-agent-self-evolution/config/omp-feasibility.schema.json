@@ -1,0 +1,96 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "OMP feasibility verdict",
+  "description": "Typed, fail-closed verdict for the Prime-governed OMP coding feasibility spike (Phase 10 Plan 01).",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "verdict",
+    "captured_at",
+    "phase9",
+    "runtime_lock",
+    "sdk_probe",
+    "reasons"
+  ],
+  "properties": {
+    "schema_version": { "const": "1.0" },
+    "verdict": {
+      "enum": ["READY", "PHASE9_BLOCKED", "RUNTIME_UNAVAILABLE", "MODEL_INCOMPATIBLE", "OMP_RUNTIME_UNSAFE"]
+    },
+    "captured_at": { "type": "string", "format": "date-time" },
+    "phase9": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["status", "route_receipt_present", "native_fallback_receipt_present", "receipt_path"],
+      "properties": {
+        "status": { "enum": ["PASS", "BLOCKED", "NOT_RUN"] },
+        "route_receipt_present": { "type": "boolean" },
+        "native_fallback_receipt_present": { "type": "boolean" },
+        "receipt_path": { "type": "string" }
+      }
+    },
+    "runtime_lock": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["status", "package", "bun", "image_digest", "license", "sbom_sha256", "source_commit"],
+      "properties": {
+        "status": { "enum": ["PASS", "FAIL", "NOT_RUN"] },
+        "package": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["name", "version", "integrity", "integrity_matches"],
+          "properties": {
+            "name": { "type": "string" },
+            "version": { "type": "string" },
+            "integrity": { "type": "string" },
+            "integrity_matches": { "type": "boolean" }
+          }
+        },
+        "bun": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["version", "minimum", "satisfies"],
+          "properties": {
+            "version": { "type": "string" },
+            "minimum": { "type": "string" },
+            "satisfies": { "type": "boolean" }
+          }
+        },
+        "image_digest": { "type": "string" },
+        "license": { "type": "string" },
+        "sbom_sha256": { "type": "string" },
+        "source_commit": { "type": "string" }
+      }
+    },
+    "sdk_probe": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["status", "ran", "tool_inventory", "discovery_sources", "assertions"],
+      "properties": {
+        "status": { "enum": ["PASS", "FAIL", "NOT_RUN"] },
+        "ran": { "type": "boolean" },
+        "tool_inventory": { "type": "array", "items": { "type": "string" } },
+        "discovery_sources": { "type": "array", "items": { "type": "string" } },
+        "assertions": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["streaming", "tool_calls", "cancellation", "usage", "lsp_read", "apply_edit_rejected", "no_alternate_model", "no_persisted_files", "descendant_cleanup"],
+          "properties": {
+            "streaming": { "type": "boolean" },
+            "tool_calls": { "type": "boolean" },
+            "cancellation": { "type": "boolean" },
+            "usage": { "type": "boolean" },
+            "lsp_read": { "type": "boolean" },
+            "apply_edit_rejected": { "type": "boolean" },
+            "no_alternate_model": { "type": "boolean" },
+            "no_persisted_files": { "type": "boolean" },
+            "descendant_cleanup": { "type": "boolean" }
+          }
+        },
+        "probe_error": { "type": "string" }
+      }
+    },
+    "reasons": { "type": "array", "items": { "type": "string" } }
+  }
+}

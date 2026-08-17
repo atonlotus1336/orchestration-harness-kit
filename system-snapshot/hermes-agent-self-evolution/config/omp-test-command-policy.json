@@ -1,0 +1,21 @@
+{
+  "schema_version": "1.0",
+  "commands": {
+    "pytest": {
+      "argv": ["python3", "-m", "pytest", "-q"],
+      "cwd": ".",
+      "environment_allowlist": ["PATH", "HOME", "PYTHONPATH", "VIRTUAL_ENV"],
+      "timeout_seconds": 300,
+      "output_cap_bytes": 1000000,
+      "network": "none"
+    },
+    "python_compile": {
+      "argv": ["python3", "-m", "compileall", "-q", "."],
+      "cwd": ".",
+      "environment_allowlist": ["PATH", "HOME", "PYTHONPATH"],
+      "timeout_seconds": 120,
+      "output_cap_bytes": 1000000,
+      "network": "none"
+    }
+  }
+}

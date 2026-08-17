@@ -1,0 +1,49 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://__PRIVATE_TOKEN_02__.local/contracts/phase01-gap-lifecycle-state.schema.json",
+  "title": "Phase 01 gap lifecycle state",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "sequence",
+    "transition",
+    "expected_plan",
+    "summary_count",
+    "prior_hooks_path",
+    "head",
+    "tree",
+    "updated_at"
+  ],
+  "properties": {
+    "schema_version": {"const": "1.0"},
+    "sequence": {"type": "integer", "minimum": 0},
+    "transition": {
+      "enum": [
+        "preflight-complete",
+        "bootstrapped",
+        "plans-validated",
+        "plans-committed",
+        "before-plan",
+        "after-plan",
+        "verification-prepared",
+        "verification-recorded",
+        "finalized-go",
+        "finalized-no-go",
+        "final-scan-complete",
+        "restored"
+      ]
+    },
+    "expected_plan": {
+      "anyOf": [
+        {"type": "null"},
+        {"type": "string", "pattern": "^(0[2-9]|1[0-3])$"}
+      ]
+    },
+    "summary_count": {"type": "integer", "minimum": 0, "maximum": 12},
+    "prior_hooks_path": {"type": "string"},
+    "head": {"type": ["string", "null"]},
+    "tree": {"type": ["string", "null"]},
+    "updated_at": {"type": "string", "format": "date-time"}
+  }
+}

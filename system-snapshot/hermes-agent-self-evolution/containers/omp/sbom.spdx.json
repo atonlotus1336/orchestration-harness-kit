@@ -1,0 +1,2687 @@
+{
+  "SPDXID": "SPDXRef-DOCUMENT",
+  "annotations": [
+    {
+      "annotationDate": "2026-08-13T00:00:00Z",
+      "annotationType": "OTHER",
+      "annotator": "Tool: hermes-phase10-omp-lock",
+      "comment": "context-sha256=7c359b950d88f499df37103b02d07f332820f4e75b6066803112eefff8f5a076;image-id=977bc0ecf7656656e47f07fb4dd6c78fd940a29ad03c9714a7675569ad1be822"
+    }
+  ],
+  "creationInfo": {
+    "created": "2026-08-13T00:00:00Z",
+    "creators": [
+      "Tool: hermes-phase10-omp-lock"
+    ]
+  },
+  "dataLicense": "CC0-1.0",
+  "documentNamespace": "https://__PRIVATE_TOKEN_02__.local/spdx/omp-sidecar/b56b043dc2d7a0786c145753bcd8ffad2aae72f7d97c12735e5ef34afe52f11c",
+  "name": "hermes-omp-sidecar-v17.3.0",
+  "packages": [
+    {
+      "SPDXID": "SPDXRef-npm-03798cfa712988c74f8e",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/@opentelemetry/sdk-trace-base/@opentelemetry/semantic-conventions",
+      "supplier": "NOASSERTION",
+      "versionInfo": "1.43.0"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-0395c1c91c702a7651ef",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/@oh-my-pi/omp-stats/react-chartjs-2/react",
+      "supplier": "NOASSERTION",
+      "versionInfo": "19.2.7"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-03a86e142b51691f5072",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/@opentelemetry/exporter-logs-otlp-proto/@opentelemetry/otlp-transformer/@opentelemetry/resources/@opentelemetry/core",
+      "supplier": "NOASSERTION",
+      "versionInfo": "2.9.0"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-03abe89b3522ad45f5fa",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/@babel/parser/@babel/types/@babel/helper-string-parser",
+      "supplier": "NOASSERTION",
+      "versionInfo": "7.29.7"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-04eb0e60bbc28114c827",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/@opentelemetry/exporter-logs-otlp-proto/@opentelemetry/otlp-transformer/@opentelemetry/api-logs",
+      "supplier": "NOASSERTION",
+      "versionInfo": "0.220.0"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-0641c141a713984fcb3f",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/puppeteer-core/@puppeteer/browsers/yargs/string-width/strip-ansi",
+      "supplier": "NOASSERTION",
+      "versionInfo": "7.2.0"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-0759547badd13fbc71a5",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/@opentelemetry/exporter-logs-otlp-proto/@opentelemetry/otlp-transformer/@opentelemetry/sdk-metrics/@opentelemetry/api",
+      "supplier": "NOASSERTION",
+      "versionInfo": "1.9.1"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-0bd9319c49bed73953bc",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/@oh-my-pi/pi-mnemopi/@oh-my-pi/pi-catalog",
+      "supplier": "NOASSERTION",
+      "versionInfo": "17.3.0"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-0c6dd9e80242f64973e8",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/puppeteer-core/@puppeteer/browsers/proxy-agent",
+      "supplier": "NOASSERTION",
+      "versionInfo": ""
+    },
+    {
+      "SPDXID": "SPDXRef-npm-0d30610ee7c2f91751b1",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/@oh-my-pi/omp-stats/@tailwindcss/node/magic-string/@jridgewell/sourcemap-codec",
+      "supplier": "NOASSERTION",
+      "versionInfo": "1.5.5"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-0d4f57c8c676f0c39fbc",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/@opentelemetry/sdk-trace-node",
+      "supplier": "NOASSERTION",
+      "versionInfo": "2.10.0"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-0d71764ca0ddc9d8bf60",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/@oh-my-pi/pi-catalog/@oh-my-pi/pi-utils",
+      "supplier": "NOASSERTION",
+      "versionInfo": "17.3.0"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-0f0854d1c3f15c01cc55",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/@huggingface/transformers/onnxruntime-node/global-agent/roarr/globalthis/define-properties/has-property-descriptors",
+      "supplier": "NOASSERTION",
+      "versionInfo": "1.0.2"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-0f0b0f979238ae139d6a",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/@huggingface/transformers/sharp/@img/sharp-darwin-x64",
+      "supplier": "NOASSERTION",
+      "versionInfo": ""
+    },
+    {
+      "SPDXID": "SPDXRef-npm-0f733e63f4a9a95313b9",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/@huggingface/transformers",
+      "supplier": "NOASSERTION",
+      "versionInfo": "4.2.0"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-13381b55dd8ac2e8dfc2",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/@opentelemetry/exporter-trace-otlp-proto/@opentelemetry/sdk-trace",
+      "supplier": "NOASSERTION",
+      "versionInfo": "2.9.0"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-13544ac0b74758ecf9c5",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/@oh-my-pi/omp-stats/react-dom",
+      "supplier": "NOASSERTION",
+      "versionInfo": "19.2.7"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-14d760c5e84f97d08968",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/@opentelemetry/exporter-metrics-otlp-proto/@opentelemetry/exporter-metrics-otlp-http",
+      "supplier": "NOASSERTION",
+      "versionInfo": "0.220.0"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-15f331f26004ff707d28",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/@opentelemetry/sdk-logs/@opentelemetry/resources",
+      "supplier": "NOASSERTION",
+      "versionInfo": "2.9.0"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-16d29ec52bf1dcd88970",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/@oh-my-pi/pi-mnemopi",
+      "supplier": "NOASSERTION",
+      "versionInfo": "17.3.0"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-1776ba25b7ddef7a506f",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/@huggingface/transformers/onnxruntime-web/long",
+      "supplier": "NOASSERTION",
+      "versionInfo": "5.3.2"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-17c650aaabb206708ee7",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/puppeteer-core",
+      "supplier": "NOASSERTION",
+      "versionInfo": "25.3.0"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-18ed684ba1b196b6175a",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/@oh-my-pi/omp-stats/@tailwindcss/node/lightningcss/lightningcss-win32-arm64-msvc",
+      "supplier": "NOASSERTION",
+      "versionInfo": ""
+    },
+    {
+      "SPDXID": "SPDXRef-npm-1946ea0e14d8d6fb7cad",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/@opentelemetry/exporter-metrics-otlp-proto/@opentelemetry/exporter-metrics-otlp-http/@opentelemetry/sdk-metrics/@opentelemetry/resources",
+      "supplier": "NOASSERTION",
+      "versionInfo": "2.9.0"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-19573799dfbfdc0118e1",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/puppeteer-core/@puppeteer/browsers/yargs/cliui/wrap-ansi/ansi-styles",
+      "supplier": "NOASSERTION",
+      "versionInfo": "6.2.3"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-1a826e35e70abd66ce3e",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/@opentelemetry/exporter-trace-otlp-proto/@opentelemetry/resources/@opentelemetry/api",
+      "supplier": "NOASSERTION",
+      "versionInfo": "1.9.1"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-1b3465e88fb9b7da4d41",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/@huggingface/transformers/sharp/@img/sharp-linuxmusl-x64",
+      "supplier": "NOASSERTION",
+      "versionInfo": "0.34.5"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-1b35af58125ce9b8205c",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/@huggingface/transformers/sharp/@img/sharp-linux-x64",
+      "supplier": "NOASSERTION",
+      "versionInfo": "0.34.5"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-1b4baabb5ecb0471d285",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/@huggingface/transformers/onnxruntime-node/global-agent/serialize-error/type-fest",
+      "supplier": "NOASSERTION",
+      "versionInfo": "0.13.1"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-1b563254b7a4f4b316df",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/@oh-my-pi/omp-stats/@tailwindcss/node/enhanced-resolve/tapable",
+      "supplier": "NOASSERTION",
+      "versionInfo": "2.3.3"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-1b82e7bc50bd406c09b6",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/@oh-my-pi/snapcompact/@oh-my-pi/pi-wire",
+      "supplier": "NOASSERTION",
+      "versionInfo": "17.3.0"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-1c1dfe110b52a6f2561a",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/@oh-my-pi/pi-utils/@oh-my-pi/pi-natives",
+      "supplier": "NOASSERTION",
+      "versionInfo": "17.3.0"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-1e91e2f4be8c0a2f9171",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/@oh-my-pi/omp-stats/@tailwindcss/node/@jridgewell/remapping/@jridgewell/gen-mapping/@jridgewell/sourcemap-codec",
+      "supplier": "NOASSERTION",
+      "versionInfo": "1.5.5"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-2014697a576c8252907c",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/@opentelemetry/sdk-logs/@opentelemetry/core",
+      "supplier": "NOASSERTION",
+      "versionInfo": "2.9.0"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-215ed0e94b7c771572cc",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/@huggingface/transformers/onnxruntime-node/onnxruntime-common",
+      "supplier": "NOASSERTION",
+      "versionInfo": "1.24.3"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-21a3c6b188ba5ade8807",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/@opentelemetry/sdk-trace-base/@opentelemetry/sdk-trace/@opentelemetry/core",
+      "supplier": "NOASSERTION",
+      "versionInfo": "2.10.0"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-21c1f55a5b078314c197",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/@oh-my-pi/pi-catalog/@oh-my-pi/omptype",
+      "supplier": "NOASSERTION",
+      "versionInfo": "17.3.0"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-21d43b753d1fc20c6439",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/@oh-my-pi/omp-stats/@tailwindcss/node/enhanced-resolve/graceful-fs",
+      "supplier": "NOASSERTION",
+      "versionInfo": "4.2.11"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-231cd407370ae91727e5",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/@oh-my-pi/pi-catalog",
+      "supplier": "NOASSERTION",
+      "versionInfo": "17.3.0"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-231eac70cfd00a024434",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/@opentelemetry/sdk-logs/@opentelemetry/api-logs",
+      "supplier": "NOASSERTION",
+      "versionInfo": "0.220.0"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-23806d9cf9bb41ad01b6",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/@opentelemetry/sdk-logs",
+      "supplier": "NOASSERTION",
+      "versionInfo": "0.220.0"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-23d58638be75acf55ccb",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/@huggingface/transformers/onnxruntime-web/platform",
+      "supplier": "NOASSERTION",
+      "versionInfo": "1.3.6"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-243c2fd350e1af363f09",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/@opentelemetry/exporter-metrics-otlp-proto/@opentelemetry/sdk-metrics",
+      "supplier": "NOASSERTION",
+      "versionInfo": "2.9.0"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-24a60c22a111c51bbbfa",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/@huggingface/transformers/onnxruntime-node/global-agent/serialize-error",
+      "supplier": "NOASSERTION",
+      "versionInfo": "7.0.1"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-24e9472f77d1301785fc",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/@oh-my-pi/omp-stats/@tailwindcss/node/lightningcss",
+      "supplier": "NOASSERTION",
+      "versionInfo": "1.32.0"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-24ef45d2d63994e16ab7",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/@oh-my-pi/pi-tui",
+      "supplier": "NOASSERTION",
+      "versionInfo": "17.3.0"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-251c46cd35d9c6d192fe",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/@huggingface/transformers/onnxruntime-node/adm-zip",
+      "supplier": "NOASSERTION",
+      "versionInfo": "0.5.18"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-251d51650a62934cdcce",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/mupdf",
+      "supplier": "NOASSERTION",
+      "versionInfo": "1.28.0"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-253163eaf8a07bdb6412",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/sherpa-onnx-node/sherpa-onnx-darwin-arm64",
+      "supplier": "NOASSERTION",
+      "versionInfo": ""
+    },
+    {
+      "SPDXID": "SPDXRef-npm-268561b2ccc9ea987448",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/@huggingface/transformers/onnxruntime-node/global-agent/boolean",
+      "supplier": "NOASSERTION",
+      "versionInfo": "3.2.0"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-283e2628486e90b0fae3",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/@babel/parser",
+      "supplier": "NOASSERTION",
+      "versionInfo": "7.29.8"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-2b4035a440b97ef0c58d",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/@oh-my-pi/pi-natives/@oh-my-pi/pi-natives-darwin-arm64",
+      "supplier": "NOASSERTION",
+      "versionInfo": ""
+    },
+    {
+      "SPDXID": "SPDXRef-npm-2ccc2414831f3701476e",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/@opentelemetry/exporter-trace-otlp-proto/@opentelemetry/sdk-trace/@opentelemetry/resources",
+      "supplier": "NOASSERTION",
+      "versionInfo": "2.9.0"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-2ce9502d36dc1fa353fe",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/@opentelemetry/exporter-metrics-otlp-proto/@opentelemetry/exporter-metrics-otlp-http/@opentelemetry/otlp-transformer",
+      "supplier": "NOASSERTION",
+      "versionInfo": "0.220.0"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-304c13bd96d1248b3e20",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/@huggingface/transformers/onnxruntime-web/protobufjs/@types/node/undici-types",
+      "supplier": "NOASSERTION",
+      "versionInfo": "8.3.0"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-3075e33e1414aada1a8f",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/puppeteer-core/@puppeteer/browsers",
+      "supplier": "NOASSERTION",
+      "versionInfo": "3.0.6"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-310809fe90d144c9a1a2",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/@opentelemetry/sdk-trace-base/@opentelemetry/sdk-trace/@opentelemetry/semantic-conventions",
+      "supplier": "NOASSERTION",
+      "versionInfo": "1.43.0"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-3154787a7fa910309056",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/@oh-my-pi/pi-natives/@oh-my-pi/pi-natives-darwin-x64",
+      "supplier": "NOASSERTION",
+      "versionInfo": ""
+    },
+    {
+      "SPDXID": "SPDXRef-npm-31880a4ac458ed4ce447",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/@huggingface/transformers/sharp/@img/sharp-darwin-arm64",
+      "supplier": "NOASSERTION",
+      "versionInfo": ""
+    },
+    {
+      "SPDXID": "SPDXRef-npm-32092cc0c677f576513e",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/@huggingface/transformers/onnxruntime-web/onnxruntime-common",
+      "supplier": "NOASSERTION",
+      "versionInfo": "1.24.0-dev.20251116-b39e144322"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-332bfcad6cc09ef881d4",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/@huggingface/transformers/onnxruntime-node/global-agent/roarr/globalthis/gopd",
+      "supplier": "NOASSERTION",
+      "versionInfo": "1.2.0"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-34429e9d392049c98003",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/@opentelemetry/exporter-metrics-otlp-proto/@opentelemetry/otlp-exporter-base",
+      "supplier": "NOASSERTION",
+      "versionInfo": "0.220.0"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-34e1c83f65cfd2594cd2",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/@opentelemetry/exporter-logs-otlp-proto/@opentelemetry/api",
+      "supplier": "NOASSERTION",
+      "versionInfo": "1.9.1"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-35a400d12e7caa79df9f",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/@oh-my-pi/omp-stats/react-dom/react",
+      "supplier": "NOASSERTION",
+      "versionInfo": "19.2.7"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-35cd4739148f1015d26f",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/@oh-my-pi/omp-stats/@tailwindcss/node/lightningcss/lightningcss-linux-arm64-musl",
+      "supplier": "NOASSERTION",
+      "versionInfo": ""
+    },
+    {
+      "SPDXID": "SPDXRef-npm-38322f3b5494864939f7",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/@opentelemetry/exporter-logs-otlp-proto/@opentelemetry/otlp-transformer/@opentelemetry/resources/@opentelemetry/api",
+      "supplier": "NOASSERTION",
+      "versionInfo": "1.9.1"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-390ae9e4e792bd9a5fc8",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/@huggingface/transformers/onnxruntime-node/global-agent",
+      "supplier": "NOASSERTION",
+      "versionInfo": "3.0.0"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-392680cf53f1fd77e54c",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/puppeteer-core/@puppeteer/browsers/yargs/escalade",
+      "supplier": "NOASSERTION",
+      "versionInfo": "3.2.0"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-3b7e8a7eb67107e930e5",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/@opentelemetry/exporter-metrics-otlp-proto/@opentelemetry/api",
+      "supplier": "NOASSERTION",
+      "versionInfo": "1.9.1"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-3bf7e3eec12253d2c2ad",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/@oh-my-pi/hashline/@oh-my-pi/pi-natives",
+      "supplier": "NOASSERTION",
+      "versionInfo": "17.3.0"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-3ca522d37e5aeda9b2f0",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/@huggingface/transformers/sharp/@img/sharp-win32-ia32",
+      "supplier": "NOASSERTION",
+      "versionInfo": ""
+    },
+    {
+      "SPDXID": "SPDXRef-npm-3d4c95dbbe838e48b001",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/sherpa-onnx-node/sherpa-onnx-win-x64",
+      "supplier": "NOASSERTION",
+      "versionInfo": ""
+    },
+    {
+      "SPDXID": "SPDXRef-npm-3d693e1c4320a808ae62",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/@huggingface/transformers/sharp/@img/sharp-wasm32",
+      "supplier": "NOASSERTION",
+      "versionInfo": ""
+    },
+    {
+      "SPDXID": "SPDXRef-npm-3ea9f346c65b42581b1d",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/@huggingface/transformers/onnxruntime-web/protobufjs/@protobufjs/codegen",
+      "supplier": "NOASSERTION",
+      "versionInfo": "2.0.5"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-3ffd6daca5d26b54c36b",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/puppeteer-core/@puppeteer/browsers/yargs/cliui/wrap-ansi/strip-ansi",
+      "supplier": "NOASSERTION",
+      "versionInfo": "7.2.0"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-400526fd5aaca7ba9d35",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/@huggingface/transformers/sharp/@img/sharp-libvips-linux-s390x",
+      "supplier": "NOASSERTION",
+      "versionInfo": ""
+    },
+    {
+      "SPDXID": "SPDXRef-npm-40772c8d7a5136a48663",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/puppeteer-core/@puppeteer/browsers/yargs/cliui/string-width/strip-ansi",
+      "supplier": "NOASSERTION",
+      "versionInfo": "7.2.0"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-40d6c11d76cde5f67bc4",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/@huggingface/transformers/sharp/@img/sharp-libvips-darwin-x64",
+      "supplier": "NOASSERTION",
+      "versionInfo": ""
+    },
+    {
+      "SPDXID": "SPDXRef-npm-41691176eacb53a02b91",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/@huggingface/transformers/onnxruntime-node/global-agent/roarr",
+      "supplier": "NOASSERTION",
+      "versionInfo": "2.15.4"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-4171b5a385b42f1a707b",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/@huggingface/transformers/onnxruntime-web/protobufjs/@types/node",
+      "supplier": "NOASSERTION",
+      "versionInfo": "26.2.0"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-41d684545127c57d530c",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/@oh-my-pi/omp-stats/@oh-my-pi/pi-utils",
+      "supplier": "NOASSERTION",
+      "versionInfo": "17.3.0"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-42e4c29b912ad1db3178",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/@oh-my-pi/omp-stats/@tailwindcss/node/lightningcss/lightningcss-linux-x64-musl",
+      "supplier": "NOASSERTION",
+      "versionInfo": "1.32.0"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-4421f1d1b629d56f6cf9",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/@oh-my-pi/pi-ai",
+      "supplier": "NOASSERTION",
+      "versionInfo": "17.3.0"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-448e629b3cf70eb467b2",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/@huggingface/transformers/sharp/@img/sharp-libvips-linux-ppc64",
+      "supplier": "NOASSERTION",
+      "versionInfo": ""
+    },
+    {
+      "SPDXID": "SPDXRef-npm-459b6ad283ba35e5e275",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/@huggingface/transformers/onnxruntime-web/protobufjs/@protobufjs/pool",
+      "supplier": "NOASSERTION",
+      "versionInfo": "1.1.0"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-484826503be596646ac1",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/@oh-my-pi/pi-mnemopi/@oh-my-pi/pi-utils",
+      "supplier": "NOASSERTION",
+      "versionInfo": "17.3.0"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-4a05bafbf0067a594258",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/@opentelemetry/exporter-logs-otlp-proto/@opentelemetry/otlp-exporter-base",
+      "supplier": "NOASSERTION",
+      "versionInfo": "0.220.0"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-4a2de992cbe2445ff631",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/@oh-my-pi/omp-stats/@tailwindcss/node/lightningcss/lightningcss-android-arm64",
+      "supplier": "NOASSERTION",
+      "versionInfo": ""
+    },
+    {
+      "SPDXID": "SPDXRef-npm-4ea010d184ada0958b4b",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/@opentelemetry/sdk-logs/@opentelemetry/resources/@opentelemetry/semantic-conventions",
+      "supplier": "NOASSERTION",
+      "versionInfo": "1.43.0"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-4ee4feb727a9f9930b04",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/@opentelemetry/context-async-hooks/@opentelemetry/api",
+      "supplier": "NOASSERTION",
+      "versionInfo": "1.9.1"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-4eed4f4a5b0fb6071d7f",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/@opentelemetry/sdk-trace-node/@opentelemetry/context-async-hooks",
+      "supplier": "NOASSERTION",
+      "versionInfo": "2.10.0"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-500e522f79216359bb0c",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/@oh-my-pi/omp-stats/@tailwindcss/node/lightningcss/lightningcss-linux-arm64-gnu",
+      "supplier": "NOASSERTION",
+      "versionInfo": ""
+    },
+    {
+      "SPDXID": "SPDXRef-npm-502b1ba797e4f82d5b96",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/@opentelemetry/api-logs/@opentelemetry/api",
+      "supplier": "NOASSERTION",
+      "versionInfo": "1.9.1"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-502c282c5dfd8b4bad63",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/@opentelemetry/exporter-metrics-otlp-proto/@opentelemetry/resources/@opentelemetry/core",
+      "supplier": "NOASSERTION",
+      "versionInfo": "2.9.0"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-52bc66dd03dc4579ed59",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/sherpa-onnx-node/sherpa-onnx-linux-x64",
+      "supplier": "NOASSERTION",
+      "versionInfo": "1.13.5"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-5333d2f7049ec509512a",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/@oh-my-pi/snapcompact/@oh-my-pi/pi-ai",
+      "supplier": "NOASSERTION",
+      "versionInfo": "17.3.0"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-5344f490c89c1a579d42",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/@oh-my-pi/omp-stats/@tailwindcss/node/lightningcss/lightningcss-linux-arm-gnueabihf",
+      "supplier": "NOASSERTION",
+      "versionInfo": ""
+    },
+    {
+      "SPDXID": "SPDXRef-npm-54026bc173b687b69075",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/@opentelemetry/exporter-metrics-otlp-proto",
+      "supplier": "NOASSERTION",
+      "versionInfo": "0.220.0"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-5478a9db385345a1958b",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/@oh-my-pi/omp-stats/@tailwindcss/node/lightningcss/lightningcss-linux-x64-gnu",
+      "supplier": "NOASSERTION",
+      "versionInfo": "1.32.0"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-553c09ee6ec56aff3a84",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/@opentelemetry/exporter-logs-otlp-proto/@opentelemetry/sdk-logs",
+      "supplier": "NOASSERTION",
+      "versionInfo": "0.220.0"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-557e96b51724d9277338",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/@huggingface/transformers/onnxruntime-node/global-agent/roarr/globalthis/define-properties/object-keys",
+      "supplier": "NOASSERTION",
+      "versionInfo": "1.1.1"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-5594663f75792ac457e1",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/@opentelemetry/sdk-logs/@opentelemetry/resources/@opentelemetry/core",
+      "supplier": "NOASSERTION",
+      "versionInfo": "2.9.0"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-55ba8c301342e810973e",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/@oh-my-pi/pi-mnemopi/@oh-my-pi/pi-ai",
+      "supplier": "NOASSERTION",
+      "versionInfo": "17.3.0"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-56a526b846a918b6f9bc",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/@huggingface/transformers/onnxruntime-node/global-agent/matcher",
+      "supplier": "NOASSERTION",
+      "versionInfo": "3.0.0"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-56fda1a94bb9f2d780de",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/@opentelemetry/exporter-trace-otlp-proto/@opentelemetry/sdk-trace/@opentelemetry/resources/@opentelemetry/core",
+      "supplier": "NOASSERTION",
+      "versionInfo": "2.9.0"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-581ef262258b11a68e68",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/@huggingface/transformers/sharp/@img/sharp-linux-s390x",
+      "supplier": "NOASSERTION",
+      "versionInfo": ""
+    },
+    {
+      "SPDXID": "SPDXRef-npm-59ca947a1ff984325434",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/@opentelemetry/exporter-metrics-otlp-proto/@opentelemetry/exporter-metrics-otlp-http/@opentelemetry/sdk-metrics/@opentelemetry/api",
+      "supplier": "NOASSERTION",
+      "versionInfo": "1.9.1"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-59fe7e3488fed462783e",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/@oh-my-pi/snapcompact",
+      "supplier": "NOASSERTION",
+      "versionInfo": "17.3.0"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-5ba9fefab1bc3f32da52",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/@opentelemetry/sdk-trace-node/@opentelemetry/core",
+      "supplier": "NOASSERTION",
+      "versionInfo": "2.10.0"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-5ca5c837c88604a07517",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/@opentelemetry/exporter-metrics-otlp-proto/@opentelemetry/exporter-metrics-otlp-http/@opentelemetry/resources/@opentelemetry/semantic-conventions",
+      "supplier": "NOASSERTION",
+      "versionInfo": "1.43.0"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-5d4bb70c6a9110942928",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/@oh-my-pi/omp-stats/@oh-my-pi/pi-ai",
+      "supplier": "NOASSERTION",
+      "versionInfo": "17.3.0"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-5dff20433704d933172f",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/@oh-my-pi/pi-ai/@oh-my-pi/pi-utils",
+      "supplier": "NOASSERTION",
+      "versionInfo": "17.3.0"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-5e17adeeda7496f34cdd",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/@opentelemetry/sdk-metrics/@opentelemetry/core/@opentelemetry/api",
+      "supplier": "NOASSERTION",
+      "versionInfo": "1.9.1"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-5eef47f7028143181f79",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/puppeteer-core/@puppeteer/browsers/yargs/cliui/wrap-ansi/string-width",
+      "supplier": "NOASSERTION",
+      "versionInfo": "7.2.0"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-601ed3dee553ccc52a65",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent",
+      "supplier": "NOASSERTION",
+      "versionInfo": "17.3.0"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-606551d7c1b5fe879184",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/@oh-my-pi/omp-stats/@tailwindcss/node/enhanced-resolve",
+      "supplier": "NOASSERTION",
+      "versionInfo": "5.24.5"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-61001b4357ee79710231",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/@opentelemetry/exporter-trace-otlp-proto/@opentelemetry/sdk-trace/@opentelemetry/semantic-conventions",
+      "supplier": "NOASSERTION",
+      "versionInfo": "1.43.0"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-61d0fe83a961ad675ed4",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/@huggingface/transformers/onnxruntime-node/global-agent/roarr/globalthis/define-properties/has-property-descriptors/es-define-property",
+      "supplier": "NOASSERTION",
+      "versionInfo": "1.0.1"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-622964127ddcf0d6ddbb",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/@huggingface/transformers/onnxruntime-node/global-agent/roarr/globalthis",
+      "supplier": "NOASSERTION",
+      "versionInfo": "1.0.4"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-633ea4a236c7d98a6ad4",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/sherpa-onnx-node/sherpa-onnx-linux-arm64",
+      "supplier": "NOASSERTION",
+      "versionInfo": ""
+    },
+    {
+      "SPDXID": "SPDXRef-npm-6380fdab8c245b3f89df",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/@huggingface/transformers/onnxruntime-node/global-agent/roarr/globalthis/define-properties/define-data-property/gopd",
+      "supplier": "NOASSERTION",
+      "versionInfo": "1.2.0"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-638a2782f9d968afc6cc",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/puppeteer-core/webdriver-bidi-protocol",
+      "supplier": "NOASSERTION",
+      "versionInfo": "0.4.2"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-6392a519a1a0948840e5",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/sherpa-onnx-node/sherpa-onnx-darwin-x64",
+      "supplier": "NOASSERTION",
+      "versionInfo": ""
+    },
+    {
+      "SPDXID": "SPDXRef-npm-645aa6249654ee8f641d",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/puppeteer-core/typed-query-selector",
+      "supplier": "NOASSERTION",
+      "versionInfo": "2.12.2"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-647e79fda52c11cc4cd2",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/@opentelemetry/exporter-metrics-otlp-proto/@opentelemetry/resources/@opentelemetry/semantic-conventions",
+      "supplier": "NOASSERTION",
+      "versionInfo": "1.43.0"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-64cfa35c6ef823b47741",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/@huggingface/transformers/onnxruntime-web/protobufjs/@protobufjs/eventemitter",
+      "supplier": "NOASSERTION",
+      "versionInfo": "1.1.1"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-657bd49f738d8deeff9b",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/@oh-my-pi/omp-stats/chart.js",
+      "supplier": "NOASSERTION",
+      "versionInfo": "4.5.1"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-65943fe86298bf95850d",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/@huggingface/transformers/onnxruntime-web",
+      "supplier": "NOASSERTION",
+      "versionInfo": "1.26.0-dev.20260416-b7804b056c"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-65edfc1470a47dc538cc",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/puppeteer-core/devtools-protocol",
+      "supplier": "NOASSERTION",
+      "versionInfo": "0.0.1638949"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-66162442cd3a2bc49082",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/@opentelemetry/exporter-trace-otlp-proto/@opentelemetry/api",
+      "supplier": "NOASSERTION",
+      "versionInfo": "1.9.1"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-663feb79cd10202aed3f",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/@opentelemetry/exporter-metrics-otlp-proto/@opentelemetry/exporter-metrics-otlp-http/@opentelemetry/resources",
+      "supplier": "NOASSERTION",
+      "versionInfo": "2.9.0"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-675c2addb37497a65e48",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/@huggingface/transformers/sharp/semver",
+      "supplier": "NOASSERTION",
+      "versionInfo": "7.8.5"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-67e235423b53def8c6f3",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/@opentelemetry/exporter-trace-otlp-proto/@opentelemetry/sdk-trace/@opentelemetry/resources/@opentelemetry/api",
+      "supplier": "NOASSERTION",
+      "versionInfo": "1.9.1"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-698bcd879e1e4713f22f",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/@opentelemetry/exporter-metrics-otlp-proto/@opentelemetry/exporter-metrics-otlp-http/@opentelemetry/resources/@opentelemetry/api",
+      "supplier": "NOASSERTION",
+      "versionInfo": "1.9.1"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-6bfbb23376a43c268aec",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/@oh-my-pi/pi-utils",
+      "supplier": "NOASSERTION",
+      "versionInfo": "17.3.0"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-6c47ca90f573a0da98fb",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/@opentelemetry/resources/@opentelemetry/api",
+      "supplier": "NOASSERTION",
+      "versionInfo": "1.9.1"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-6d5aada055530243d826",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/@oh-my-pi/pi-ai/@oh-my-pi/pi-catalog",
+      "supplier": "NOASSERTION",
+      "versionInfo": "17.3.0"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-6d684a2cf23e88b5073f",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/puppeteer-core/@puppeteer/browsers/yargs/cliui/wrap-ansi/string-width/emoji-regex",
+      "supplier": "NOASSERTION",
+      "versionInfo": "10.6.0"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-6da14d58bea0c87f9eef",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/@opentelemetry/sdk-trace-node/@opentelemetry/api",
+      "supplier": "NOASSERTION",
+      "versionInfo": "1.9.1"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-6fc90d68abb4243df2df",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/@huggingface/transformers/onnxruntime-node/global-agent/roarr/json-stringify-safe",
+      "supplier": "NOASSERTION",
+      "versionInfo": "5.0.1"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-709fb001d03cff959418",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/@huggingface/transformers/onnxruntime-web/protobufjs/@protobufjs/fetch/@protobufjs/aspromise",
+      "supplier": "NOASSERTION",
+      "versionInfo": "1.1.2"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-70e57c4d8a95d22b6e12",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/puppeteer-core/@puppeteer/browsers/yargs/string-width",
+      "supplier": "NOASSERTION",
+      "versionInfo": "8.2.2"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-712b51c6acbaa8bef3ab",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/@oh-my-pi/omp-stats/@tailwindcss/node/source-map-js",
+      "supplier": "NOASSERTION",
+      "versionInfo": "1.2.1"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-71fcf7156215b35f58ee",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/@oh-my-pi/pi-ai/@oh-my-pi/pi-wire",
+      "supplier": "NOASSERTION",
+      "versionInfo": "17.3.0"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-731103edc1343390c582",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/@huggingface/transformers/onnxruntime-node/global-agent/roarr/globalthis/define-properties/define-data-property/es-errors",
+      "supplier": "NOASSERTION",
+      "versionInfo": "1.3.0"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-7350b52e1b373eb0c834",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/@opentelemetry/exporter-trace-otlp-proto",
+      "supplier": "NOASSERTION",
+      "versionInfo": "0.220.0"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-74899168c2243ed40437",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/@opentelemetry/sdk-trace-base/@opentelemetry/core",
+      "supplier": "NOASSERTION",
+      "versionInfo": "2.10.0"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-7546d7c2152df381528d",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/@oh-my-pi/omp-stats/@tailwindcss/node/magic-string",
+      "supplier": "NOASSERTION",
+      "versionInfo": "0.30.21"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-7560606ed654774aed97",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/@opentelemetry/context-async-hooks",
+      "supplier": "NOASSERTION",
+      "versionInfo": "2.10.0"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-75c315db218e45069db3",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/@oh-my-pi/omp-stats/@tailwindcss/node/lightningcss/detect-libc",
+      "supplier": "NOASSERTION",
+      "versionInfo": "2.1.2"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-7708b7a1b46f9b6cb647",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/puppeteer-core/@puppeteer/browsers/yauzl",
+      "supplier": "NOASSERTION",
+      "versionInfo": ""
+    },
+    {
+      "SPDXID": "SPDXRef-npm-772a7dd41b3e1bcb7f8b",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/@huggingface/transformers/onnxruntime-node/global-agent/es6-error",
+      "supplier": "NOASSERTION",
+      "versionInfo": "4.1.1"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-79022c9bcfd5a4e8c2a4",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/puppeteer-core/@puppeteer/browsers/modern-tar",
+      "supplier": "NOASSERTION",
+      "versionInfo": "0.7.7"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-7a64ec4933568f2bfdc4",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/@opentelemetry/sdk-trace-base/@opentelemetry/sdk-trace/@opentelemetry/resources",
+      "supplier": "NOASSERTION",
+      "versionInfo": "2.10.0"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-7ba44f3dbbcf67dd28f9",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/@oh-my-pi/omp-stats/@tailwindcss/node/@jridgewell/remapping/@jridgewell/gen-mapping/@jridgewell/trace-mapping",
+      "supplier": "NOASSERTION",
+      "versionInfo": "0.3.31"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-7bc79056b4d27dc9ee47",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/@opentelemetry/resources/@opentelemetry/core",
+      "supplier": "NOASSERTION",
+      "versionInfo": "2.10.0"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-7da916fbc4750c4e094e",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/@opentelemetry/exporter-logs-otlp-proto/@opentelemetry/otlp-transformer/@opentelemetry/resources/@opentelemetry/semantic-conventions",
+      "supplier": "NOASSERTION",
+      "versionInfo": "1.43.0"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-7e0573a491cd5e4b9dcd",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/@huggingface/transformers/onnxruntime-node",
+      "supplier": "NOASSERTION",
+      "versionInfo": "1.24.3"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-7f591568ae6ba087a2d8",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/@opentelemetry/sdk-trace-base/@opentelemetry/sdk-trace/@opentelemetry/api",
+      "supplier": "NOASSERTION",
+      "versionInfo": "1.9.1"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-7f5b0af9253742c90e77",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/puppeteer-core/@puppeteer/browsers/yargs/cliui/string-width/get-east-asian-width",
+      "supplier": "NOASSERTION",
+      "versionInfo": "1.6.0"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-8019d9f14af896ff294a",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/@oh-my-pi/omp-stats/@tailwindcss/node/tailwindcss",
+      "supplier": "NOASSERTION",
+      "versionInfo": "4.3.3"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-803861b6cfe79f848204",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/@huggingface/transformers/sharp/@img/sharp-linuxmusl-x64/@img/sharp-libvips-linuxmusl-x64",
+      "supplier": "NOASSERTION",
+      "versionInfo": "1.2.4"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-8055c1fbe2bef0ffe4e4",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/@opentelemetry/sdk-trace-base/@opentelemetry/resources",
+      "supplier": "NOASSERTION",
+      "versionInfo": "2.10.0"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-817c38aa44f897ffa527",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/@opentelemetry/sdk-trace-base/@opentelemetry/sdk-trace",
+      "supplier": "NOASSERTION",
+      "versionInfo": "2.10.0"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-81a8b9e655ff1d5ff43f",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/@opentelemetry/exporter-logs-otlp-proto/@opentelemetry/otlp-transformer/@opentelemetry/sdk-metrics/@opentelemetry/resources",
+      "supplier": "NOASSERTION",
+      "versionInfo": "2.9.0"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-81c5f7ad3da9a4478d6f",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/@oh-my-pi/snapcompact/@oh-my-pi/pi-natives",
+      "supplier": "NOASSERTION",
+      "versionInfo": "17.3.0"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-82ef99a7833066fc896d",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/@oh-my-pi/omp-stats/@tailwindcss/node/lightningcss/lightningcss-win32-x64-msvc",
+      "supplier": "NOASSERTION",
+      "versionInfo": ""
+    },
+    {
+      "SPDXID": "SPDXRef-npm-8302d39bf511a1b45a8b",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/@opentelemetry/sdk-trace-base/@opentelemetry/core/@opentelemetry/semantic-conventions",
+      "supplier": "NOASSERTION",
+      "versionInfo": "1.43.0"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-839ed9d7c7ae17b34c96",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/sherpa-onnx-node/sherpa-onnx-win-ia32",
+      "supplier": "NOASSERTION",
+      "versionInfo": ""
+    },
+    {
+      "SPDXID": "SPDXRef-npm-83c5582b66803e752664",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/@opentelemetry/api-logs",
+      "supplier": "NOASSERTION",
+      "versionInfo": "0.220.0"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-841499fea01d405c64bd",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/@oh-my-pi/omp-stats/@tailwindcss/node/jiti",
+      "supplier": "NOASSERTION",
+      "versionInfo": "2.7.0"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-8440115509553b403a38",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/@opentelemetry/exporter-trace-otlp-proto/@opentelemetry/otlp-exporter-base",
+      "supplier": "NOASSERTION",
+      "versionInfo": "0.220.0"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-84ab3f15582b4400dc97",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/@opentelemetry/sdk-metrics/@opentelemetry/core",
+      "supplier": "NOASSERTION",
+      "versionInfo": "2.10.0"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-86c1c680e3e7b72333e7",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/@oh-my-pi/omp-stats/react-dom/scheduler",
+      "supplier": "NOASSERTION",
+      "versionInfo": "0.27.0"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-87607bf62bd9e3d4b7ab",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/@opentelemetry/sdk-trace-node/@opentelemetry/sdk-trace-base",
+      "supplier": "NOASSERTION",
+      "versionInfo": "2.10.0"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-877d11e68d330c9a3f10",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/@huggingface/transformers/onnxruntime-node/global-agent/roarr/boolean",
+      "supplier": "NOASSERTION",
+      "versionInfo": "3.2.0"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-882520a4101d9f93ca53",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/@opentelemetry/exporter-logs-otlp-proto/@opentelemetry/otlp-transformer/@opentelemetry/api",
+      "supplier": "NOASSERTION",
+      "versionInfo": "1.9.1"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-890d65eb1d1a7f1ee67a",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/@oh-my-pi/omp-stats/@tailwindcss/node/@jridgewell/remapping/@jridgewell/trace-mapping",
+      "supplier": "NOASSERTION",
+      "versionInfo": "0.3.31"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-896807936a4f015a27db",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/@huggingface/transformers/sharp/@img/sharp-linux-riscv64",
+      "supplier": "NOASSERTION",
+      "versionInfo": ""
+    },
+    {
+      "SPDXID": "SPDXRef-npm-8adb32d2e190eb5bd095",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/@huggingface/transformers/onnxruntime-node/global-agent/roarr/globalthis/define-properties/define-data-property/es-define-property",
+      "supplier": "NOASSERTION",
+      "versionInfo": "1.0.1"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-8b6aebac08d9a5005476",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/@huggingface/transformers/sharp/@img/sharp-linuxmusl-arm64",
+      "supplier": "NOASSERTION",
+      "versionInfo": ""
+    },
+    {
+      "SPDXID": "SPDXRef-npm-8b92125b1023f1766acf",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/@oh-my-pi/pi-agent-core/@opentelemetry/api",
+      "supplier": "NOASSERTION",
+      "versionInfo": "1.9.1"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-8c4bfea22c4ca92fd8a2",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/@opentelemetry/resources",
+      "supplier": "NOASSERTION",
+      "versionInfo": "2.10.0"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-8c84dc0eba3c72d9382f",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/@oh-my-pi/omp-stats/@oh-my-pi/pi-catalog",
+      "supplier": "NOASSERTION",
+      "versionInfo": "17.3.0"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-8dc6cbe72ee2863cb10d",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/@huggingface/transformers/sharp/@img/sharp-linux-arm",
+      "supplier": "NOASSERTION",
+      "versionInfo": ""
+    },
+    {
+      "SPDXID": "SPDXRef-npm-8e1ddd9fdf8b19b5b32c",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/@oh-my-pi/pi-tui/@oh-my-pi/pi-utils",
+      "supplier": "NOASSERTION",
+      "versionInfo": "17.3.0"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-8e6b3417c79f54bbd764",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/@opentelemetry/exporter-metrics-otlp-proto/@opentelemetry/sdk-metrics/@opentelemetry/api",
+      "supplier": "NOASSERTION",
+      "versionInfo": "1.9.1"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-8ec3c86ff60abf12a361",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/@oh-my-pi/pi-natives/@oh-my-pi/pi-natives-linux-arm64",
+      "supplier": "NOASSERTION",
+      "versionInfo": ""
+    },
+    {
+      "SPDXID": "SPDXRef-npm-8f21a388a549f0ecb54d",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/@opentelemetry/exporter-metrics-otlp-proto/@opentelemetry/resources/@opentelemetry/api",
+      "supplier": "NOASSERTION",
+      "versionInfo": "1.9.1"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-90f9aaa2005e45d9bfc3",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/@opentelemetry/exporter-trace-otlp-proto/@opentelemetry/resources/@opentelemetry/semantic-conventions",
+      "supplier": "NOASSERTION",
+      "versionInfo": "1.43.0"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-914bd39491bd3c3c7e33",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/@oh-my-pi/snapcompact/@oh-my-pi/pi-utils",
+      "supplier": "NOASSERTION",
+      "versionInfo": "17.3.0"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-923b0ebba0b57c6d6dca",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/@huggingface/transformers/onnxruntime-node/global-agent/roarr/sprintf-js",
+      "supplier": "NOASSERTION",
+      "versionInfo": "1.1.3"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-9288e84012c69a5c0b95",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/@huggingface/transformers/sharp/detect-libc",
+      "supplier": "NOASSERTION",
+      "versionInfo": "2.1.2"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-92f43a5a02ea77ca667a",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/@oh-my-pi/omp-stats/@tailwindcss/node/@jridgewell/remapping/@jridgewell/trace-mapping/@jridgewell/sourcemap-codec",
+      "supplier": "NOASSERTION",
+      "versionInfo": "1.5.5"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-931a48b659216ceeae8a",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/@opentelemetry/exporter-metrics-otlp-proto/@opentelemetry/core/@opentelemetry/api",
+      "supplier": "NOASSERTION",
+      "versionInfo": "1.9.1"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-9344d32595092a9a41d2",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/puppeteer-core/chromium-bidi",
+      "supplier": "NOASSERTION",
+      "versionInfo": "16.0.1"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-93ae813c4ff69a3f782f",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/@oh-my-pi/pi-mnemopi/@oh-my-pi/pi-natives",
+      "supplier": "NOASSERTION",
+      "versionInfo": "17.3.0"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-9782dd7acd8563954f27",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/@oh-my-pi/omp-stats/react-chartjs-2/chart.js",
+      "supplier": "NOASSERTION",
+      "versionInfo": "4.5.1"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-978e74a4603cf5f95de3",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/puppeteer-core/@puppeteer/browsers/yargs/cliui/string-width/emoji-regex",
+      "supplier": "NOASSERTION",
+      "versionInfo": "10.6.0"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-9b1c69f1ab6a10c18ce0",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/@huggingface/transformers/sharp/@img/colour",
+      "supplier": "NOASSERTION",
+      "versionInfo": "1.1.0"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-9b2b1e9c7464689ba177",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/@oh-my-pi/omp-stats/@tailwindcss/node/@jridgewell/remapping/@jridgewell/trace-mapping/@jridgewell/resolve-uri",
+      "supplier": "NOASSERTION",
+      "versionInfo": "3.1.2"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-9b82e356a5fb8c6c78c5",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/@oh-my-pi/pi-ai/@oh-my-pi/omptype",
+      "supplier": "NOASSERTION",
+      "versionInfo": "17.3.0"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-9badf22a51b969ddff3f",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/@opentelemetry/exporter-logs-otlp-proto/@opentelemetry/otlp-exporter-base/@opentelemetry/otlp-transformer",
+      "supplier": "NOASSERTION",
+      "versionInfo": "0.220.0"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-9c8557de2023a22464da",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/puppeteer-core/@puppeteer/browsers/yargs/yargs-parser",
+      "supplier": "NOASSERTION",
+      "versionInfo": "22.0.0"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-9cc9e9548dc0f68462cb",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/puppeteer-core/@puppeteer/browsers/yargs/cliui/wrap-ansi",
+      "supplier": "NOASSERTION",
+      "versionInfo": "9.0.2"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-9ceca0941dcb079ecdc0",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/@opentelemetry/exporter-logs-otlp-proto",
+      "supplier": "NOASSERTION",
+      "versionInfo": "0.220.0"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-9d2b7acf90b738420410",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/@opentelemetry/exporter-metrics-otlp-proto/@opentelemetry/core/@opentelemetry/semantic-conventions",
+      "supplier": "NOASSERTION",
+      "versionInfo": "1.43.0"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-9e2176545ee290330728",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/@oh-my-pi/pi-natives/@oh-my-pi/pi-natives-win32-x64",
+      "supplier": "NOASSERTION",
+      "versionInfo": ""
+    },
+    {
+      "SPDXID": "SPDXRef-npm-9e2ad9715fafd14473d2",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/puppeteer-core/@puppeteer/browsers/yargs/cliui/strip-ansi/ansi-regex",
+      "supplier": "NOASSERTION",
+      "versionInfo": "6.3.0"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-a0c0e67c46abb86860c9",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/@opentelemetry/exporter-trace-otlp-proto/@opentelemetry/sdk-trace/@opentelemetry/core",
+      "supplier": "NOASSERTION",
+      "versionInfo": "2.9.0"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-a22a97f2daa8047eb040",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/@opentelemetry/sdk-metrics",
+      "supplier": "NOASSERTION",
+      "versionInfo": "2.10.0"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-a31a5527a9ea24329d0b",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/puppeteer-core/@puppeteer/browsers/yargs/y18n",
+      "supplier": "NOASSERTION",
+      "versionInfo": "5.0.8"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-a37d0cffe893dde3f1aa",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/puppeteer-core/chromium-bidi/zod",
+      "supplier": "NOASSERTION",
+      "versionInfo": "3.25.76"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-a39eddd57f8b5d1a7e3e",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/@oh-my-pi/omp-stats/@tailwindcss/node/lightningcss/lightningcss-darwin-x64",
+      "supplier": "NOASSERTION",
+      "versionInfo": ""
+    },
+    {
+      "SPDXID": "SPDXRef-npm-a3fb3d9e1f5b4321e8c8",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/@oh-my-pi/omp-stats/lucide-react",
+      "supplier": "NOASSERTION",
+      "versionInfo": "1.31.0"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-a4d586a33132cfc35dfa",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/@opentelemetry/exporter-metrics-otlp-proto/@opentelemetry/exporter-metrics-otlp-http/@opentelemetry/otlp-exporter-base",
+      "supplier": "NOASSERTION",
+      "versionInfo": "0.220.0"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-a5a5e7a1b7f20f86372d",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/@opentelemetry/exporter-logs-otlp-proto/@opentelemetry/otlp-transformer/@opentelemetry/sdk-logs",
+      "supplier": "NOASSERTION",
+      "versionInfo": "0.220.0"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-a61a48187e76935cd67d",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/@opentelemetry/exporter-trace-otlp-proto/@opentelemetry/resources/@opentelemetry/core",
+      "supplier": "NOASSERTION",
+      "versionInfo": "2.9.0"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-a62cdbbfe21bba2925e8",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/@huggingface/transformers/sharp/@img/sharp-linux-arm64",
+      "supplier": "NOASSERTION",
+      "versionInfo": ""
+    },
+    {
+      "SPDXID": "SPDXRef-npm-a72d8d8c6bcd7b708f23",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/@opentelemetry/sdk-trace-node/@opentelemetry/core/@opentelemetry/api",
+      "supplier": "NOASSERTION",
+      "versionInfo": "1.9.1"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-a783b562865ee170f782",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/@huggingface/transformers/onnxruntime-web/protobufjs/long",
+      "supplier": "NOASSERTION",
+      "versionInfo": "5.3.2"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-a95801f390c79029ca58",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/@opentelemetry/exporter-metrics-otlp-proto/@opentelemetry/core",
+      "supplier": "NOASSERTION",
+      "versionInfo": "2.9.0"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-a9a8870b498b9a051baf",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/@opentelemetry/resources/@opentelemetry/core/@opentelemetry/api",
+      "supplier": "NOASSERTION",
+      "versionInfo": "1.9.1"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-ab9ab6e2abe88784a3e7",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/@opentelemetry/exporter-metrics-otlp-proto/@opentelemetry/exporter-metrics-otlp-http/@opentelemetry/sdk-metrics/@opentelemetry/core",
+      "supplier": "NOASSERTION",
+      "versionInfo": "2.9.0"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-ac8890af0625553d692a",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/@huggingface/transformers/sharp/@img/sharp-libvips-linux-riscv64",
+      "supplier": "NOASSERTION",
+      "versionInfo": ""
+    },
+    {
+      "SPDXID": "SPDXRef-npm-ae40ad42e786fe43f908",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/puppeteer-core/ws",
+      "supplier": "NOASSERTION",
+      "versionInfo": "8.21.3"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-aee46226b9ef805992d1",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/@oh-my-pi/hashline",
+      "supplier": "NOASSERTION",
+      "versionInfo": "17.3.0"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-affad1bfecfd035457a6",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/@opentelemetry/api",
+      "supplier": "NOASSERTION",
+      "versionInfo": "1.9.1"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-b0fbda49dbe87e06c551",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/@oh-my-pi/pi-catalog/@bufbuild/protobuf",
+      "supplier": "NOASSERTION",
+      "versionInfo": "2.14.0"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-b1bbab4aa53a5222c1ea",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/@opentelemetry/sdk-metrics/@opentelemetry/resources",
+      "supplier": "NOASSERTION",
+      "versionInfo": "2.10.0"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-b1d1a9e81b5fe2af1107",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/@huggingface/transformers/onnxruntime-node/global-agent/semver",
+      "supplier": "NOASSERTION",
+      "versionInfo": "7.8.5"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-b2ed73437d844681e04e",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/@huggingface/transformers/onnxruntime-web/protobufjs/@protobufjs/path",
+      "supplier": "NOASSERTION",
+      "versionInfo": "1.1.2"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-b322f68e197823c27fdb",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/@opentelemetry/exporter-metrics-otlp-proto/@opentelemetry/exporter-metrics-otlp-http/@opentelemetry/core",
+      "supplier": "NOASSERTION",
+      "versionInfo": "2.9.0"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-b47f16d3dbf32da4fe32",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/@huggingface/transformers/onnxruntime-node/global-agent/roarr/globalthis/define-properties",
+      "supplier": "NOASSERTION",
+      "versionInfo": "1.2.1"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-b4cabfa685ee89962425",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/@huggingface/transformers/sharp/@img/sharp-libvips-linuxmusl-x64",
+      "supplier": "NOASSERTION",
+      "versionInfo": "1.2.4"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-b6d779de046dc1af194e",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/@opentelemetry/exporter-logs-otlp-proto/@opentelemetry/otlp-transformer/@opentelemetry/resources",
+      "supplier": "NOASSERTION",
+      "versionInfo": "2.9.0"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-b6e095331d9d17a5797a",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/@opentelemetry/exporter-metrics-otlp-proto/@opentelemetry/exporter-metrics-otlp-http/@opentelemetry/resources/@opentelemetry/core",
+      "supplier": "NOASSERTION",
+      "versionInfo": "2.9.0"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-bb267b6b23b5b5dac15b",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/@opentelemetry/sdk-logs/@opentelemetry/semantic-conventions",
+      "supplier": "NOASSERTION",
+      "versionInfo": "1.43.0"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-bc111b1397f5f89c1463",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/@opentelemetry/exporter-logs-otlp-proto/@opentelemetry/otlp-exporter-base/@opentelemetry/api",
+      "supplier": "NOASSERTION",
+      "versionInfo": "1.9.1"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-bc67e956c8bdfbe1f9a5",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/@huggingface/transformers/onnxruntime-web/protobufjs/@protobufjs/utf8",
+      "supplier": "NOASSERTION",
+      "versionInfo": "1.1.2"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-bc6d89b5e557218ecc0c",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/@oh-my-pi/pi-mnemopi/fastembed",
+      "supplier": "NOASSERTION",
+      "versionInfo": ""
+    },
+    {
+      "SPDXID": "SPDXRef-npm-bd9b810d09b237b577cc",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/@huggingface/transformers/sharp",
+      "supplier": "NOASSERTION",
+      "versionInfo": "0.34.5"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-be4c9f8e7c957428862a",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/@huggingface/transformers/onnxruntime-web/protobufjs/@protobufjs/fetch",
+      "supplier": "NOASSERTION",
+      "versionInfo": "1.1.1"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-be846a22b78376c60ae3",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/@oh-my-pi/pi-agent-core/@oh-my-pi/pi-natives",
+      "supplier": "NOASSERTION",
+      "versionInfo": "17.3.0"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-bf30573346bb4be4c796",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/@oh-my-pi/pi-agent-core/@oh-my-pi/snapcompact",
+      "supplier": "NOASSERTION",
+      "versionInfo": "17.3.0"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-bfbf3970622f31333911",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/@huggingface/transformers/onnxruntime-web/protobufjs/@protobufjs/float",
+      "supplier": "NOASSERTION",
+      "versionInfo": "1.0.2"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-c0ad20b30572fea4379d",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/@opentelemetry/sdk-metrics/@opentelemetry/api",
+      "supplier": "NOASSERTION",
+      "versionInfo": "1.9.1"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-c172d16bc350ec0645d5",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/puppeteer-core/ws/utf-8-validate",
+      "supplier": "NOASSERTION",
+      "versionInfo": ""
+    },
+    {
+      "SPDXID": "SPDXRef-npm-c2e98ab0b1fe877e2d2b",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/puppeteer-core/@puppeteer/browsers/yargs/cliui/wrap-ansi/string-width/strip-ansi",
+      "supplier": "NOASSERTION",
+      "versionInfo": "7.2.0"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-c46330bf1ff125171b30",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/@oh-my-pi/omp-stats/chart.js/@kurkle/color",
+      "supplier": "NOASSERTION",
+      "versionInfo": "0.3.4"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-c48bc617fcf7124d1c42",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/@huggingface/transformers/sharp/@img/sharp-libvips-linuxmusl-arm64",
+      "supplier": "NOASSERTION",
+      "versionInfo": ""
+    },
+    {
+      "SPDXID": "SPDXRef-npm-c4992906c1cb125761ca",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/@huggingface/transformers/sharp/@img/sharp-libvips-linux-arm",
+      "supplier": "NOASSERTION",
+      "versionInfo": ""
+    },
+    {
+      "SPDXID": "SPDXRef-npm-c573665196ca4587bace",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/@oh-my-pi/pi-agent-core",
+      "supplier": "NOASSERTION",
+      "versionInfo": "17.3.0"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-c5c5cfd7ad6ac0f0f04d",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/puppeteer-core/ws/bufferutil",
+      "supplier": "NOASSERTION",
+      "versionInfo": ""
+    },
+    {
+      "SPDXID": "SPDXRef-npm-c75fbb1b2bc1462817b3",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/@oh-my-pi/omp-stats/react",
+      "supplier": "NOASSERTION",
+      "versionInfo": "19.2.7"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-c876620b889e62113594",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/puppeteer-core/@puppeteer/browsers/yargs/cliui/string-width",
+      "supplier": "NOASSERTION",
+      "versionInfo": "7.2.0"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-c8d073450379740d48e7",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/@opentelemetry/exporter-trace-otlp-proto/@opentelemetry/sdk-trace/@opentelemetry/api",
+      "supplier": "NOASSERTION",
+      "versionInfo": "1.9.1"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-c9a76f235b943b263423",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/@oh-my-pi/omp-stats/@tailwindcss/node",
+      "supplier": "NOASSERTION",
+      "versionInfo": "4.3.3"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-c9c4cf19747b13435e5d",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/puppeteer-core/chromium-bidi/mitt",
+      "supplier": "NOASSERTION",
+      "versionInfo": "3.0.1"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-cb053665c3dfb3256381",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/@opentelemetry/resources/@opentelemetry/semantic-conventions",
+      "supplier": "NOASSERTION",
+      "versionInfo": "1.43.0"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-cb8557f8748bfc9ee425",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/@huggingface/transformers/sharp/@img/sharp-linux-ppc64",
+      "supplier": "NOASSERTION",
+      "versionInfo": ""
+    },
+    {
+      "SPDXID": "SPDXRef-npm-cc80c493a133c1c48c2d",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/@oh-my-pi/omp-stats/@tailwindcss/node/lightningcss/lightningcss-freebsd-x64",
+      "supplier": "NOASSERTION",
+      "versionInfo": ""
+    },
+    {
+      "SPDXID": "SPDXRef-npm-cd3a480a76a5ccab3c5d",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/@oh-my-pi/pi-tui/@oh-my-pi/pi-natives",
+      "supplier": "NOASSERTION",
+      "versionInfo": "17.3.0"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-ce53bac594a777c67106",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/@opentelemetry/sdk-trace-base/@opentelemetry/api",
+      "supplier": "NOASSERTION",
+      "versionInfo": "1.9.1"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-ce7626e08ebd0e55f938",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/@huggingface/transformers/onnxruntime-node/global-agent/matcher/escape-string-regexp",
+      "supplier": "NOASSERTION",
+      "versionInfo": "4.0.0"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-ceda2bd2bf3c2cb6dc05",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/@opentelemetry/sdk-logs/@opentelemetry/resources/@opentelemetry/api",
+      "supplier": "NOASSERTION",
+      "versionInfo": "1.9.1"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-cf2142500b2fbac7fbe0",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/@oh-my-pi/omp-stats/react-chartjs-2",
+      "supplier": "NOASSERTION",
+      "versionInfo": "5.3.1"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-cfceb89d74120a8ce0b5",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/@oh-my-pi/omp-stats/@tailwindcss/node/@jridgewell/remapping",
+      "supplier": "NOASSERTION",
+      "versionInfo": "2.3.5"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-d20cd0a67cd6b532990f",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/@opentelemetry/exporter-trace-otlp-proto/@opentelemetry/core",
+      "supplier": "NOASSERTION",
+      "versionInfo": "2.9.0"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-d2a2ca7d310cd66c502f",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/@opentelemetry/exporter-logs-otlp-proto/@opentelemetry/otlp-transformer/@opentelemetry/sdk-trace",
+      "supplier": "NOASSERTION",
+      "versionInfo": "2.9.0"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-d3b0b344952b27999f9a",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/@opentelemetry/exporter-metrics-otlp-proto/@opentelemetry/otlp-transformer",
+      "supplier": "NOASSERTION",
+      "versionInfo": "0.220.0"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-d486c31e0be821419db5",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/@huggingface/transformers/onnxruntime-web/flatbuffers",
+      "supplier": "NOASSERTION",
+      "versionInfo": "25.9.23"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-d54f2659b75cbdd6350f",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/@huggingface/transformers/sharp/@img/sharp-win32-x64",
+      "supplier": "NOASSERTION",
+      "versionInfo": ""
+    },
+    {
+      "SPDXID": "SPDXRef-npm-d55a632a32f80a0b04dc",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/@oh-my-pi/omp-stats/@tailwindcss/node/@jridgewell/remapping/@jridgewell/gen-mapping",
+      "supplier": "NOASSERTION",
+      "versionInfo": "0.3.13"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-d6c7c8770f42ebb02748",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/@opentelemetry/resources/@opentelemetry/core/@opentelemetry/semantic-conventions",
+      "supplier": "NOASSERTION",
+      "versionInfo": "1.43.0"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-d71a11365354299deb05",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/@oh-my-pi/pi-agent-core/@oh-my-pi/pi-wire",
+      "supplier": "NOASSERTION",
+      "versionInfo": "17.3.0"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-d7e121cb8c0abeea2d8d",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/@opentelemetry/exporter-logs-otlp-proto/@opentelemetry/otlp-transformer/@opentelemetry/sdk-metrics",
+      "supplier": "NOASSERTION",
+      "versionInfo": "2.9.0"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-d8276d77b216b23da378",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/@oh-my-pi/omp-stats/@tailwindcss/node/lightningcss/lightningcss-darwin-arm64",
+      "supplier": "NOASSERTION",
+      "versionInfo": ""
+    },
+    {
+      "SPDXID": "SPDXRef-npm-d82fb633a1e7522e35cd",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/puppeteer-core/@puppeteer/browsers/yargs/cliui/wrap-ansi/string-width/get-east-asian-width",
+      "supplier": "NOASSERTION",
+      "versionInfo": "1.6.0"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-d89d573cb5ba3c36fe08",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/@huggingface/transformers/onnxruntime-node/global-agent/roarr/detect-node",
+      "supplier": "NOASSERTION",
+      "versionInfo": "2.1.0"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-d9345a6eb9b003a9a47d",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/@opentelemetry/sdk-logs/@opentelemetry/api",
+      "supplier": "NOASSERTION",
+      "versionInfo": "1.9.1"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-da1c182da9946f3d6e4e",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/@oh-my-pi/pi-natives",
+      "supplier": "NOASSERTION",
+      "versionInfo": "17.3.0"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-db05b17cb2eb574601d9",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/@opentelemetry/sdk-metrics/@opentelemetry/core/@opentelemetry/semantic-conventions",
+      "supplier": "NOASSERTION",
+      "versionInfo": "1.43.0"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-db2537c7c657981a90fc",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/@huggingface/transformers/sharp/@img/sharp-win32-arm64",
+      "supplier": "NOASSERTION",
+      "versionInfo": ""
+    },
+    {
+      "SPDXID": "SPDXRef-npm-db2d0b354ffb315e6c93",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/@huggingface/transformers/onnxruntime-web/guid-typescript",
+      "supplier": "NOASSERTION",
+      "versionInfo": "1.0.9"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-ded8e3a5ce8b62c67351",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/@oh-my-pi/pi-agent-core/@oh-my-pi/pi-utils",
+      "supplier": "NOASSERTION",
+      "versionInfo": "17.3.0"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-e0acb8359447d4466ee4",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/@opentelemetry/exporter-logs-otlp-proto/@opentelemetry/otlp-transformer/@opentelemetry/core",
+      "supplier": "NOASSERTION",
+      "versionInfo": "2.9.0"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-e13a0b52a81c42cfdfa6",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/@oh-my-pi/pi-agent-core/@oh-my-pi/pi-ai",
+      "supplier": "NOASSERTION",
+      "versionInfo": "17.3.0"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-e1ab8ef390f6e485c843",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/@opentelemetry/exporter-metrics-otlp-proto/@opentelemetry/sdk-metrics/@opentelemetry/resources",
+      "supplier": "NOASSERTION",
+      "versionInfo": "2.9.0"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-e27bf8f931b4428f0b60",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/@opentelemetry/exporter-logs-otlp-proto/@opentelemetry/otlp-transformer",
+      "supplier": "NOASSERTION",
+      "versionInfo": "0.220.0"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-e2f486d366454cb290b1",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/@oh-my-pi/hashline/@oh-my-pi/pi-utils",
+      "supplier": "NOASSERTION",
+      "versionInfo": "17.3.0"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-e395bb13715c85178169",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/@huggingface/transformers/sharp/@img/sharp-linux-x64/@img/sharp-libvips-linux-x64",
+      "supplier": "NOASSERTION",
+      "versionInfo": "1.2.4"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-e44e2e57a37cf766bc26",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/@oh-my-pi/pi-wire",
+      "supplier": "NOASSERTION",
+      "versionInfo": "17.3.0"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-e4fe1e039fea4251f236",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/@opentelemetry/exporter-logs-otlp-proto/@opentelemetry/otlp-transformer/@opentelemetry/sdk-metrics/@opentelemetry/core",
+      "supplier": "NOASSERTION",
+      "versionInfo": "2.9.0"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-e6466b2836b4c995e6d9",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/@babel/parser/@babel/types/@babel/helper-validator-identifier",
+      "supplier": "NOASSERTION",
+      "versionInfo": "7.29.7"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-e799cfcec7f2f2c18a8d",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/puppeteer-core/@puppeteer/browsers/yargs/get-caller-file",
+      "supplier": "NOASSERTION",
+      "versionInfo": "2.0.5"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-e79e08352612f16c7f40",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/@huggingface/transformers/onnxruntime-web/protobufjs/@protobufjs/base64",
+      "supplier": "NOASSERTION",
+      "versionInfo": "1.1.2"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-e7bb532c95c4705e9918",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/puppeteer-core/@puppeteer/browsers/yargs/cliui/strip-ansi",
+      "supplier": "NOASSERTION",
+      "versionInfo": "7.2.0"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-e7c2093549bfa007816b",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/@oh-my-pi/omptype",
+      "supplier": "NOASSERTION",
+      "versionInfo": "17.3.0"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-e85e64564322146afa1a",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/@huggingface/transformers/sharp/@img/sharp-libvips-darwin-arm64",
+      "supplier": "NOASSERTION",
+      "versionInfo": ""
+    },
+    {
+      "SPDXID": "SPDXRef-npm-e90f346bf0b6161545fa",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/@huggingface/transformers/@huggingface/tokenizers",
+      "supplier": "NOASSERTION",
+      "versionInfo": "0.1.3"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-e9484f63a35616a8db82",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/@opentelemetry/sdk-trace-base/@opentelemetry/core/@opentelemetry/api",
+      "supplier": "NOASSERTION",
+      "versionInfo": "1.9.1"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-eb46eb40828c5f7e120a",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/puppeteer-core/@puppeteer/browsers/yargs",
+      "supplier": "NOASSERTION",
+      "versionInfo": "18.1.0"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-eb5a67f68d1c9747bae0",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/@huggingface/transformers/onnxruntime-node/global-agent/roarr/semver-compare",
+      "supplier": "NOASSERTION",
+      "versionInfo": "1.0.0"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-ec9ef495471c23430d72",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/puppeteer-core/@puppeteer/browsers/yargs/string-width/get-east-asian-width",
+      "supplier": "NOASSERTION",
+      "versionInfo": "1.6.0"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-edcc532c4a8523523e30",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/@oh-my-pi/snapcompact/@oh-my-pi/pi-catalog",
+      "supplier": "NOASSERTION",
+      "versionInfo": "17.3.0"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-ee2c41ebd218080cb1f8",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/@opentelemetry/exporter-trace-otlp-proto/@opentelemetry/resources",
+      "supplier": "NOASSERTION",
+      "versionInfo": "2.9.0"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-ee361da0b8f5e83cf9d9",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/@oh-my-pi/pi-mnemopi/onnxruntime-node",
+      "supplier": "NOASSERTION",
+      "versionInfo": "1.24.3"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-ee57ee2461b37529e9ec",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/@opentelemetry/sdk-trace-base",
+      "supplier": "NOASSERTION",
+      "versionInfo": "2.10.0"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-ee8e8127a6828e2939cc",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/@opentelemetry/exporter-logs-otlp-proto/@opentelemetry/otlp-exporter-base/@opentelemetry/core",
+      "supplier": "NOASSERTION",
+      "versionInfo": "2.9.0"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-eec4951c53d9ccc8f32b",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/sherpa-onnx-node",
+      "supplier": "NOASSERTION",
+      "versionInfo": "1.13.2"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-eec7df96aa5b0abb5629",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/@opentelemetry/sdk-trace-node/@opentelemetry/core/@opentelemetry/semantic-conventions",
+      "supplier": "NOASSERTION",
+      "versionInfo": "1.43.0"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-efb60c4b357209bdacec",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/@huggingface/transformers/@huggingface/jinja",
+      "supplier": "NOASSERTION",
+      "versionInfo": "0.5.9"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-f12b284a7f51af4a79b3",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/@huggingface/transformers/onnxruntime-node/global-agent/roarr/globalthis/define-properties/define-data-property",
+      "supplier": "NOASSERTION",
+      "versionInfo": "1.1.4"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-f1779555629dea653c48",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/puppeteer-core/@puppeteer/browsers/yargs/cliui",
+      "supplier": "NOASSERTION",
+      "versionInfo": "9.0.1"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-f1e08760d2a00028738f",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/@oh-my-pi/pi-ai/@bufbuild/protobuf",
+      "supplier": "NOASSERTION",
+      "versionInfo": "2.14.0"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-f352312b93b0e5a93b6e",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/@opentelemetry/exporter-trace-otlp-proto/@opentelemetry/otlp-transformer",
+      "supplier": "NOASSERTION",
+      "versionInfo": "0.220.0"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-f452cb94da68ae5bdeaa",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/@oh-my-pi/pi-natives/@oh-my-pi/pi-natives-linux-x64",
+      "supplier": "NOASSERTION",
+      "versionInfo": "17.3.0"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-f498390059ba06b48c7d",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/@opentelemetry/exporter-metrics-otlp-proto/@opentelemetry/exporter-metrics-otlp-http/@opentelemetry/api",
+      "supplier": "NOASSERTION",
+      "versionInfo": "1.9.1"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-f6299e0370ba03b3f74d",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/@huggingface/transformers/onnxruntime-web/protobufjs",
+      "supplier": "NOASSERTION",
+      "versionInfo": "7.6.5"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-f68fa2cb9050537f5cdd",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/@huggingface/transformers/sharp/@img/sharp-libvips-linux-arm64",
+      "supplier": "NOASSERTION",
+      "versionInfo": ""
+    },
+    {
+      "SPDXID": "SPDXRef-npm-f6df69b72449764052df",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/@oh-my-pi/pi-agent-core/@oh-my-pi/pi-catalog",
+      "supplier": "NOASSERTION",
+      "versionInfo": "17.3.0"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-f7398ca024ddc064d795",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/puppeteer-core/chromium-bidi/devtools-protocol",
+      "supplier": "NOASSERTION",
+      "versionInfo": "0.0.1638949"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-f77566376aa3831c63c1",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/@huggingface/transformers/onnxruntime-web/protobufjs/@protobufjs/aspromise",
+      "supplier": "NOASSERTION",
+      "versionInfo": "1.1.2"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-f797e5db67caf658f464",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/@opentelemetry/exporter-metrics-otlp-proto/@opentelemetry/sdk-metrics/@opentelemetry/core",
+      "supplier": "NOASSERTION",
+      "versionInfo": "2.9.0"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-f86558c0c7fba34ca4e2",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/@oh-my-pi/omp-stats",
+      "supplier": "NOASSERTION",
+      "versionInfo": "17.3.0"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-f9077d79ca985477c972",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/@oh-my-pi/omp-stats/tailwindcss",
+      "supplier": "NOASSERTION",
+      "versionInfo": "4.3.3"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-fd001dbd7f82dac8fc2e",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/@huggingface/transformers/sharp/@img/sharp-libvips-linux-x64",
+      "supplier": "NOASSERTION",
+      "versionInfo": "1.2.4"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-fd1da556e1f858755fa5",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/@opentelemetry/exporter-trace-otlp-proto/@opentelemetry/sdk-trace/@opentelemetry/resources/@opentelemetry/semantic-conventions",
+      "supplier": "NOASSERTION",
+      "versionInfo": "1.43.0"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-fdc02f9738a554f7c8ce",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/@opentelemetry/exporter-metrics-otlp-proto/@opentelemetry/exporter-metrics-otlp-http/@opentelemetry/sdk-metrics",
+      "supplier": "NOASSERTION",
+      "versionInfo": "2.9.0"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-feb2bae1cc1d15d197e1",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/@babel/parser/@babel/types",
+      "supplier": "NOASSERTION",
+      "versionInfo": "7.29.8"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-ff44fa6919cd679f6c6a",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/@oh-my-pi/omp-stats/lucide-react/react",
+      "supplier": "NOASSERTION",
+      "versionInfo": "19.2.7"
+    },
+    {
+      "SPDXID": "SPDXRef-npm-ff5ae8d106998ec39573",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "name": "@oh-my-pi/pi-coding-agent/@opentelemetry/exporter-metrics-otlp-proto/@opentelemetry/resources",
+      "supplier": "NOASSERTION",
+      "versionInfo": "2.9.0"
+    }
+  ],
+  "spdxVersion": "SPDX-2.3"
+}

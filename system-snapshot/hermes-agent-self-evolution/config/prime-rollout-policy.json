@@ -1,0 +1,32 @@
+{
+  "schema_version": "1.0",
+  "enabled": true,
+  "stage": "broad",
+  "canary_profiles": [
+    "workspace",
+    "home"
+  ],
+  "excluded_profiles": [],
+  "minimum_eligible_coverage_percent": 80,
+  "admission": {
+    "max_active_global": 2,
+    "max_active_per_profile": 1,
+    "max_cpu_percent": 80,
+    "max_memory_percent": 80,
+    "sample_max_age_seconds": 30,
+    "native_reserve_percent": 20,
+    "unknown_resource_action": "reject-prime"
+  },
+  "required_update_checks": [
+    "rpc-contract",
+    "model-route",
+    "containment",
+    "capability-boundary",
+    "profile-matrix",
+    "native-hermes"
+  ],
+  "compatibility_evidence_max_age_seconds": 900,
+  "activation": "restart-boundary",
+  "explicit_handoff_required": true,
+  "native_fallback": true
+}

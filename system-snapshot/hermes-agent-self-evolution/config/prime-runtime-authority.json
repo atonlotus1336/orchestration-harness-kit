@@ -1,0 +1,21 @@
+{
+  "schema_version": "1.0",
+  "source_commit": "95afd319a78ae017a41241d50b013d656a0685ce",
+  "image_digest": "sha256:e23c76c3d1d5a31e268e6017b5a387d73a4b48a5f385474184bd1e6d02627a51",
+  "sandbox": "rootless-podman",
+  "command": [
+    "podman",
+    "exec",
+    "-i",
+    "{container_id}",
+    "/opt/prime-agent/prime-agent.sh",
+    "--dist",
+    "--mode",
+    "rpc",
+    "--session-dir",
+    "/work/.prime/agent/sessions"
+  ],
+  "command_fingerprint": "1114d161f317e3a99f9a6de5e7424e3f1fb373cade820e1a847ad6fb419288cc",
+  "image_lock_path": "../containers/prime-probe/image-lock.json",
+  "image_lock_sha256": "1a989b420615b73faf97c928ffddd6eacf3fa2e14daf72e4cb761c1e37d72f83"
+}

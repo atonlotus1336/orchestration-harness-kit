@@ -44,7 +44,7 @@ $manifestPath = Join-Path $installer "modules\module-manifest.json"
 try {
   $manifest = Get-Content -Raw -LiteralPath $manifestPath | ConvertFrom-Json
   $ids = @($manifest.modules | ForEach-Object { $_.id })
-  $missing = @("memory","rag","harness","hermes-snapshot","topology","clone-eval" | Where-Object { $_ -notin $ids })
+  $missing = @("memory","rag","harness","hermes-snapshot","private-system-snapshot","topology","clone-eval" | Where-Object { $_ -notin $ids })
   Add-Step "module-manifest" $(if ($missing.Count -eq 0) { "GREEN" } else { "RED" }) @{ missing = @($missing) }
 } catch {
   Add-Step "module-manifest" "RED" @{ error = $_.Exception.Message }
@@ -56,6 +56,14 @@ if (Test-Path -LiteralPath $topologyCheck) {
   Add-Step "topology-solo-default" $(if ($LASTEXITCODE -eq 0) { "GREEN" } else { "RED" }) @{ exit = $LASTEXITCODE }
 } else {
   Add-Step "topology-solo-default" "RED" @{ missing = $topologyCheck }
+}
+
+$privateSnapshotRestore = Join-Path $kit "tools\restore-private-system-snapshot.py"
+if (Test-Path -LiteralPath $privateSnapshotRestore) {
+  & python $privateSnapshotRestore --selftest | Out-Null
+  Add-Step "private-system-snapshot" $(if ($LASTEXITCODE -eq 0) { "GREEN" } else { "RED" }) @{ exit = $LASTEXITCODE }
+} else {
+  Add-Step "private-system-snapshot" "RED" @{ missing = $privateSnapshotRestore }
 }
 
 $cloneTasks = @(Get-ChildItem -LiteralPath (Join-Path $installer "clone-eval\tasks") -Filter "*.yaml" | ForEach-Object { $_.Name })

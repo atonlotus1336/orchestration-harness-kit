@@ -1,0 +1,45 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://__PRIVATE_TOKEN_02__.local/contracts/phase01-gap-approval.schema.json",
+  "title": "Phase 01 gap recovery approval",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "authorized",
+    "confirmation",
+    "scope",
+    "historical_hashes",
+    "bundle_hashes"
+  ],
+  "properties": {
+    "schema_version": {"const": "1.0"},
+    "authorized": {"const": true},
+    "confirmation": {"const": "confirm merge update"},
+    "scope": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["phase", "active_plans", "first_plan", "last_plan"],
+      "properties": {
+        "phase": {"const": "01-contracts-feasibility"},
+        "active_plans": {"const": 12},
+        "first_plan": {"const": "02"},
+        "last_plan": {"const": "13"}
+      }
+    },
+    "historical_hashes": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["plan", "summary"],
+      "properties": {
+        "plan": {"pattern": "^[0-9a-f]{64}$"},
+        "summary": {"pattern": "^[0-9a-f]{64}$"}
+      }
+    },
+    "bundle_hashes": {
+      "type": "object",
+      "minProperties": 12,
+      "additionalProperties": {"pattern": "^[0-9a-f]{64}$"}
+    }
+  }
+}

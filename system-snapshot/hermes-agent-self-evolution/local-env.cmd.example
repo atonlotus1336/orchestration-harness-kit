@@ -1,0 +1,14 @@
+@echo off
+rem Copy this file to local-env.cmd and add only the provider keys you need.
+rem This file is called automatically by run-evolve-skill.cmd before Python starts.
+
+rem Default models in this repo use OpenAI-style names:
+rem set "OPENAI_API_KEY=..."
+
+rem If you switch to OpenRouter or another LiteLLM-backed provider, add the
+rem provider-specific environment variables here and pass the matching model ids:
+rem set "OPENROUTER_API_KEY=..."
+rem set "ANTHROPIC_API_KEY=..."
+
+rem Optional model overrides at runtime:
+rem __WINDOWS_WORKSPACE__\hermes-agent-self-evolution\run-evolve-skill.cmd --skill github-code-review --dry-run --optimizer-model openai/gpt-4.1 --eval-model openai/gpt-4.1-mini

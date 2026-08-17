@@ -1,0 +1,19 @@
+{
+  "schema_version": "1.0",
+  "repository": "https://github.com/PrimeIntellect-ai/prime-agent.git",
+  "tag": "v0.7.1",
+  "commit": "95afd319a78ae017a41241d50b013d656a0685ce",
+  "tree": "caf6fa88a48d2a4b07b903c327ae3d6b2d1b0466",
+  "source_root": ".git/phase01-gap-lifecycle/sources/prime-agent/95afd319a78ae017a41241d50b013d656a0685ce",
+  "provenance_path": ".planning/phases/01-contracts-feasibility/evidence/prime-agent-provenance.json",
+  "provenance_sha256": "c1b30ca940be6ea03df0e0ebdfc77a03190406c45a0b1d05d1153ddebd8b85e0",
+  "package_lock_sha256": "39ee303bca10c0933cf917275613c8f44099f50de1650a5c356e7cda02b701e8",
+  "node_base": "docker.io/library/node@sha256:dd9d21971ec4395903fa6143c2b9267d048ae01ca6d3ea96f16cb30df6187d94",
+  "python_base": "docker.io/library/python@sha256:519591d6871b7bc437060736b9f7456b8731f1499a57e22e6c285135ae657bf7",
+  "node_version": "22.22.0",
+  "npm_version": "10.9.4",
+  "python_version": "3.12.11",
+  "source_date_epoch": 1786127846,
+  "podman_prerequisite_path": ".planning/phases/01-contracts-feasibility/evidence/phase01-podman-prerequisite.json",
+  "podman_prerequisite_sha256": "db5a36beac684149dc0196d9b7fb2ef680c157d02ff2ccf4d6c80f680f4c0b51"
+}

@@ -1,0 +1,54 @@
+ARG PYTHON_BASE=docker.io/library/python@sha256:519591d6871b7bc437060736b9f7456b8731f1499a57e22e6c285135ae657bf7
+ARG NODE_BASE=docker.io/library/node@sha256:dd9d21971ec4395903fa6143c2b9267d048ae01ca6d3ea96f16cb30df6187d94
+FROM ${NODE_BASE} AS node-runtime
+
+FROM ${PYTHON_BASE}
+
+ARG PRIME_COMMIT=95afd319a78ae017a41241d50b013d656a0685ce
+ARG PRIME_TREE=caf6fa88a48d2a4b07b903c327ae3d6b2d1b0466
+ARG SOURCE_CONTEXT_SHA256
+
+LABEL org.opencontainers.image.title="Hermes Prime Agent probe"
+LABEL org.opencontainers.image.version="0.7.1"
+LABEL org.opencontainers.image.revision="${PRIME_COMMIT}"
+LABEL ai.__PRIVATE_TOKEN_02__.prime.tree="${PRIME_TREE}"
+LABEL ai.__PRIVATE_TOKEN_02__.prime.context.sha256="${SOURCE_CONTEXT_SHA256}"
+LABEL ai.__PRIVATE_TOKEN_02__.prime.mode="rpc-probe"
+
+COPY --from=node-runtime /usr/local /usr/local
+ENV PATH="/usr/local/bin:${PATH}" \
+    PYTHONDONTWRITEBYTECODE=1 \
+    PYTHONUNBUFFERED=1 \
+    PRIME_AGENT_KERNEL_PYTHON=/usr/local/bin/python \
+    PRIME_AGENT_CODING_AGENT_DIR=/work/.prime/agent \
+    PRIME_AGENT_SESSION_DIR=/work/.prime/agent/sessions \
+    SOURCE_DATE_EPOCH=1786127846
+
+WORKDIR /opt/prime-agent
+COPY requirements.lock /opt/phase01/requirements.lock
+RUN python -m pip install --disable-pip-version-check --no-cache-dir --require-hashes --only-binary=:all: -r /opt/phase01/requirements.lock
+
+COPY prime/ /opt/prime-agent/
+RUN python -m pip install --disable-pip-version-check --no-cache-dir --no-deps --no-build-isolation ./prime-agent-runtime
+RUN HUSKY=0 npm ci --include=optional \
+    && npm run build \
+    && npm cache clean --force \
+    && rm -rf /root/.npm /root/.cache
+
+COPY relay_client.py /opt/phase01/relay_client.py
+COPY relay-config.schema.json /opt/phase01/relay-config.schema.json
+
+RUN node --version | grep -Fx 'v22.22.0' \
+    && npm --version | grep -Fx '10.9.4' \
+    && python --version 2>&1 | grep -Fx 'Python 3.12.11' \
+    && test -f /opt/prime-agent/packages/coding-agent/dist/bundle/cli.js \
+    && python -c 'import bs4, dill, dotenv, httpx, ipykernel, lxml, nest_asyncio, numpy, pandas, pydantic, requests, rlm, scipy, tomli, tyro, yaml; import importlib.metadata as m; assert m.version("prime-agent-runtime") == "0.1.0"'
+
+RUN mkdir -p /work/.prime/agent/sessions \
+    && chmod -R a+rX /opt/prime-agent /opt/phase01 \
+    && chmod 0777 /work \
+    && find /opt /usr/local /work -xdev -exec touch -h -d "@${SOURCE_DATE_EPOCH}" {} +
+WORKDIR /work
+USER 65532:65532
+ENTRYPOINT ["/opt/prime-agent/prime-agent.sh", "--dist"]
+CMD ["--mode", "rpc", "--no-session"]

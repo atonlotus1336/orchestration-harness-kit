@@ -1,0 +1,23 @@
+{
+  "schema_version": "1.0.0",
+  "required_adapter_fields": ["id", "version", "description", "source_path", "editable_surfaces", "operations", "evaluator", "baseline", "primary_metric", "guardrails", "cost", "rollback"],
+  "required_operations": ["inspect", "generate", "evaluate", "guardrail", "cost", "rollback"],
+  "required_evaluator_fields": ["path", "sha256"],
+  "required_baseline_fields": ["path", "sha256"],
+  "required_metric_fields": ["name", "direction", "minimum_delta", "equivalence_band"],
+  "allowed_metric_directions": ["maximize", "minimize"],
+  "editable_surface_contract": {
+    "path_kind": "relative_to_source_path",
+    "minimum_count": 1,
+    "one_changed_file_per_iteration": true,
+    "production_mutation": false,
+    "undeclared_change": "crash"
+  },
+  "operation_contract": {
+    "type": "powershell_script_path",
+    "candidate_arguments": ["Workspace", "Iteration", "Hypothesis"],
+    "evaluate_output": ["metric", "complexity", "cost"],
+    "external_content_execution": false
+  }
+}
+

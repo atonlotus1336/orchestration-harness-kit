@@ -1,0 +1,21 @@
+{
+  "schema_version": "1.0",
+  "enabled": true,
+  "default_mode": "prime-available",
+  "profile_modes": {
+    "workspace": "prime-default",
+    "telegram": "prime-available"
+  },
+  "mcp_server": {
+    "name": "prime-agent",
+    "trust": "full",
+    "command": "bash",
+    "args": [
+      "-lc",
+      "exec bash __WSL_WORKSPACE__/hermes-agent-self-evolution/scripts/launch-prime-mcp.sh"
+    ]
+  },
+  "native_fallback": true,
+  "activation": "restart-boundary",
+  "explicit_handoff_required": true
+}

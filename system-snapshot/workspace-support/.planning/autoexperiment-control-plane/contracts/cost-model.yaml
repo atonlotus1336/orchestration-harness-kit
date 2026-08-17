@@ -1,0 +1,30 @@
+{
+  "schema_version": "1.0.0",
+  "decision_classes": ["accept", "reject", "unproven"],
+  "hard_gates": [
+    "all_protected_invariants_pass",
+    "whole_system_compatibility_pass",
+    "repeat_pass",
+    "holdout_pass"
+  ],
+  "measured_factors": [
+    "primary_metric_delta",
+    "wall_clock_delta_seconds",
+    "rate_limit_pressure_delta",
+    "context_tokens_delta",
+    "concurrency_delta",
+    "dependency_count_delta",
+    "maintenance_steps_delta",
+    "complexity_delta"
+  ],
+  "rules": {
+    "factors_remain_separate": true,
+    "single_scalar_score": false,
+    "meaningful_gain_exceeds_noise": true,
+    "unjustified_cost_increase": "reject",
+    "equivalent_result_with_strict_simplification": "accept",
+    "pareto_improvement": "prefer",
+    "noisy_gain": "unproven"
+  }
+}
+

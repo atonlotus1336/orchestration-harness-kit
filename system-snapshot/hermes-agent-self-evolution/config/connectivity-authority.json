@@ -1,0 +1,92 @@
+{
+  "schema_version": "1.0",
+  "enabled": true,
+  "authority_machine": "stack-host",
+  "machines": {
+    "stack-host": {
+      "aliases": ["NUCBOX_M6ULTRA", "nucbox-m6ultra"],
+      "role": "repair-authority",
+      "windows_user": "__OWNER_HANDLE__",
+      "wsl_distro": "Ubuntu-restored",
+      "wsl_user": "__PRIVATE_TOKEN_01__",
+      "allowed_sources": ["nucbox-local", "repair-verifier"]
+    },
+    "thin-client": {
+      "aliases": ["DESKTOP-2S7VQDO"],
+      "role": "independent-verifier",
+      "windows_user": "__OWNER_HANDLE__",
+      "allowed_sources": ["desktop-probe", "repair-verifier"]
+    },
+    "vps": {
+      "aliases": ["__PRIVATE_TOKEN_02__-vps"],
+      "role": "telegram-owner",
+      "allowed_sources": ["vps-probe"]
+    }
+  },
+  "freshness_seconds": {
+    "backend": 300,
+    "client": 300,
+    "authentication": 300,
+    "readiness": 300,
+    "tunnel": 300,
+    "mount": 900,
+    "ownership": 900
+  },
+  "resources": {
+    "gateway-8642": {
+      "owner": "stack-host",
+      "required_axes": [
+        {"machine": "stack-host", "axis": "backend", "expected": {"binding": "0.0.0.0:8642", "live": true}},
+        {"machine": "stack-host", "axis": "readiness", "expected": {"mcp_ready": true}},
+        {"machine": "thin-client", "axis": "client", "expected": {"endpoint": "http://__TAILSCALE_IPV4__:8642/health", "reachable": true}}
+      ],
+      "drift_action": "repair:gateway-host-binding"
+    },
+    "dashboard-9119": {
+      "owner": "stack-host",
+      "required_axes": [
+        {"machine": "stack-host", "axis": "backend", "expected": {"binding": "127.0.0.1:9119", "live": true}},
+        {"machine": "thin-client", "axis": "tunnel", "expected": {"local_binding": "127.0.0.1:9119", "reachable": true}},
+        {"machine": "thin-client", "axis": "authentication", "expected": {"gated_route": true, "authenticated": true}}
+      ],
+      "drift_action": "approval_required"
+    },
+    "__PRIVATE_TOKEN_02__-mount": {
+      "owner": "stack-host",
+      "required_axes": [
+        {"machine": "stack-host", "axis": "mount", "expected": {"source": "G:", "target": "__WSL_WORKSPACE__", "mounted": true}}
+      ],
+      "drift_action": "approval_required"
+    },
+    "telegram-gateway": {
+      "owner": "vps",
+      "required_axes": [
+        {"machine": "vps", "axis": "ownership", "expected": {"sole_owner": "vps", "active": true}}
+      ],
+      "drift_action": "approval_required"
+    }
+  },
+  "approval_required_changes": [
+    "tailscale_acl",
+    "firewall_exposure",
+    "credential",
+    "exit_node",
+    "subnet_route",
+    "new_mount",
+    "broad_permission",
+    "dashboard_exposure",
+    "service_ownership"
+  ],
+  "repair_envelopes": {
+    "gateway-host-binding": {
+      "kind": "env-key",
+      "authority_machine": "stack-host",
+      "target": "profiles/workspace/.env",
+      "key": "API_SERVER_HOST",
+      "allowed_before": ["127.0.0.1", "0.0.0.0"],
+      "desired": "0.0.0.0",
+      "remote_required": true,
+      "restart_command": ["bash", "__WSL_WORKSPACE__/hermes-agent-self-evolution/scripts/restart-hermes-gateway-binding.sh", "workspace"]
+    }
+  }
+}

@@ -1,0 +1,126 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://__PRIVATE_TOKEN_02__.local/contracts/phase01-podman-prerequisite.schema.json",
+  "title": "Phase 01 rootless Podman prerequisite evidence",
+  "$defs": {
+    "package": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["candidate", "installed"],
+      "properties": {
+        "candidate": {"type": "string", "minLength": 1},
+        "installed": {"type": ["string", "null"]}
+      }
+    },
+    "capabilities": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["rootless", "cgroup_version", "runtime", "storage_driver", "network_backend"],
+      "properties": {
+        "rootless": {"const": true},
+        "cgroup_version": {"const": "v2"},
+        "runtime": {"const": "crun"},
+        "storage_driver": {"enum": ["overlay", "fuse-overlayfs"]},
+        "network_backend": {"type": "string", "minLength": 1}
+      }
+    }
+  },
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "captured_at",
+    "status",
+    "go_eligible",
+    "reason",
+    "environment",
+    "packages",
+    "checks",
+    "capabilities",
+    "root_receipt_sha256"
+  ],
+  "properties": {
+    "schema_version": {"const": "1.0"},
+    "captured_at": {"type": "string", "format": "date-time"},
+    "status": {"enum": ["READY", "UNAVAILABLE"]},
+    "go_eligible": {"type": "boolean"},
+    "reason": {"type": "string", "maxLength": 512},
+    "environment": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["distro", "version", "kernel", "cgroup_controllers", "subuid", "subgid", "graphroot"],
+      "properties": {
+        "distro": {"const": "Ubuntu-restored"},
+        "version": {"const": "24.04"},
+        "kernel": {"type": "string", "pattern": "microsoft.*WSL2"},
+        "cgroup_controllers": {
+          "type": "array",
+          "items": {"type": "string"},
+          "contains": {"const": "pids"},
+          "minContains": 1,
+          "uniqueItems": true
+        },
+        "subuid": {"const": "100000:65536"},
+        "subgid": {"const": "100000:65536"},
+        "graphroot": {"type": "string", "pattern": "^/home/[^/]+/\\.local/share/containers/storage$"}
+      }
+    },
+    "packages": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["podman", "uidmap", "slirp4netns", "fuse-overlayfs", "crun", "containernetworking-plugins", "busybox-static"],
+      "properties": {
+        "podman": {"allOf": [{"$ref": "#/$defs/package"}, {"properties": {"candidate": {"const": "4.9.3+ds1-1ubuntu0.2"}}}]},
+        "uidmap": {"allOf": [{"$ref": "#/$defs/package"}, {"properties": {"candidate": {"const": "1:4.13+dfsg1-4ubuntu3.2"}}}]},
+        "slirp4netns": {"allOf": [{"$ref": "#/$defs/package"}, {"properties": {"candidate": {"const": "1.2.1-1build2"}}}]},
+        "fuse-overlayfs": {"allOf": [{"$ref": "#/$defs/package"}, {"properties": {"candidate": {"const": "1.13-1"}}}]},
+        "crun": {"allOf": [{"$ref": "#/$defs/package"}, {"properties": {"candidate": {"const": "1.14.1-1"}}}]},
+        "containernetworking-plugins": {"allOf": [{"$ref": "#/$defs/package"}, {"properties": {"candidate": {"const": "1.1.1+ds1-3ubuntu0.24.04.3"}}}]},
+        "busybox-static": {"allOf": [{"$ref": "#/$defs/package"}, {"properties": {"candidate": {"const": "1:1.36.1-6ubuntu3.1"}}}]}
+      }
+    },
+    "checks": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["distro", "wsl_kernel", "apt_candidates", "subids", "cgroup_v2", "local_storage", "packages", "rootless", "runtime", "storage", "network", "limits", "network_none", "network_rootless"],
+      "properties": {
+        "distro": {"type": "boolean"},
+        "wsl_kernel": {"type": "boolean"},
+        "apt_candidates": {"type": "boolean"},
+        "subids": {"type": "boolean"},
+        "cgroup_v2": {"type": "boolean"},
+        "local_storage": {"type": "boolean"},
+        "packages": {"type": "boolean"},
+        "rootless": {"type": "boolean"},
+        "runtime": {"type": "boolean"},
+        "storage": {"type": "boolean"},
+        "network": {"type": "boolean"},
+        "limits": {"type": "boolean"},
+        "network_none": {"type": "boolean"},
+        "network_rootless": {"type": "boolean"}
+      }
+    },
+    "capabilities": {"anyOf": [{"$ref": "#/$defs/capabilities"}, {"type": "null"}]},
+    "root_receipt_sha256": {"type": ["string", "null"], "pattern": "^[0-9a-f]{64}$"}
+  },
+  "allOf": [
+    {
+      "if": {"properties": {"status": {"const": "READY"}}},
+      "then": {
+        "properties": {
+          "go_eligible": {"const": true},
+          "reason": {"const": ""},
+          "capabilities": {"$ref": "#/$defs/capabilities"},
+          "root_receipt_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+        }
+      },
+      "else": {
+        "properties": {
+          "go_eligible": {"const": false},
+          "reason": {"type": "string", "minLength": 1},
+          "capabilities": {"type": "null"}
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,13 @@
+# Canonical Telegram default model route.
+# Change this file first, then run:
+#   __WSL_WORKSPACE__/hermes-agent-self-evolution/scripts/validate-telegram-default-model.sh
+#
+# Telegram model changes must keep gateway ownership as `telegram`.
+# Do not move the Telegram gateway to a model-named profile unless explicitly requested.
+telegram_default_model:
+  profile: telegram
+  provider: ollama-cloud
+  model: glm-5.2:cloud
+  alias: ollama-glm-cloud
+  gateway_port: 8643
+  apply_command: __WSL_WORKSPACE__/hermes-agent-self-evolution/scripts/apply-hermes-profile-to-wsl.sh telegram glm-5.2:cloud ollama-cloud

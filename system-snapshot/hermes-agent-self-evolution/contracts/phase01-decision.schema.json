@@ -1,0 +1,75 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://__PRIVATE_TOKEN_02__.local/contracts/phase01-decision.schema.json",
+  "title": "Phase 1 immutable human decision",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "phase",
+    "choice",
+    "go_eligible",
+    "completion_authorized",
+    "reviewer",
+    "decided_at",
+    "bundle_sha256",
+    "report_id",
+    "run_id",
+    "report_sha256",
+    "predecision_review_sha256",
+    "predecision_verify_sha256",
+    "report_status",
+    "source_kind",
+    "desktop_reachability"
+  ],
+  "properties": {
+    "schema_version": {"const": "1.0"},
+    "phase": {"const": "01-contracts-feasibility"},
+    "choice": {"enum": ["GO", "NO_GO"]},
+    "go_eligible": {"type": "boolean"},
+    "completion_authorized": {"type": "boolean"},
+    "reviewer": {"type": "string", "minLength": 1},
+    "decided_at": {"type": "string", "format": "date-time"},
+    "bundle_sha256": {"$ref": "#/$defs/sha256"},
+    "report_id": {"type": "string", "minLength": 1},
+    "run_id": {"type": "string", "minLength": 1},
+    "report_sha256": {"$ref": "#/$defs/sha256"},
+    "predecision_review_sha256": {"$ref": "#/$defs/sha256"},
+    "predecision_verify_sha256": {"$ref": "#/$defs/sha256"},
+    "report_status": {"enum": ["READY", "FAIL", "UNVERIFIED"]},
+    "source_kind": {"enum": ["LIVE", "SIMULATION"]},
+    "desktop_reachability": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["required", "status", "reason"],
+      "properties": {
+        "required": {"type": "boolean"},
+        "status": {"enum": ["PASS", "FAIL", "UNVERIFIED"]},
+        "reason": {"type": "string", "minLength": 1}
+      }
+    }
+  },
+  "$defs": {
+    "sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    }
+  },
+  "allOf": [
+    {
+      "if": {"properties": {"choice": {"const": "GO"}}, "required": ["choice"]},
+      "then": {
+        "properties": {
+          "go_eligible": {"const": true},
+          "completion_authorized": {"const": true},
+          "report_status": {"const": "READY"},
+          "source_kind": {"const": "LIVE"}
+        }
+      }
+    },
+    {
+      "if": {"properties": {"choice": {"const": "NO_GO"}}, "required": ["choice"]},
+      "then": {"properties": {"completion_authorized": {"const": false}}}
+    }
+  ]
+}

@@ -1,0 +1,14 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://__PRIVATE_TOKEN_02__.local/contracts/prime-probe-relay-config.schema.json",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["listen_host", "listen_port", "uds_path", "allowed_hostname", "allowed_port"],
+  "properties": {
+    "listen_host": {"const": "127.0.0.1"},
+    "listen_port": {"type": "integer", "minimum": 1024, "maximum": 65535},
+    "uds_path": {"const": "/run/prime-relay/relay.sock"},
+    "allowed_hostname": {"type": "string", "pattern": "^[A-Za-z0-9.-]+$", "minLength": 1, "maxLength": 253},
+    "allowed_port": {"const": 443}
+  }
+}

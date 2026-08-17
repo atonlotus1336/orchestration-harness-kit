@@ -1,0 +1,3 @@
+{"direction":"request","frame":{"id":"<correlation-id>","type":"get_state"}}
+{"direction":"response","frame":{"id":"<correlation-id>","type":"response","command":"get_state","success":true}}
+{"direction":"response","frame":{"type":"agent_end","messages":[{"role":"assistant","content":"PRIME_RPC_OK:4"}]}}

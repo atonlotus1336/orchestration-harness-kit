@@ -1,0 +1,24 @@
+{
+  "schema_version": "1.0.0",
+  "allocation": "coverage-first-then-ranked-surplus",
+  "priority_order": [
+    {"field":"invariant_failure","direction":"descending","type":"boolean"},
+    {"field":"verified_degradation","direction":"descending","type":"boolean"},
+    {"field":"coverage_debt","direction":"descending","type":"integer"},
+    {"field":"age_rounds","direction":"descending","type":"integer"},
+    {"field":"downstream_leverage","direction":"descending","type":"integer"},
+    {"field":"recurrence_user_impact","direction":"descending","type":"integer"},
+    {"field":"verifier_readiness","direction":"descending","type":"integer"},
+    {"field":"benefit_cost_ratio","direction":"descending","type":"number"},
+    {"field":"estimated_duration_minutes","direction":"ascending","type":"number"},
+    {"field":"opportunity_id","direction":"ascending","type":"string"}
+  ],
+  "required_opportunity_fields": ["opportunity_id","portfolio_id","summary","evidence_handles","invariant_failure","verified_degradation","coverage_debt","age_rounds","downstream_leverage","recurrence_user_impact","verifier_readiness","expected_benefit","estimated_cost","estimated_duration_minutes"],
+  "rules": {
+    "all_due_portfolios_before_surplus": true,
+    "minimum_verifier_readiness_for_experiment": 1,
+    "zero_cost_ratio_policy": "expected_benefit",
+    "deterministic_tie_break": "opportunity_id"
+  }
+}
+

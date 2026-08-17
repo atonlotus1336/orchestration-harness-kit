@@ -1,0 +1,1806 @@
+version: "2026-07-05"
+schema:
+  required_fields:
+    - id
+    - class
+    - config_path
+    - owner
+    - probe_cmd
+    - cadence
+    - slack
+    - secret_fields
+    - privacy_class
+    - break_recipe
+    - expected_red
+  optional_fields:
+    - install_stage
+    - verify_cmd
+    - state
+    - notes
+    - freshness_after
+    - freshness_grace
+    - export_target_path
+    # Q7 ack_until amendment (PLAN.md 2026-07-07, section 7C H5): external marks a
+    # surface whose availability depends on an outside service (VPS, n8n, cloud model
+    # provider). Only external surfaces may carry ack_until/ack_by/ack_reason; setting
+    # an ack MUST also append a PHASE-LEDGER row. Expired acks revert to RED.
+    - external
+    - ack_until
+    - ack_by
+    - ack_reason
+    # M14 severity mechanism: severity: degrade marks a NON-CRITICAL surface (image/video
+    # gen). Probe/expiry failures report DEGRADED (visible, counted) without flipping the
+    # overall gate; RED stays reserved for core parity. Only the literal value "degrade"
+    # is schema-legal.
+    - severity
+  enums:
+    class:
+      - profile
+      - mcp
+      - memory
+      - eval
+      - doc
+      - kit-component
+    privacy_class:
+      - shareable
+      - slot
+      - local-only
+    state:
+      - active
+      - quarantined
+      - rotted
+defaults:
+  slack: "P1D"
+  freshness_grace: "P7D"
+discovery:
+  profile_roots:
+    - "__WINDOWS_WORKSPACE__/hermes-agent-self-evolution/profiles"
+  mcp_roots:
+    - "__WINDOWS_WORKSPACE__/.mcp-servers"
+    - "__WINDOWS_WORKSPACE__/.codex/mcp-servers"
+  mcp_exclude:
+    - "_shared"
+  scope_note: "Q8 auto-discovery/quarantine covers profile + MCP roots only, because those are the auto-spawning surface classes where unregistered drift is a real risk. doc/eval/memory/kit/plugin surfaces are manually curated and intentionally excluded from directory discovery to avoid false quarantines (e.g. every .md/.json under the vault)."
+surfaces:
+  - id: profile-home
+    class: profile
+    config_path: "__WINDOWS_WORKSPACE__/hermes-agent-self-evolution/profiles/home/config.yaml"
+    owner: "Jonathan"
+    probe_cmd: "$c=(Get-Content -Raw -LiteralPath '__WINDOWS_WORKSPACE__\\hermes-agent-self-evolution\\profiles\\home\\config.yaml' -EA SilentlyContinue); [bool]$c -and ($c -match '(?m)^providers:') -and ($c -match '(?m)^mcp_servers:') -and ($c -match '(?m)^memory:') -and ($c -match '(?m)^toolsets:')"
+    cadence: "P3650D"
+    slack: "P1D"
+    secret_fields: []
+    privacy_class: slot
+    break_recipe: "dry-run: rename config.yaml out of the profile source path"
+    expected_red: "PROFILE_MISSING:home"
+    state: active
+    install_stage: "harness"
+    verify_cmd: "wsl -- bash -lc 'test -f ~/.hermes/profiles/home/render-manifest.json && grep -q __PRIVATE_TOKEN_02__-control-plane ~/.hermes/profiles/home/config.yaml'"
+
+  - id: profile-telegram
+    class: profile
+    config_path: "__WINDOWS_WORKSPACE__/hermes-agent-self-evolution/profiles/telegram/config.yaml"
+    owner: "Jonathan"
+    probe_cmd: "$c=(Get-Content -Raw -LiteralPath '__WINDOWS_WORKSPACE__\\hermes-agent-self-evolution\\profiles\\telegram\\config.yaml' -EA SilentlyContinue); [bool]$c -and ($c -match '(?m)^providers:') -and ($c -match '(?m)^mcp_servers:') -and ($c -match '(?m)^memory:') -and ($c -match '(?m)^toolsets:')"
+    cadence: "P3650D"
+    slack: "P1D"
+    secret_fields: []
+    privacy_class: slot
+    break_recipe: "dry-run: rename config.yaml out of the telegram profile source path"
+    expected_red: "PROFILE_MISSING:telegram"
+    state: active
+    install_stage: "harness"
+    verify_cmd: "wsl -- bash -lc 'test -f ~/.hermes/profiles/telegram/render-manifest.json && grep -q __PRIVATE_TOKEN_02__-control-plane ~/.hermes/profiles/telegram/config.yaml'"
+
+  - id: profile-home-__PRIVATE_TOKEN_02__-parity-enabled
+    class: profile
+    config_path: "__WINDOWS_WORKSPACE__/hermes-agent-self-evolution/profiles/home/config.yaml"
+    owner: "Jonathan"
+    probe_cmd: "[bool](Select-String -LiteralPath '__WINDOWS_WORKSPACE__\\hermes-agent-self-evolution\\profiles\\home\\config.yaml' -Pattern '__PRIVATE_TOKEN_02__-parity' -SimpleMatch -ErrorAction SilentlyContinue)"
+    cadence: "P30D"
+    slack: "P7D"
+    secret_fields: []
+    privacy_class: local-only
+    break_recipe: "dry-run: remove __PRIVATE_TOKEN_02__-parity from home profile in a sandbox copy"
+    expected_red: "PLUGIN_NOT_ENABLED:home:__PRIVATE_TOKEN_02__-parity"
+    state: active
+
+  - id: profile-home-m7-routing-policy
+    class: profile
+    config_path: "__WINDOWS_WORKSPACE__/hermes-agent-self-evolution/profiles/home/config.yaml"
+    owner: "Jonathan"
+    probe_cmd: "$c=(Get-Content -Raw -LiteralPath '__WINDOWS_WORKSPACE__\\hermes-agent-self-evolution\\profiles\\home\\config.yaml' -EA SilentlyContinue); [bool]$c -and ($c -match 'routing-policy\\.json') -and ($c -match '(?m)^  context-mode:')"
+    cadence: "P30D"
+    slack: "P7D"
+    secret_fields: []
+    privacy_class: local-only
+    break_recipe: "dry-run: remove routing policy/context-mode from home profile in a sandbox copy"
+    expected_red: "M7_ROUTING_PROFILE_MISSING:home"
+    state: active
+
+  - id: profile-telegram-__PRIVATE_TOKEN_02__-parity-enabled
+    class: profile
+    config_path: "__WINDOWS_WORKSPACE__/hermes-agent-self-evolution/profiles/telegram/config.yaml"
+    owner: "Jonathan"
+    probe_cmd: "[bool](Select-String -LiteralPath '__WINDOWS_WORKSPACE__\\hermes-agent-self-evolution\\profiles\\telegram\\config.yaml' -Pattern '__PRIVATE_TOKEN_02__-parity' -SimpleMatch -ErrorAction SilentlyContinue)"
+    cadence: "P30D"
+    slack: "P7D"
+    secret_fields: []
+    privacy_class: local-only
+    break_recipe: "dry-run: remove __PRIVATE_TOKEN_02__-parity from telegram profile in a sandbox copy"
+    expected_red: "PLUGIN_NOT_ENABLED:telegram:__PRIVATE_TOKEN_02__-parity"
+    state: active
+
+  - id: profile-telegram-m7-routing-policy
+    class: profile
+    config_path: "__WINDOWS_WORKSPACE__/hermes-agent-self-evolution/profiles/telegram/config.yaml"
+    owner: "Jonathan"
+    probe_cmd: "$c=(Get-Content -Raw -LiteralPath '__WINDOWS_WORKSPACE__\\hermes-agent-self-evolution\\profiles\\telegram\\config.yaml' -EA SilentlyContinue); [bool]$c -and ($c -match 'routing-policy\\.json') -and ($c -match '(?m)^  context-mode:')"
+    cadence: "P30D"
+    slack: "P7D"
+    secret_fields: []
+    privacy_class: local-only
+    break_recipe: "dry-run: remove routing policy/context-mode from telegram profile in a sandbox copy"
+    expected_red: "M7_ROUTING_PROFILE_MISSING:telegram"
+    state: active
+
+  - id: mcp-memoryweaver-mcp
+    class: mcp
+    config_path: "__WINDOWS_WORKSPACE__/.mcp-servers/memoryweaver-mcp"
+    owner: "Jonathan"
+    probe_cmd: "Test-Path -LiteralPath '__WINDOWS_WORKSPACE__\\.mcp-servers\\memoryweaver-mcp'"
+    cadence: "P3650D"
+    slack: "P1D"
+    secret_fields: []
+    privacy_class: local-only
+    break_recipe: "dry-run: hide memoryweaver-mcp directory"
+    expected_red: "MCP_MISSING:memoryweaver-mcp"
+    state: active
+
+  - id: mcp-context-mode
+    class: mcp
+    config_path: "__WINDOWS_WORKSPACE__/.mcp-servers/context-mode/server.py"
+    owner: "Jonathan"
+    probe_cmd: "python __WINDOWS_WORKSPACE__\\.mcp-servers\\context-mode\\server.py --health"
+    cadence: "P3650D"
+    slack: "P1D"
+    secret_fields: []
+    privacy_class: local-only
+    break_recipe: "dry-run: remove context-mode server.py from a sandbox copy"
+    expected_red: "MCP_MISSING:context-mode"
+    state: active
+
+  - id: mcp-rag-orchestrator
+    class: mcp
+    config_path: "__WINDOWS_WORKSPACE__/.mcp-servers/rag-orchestrator/server.py"
+    owner: "Jonathan"
+    probe_cmd: "Test-Path -LiteralPath '__WINDOWS_WORKSPACE__\\.mcp-servers\\rag-orchestrator\\server.py'"
+    cadence: "P3650D"
+    slack: "P1D"
+    secret_fields: []
+    privacy_class: slot
+    break_recipe: "dry-run: remove rag-orchestrator server.py from a sandbox copy"
+    expected_red: "MCP_MISSING:rag-orchestrator"
+    state: active
+
+  - id: mcp-wordpress
+    class: mcp
+    config_path: "__WINDOWS_WORKSPACE__/.mcp-servers/wordpress/server.py"
+    owner: "Jonathan"
+    probe_cmd: "Test-Path -LiteralPath '__WINDOWS_WORKSPACE__\\.mcp-servers\\wordpress\\server.py'"
+    cadence: "P3650D"
+    slack: "P1D"
+    secret_fields: []
+    privacy_class: slot
+    break_recipe: "dry-run: remove wordpress server.py from a sandbox copy"
+    expected_red: "MCP_MISSING:wordpress"
+    state: active
+
+  - id: mcp-orchestration-contracts
+    class: mcp
+    config_path: "__WINDOWS_WORKSPACE__/.mcp-servers/orchestration-contracts/run-contract-checks.ps1"
+    owner: "Jonathan"
+    probe_cmd: "Test-Path -LiteralPath '__WINDOWS_WORKSPACE__\\.mcp-servers\\orchestration-contracts\\run-contract-checks.ps1'"
+    cadence: "P3650D"
+    slack: "P1D"
+    secret_fields: []
+    privacy_class: local-only
+    break_recipe: "dry-run: remove contract checker from a sandbox copy"
+    expected_red: "MCP_MISSING:orchestration-contracts"
+    state: active
+
+  - id: mcp-remediation
+    class: mcp
+    config_path: "__WINDOWS_WORKSPACE__/.mcp-servers/remediation"
+    owner: "Jonathan"
+    probe_cmd: "Test-Path -LiteralPath '__WINDOWS_WORKSPACE__\\.mcp-servers\\remediation'"
+    cadence: "P3650D"
+    slack: "P1D"
+    secret_fields: []
+    privacy_class: local-only
+    break_recipe: "dry-run: hide remediation directory"
+    expected_red: "MCP_MISSING:remediation"
+    state: active
+
+  - id: mcp-codex-autoresearch
+    class: mcp
+    config_path: "__WINDOWS_WORKSPACE__/.codex/mcp-servers/autoresearch/server.py"
+    owner: "Jonathan"
+    probe_cmd: "Test-Path -LiteralPath '__WINDOWS_WORKSPACE__\\.codex\\mcp-servers\\autoresearch\\server.py'"
+    cadence: "P3650D"
+    slack: "P1D"
+    secret_fields: []
+    privacy_class: local-only
+    break_recipe: "dry-run: remove autoresearch server.py from a sandbox copy"
+    expected_red: "MCP_MISSING:codex-autoresearch"
+    state: active
+
+  - id: mcp-codex-comfy-video-orchestrator
+    class: mcp
+    config_path: "__WINDOWS_WORKSPACE__/.codex/mcp-servers/comfy-video-orchestrator/server.py"
+    owner: "Jonathan"
+    probe_cmd: "Test-Path -LiteralPath '__WINDOWS_WORKSPACE__\\.codex\\mcp-servers\\comfy-video-orchestrator\\server.py'"
+    cadence: "P3650D"
+    slack: "P1D"
+    secret_fields: []
+    privacy_class: local-only
+    break_recipe: "dry-run: remove comfy-video-orchestrator server.py from a sandbox copy"
+    expected_red: "MCP_MISSING:codex-comfy-video-orchestrator"
+    state: active
+
+  - id: mcp-codex-__PRIVATE_TOKEN_02__-control-plane
+    class: mcp
+    config_path: "__WINDOWS_WORKSPACE__/.codex/mcp-servers/__PRIVATE_TOKEN_02__-control-plane/server.py"
+    owner: "Jonathan"
+    probe_cmd: "Test-Path -LiteralPath '__WINDOWS_WORKSPACE__\\.codex\\mcp-servers\\__PRIVATE_TOKEN_02__-control-plane\\server.py'"
+    cadence: "P3650D"
+    slack: "P1D"
+    secret_fields: []
+    privacy_class: slot
+    break_recipe: "dry-run: remove __PRIVATE_TOKEN_02__-control-plane server.py from a sandbox copy"
+    expected_red: "MCP_MISSING:codex-__PRIVATE_TOKEN_02__-control-plane"
+    state: active
+
+  - id: mcp-codex-rag-suite
+    class: mcp
+    config_path: "__WINDOWS_WORKSPACE__/.codex/mcp-servers/rag-suite"
+    owner: "Jonathan"
+    probe_cmd: "Test-Path -LiteralPath '__WINDOWS_WORKSPACE__\\.codex\\mcp-servers\\rag-suite'"
+    cadence: "P3650D"
+    slack: "P1D"
+    secret_fields: []
+    privacy_class: local-only
+    break_recipe: "dry-run: hide rag-suite directory"
+    expected_red: "MCP_MISSING:codex-rag-suite"
+    state: active
+
+  - id: mcp-codex-win-runtime
+    class: mcp
+    config_path: "__WINDOWS_WORKSPACE__/.codex/mcp-servers/codex-win-runtime"
+    owner: "Jonathan"
+    probe_cmd: "Test-Path -LiteralPath '__WINDOWS_WORKSPACE__\\.codex\\mcp-servers\\codex-win-runtime'"
+    cadence: "P3650D"
+    slack: "P1D"
+    secret_fields: []
+    privacy_class: local-only
+    break_recipe: "dry-run: hide codex-win-runtime directory"
+    expected_red: "MCP_MISSING:codex-win-runtime"
+    state: active
+
+  - id: memory-digest-beacon
+    class: memory
+    config_path: "__WINDOWS_WORKSPACE__/.claude/Memory/memoryweaver/freshness-beacon.json"
+    owner: "Jonathan"
+    probe_cmd: "$b=(Get-Content -Raw -LiteralPath '__WINDOWS_WORKSPACE__\\.claude\\Memory\\memoryweaver\\freshness-beacon.json' -EA SilentlyContinue | ConvertFrom-Json); [bool]$b -and ($b.last_success -eq $true)"
+    cadence: "P1D"
+    slack: "P2D"
+    secret_fields: []
+    privacy_class: local-only
+    break_recipe: "dry-run: set freshness beacon timestamp to now minus 48 hours"
+    expected_red: "MEMORY DIGEST STALE"
+    state: active
+
+  - id: memory-recent-digest
+    class: memory
+    config_path: "__WINDOWS_WORKSPACE__/.claude/Memory/memoryweaver/recent-digest.json"
+    owner: "Jonathan"
+    probe_cmd: "Test-Path -LiteralPath '__WINDOWS_WORKSPACE__\\.claude\\Memory\\memoryweaver\\recent-digest.json'"
+    cadence: "P1D"
+    slack: "P2D"
+    secret_fields: []
+    privacy_class: local-only
+    break_recipe: "dry-run: hide recent-digest.json from a sandbox copy"
+    expected_red: "MEMORY_DIGEST_MISSING"
+    state: active
+
+  - id: memory-spool
+    class: memory
+    config_path: "__WINDOWS_WORKSPACE__/.claude/Memory/memoryweaver/spool"
+    owner: "Jonathan"
+    probe_cmd: "Test-Path -LiteralPath '__WINDOWS_WORKSPACE__\\.claude\\Memory\\memoryweaver\\spool'"
+    cadence: "P3650D"
+    slack: "P1D"
+    secret_fields: []
+    privacy_class: local-only
+    break_recipe: "dry-run: hide memoryweaver spool directory"
+    expected_red: "MEMORY_SPOOL_MISSING"
+    state: active
+
+  - id: eval-golden-runner
+    class: eval
+    config_path: "__WINDOWS_WORKSPACE__/.planning/hermes-master-plan/eval/eval-run.ps1"
+    owner: "Jonathan"
+    probe_cmd: "Test-Path -LiteralPath '__WINDOWS_WORKSPACE__\\.planning\\hermes-master-plan\\eval\\eval-run.ps1'"
+    cadence: "P30D"
+    slack: "P7D"
+    secret_fields: []
+    privacy_class: local-only
+    break_recipe: "dry-run: corrupt runner path in a sandbox copy"
+    expected_red: "EVAL_RUNNER_MISSING"
+    state: active
+
+  - id: eval-baseline
+    class: eval
+    config_path: "__WINDOWS_WORKSPACE__/.planning/hermes-master-plan/eval/baseline.json"
+    owner: "Jonathan"
+    probe_cmd: "$j=(Get-Content -Raw -LiteralPath '__WINDOWS_WORKSPACE__\\.planning\\hermes-master-plan\\eval\\baseline.json' -EA SilentlyContinue | ConvertFrom-Json); [bool]$j -and [bool]$j.class_means"
+    cadence: "P30D"
+    slack: "P7D"
+    secret_fields: []
+    privacy_class: local-only
+    break_recipe: "dry-run: hide baseline.json from a sandbox copy"
+    expected_red: "EVAL_BASELINE_MISSING"
+    state: active
+
+  - id: eval-fixtures
+    class: eval
+    config_path: "__WINDOWS_WORKSPACE__/.planning/hermes-master-plan/eval/fixtures.lock"
+    owner: "Jonathan"
+    probe_cmd: "$L='__WINDOWS_WORKSPACE__\\.planning\\hermes-master-plan\\eval\\fixtures.lock'; $d=Split-Path $L; $ok=(Test-Path -LiteralPath $L); if($ok){ foreach($ln in (Get-Content -LiteralPath $L)){ if($ln -match '^\\s*#' -or $ln -notmatch '\\S'){continue}; $p=($ln -split '\\s+',2); $f=Join-Path $d $p[0]; if(-not(Test-Path -LiteralPath $f) -or (Get-FileHash -LiteralPath $f -Algorithm SHA256).Hash -ne $p[1].Trim()){$ok=$false;break} } }; $ok"
+    cadence: "P30D"
+    slack: "P7D"
+    secret_fields: []
+    privacy_class: local-only
+    break_recipe: "dry-run: change fixture hash in a sandbox copy"
+    expected_red: "EVAL_FIXTURE_HASH_DRIFT"
+    state: active
+
+  - id: doc-orchestration-layer
+    class: doc
+    config_path: "__WINDOWS_WORKSPACE__/ORCHESTRATION-LAYER.md"
+    owner: "Jonathan"
+    probe_cmd: "Test-Path -LiteralPath '__WINDOWS_WORKSPACE__\\ORCHESTRATION-LAYER.md'"
+    cadence: "P3650D"
+    slack: "P1D"
+    secret_fields: []
+    privacy_class: shareable
+    export_target_path: "docs/ORCHESTRATION-LAYER.md"
+    freshness_after:
+      - "__WINDOWS_WORKSPACE__/SURFACE-GRAPH.yaml"
+    break_recipe: "dry-run: touch SURFACE-GRAPH.yaml newer than ORCHESTRATION-LAYER.md in a sandbox"
+    expected_red: "DOC_STALE:doc-orchestration-layer"
+    state: active
+
+  - id: doc-connector
+    class: doc
+    config_path: "__WINDOWS_WORKSPACE__/.mcp-servers/CONNECTOR.md"
+    owner: "Jonathan"
+    probe_cmd: "Test-Path -LiteralPath '__WINDOWS_WORKSPACE__\\.mcp-servers\\CONNECTOR.md'"
+    cadence: "P3650D"
+    slack: "P1D"
+    secret_fields: []
+    privacy_class: shareable
+    export_target_path: "docs/CONNECTOR.md"
+    freshness_after:
+      - "__WINDOWS_WORKSPACE__/.mcp-servers/audit-orchestration.ps1"
+      - "__WINDOWS_WORKSPACE__/SURFACE-GRAPH.yaml"
+    break_recipe: "dry-run: touch MCP server config newer than CONNECTOR.md in a sandbox"
+    expected_red: "DOC_STALE:doc-connector"
+    state: active
+
+  - id: doc-hermes-parity
+    class: doc
+    config_path: "__WINDOWS_WORKSPACE__/.claude/HERMES-PARITY-TROUBLESHOOTING.md"
+    owner: "Jonathan"
+    probe_cmd: "Test-Path -LiteralPath '__WINDOWS_WORKSPACE__\\.claude\\HERMES-PARITY-TROUBLESHOOTING.md'"
+    cadence: "P3650D"
+    slack: "P1D"
+    secret_fields: []
+    privacy_class: local-only
+    freshness_after:
+      - "__WINDOWS_WORKSPACE__/hermes-agent-self-evolution/profiles/home/config.yaml"
+      - "__WINDOWS_WORKSPACE__/hermes-agent-self-evolution/profiles/telegram/config.yaml"
+    break_recipe: "dry-run: touch Hermes profile source newer than parity doc in a sandbox"
+    expected_red: "DOC_STALE:doc-hermes-parity"
+    state: active
+
+  - id: doc-master-plan
+    class: doc
+    config_path: "__WINDOWS_WORKSPACE__/.planning/hermes-master-plan/PLAN.md"
+    owner: "Jonathan"
+    probe_cmd: "Test-Path -LiteralPath '__WINDOWS_WORKSPACE__\\.planning\\hermes-master-plan\\PLAN.md'"
+    cadence: "P3650D"
+    slack: "P1D"
+    secret_fields: []
+    privacy_class: local-only
+    break_recipe: "dry-run: hide PLAN.md from a sandbox copy"
+    expected_red: "DOC_MISSING:doc-master-plan"
+    state: active
+
+  - id: artifact-m0-evidence
+    class: doc
+    config_path: "__WINDOWS_WORKSPACE__/.planning/hermes-master-plan/evidence/m0-gate-20260705-033407.json"
+    owner: "Jonathan"
+    probe_cmd: "Test-Path -LiteralPath '__WINDOWS_WORKSPACE__\\.planning\\hermes-master-plan\\evidence\\m0-gate-20260705-033407.json'"
+    cadence: "P3650D"
+    slack: "P1D"
+    secret_fields: []
+    privacy_class: local-only
+    break_recipe: "dry-run: hide M0 evidence from a sandbox copy"
+    expected_red: "ARTIFACT_MISSING:m0"
+    state: active
+
+  - id: artifact-m2-evidence
+    class: doc
+    config_path: "__WINDOWS_WORKSPACE__/.planning/hermes-master-plan/evidence/m2-green-20260705-131251.json"
+    owner: "Jonathan"
+    probe_cmd: "Test-Path -LiteralPath '__WINDOWS_WORKSPACE__\\.planning\\hermes-master-plan\\evidence\\m2-green-20260705-131251.json'"
+    cadence: "P3650D"
+    slack: "P1D"
+    secret_fields: []
+    privacy_class: local-only
+    break_recipe: "dry-run: hide M2 evidence from a sandbox copy"
+    expected_red: "ARTIFACT_MISSING:m2"
+    state: active
+
+  - id: artifact-m3-evidence
+    class: doc
+    config_path: "__WINDOWS_WORKSPACE__/.planning/hermes-master-plan/evidence/m3-green-20260705-142404.json"
+    owner: "Jonathan"
+    probe_cmd: "Test-Path -LiteralPath '__WINDOWS_WORKSPACE__\\.planning\\hermes-master-plan\\evidence\\m3-green-20260705-142404.json'"
+    cadence: "P3650D"
+    slack: "P1D"
+    secret_fields: []
+    privacy_class: local-only
+    break_recipe: "dry-run: hide M3 evidence from a sandbox copy"
+    expected_red: "ARTIFACT_MISSING:m3"
+    state: active
+
+  - id: plugin-__PRIVATE_TOKEN_02__-parity-source
+    class: doc
+    config_path: "__WINDOWS_WORKSPACE__/hermes-custom-plugins/__PRIVATE_TOKEN_02__-parity/plugin.yaml"
+    owner: "Jonathan"
+    probe_cmd: "$y=(Get-Content -Raw -LiteralPath '__WINDOWS_WORKSPACE__\\hermes-custom-plugins\\__PRIVATE_TOKEN_02__-parity\\plugin.yaml' -EA SilentlyContinue); $i=(Get-Content -Raw -LiteralPath '__WINDOWS_WORKSPACE__\\hermes-custom-plugins\\__PRIVATE_TOKEN_02__-parity\\__init__.py' -EA SilentlyContinue); [bool]$y -and [bool]$i -and (@('pre_llm_call','on_session_end','on_session_finalize','kanban_task_completed') | Where-Object { ($y -match $_) -and ($i -match ('def ' + $_)) }).Count -eq 4"
+    cadence: "P30D"
+    slack: "P7D"
+    secret_fields: []
+    privacy_class: local-only
+    break_recipe: "dry-run: hide __PRIVATE_TOKEN_02__-parity plugin.yaml from a sandbox copy"
+    expected_red: "PLUGIN_MISSING:__PRIVATE_TOKEN_02__-parity"
+    state: active
+
+  - id: kit-rebuild
+    class: kit-component
+    config_path: "__WINDOWS_WORKSPACE__/export/rebuild-kit.sh"
+    owner: "Jonathan"
+    probe_cmd: "Test-Path -LiteralPath '__WINDOWS_WORKSPACE__\\export\\rebuild-kit.sh'"
+    cadence: "P3650D"
+    slack: "P1D"
+    secret_fields: []
+    privacy_class: local-only
+    break_recipe: "dry-run: hide rebuild-kit.sh from a sandbox copy"
+    expected_red: "KIT_COMPONENT_MISSING:rebuild"
+    state: active
+    install_stage: "kit"
+
+  - id: kit-sync-shareable
+    class: kit-component
+    config_path: "__WINDOWS_WORKSPACE__/export/orchestration-layer/sync-shareable.sh"
+    owner: "Jonathan"
+    probe_cmd: "Test-Path -LiteralPath '__WINDOWS_WORKSPACE__\\export\\orchestration-layer\\sync-shareable.sh'"
+    cadence: "P3650D"
+    slack: "P1D"
+    secret_fields: []
+    privacy_class: local-only
+    break_recipe: "dry-run: plant denylisted token in a sandbox shareable file"
+    expected_red: "PRIVACY_LEAK"
+    state: active
+    install_stage: "kit"
+
+  - id: kit-private-denylist
+    class: kit-component
+    config_path: "__WINDOWS_WORKSPACE__/export/orchestration-layer/.private-denylist"
+    owner: "Jonathan"
+    probe_cmd: "Test-Path -LiteralPath '__WINDOWS_WORKSPACE__\\export\\orchestration-layer\\.private-denylist'"
+    cadence: "P3650D"
+    slack: "P1D"
+    secret_fields: []
+    privacy_class: local-only
+    break_recipe: "dry-run: remove private denylist from a sandbox copy"
+    expected_red: "KIT_COMPONENT_MISSING:private-denylist"
+    state: active
+    install_stage: "kit"
+
+  - id: kit-readme
+    class: kit-component
+    config_path: "__WINDOWS_WORKSPACE__/export/orchestration-layer/README.md"
+    owner: "Jonathan"
+    probe_cmd: "Test-Path -LiteralPath '__WINDOWS_WORKSPACE__\\export\\orchestration-layer\\README.md'"
+    cadence: "P3650D"
+    slack: "P1D"
+    secret_fields: []
+    privacy_class: shareable
+    break_recipe: "dry-run: hide kit README from a sandbox copy"
+    expected_red: "KIT_COMPONENT_MISSING:readme"
+    state: active
+    install_stage: "kit"
+
+  - id: kit-m10-generator
+    class: kit-component
+    config_path: "__WINDOWS_WORKSPACE__/export/orchestration-layer/tools/m10-generate-from-surface-graph.ps1"
+    owner: "Jonathan"
+    probe_cmd: "Test-Path -LiteralPath '__WINDOWS_WORKSPACE__\\export\\orchestration-layer\\tools\\m10-generate-from-surface-graph.ps1'"
+    cadence: "P3650D"
+    slack: "P1D"
+    secret_fields: []
+    privacy_class: shareable
+    break_recipe: "dry-run: remove m10 generator from a sandbox copy"
+    expected_red: "KIT_COMPONENT_MISSING:m10-generator"
+    state: active
+    install_stage: "kit"
+
+  - id: kit-m10-scrub-v2
+    class: kit-component
+    config_path: "__WINDOWS_WORKSPACE__/export/orchestration-layer/tools/m10-scrub-v2.ps1"
+    owner: "Jonathan"
+    probe_cmd: "Test-Path -LiteralPath '__WINDOWS_WORKSPACE__\\export\\orchestration-layer\\tools\\m10-scrub-v2.ps1'"
+    cadence: "P3650D"
+    slack: "P1D"
+    secret_fields: []
+    privacy_class: shareable
+    break_recipe: "dry-run: plant unapproved identity token in generated shareable artifact"
+    expected_red: "PRIVACY_LEAK"
+    state: active
+    install_stage: "kit"
+
+  - id: kit-m10-manifest-validator
+    class: kit-component
+    config_path: "__WINDOWS_WORKSPACE__/export/orchestration-layer/tools/m10-validate-manifest.ps1"
+    owner: "Jonathan"
+    probe_cmd: "Test-Path -LiteralPath '__WINDOWS_WORKSPACE__\\export\\orchestration-layer\\tools\\m10-validate-manifest.ps1'"
+    cadence: "P3650D"
+    slack: "P1D"
+    secret_fields: []
+    privacy_class: shareable
+    break_recipe: "dry-run: remove m10 manifest validator from a sandbox copy"
+    expected_red: "KIT_COMPONENT_MISSING:m10-validator"
+    state: active
+    install_stage: "kit"
+
+  # agentic-patterns kit modules (added 2026-07-31): guards / reasoning-shapes /
+  # recipe-miner distilled from the v1 milestone into the shareable kit.
+  - id: kit-mod-readme
+    class: kit-component
+    config_path: "__WINDOWS_WORKSPACE__/export/orchestration-layer/modules/README.md"
+    owner: "Jonathan"
+    probe_cmd: "Test-Path -LiteralPath '__WINDOWS_WORKSPACE__\\export\\orchestration-layer\\modules\\README.md'"
+    cadence: "P3650D"
+    slack: "P1D"
+    secret_fields: []
+    privacy_class: shareable
+    break_recipe: "dry-run: hide kit-mod-readme from a sandbox copy"
+    expected_red: "KIT_COMPONENT_MISSING:kit-mod-readme"
+    state: active
+    install_stage: "kit"
+  - id: kit-mod-guards-policy
+    class: kit-component
+    config_path: "__WINDOWS_WORKSPACE__/export/orchestration-layer/modules/guards/destructive-patterns.json"
+    owner: "Jonathan"
+    probe_cmd: "Test-Path -LiteralPath '__WINDOWS_WORKSPACE__\\export\\orchestration-layer\\modules\\guards\\destructive-patterns.json'"
+    cadence: "P3650D"
+    slack: "P1D"
+    secret_fields: []
+    privacy_class: shareable
+    break_recipe: "dry-run: hide kit-mod-guards-policy from a sandbox copy"
+    expected_red: "KIT_COMPONENT_MISSING:kit-mod-guards-policy"
+    state: active
+    install_stage: "kit"
+  - id: kit-mod-guards-gate
+    class: kit-component
+    config_path: "__WINDOWS_WORKSPACE__/export/orchestration-layer/modules/guards/dry-run-gate.py"
+    owner: "Jonathan"
+    probe_cmd: "Test-Path -LiteralPath '__WINDOWS_WORKSPACE__\\export\\orchestration-layer\\modules\\guards\\dry-run-gate.py'"
+    cadence: "P3650D"
+    slack: "P1D"
+    secret_fields: []
+    privacy_class: shareable
+    break_recipe: "dry-run: hide kit-mod-guards-gate from a sandbox copy"
+    expected_red: "KIT_COMPONENT_MISSING:kit-mod-guards-gate"
+    state: active
+    install_stage: "kit"
+  - id: kit-mod-guards-test
+    class: kit-component
+    config_path: "__WINDOWS_WORKSPACE__/export/orchestration-layer/modules/guards/test-dry-run-gate.py"
+    owner: "Jonathan"
+    probe_cmd: "Test-Path -LiteralPath '__WINDOWS_WORKSPACE__\\export\\orchestration-layer\\modules\\guards\\test-dry-run-gate.py'"
+    cadence: "P3650D"
+    slack: "P1D"
+    secret_fields: []
+    privacy_class: shareable
+    break_recipe: "dry-run: hide kit-mod-guards-test from a sandbox copy"
+    expected_red: "KIT_COMPONENT_MISSING:kit-mod-guards-test"
+    state: active
+    install_stage: "kit"
+  - id: kit-mod-shape-selfconsistency
+    class: kit-component
+    config_path: "__WINDOWS_WORKSPACE__/export/orchestration-layer/modules/reasoning-shapes/self-consistency-method.SKILL.md"
+    owner: "Jonathan"
+    probe_cmd: "Test-Path -LiteralPath '__WINDOWS_WORKSPACE__\\export\\orchestration-layer\\modules\\reasoning-shapes\\self-consistency-method.SKILL.md'"
+    cadence: "P3650D"
+    slack: "P1D"
+    secret_fields: []
+    privacy_class: shareable
+    break_recipe: "dry-run: hide kit-mod-shape-selfconsistency from a sandbox copy"
+    expected_red: "KIT_COMPONENT_MISSING:kit-mod-shape-selfconsistency"
+    state: active
+    install_stage: "kit"
+  - id: kit-mod-shape-ensemble
+    class: kit-component
+    config_path: "__WINDOWS_WORKSPACE__/export/orchestration-layer/modules/reasoning-shapes/ensemble-method.SKILL.md"
+    owner: "Jonathan"
+    probe_cmd: "Test-Path -LiteralPath '__WINDOWS_WORKSPACE__\\export\\orchestration-layer\\modules\\reasoning-shapes\\ensemble-method.SKILL.md'"
+    cadence: "P3650D"
+    slack: "P1D"
+    secret_fields: []
+    privacy_class: shareable
+    break_recipe: "dry-run: hide kit-mod-shape-ensemble from a sandbox copy"
+    expected_red: "KIT_COMPONENT_MISSING:kit-mod-shape-ensemble"
+    state: active
+    install_stage: "kit"
+  - id: kit-mod-shape-tot
+    class: kit-component
+    config_path: "__WINDOWS_WORKSPACE__/export/orchestration-layer/modules/reasoning-shapes/tree-of-thoughts-method.SKILL.md"
+    owner: "Jonathan"
+    probe_cmd: "Test-Path -LiteralPath '__WINDOWS_WORKSPACE__\\export\\orchestration-layer\\modules\\reasoning-shapes\\tree-of-thoughts-method.SKILL.md'"
+    cadence: "P3650D"
+    slack: "P1D"
+    secret_fields: []
+    privacy_class: shareable
+    break_recipe: "dry-run: hide kit-mod-shape-tot from a sandbox copy"
+    expected_red: "KIT_COMPONENT_MISSING:kit-mod-shape-tot"
+    state: active
+    install_stage: "kit"
+  - id: kit-mod-shape-lats
+    class: kit-component
+    config_path: "__WINDOWS_WORKSPACE__/export/orchestration-layer/modules/reasoning-shapes/lats-method.SKILL.md"
+    owner: "Jonathan"
+    probe_cmd: "Test-Path -LiteralPath '__WINDOWS_WORKSPACE__\\export\\orchestration-layer\\modules\\reasoning-shapes\\lats-method.SKILL.md'"
+    cadence: "P3650D"
+    slack: "P1D"
+    secret_fields: []
+    privacy_class: shareable
+    break_recipe: "dry-run: hide kit-mod-shape-lats from a sandbox copy"
+    expected_red: "KIT_COMPONENT_MISSING:kit-mod-shape-lats"
+    state: active
+    install_stage: "kit"
+  - id: kit-mod-recipe-miner
+    class: kit-component
+    config_path: "__WINDOWS_WORKSPACE__/export/orchestration-layer/modules/recipe-miner/recipe-miner.py"
+    owner: "Jonathan"
+    probe_cmd: "Test-Path -LiteralPath '__WINDOWS_WORKSPACE__\\export\\orchestration-layer\\modules\\recipe-miner\\recipe-miner.py'"
+    cadence: "P3650D"
+    slack: "P1D"
+    secret_fields: []
+    privacy_class: shareable
+    break_recipe: "dry-run: hide kit-mod-recipe-miner from a sandbox copy"
+    expected_red: "KIT_COMPONENT_MISSING:kit-mod-recipe-miner"
+    state: active
+    install_stage: "kit"
+
+  # per-directory user-facing READMEs (added 2026-07-31: plain-language
+  # part descriptions + part-by-part install paths, user-directed)
+  - id: kit-readme-guards
+    class: kit-component
+    config_path: "__WINDOWS_WORKSPACE__/export/orchestration-layer/modules/guards/README.md"
+    owner: "Jonathan"
+    probe_cmd: "Test-Path -LiteralPath '__WINDOWS_WORKSPACE__\\export\\orchestration-layer\\modules\\guards\\README.md'"
+    cadence: "P3650D"
+    slack: "P1D"
+    secret_fields: []
+    privacy_class: shareable
+    break_recipe: "dry-run: hide kit-readme-guards from a sandbox copy"
+    expected_red: "KIT_COMPONENT_MISSING:kit-readme-guards"
+    state: active
+    install_stage: "kit"
+  - id: kit-readme-shapes
+    class: kit-component
+    config_path: "__WINDOWS_WORKSPACE__/export/orchestration-layer/modules/reasoning-shapes/README.md"
+    owner: "Jonathan"
+    probe_cmd: "Test-Path -LiteralPath '__WINDOWS_WORKSPACE__\\export\\orchestration-layer\\modules\\reasoning-shapes\\README.md'"
+    cadence: "P3650D"
+    slack: "P1D"
+    secret_fields: []
+    privacy_class: shareable
+    break_recipe: "dry-run: hide kit-readme-shapes from a sandbox copy"
+    expected_red: "KIT_COMPONENT_MISSING:kit-readme-shapes"
+    state: active
+    install_stage: "kit"
+  - id: kit-readme-messaging
+    class: kit-component
+    config_path: "__WINDOWS_WORKSPACE__/export/orchestration-layer/modules/messaging/README.md"
+    owner: "Jonathan"
+    probe_cmd: "Test-Path -LiteralPath '__WINDOWS_WORKSPACE__\\export\\orchestration-layer\\modules\\messaging\\README.md'"
+    cadence: "P3650D"
+    slack: "P1D"
+    secret_fields: []
+    privacy_class: shareable
+    break_recipe: "dry-run: hide kit-readme-messaging from a sandbox copy"
+    expected_red: "KIT_COMPONENT_MISSING:kit-readme-messaging"
+    state: active
+    install_stage: "kit"
+  - id: kit-readme-miner
+    class: kit-component
+    config_path: "__WINDOWS_WORKSPACE__/export/orchestration-layer/modules/recipe-miner/README.md"
+    owner: "Jonathan"
+    probe_cmd: "Test-Path -LiteralPath '__WINDOWS_WORKSPACE__\\export\\orchestration-layer\\modules\\recipe-miner\\README.md'"
+    cadence: "P3650D"
+    slack: "P1D"
+    secret_fields: []
+    privacy_class: shareable
+    break_recipe: "dry-run: hide kit-readme-miner from a sandbox copy"
+    expected_red: "KIT_COMPONENT_MISSING:kit-readme-miner"
+    state: active
+    install_stage: "kit"
+  - id: kit-readme-system
+    class: kit-component
+    config_path: "__WINDOWS_WORKSPACE__/export/orchestration-layer/system/README.md"
+    owner: "Jonathan"
+    probe_cmd: "Test-Path -LiteralPath '__WINDOWS_WORKSPACE__\\export\\orchestration-layer\\system\\README.md'"
+    cadence: "P3650D"
+    slack: "P1D"
+    secret_fields: []
+    privacy_class: shareable
+    break_recipe: "dry-run: hide kit-readme-system from a sandbox copy"
+    expected_red: "KIT_COMPONENT_MISSING:kit-readme-system"
+    state: active
+    install_stage: "kit"
+  - id: kit-readme-docs
+    class: kit-component
+    config_path: "__WINDOWS_WORKSPACE__/export/orchestration-layer/docs/README.md"
+    owner: "Jonathan"
+    probe_cmd: "Test-Path -LiteralPath '__WINDOWS_WORKSPACE__\\export\\orchestration-layer\\docs\\README.md'"
+    cadence: "P3650D"
+    slack: "P1D"
+    secret_fields: []
+    privacy_class: shareable
+    break_recipe: "dry-run: hide kit-readme-docs from a sandbox copy"
+    expected_red: "KIT_COMPONENT_MISSING:kit-readme-docs"
+    state: active
+    install_stage: "kit"
+  - id: kit-readme-installer
+    class: kit-component
+    config_path: "__WINDOWS_WORKSPACE__/export/orchestration-layer/installer/README.md"
+    owner: "Jonathan"
+    probe_cmd: "Test-Path -LiteralPath '__WINDOWS_WORKSPACE__\\export\\orchestration-layer\\installer\\README.md'"
+    cadence: "P3650D"
+    slack: "P1D"
+    secret_fields: []
+    privacy_class: shareable
+    break_recipe: "dry-run: hide kit-readme-installer from a sandbox copy"
+    expected_red: "KIT_COMPONENT_MISSING:kit-readme-installer"
+    state: active
+    install_stage: "kit"
+  - id: kit-readme-n8n
+    class: kit-component
+    config_path: "__WINDOWS_WORKSPACE__/export/orchestration-layer/n8n-integration/README.md"
+    owner: "Jonathan"
+    probe_cmd: "Test-Path -LiteralPath '__WINDOWS_WORKSPACE__\\export\\orchestration-layer\\n8n-integration\\README.md'"
+    cadence: "P3650D"
+    slack: "P1D"
+    secret_fields: []
+    privacy_class: shareable
+    break_recipe: "dry-run: hide kit-readme-n8n from a sandbox copy"
+    expected_red: "KIT_COMPONENT_MISSING:kit-readme-n8n"
+    state: active
+    install_stage: "kit"
+  - id: kit-readme-tools
+    class: kit-component
+    config_path: "__WINDOWS_WORKSPACE__/export/orchestration-layer/tools/README.md"
+    owner: "Jonathan"
+    probe_cmd: "Test-Path -LiteralPath '__WINDOWS_WORKSPACE__\\export\\orchestration-layer\\tools\\README.md'"
+    cadence: "P3650D"
+    slack: "P1D"
+    secret_fields: []
+    privacy_class: shareable
+    break_recipe: "dry-run: hide kit-readme-tools from a sandbox copy"
+    expected_red: "KIT_COMPONENT_MISSING:kit-readme-tools"
+    state: active
+    install_stage: "kit"
+
+  # writing-standard module (added 2026-08-01: STE-derived anti-slop
+  # skill + deterministic slop-lint checker, agentic-patterns phase 6)
+  - id: kit-mod-writing-readme
+    class: kit-component
+    config_path: "__WINDOWS_WORKSPACE__/export/orchestration-layer/modules/writing-standard/README.md"
+    owner: "Jonathan"
+    probe_cmd: "Test-Path -LiteralPath '__WINDOWS_WORKSPACE__\\export\\orchestration-layer\\modules\\writing-standard\\README.md'"
+    cadence: "P3650D"
+    slack: "P1D"
+    secret_fields: []
+    privacy_class: shareable
+    break_recipe: "dry-run: hide kit-mod-writing-readme from a sandbox copy"
+    expected_red: "KIT_COMPONENT_MISSING:kit-mod-writing-readme"
+    state: active
+    install_stage: "kit"
+  - id: kit-mod-writing-skill
+    class: kit-component
+    config_path: "__WINDOWS_WORKSPACE__/export/orchestration-layer/modules/writing-standard/writing-standard.SKILL.md"
+    owner: "Jonathan"
+    probe_cmd: "Test-Path -LiteralPath '__WINDOWS_WORKSPACE__\\export\\orchestration-layer\\modules\\writing-standard\\writing-standard.SKILL.md'"
+    cadence: "P3650D"
+    slack: "P1D"
+    secret_fields: []
+    privacy_class: shareable
+    break_recipe: "dry-run: hide kit-mod-writing-skill from a sandbox copy"
+    expected_red: "KIT_COMPONENT_MISSING:kit-mod-writing-skill"
+    state: active
+    install_stage: "kit"
+  - id: kit-mod-writing-linter
+    class: kit-component
+    config_path: "__WINDOWS_WORKSPACE__/export/orchestration-layer/modules/writing-standard/slop-lint.py"
+    owner: "Jonathan"
+    probe_cmd: "Test-Path -LiteralPath '__WINDOWS_WORKSPACE__\\export\\orchestration-layer\\modules\\writing-standard\\slop-lint.py'"
+    cadence: "P3650D"
+    slack: "P1D"
+    secret_fields: []
+    privacy_class: shareable
+    break_recipe: "dry-run: hide kit-mod-writing-linter from a sandbox copy"
+    expected_red: "KIT_COMPONENT_MISSING:kit-mod-writing-linter"
+    state: active
+    install_stage: "kit"
+
+  # Patched public ecosystem release: portable contracts and disabled-by-default
+  # setup helpers. These omit local runtime paths, secrets, and providers.
+  - id: kit-mod-prime-omp-readme
+    class: kit-component
+    config_path: "__WINDOWS_WORKSPACE__/export/orchestration-layer/modules/prime-omp/README.md"
+    owner: "Jonathan"
+    probe_cmd: "Test-Path -LiteralPath '__WINDOWS_WORKSPACE__\\export\\orchestration-layer\\modules\\prime-omp\\README.md'"
+    cadence: "P3650D"
+    slack: "P1D"
+    secret_fields: []
+    privacy_class: shareable
+    break_recipe: "dry-run: hide prime-omp README from a sandbox copy"
+    expected_red: "KIT_COMPONENT_MISSING:kit-mod-prime-omp-readme"
+    state: active
+    install_stage: "kit"
+  - id: kit-mod-prime-omp-contract
+    class: kit-component
+    config_path: "__WINDOWS_WORKSPACE__/export/orchestration-layer/modules/prime-omp/prime-omp-contract.json"
+    owner: "Jonathan"
+    probe_cmd: "Test-Path -LiteralPath '__WINDOWS_WORKSPACE__\\export\\orchestration-layer\\modules\\prime-omp\\prime-omp-contract.json'"
+    cadence: "P3650D"
+    slack: "P1D"
+    secret_fields: []
+    privacy_class: shareable
+    break_recipe: "dry-run: hide prime-omp contract from a sandbox copy"
+    expected_red: "KIT_COMPONENT_MISSING:kit-mod-prime-omp-contract"
+    state: active
+    install_stage: "kit"
+  - id: kit-mod-prime-omp-verifier
+    class: kit-component
+    config_path: "__WINDOWS_WORKSPACE__/export/orchestration-layer/modules/prime-omp/verify-prime-omp-contract.py"
+    owner: "Jonathan"
+    probe_cmd: "Test-Path -LiteralPath '__WINDOWS_WORKSPACE__\\export\\orchestration-layer\\modules\\prime-omp\\verify-prime-omp-contract.py'"
+    cadence: "P3650D"
+    slack: "P1D"
+    secret_fields: []
+    privacy_class: shareable
+    break_recipe: "dry-run: hide prime-omp verifier from a sandbox copy"
+    expected_red: "KIT_COMPONENT_MISSING:kit-mod-prime-omp-verifier"
+    state: active
+    install_stage: "kit"
+  - id: kit-mod-maintenance-readme
+    class: kit-component
+    config_path: "__WINDOWS_WORKSPACE__/export/orchestration-layer/modules/verified-maintenance/README.md"
+    owner: "Jonathan"
+    probe_cmd: "Test-Path -LiteralPath '__WINDOWS_WORKSPACE__\\export\\orchestration-layer\\modules\\verified-maintenance\\README.md'"
+    cadence: "P3650D"
+    slack: "P1D"
+    secret_fields: []
+    privacy_class: shareable
+    break_recipe: "dry-run: hide verified-maintenance README from a sandbox copy"
+    expected_red: "KIT_COMPONENT_MISSING:kit-mod-maintenance-readme"
+    state: active
+    install_stage: "kit"
+  - id: kit-mod-maintenance-contract
+    class: kit-component
+    config_path: "__WINDOWS_WORKSPACE__/export/orchestration-layer/modules/verified-maintenance/maintenance-schedule.json"
+    owner: "Jonathan"
+    probe_cmd: "Test-Path -LiteralPath '__WINDOWS_WORKSPACE__\\export\\orchestration-layer\\modules\\verified-maintenance\\maintenance-schedule.json'"
+    cadence: "P3650D"
+    slack: "P1D"
+    secret_fields: []
+    privacy_class: shareable
+    break_recipe: "dry-run: hide verified-maintenance contract from a sandbox copy"
+    expected_red: "KIT_COMPONENT_MISSING:kit-mod-maintenance-contract"
+    state: active
+    install_stage: "kit"
+  - id: kit-mod-maintenance-verifier
+    class: kit-component
+    config_path: "__WINDOWS_WORKSPACE__/export/orchestration-layer/modules/verified-maintenance/verify-maintenance-schedule.py"
+    owner: "Jonathan"
+    probe_cmd: "Test-Path -LiteralPath '__WINDOWS_WORKSPACE__\\export\\orchestration-layer\\modules\\verified-maintenance\\verify-maintenance-schedule.py'"
+    cadence: "P3650D"
+    slack: "P1D"
+    secret_fields: []
+    privacy_class: shareable
+    break_recipe: "dry-run: hide verified-maintenance verifier from a sandbox copy"
+    expected_red: "KIT_COMPONENT_MISSING:kit-mod-maintenance-verifier"
+    state: active
+    install_stage: "kit"
+  - id: kit-changelog
+    class: kit-component
+    config_path: "__WINDOWS_WORKSPACE__/export/orchestration-layer/CHANGELOG.md"
+    owner: "Jonathan"
+    probe_cmd: "Test-Path -LiteralPath '__WINDOWS_WORKSPACE__\\export\\orchestration-layer\\CHANGELOG.md'"
+    cadence: "P3650D"
+    slack: "P1D"
+    secret_fields: []
+    privacy_class: shareable
+    break_recipe: "dry-run: hide changelog from a sandbox copy"
+    expected_red: "KIT_COMPONENT_MISSING:kit-changelog"
+    state: active
+    install_stage: "kit"
+
+  - id: kit-mod-topology-readme
+    class: kit-component
+    config_path: "__WINDOWS_WORKSPACE__/export/orchestration-layer/modules/topology/README.md"
+    owner: "Jonathan"
+    probe_cmd: "Test-Path -LiteralPath '__WINDOWS_WORKSPACE__\\export\\orchestration-layer\\modules\\topology\\README.md'"
+    cadence: "P3650D"
+    slack: "P1D"
+    secret_fields: []
+    privacy_class: shareable
+    break_recipe: "dry-run: hide topology README from a sandbox copy"
+    expected_red: "KIT_COMPONENT_MISSING:kit-mod-topology-readme"
+    state: active
+    install_stage: "kit"
+  - id: kit-mod-topology-contract
+    class: kit-component
+    config_path: "__WINDOWS_WORKSPACE__/export/orchestration-layer/modules/topology/topology-profiles.json"
+    owner: "Jonathan"
+    probe_cmd: "Test-Path -LiteralPath '__WINDOWS_WORKSPACE__\\export\\orchestration-layer\\modules\\topology\\topology-profiles.json'"
+    cadence: "P3650D"
+    slack: "P1D"
+    secret_fields: []
+    privacy_class: shareable
+    break_recipe: "dry-run: hide topology profiles from a sandbox copy"
+    expected_red: "KIT_COMPONENT_MISSING:kit-mod-topology-contract"
+    state: active
+    install_stage: "kit"
+  - id: kit-mod-topology-configure
+    class: kit-component
+    config_path: "__WINDOWS_WORKSPACE__/export/orchestration-layer/modules/topology/configure-topology.py"
+    owner: "Jonathan"
+    probe_cmd: "Test-Path -LiteralPath '__WINDOWS_WORKSPACE__\\export\\orchestration-layer\\modules\\topology\\configure-topology.py'"
+    cadence: "P3650D"
+    slack: "P1D"
+    secret_fields: []
+    privacy_class: shareable
+    break_recipe: "dry-run: hide topology configurator from a sandbox copy"
+    expected_red: "KIT_COMPONENT_MISSING:kit-mod-topology-configure"
+    state: active
+    install_stage: "kit"
+  - id: kit-mod-telegram-guide
+    class: kit-component
+    config_path: "__WINDOWS_WORKSPACE__/export/orchestration-layer/modules/messaging/TELEGRAM.md"
+    owner: "Jonathan"
+    probe_cmd: "Test-Path -LiteralPath '__WINDOWS_WORKSPACE__\\export\\orchestration-layer\\modules\\messaging\\TELEGRAM.md'"
+    cadence: "P3650D"
+    slack: "P1D"
+    secret_fields: []
+    privacy_class: shareable
+    break_recipe: "dry-run: hide Telegram guide from a sandbox copy"
+    expected_red: "KIT_COMPONENT_MISSING:kit-mod-telegram-guide"
+    state: active
+    install_stage: "kit"
+  - id: kit-mod-telegram-adapter
+    class: kit-component
+    config_path: "__WINDOWS_WORKSPACE__/export/orchestration-layer/modules/messaging/telegram-adapter.py"
+    owner: "Jonathan"
+    probe_cmd: "Test-Path -LiteralPath '__WINDOWS_WORKSPACE__\\export\\orchestration-layer\\modules\\messaging\\telegram-adapter.py'"
+    cadence: "P3650D"
+    slack: "P1D"
+    secret_fields: []
+    privacy_class: shareable
+    break_recipe: "dry-run: hide Telegram adapter from a sandbox copy"
+    expected_red: "KIT_COMPONENT_MISSING:kit-mod-telegram-adapter"
+    state: active
+    install_stage: "kit"
+  - id: kit-doc-small-model-start
+    class: kit-component
+    config_path: "__WINDOWS_WORKSPACE__/export/orchestration-layer/docs/SMALL-MODEL-START.md"
+    owner: "Jonathan"
+    probe_cmd: "Test-Path -LiteralPath '__WINDOWS_WORKSPACE__\\export\\orchestration-layer\\docs\\SMALL-MODEL-START.md'"
+    cadence: "P3650D"
+    slack: "P1D"
+    secret_fields: []
+    privacy_class: shareable
+    break_recipe: "dry-run: hide small-model start guide from a sandbox copy"
+    expected_red: "KIT_COMPONENT_MISSING:kit-doc-small-model-start"
+    state: active
+    install_stage: "kit"
+  - id: kit-eval-small-model-reference
+    class: kit-component
+    config_path: "__WINDOWS_WORKSPACE__/export/orchestration-layer/installer/clone-eval/small-model-reference.json"
+    owner: "Jonathan"
+    probe_cmd: "Test-Path -LiteralPath '__WINDOWS_WORKSPACE__\\export\\orchestration-layer\\installer\\clone-eval\\small-model-reference.json'"
+    cadence: "P3650D"
+    slack: "P1D"
+    secret_fields: []
+    privacy_class: shareable
+    break_recipe: "dry-run: hide small-model reference from a sandbox copy"
+    expected_red: "KIT_COMPONENT_MISSING:kit-eval-small-model-reference"
+    state: active
+    install_stage: "kit"
+  - id: kit-mod-prime-omp-prepare
+    class: kit-component
+    config_path: "__WINDOWS_WORKSPACE__/export/orchestration-layer/modules/prime-omp/prepare-prime-omp.py"
+    owner: "Jonathan"
+    probe_cmd: "Test-Path -LiteralPath '__WINDOWS_WORKSPACE__\\export\\orchestration-layer\\modules\\prime-omp\\prepare-prime-omp.py'"
+    cadence: "P3650D"
+    slack: "P1D"
+    secret_fields: []
+    privacy_class: shareable
+    break_recipe: "dry-run: hide Prime OMP setup helper from a sandbox copy"
+    expected_red: "KIT_COMPONENT_MISSING:kit-mod-prime-omp-prepare"
+    state: active
+    install_stage: "kit"
+  - id: kit-mod-maintenance-runner
+    class: kit-component
+    config_path: "__WINDOWS_WORKSPACE__/export/orchestration-layer/modules/verified-maintenance/run-verified-maintenance.py"
+    owner: "Jonathan"
+    probe_cmd: "Test-Path -LiteralPath '__WINDOWS_WORKSPACE__\\export\\orchestration-layer\\modules\\verified-maintenance\\run-verified-maintenance.py'"
+    cadence: "P3650D"
+    slack: "P1D"
+    secret_fields: []
+    privacy_class: shareable
+    break_recipe: "dry-run: hide maintenance runner from a sandbox copy"
+    expected_red: "KIT_COMPONENT_MISSING:kit-mod-maintenance-runner"
+    state: active
+    install_stage: "kit"
+
+  # full-repo leak scanner (added 2026-08-01): the companion pre-commit
+  # cannot be - pre-commit sees only staged files, so pre-denylist leaks
+  # stay invisible. Run after any denylist addition.
+  - id: kit-tool-full-repo-scan
+    class: kit-component
+    config_path: "__WINDOWS_WORKSPACE__/export/orchestration-layer/tools/scan-full-repo.sh"
+    owner: "Jonathan"
+    probe_cmd: "Test-Path -LiteralPath '__WINDOWS_WORKSPACE__\\export\\orchestration-layer\\tools\\scan-full-repo.sh'"
+    cadence: "P3650D"
+    slack: "P1D"
+    secret_fields: []
+    privacy_class: shareable
+    break_recipe: "dry-run: hide kit-tool-full-repo-scan from a sandbox copy"
+    expected_red: "KIT_COMPONENT_MISSING:kit-tool-full-repo-scan"
+    state: active
+    install_stage: "kit"
+
+
+
+
+  # messaging module + maintenance doc (added 2026-07-31): messenger-agnostic
+  # adapter contract; KIT-MAINTENANCE.md = LLM update procedure for the repo.
+  - id: kit-mod-messaging-contract
+    class: kit-component
+    config_path: "__WINDOWS_WORKSPACE__/export/orchestration-layer/modules/messaging/ADAPTER-CONTRACT.md"
+    owner: "Jonathan"
+    probe_cmd: "Test-Path -LiteralPath '__WINDOWS_WORKSPACE__\\export\\orchestration-layer\\modules\\messaging\\ADAPTER-CONTRACT.md'"
+    cadence: "P3650D"
+    slack: "P1D"
+    secret_fields: []
+    privacy_class: shareable
+    break_recipe: "dry-run: hide kit-mod-messaging-contract from a sandbox copy"
+    expected_red: "KIT_COMPONENT_MISSING:kit-mod-messaging-contract"
+    state: active
+    install_stage: "kit"
+  - id: kit-mod-messaging-adapter
+    class: kit-component
+    config_path: "__WINDOWS_WORKSPACE__/export/orchestration-layer/modules/messaging/generic-adapter.py"
+    owner: "Jonathan"
+    probe_cmd: "Test-Path -LiteralPath '__WINDOWS_WORKSPACE__\\export\\orchestration-layer\\modules\\messaging\\generic-adapter.py'"
+    cadence: "P3650D"
+    slack: "P1D"
+    secret_fields: []
+    privacy_class: shareable
+    break_recipe: "dry-run: hide kit-mod-messaging-adapter from a sandbox copy"
+    expected_red: "KIT_COMPONENT_MISSING:kit-mod-messaging-adapter"
+    state: active
+    install_stage: "kit"
+  - id: kit-mod-messaging-n8n-template
+    class: kit-component
+    config_path: "__WINDOWS_WORKSPACE__/export/orchestration-layer/modules/messaging/n8n-adapter-template.json"
+    owner: "Jonathan"
+    probe_cmd: "Test-Path -LiteralPath '__WINDOWS_WORKSPACE__\\export\\orchestration-layer\\modules\\messaging\\n8n-adapter-template.json'"
+    cadence: "P3650D"
+    slack: "P1D"
+    secret_fields: []
+    privacy_class: shareable
+    break_recipe: "dry-run: hide kit-mod-messaging-n8n-template from a sandbox copy"
+    expected_red: "KIT_COMPONENT_MISSING:kit-mod-messaging-n8n-template"
+    state: active
+    install_stage: "kit"
+  - id: kit-maintenance-doc
+    class: kit-component
+    config_path: "__WINDOWS_WORKSPACE__/export/orchestration-layer/KIT-MAINTENANCE.md"
+    owner: "Jonathan"
+    probe_cmd: "Test-Path -LiteralPath '__WINDOWS_WORKSPACE__\\export\\orchestration-layer\\KIT-MAINTENANCE.md'"
+    cadence: "P3650D"
+    slack: "P1D"
+    secret_fields: []
+    privacy_class: shareable
+    break_recipe: "dry-run: hide kit-maintenance-doc from a sandbox copy"
+    expected_red: "KIT_COMPONENT_MISSING:kit-maintenance-doc"
+    state: active
+    install_stage: "kit"
+
+  # LLM agent instructions for the kit repo (added 2026-07-31): AGENTS.md =
+  # development invariants + module recipe + roadmap; CLAUDE.md = pointer.
+  - id: kit-agents-doc
+    class: kit-component
+    config_path: "__WINDOWS_WORKSPACE__/export/orchestration-layer/AGENTS.md"
+    owner: "Jonathan"
+    probe_cmd: "Test-Path -LiteralPath '__WINDOWS_WORKSPACE__\\export\\orchestration-layer\\AGENTS.md'"
+    cadence: "P3650D"
+    slack: "P1D"
+    secret_fields: []
+    privacy_class: shareable
+    break_recipe: "dry-run: hide kit-agents-doc from a sandbox copy"
+    expected_red: "KIT_COMPONENT_MISSING:kit-agents-doc"
+    state: active
+    install_stage: "kit"
+  - id: kit-claude-pointer
+    class: kit-component
+    config_path: "__WINDOWS_WORKSPACE__/export/orchestration-layer/CLAUDE.md"
+    owner: "Jonathan"
+    probe_cmd: "Test-Path -LiteralPath '__WINDOWS_WORKSPACE__\\export\\orchestration-layer\\CLAUDE.md'"
+    cadence: "P3650D"
+    slack: "P1D"
+    secret_fields: []
+    privacy_class: shareable
+    break_recipe: "dry-run: hide kit-claude-pointer from a sandbox copy"
+    expected_red: "KIT_COMPONENT_MISSING:kit-claude-pointer"
+    state: active
+    install_stage: "kit"
+
+  # remote-access guide (added 2026-07-31): manual multi-device access doc
+  # (phone browser over overlay, bind policy, security rules); v2 automates it.
+  - id: kit-remote-access-doc
+    class: kit-component
+    config_path: "__WINDOWS_WORKSPACE__/export/orchestration-layer/REMOTE-ACCESS.md"
+    owner: "Jonathan"
+    probe_cmd: "Test-Path -LiteralPath '__WINDOWS_WORKSPACE__\\export\\orchestration-layer\\REMOTE-ACCESS.md'"
+    cadence: "P3650D"
+    slack: "P1D"
+    secret_fields: []
+    privacy_class: shareable
+    break_recipe: "dry-run: hide kit-remote-access-doc from a sandbox copy"
+    expected_red: "KIT_COMPONENT_MISSING:kit-remote-access-doc"
+    state: active
+    install_stage: "kit"
+
+  # templated session hooks (added 2026-07-31, cold-install finding F1):
+  # REPLICATION-GUIDE referenced hook files a fresh clone did not contain.
+  - id: kit-hook-digest-write
+    class: kit-component
+    config_path: "__WINDOWS_WORKSPACE__/export/orchestration-layer/hooks/memory-digest-write.sh"
+    owner: "Jonathan"
+    probe_cmd: "Test-Path -LiteralPath '__WINDOWS_WORKSPACE__\\export\\orchestration-layer\\hooks\\memory-digest-write.sh'"
+    cadence: "P3650D"
+    slack: "P1D"
+    secret_fields: []
+    privacy_class: shareable
+    break_recipe: "dry-run: hide kit-hook-digest-write from a sandbox copy"
+    expected_red: "KIT_COMPONENT_MISSING:kit-hook-digest-write"
+    state: active
+    install_stage: "kit"
+  - id: kit-hook-digest-read
+    class: kit-component
+    config_path: "__WINDOWS_WORKSPACE__/export/orchestration-layer/hooks/memory-digest.py"
+    owner: "Jonathan"
+    probe_cmd: "Test-Path -LiteralPath '__WINDOWS_WORKSPACE__\\export\\orchestration-layer\\hooks\\memory-digest.py'"
+    cadence: "P3650D"
+    slack: "P1D"
+    secret_fields: []
+    privacy_class: shareable
+    break_recipe: "dry-run: hide kit-hook-digest-read from a sandbox copy"
+    expected_red: "KIT_COMPONENT_MISSING:kit-hook-digest-read"
+    state: active
+    install_stage: "kit"
+
+
+
+
+
+
+  - id: kit-m10-sync-shareable-v2
+    class: kit-component
+    config_path: "__WINDOWS_WORKSPACE__/export/orchestration-layer/sync-shareable-v2.ps1"
+    owner: "Jonathan"
+    probe_cmd: "Test-Path -LiteralPath '__WINDOWS_WORKSPACE__\\export\\orchestration-layer\\sync-shareable-v2.ps1'"
+    cadence: "P3650D"
+    slack: "P1D"
+    secret_fields: []
+    privacy_class: shareable
+    break_recipe: "dry-run: remove graph-derived sync script from a sandbox copy"
+    expected_red: "KIT_COMPONENT_MISSING:sync-shareable-v2"
+    state: active
+    install_stage: "kit"
+
+  - id: kit-m10-approved-public-tokens
+    class: kit-component
+    config_path: "__WINDOWS_WORKSPACE__/export/orchestration-layer/approved-public-tokens.txt"
+    owner: "Jonathan"
+    probe_cmd: "Test-Path -LiteralPath '__WINDOWS_WORKSPACE__\\export\\orchestration-layer\\approved-public-tokens.txt'"
+    cadence: "P3650D"
+    slack: "P1D"
+    secret_fields: []
+    privacy_class: local-only
+    break_recipe: "dry-run: remove approved public token list from a sandbox copy"
+    expected_red: "KIT_COMPONENT_MISSING:approved-public-tokens"
+    state: active
+    install_stage: "kit"
+
+  - id: kit-m10-approved-public-tokens-template
+    class: kit-component
+    config_path: "__WINDOWS_WORKSPACE__/export/orchestration-layer/approved-public-tokens.template.txt"
+    owner: "Jonathan"
+    probe_cmd: "Test-Path -LiteralPath '__WINDOWS_WORKSPACE__\\export\\orchestration-layer\\approved-public-tokens.template.txt'"
+    cadence: "P3650D"
+    slack: "P1D"
+    secret_fields: []
+    privacy_class: shareable
+    break_recipe: "dry-run: remove approved public token template from a sandbox copy"
+    expected_red: "KIT_COMPONENT_MISSING:approved-public-tokens-template"
+    state: active
+    install_stage: "kit"
+
+  - id: kit-m10-sanitize-rules-local
+    class: kit-component
+    config_path: "__WINDOWS_WORKSPACE__/export/orchestration-layer/.sanitize-rules.local.json"
+    owner: "Jonathan"
+    probe_cmd: "Test-Path -LiteralPath '__WINDOWS_WORKSPACE__\\export\\orchestration-layer\\.sanitize-rules.local.json'"
+    cadence: "P3650D"
+    slack: "P1D"
+    secret_fields: []
+    privacy_class: local-only
+    break_recipe: "dry-run: remove local sanitizer rules before source-machine preview scrub"
+    expected_red: "KIT_COMPONENT_MISSING:m10-sanitize-rules-local"
+    state: active
+    install_stage: "kit"
+
+  - id: kit-m10-generated-manual
+    class: kit-component
+    config_path: "__WINDOWS_WORKSPACE__/export/orchestration-layer/generated/MANUAL.md"
+    owner: "Jonathan"
+    probe_cmd: "Test-Path -LiteralPath '__WINDOWS_WORKSPACE__\\export\\orchestration-layer\\generated\\MANUAL.md'"
+    cadence: "P3650D"
+    slack: "P1D"
+    secret_fields: []
+    privacy_class: shareable
+    break_recipe: "dry-run: remove generated MANUAL.md from a sandbox copy"
+    expected_red: "KIT_COMPONENT_MISSING:m10-manual"
+    state: active
+    install_stage: "kit"
+
+  - id: kit-m10-generated-provenance
+    class: kit-component
+    config_path: "__WINDOWS_WORKSPACE__/export/orchestration-layer/generated/PROVENANCE.json"
+    owner: "Jonathan"
+    probe_cmd: "Test-Path -LiteralPath '__WINDOWS_WORKSPACE__\\export\\orchestration-layer\\generated\\PROVENANCE.json'"
+    cadence: "P3650D"
+    slack: "P1D"
+    secret_fields: []
+    privacy_class: shareable
+    break_recipe: "dry-run: remove generated PROVENANCE.json from a sandbox copy"
+    expected_red: "KIT_COMPONENT_MISSING:m10-provenance"
+    state: active
+    install_stage: "kit"
+
+  - id: kit-installer-preflight-powershell
+    class: kit-component
+    config_path: "__WINDOWS_WORKSPACE__/export/orchestration-layer/installer/preflight/preflight.ps1"
+    owner: "Jonathan"
+    probe_cmd: "Test-Path -LiteralPath '__WINDOWS_WORKSPACE__\\export\\orchestration-layer\\installer\\preflight\\preflight.ps1'"
+    cadence: "P3650D"
+    slack: "P1D"
+    secret_fields: []
+    privacy_class: shareable
+    break_recipe: "dry-run: remove M11 PowerShell preflight from a sandbox bundle"
+    expected_red: "KIT_COMPONENT_MISSING:installer-preflight-powershell"
+    state: active
+    install_stage: "kit"
+
+  - id: kit-installer-preflight-shell
+    class: kit-component
+    config_path: "__WINDOWS_WORKSPACE__/export/orchestration-layer/installer/preflight/preflight.sh"
+    owner: "Jonathan"
+    probe_cmd: "Test-Path -LiteralPath '__WINDOWS_WORKSPACE__\\export\\orchestration-layer\\installer\\preflight\\preflight.sh'"
+    cadence: "P3650D"
+    slack: "P1D"
+    secret_fields: []
+    privacy_class: shareable
+    break_recipe: "dry-run: remove M11 POSIX preflight from a sandbox bundle"
+    expected_red: "KIT_COMPONENT_MISSING:installer-preflight-shell"
+    state: active
+    install_stage: "kit"
+
+  - id: kit-installer-module-manifest
+    class: kit-component
+    config_path: "__WINDOWS_WORKSPACE__/export/orchestration-layer/installer/modules/module-manifest.json"
+    owner: "Jonathan"
+    probe_cmd: "Test-Path -LiteralPath '__WINDOWS_WORKSPACE__\\export\\orchestration-layer\\installer\\modules\\module-manifest.json'"
+    cadence: "P3650D"
+    slack: "P1D"
+    secret_fields: []
+    privacy_class: shareable
+    break_recipe: "dry-run: remove M11 module manifest from a sandbox bundle"
+    expected_red: "KIT_COMPONENT_MISSING:installer-module-manifest"
+    state: active
+    install_stage: "kit"
+
+  - id: kit-installer-hermes-snapshot
+    class: kit-component
+    config_path: "__WINDOWS_WORKSPACE__/export/orchestration-layer/installer/modules/hermes-snapshot/SNAPSHOT.json"
+    owner: "Jonathan"
+    probe_cmd: "Test-Path -LiteralPath '__WINDOWS_WORKSPACE__\\export\\orchestration-layer\\installer\\modules\\hermes-snapshot\\SNAPSHOT.json'"
+    cadence: "P3650D"
+    slack: "P1D"
+    secret_fields: []
+    privacy_class: shareable
+    break_recipe: "dry-run: remove M11 Hermes snapshot manifest from a sandbox bundle"
+    expected_red: "KIT_COMPONENT_MISSING:installer-hermes-snapshot"
+    state: active
+    install_stage: "kit"
+
+  - id: kit-installer-clone-eval
+    class: eval
+    config_path: "__WINDOWS_WORKSPACE__/export/orchestration-layer/installer/clone-eval/eval-run.ps1"
+    owner: "Jonathan"
+    probe_cmd: "Test-Path -LiteralPath '__WINDOWS_WORKSPACE__\\export\\orchestration-layer\\installer\\clone-eval\\eval-run.ps1'"
+    cadence: "P3650D"
+    slack: "P1D"
+    secret_fields: []
+    privacy_class: shareable
+    break_recipe: "dry-run: remove M11 clone eval runner from a sandbox bundle"
+    expected_red: "KIT_COMPONENT_MISSING:installer-clone-eval"
+    state: active
+    install_stage: "kit"
+
+  - id: kit-installer-gate
+    class: kit-component
+    config_path: "__WINDOWS_WORKSPACE__/export/orchestration-layer/installer/gate.ps1"
+    owner: "Jonathan"
+    probe_cmd: "Test-Path -LiteralPath '__WINDOWS_WORKSPACE__\\export\\orchestration-layer\\installer\\gate.ps1'"
+    cadence: "P3650D"
+    slack: "P1D"
+    secret_fields: []
+    privacy_class: shareable
+    break_recipe: "dry-run: remove M11 bundle gate from a sandbox bundle"
+    expected_red: "KIT_COMPONENT_MISSING:installer-gate"
+    state: active
+    install_stage: "kit"
+
+  - id: kit-installer-provenance
+    class: kit-component
+    config_path: "__WINDOWS_WORKSPACE__/export/orchestration-layer/installer/PROVENANCE.json"
+    owner: "Jonathan"
+    probe_cmd: "Test-Path -LiteralPath '__WINDOWS_WORKSPACE__\\export\\orchestration-layer\\installer\\PROVENANCE.json'"
+    cadence: "P3650D"
+    slack: "P1D"
+    secret_fields: []
+    privacy_class: shareable
+    break_recipe: "dry-run: remove M11 bundle provenance from a sandbox bundle"
+    expected_red: "KIT_COMPONENT_MISSING:installer-provenance"
+    state: active
+    install_stage: "kit"
+
+  # H2 (PLAN.md section 7C, 2026-07-07): the review toolchain is I3-load-bearing for
+  # EVERY phase closure and failed 6+ times across M5-M11 without being registered.
+  # These rows make review-tool outages visible at session start, not mid-closure.
+  - id: review-claude-cli
+    class: eval
+    # export_target_path added 2026-07-31: inert for graph-gate; satisfies the M10
+    # kit generator's target-safety check (local-only rows are never exported, but
+    # the generator resolves every row's target before filtering by privacy_class).
+    export_target_path: "local/review-claude-cli"
+    config_path: "C:/Users/__WINDOWS_USER__/AppData/Local/Packages/Claude_pzs8sxrjxfjjc/LocalCache/Roaming/Claude/claude-code"
+    owner: "Jonathan"
+    probe_cmd: "@(Get-ChildItem 'C:\\Users\\__OWNER_HANDLE__\\AppData\\Local\\Packages\\Claude_pzs8sxrjxfjjc\\LocalCache\\Roaming\\Claude\\claude-code\\*\\claude.exe' -ErrorAction SilentlyContinue).Count -ge 1"
+    cadence: "P3650D"
+    slack: "P1D"
+    secret_fields: []
+    privacy_class: local-only
+    break_recipe: "rename the claude-code version directory in a sandbox copy; probe must go RED"
+    expected_red: "PROBE_FAIL (packaged Claude CLI missing - external reviews blocked)"
+    state: active
+    notes: "Packaged Claude Code binary used by claudex-x-* review skills. Version dir changes on update (2.1.197 -> 2.1.202 observed 2026-07-06/07), so the probe globs. Auth is NOT probed here; a RED means the binary is gone entirely."
+  - id: review-codex-companion
+    class: eval
+    # export_target_path added 2026-07-31: same rationale as review-claude-cli above.
+    export_target_path: "local/review-codex-companion"
+    config_path: "C:/Users/__WINDOWS_USER__/.claude/plugins/cache/openai-codex/codex/1.0.4/scripts/codex-companion.mjs"
+    owner: "Jonathan"
+    probe_cmd: "Test-Path -LiteralPath 'C:\\Users\\__OWNER_HANDLE__\\.claude\\plugins\\cache\\openai-codex\\codex\\1.0.4\\scripts\\codex-companion.mjs'"
+    cadence: "P3650D"
+    slack: "P1D"
+    secret_fields: []
+    privacy_class: local-only
+    break_recipe: "rename codex-companion.mjs in a sandbox copy; probe must go RED"
+    expected_red: "PROBE_FAIL (Codex Companion missing - codex-adversarial-parallels blocked at skill step 0)"
+    state: active
+    verify_cmd: "$o = & node 'C:\\Users\\__OWNER_HANDLE__\\.claude\\plugins\\cache\\openai-codex\\codex\\1.0.4\\scripts\\codex-companion.mjs' setup --json 2>$null; [bool]([string]$o -match 'ready.\\s*:\\s*true')"
+    notes: "Repaired 2026-07-06 (evidence/codex-companion-link-repair-20260706-210000.json). probe_cmd = file presence (fast, daily); verify_cmd = full setup --json ready=true check incl. auth (runs in verify mode)."
+
+  # M13 (2026-07-08): VPS/n8n reliability surface (merged from M13-GRAPH-ROWS-DRAFT.yaml after live GREEN)
+  - id: vps-n8n
+    class: mcp
+    config_path: "__WINDOWS_WORKSPACE__/bindings.local.yaml"
+    owner: "Jonathan"
+    probe_cmd: "$global:LASTEXITCODE=0; & powershell.exe -NoProfile -ExecutionPolicy Bypass -File '__WINDOWS_WORKSPACE__\\scripts\\probe-vps-n8n.ps1' | Out-Null; $LASTEXITCODE -eq 0"
+    cadence: "P3650D"
+    slack: "P1D"
+    # n8n_api_key_file is deliberately NOT in secret_fields: it is a secret-REFERENCE
+    # (a path to the key file), which is exactly the I7-compliant pattern - the literal
+    # path is fine; the key itself never appears in any config.
+    secret_fields: []
+    privacy_class: local-only
+    external: true
+    break_recipe: "stop the n8n service (or docker container) on the VPS => probe classifies N8N_SERVICE_DOWN => RED; planned downtime handled via ack_until"
+    expected_red: "PROBE_FAIL (VPS_UNREACHABLE=ackable outage / N8N_SERVICE_DOWN / N8N_API_UNHEALTHY / WORKFLOW_STALE)"
+    state: active
+    notes: "M13 staged 2026-07-08. Three-stage failure-class probe reads endpoint/key/critical_workflows from bindings.local.yaml (Q10, local-only). external: true => H5 ack_until applies for planned VPS downtime. Kit ships export/orchestration-layer/n8n-integration (template + verify scripts; renamed from m13 2026-07-31), never the binding."
+
+  # Plan 01 Phase 1 (2026-07-08): existential ops P0 - backup/DR + MCP-fleet backstop.
+  - id: backup-freshness
+    class: eval
+    config_path: "__WINDOWS_WORKSPACE__/output/ops/restore-verify-last-green.txt"
+    owner: "Jonathan"
+    probe_cmd: "$global:LASTEXITCODE=0; & powershell.exe -NoProfile -ExecutionPolicy Bypass -File '__WINDOWS_WORKSPACE__\\scripts\\ops\\probes\\probe-backup-freshness.ps1' | Out-Null; $LASTEXITCODE -eq 0"
+    cadence: "P7D"
+    slack: "P2D"
+    secret_fields: []
+    privacy_class: local-only
+    external: true
+    break_recipe: "rename the newest backup dir on the VPS to <stamp>.stale => probe finds no fresh backup => RED"
+    expected_red: "RED (newest backup >= 8d old, restore-verify marker >= 30d old, or dest unreachable)"
+    state: active
+    notes: "Plan 01 Task 1.5. Probe = scripts/ops/probes/probe-backup-freshness.ps1 (VPS newest-dir age < 8d + local restore-verify GREEN marker < 30d). Backup = scripts/ops/backup-vault.ps1 (dest from mission-layer DECISIONS.md, trusted-own-VPS scrub deviation documented). external: true because the dest is the VPS (ackable planned downtime)."
+  - id: mcp-fleet
+    class: eval
+    config_path: "__WINDOWS_WORKSPACE__/scripts/ops/mcp-fleet-reaper.ps1"
+    owner: "Jonathan"
+    probe_cmd: "$o = & powershell.exe -NoProfile -ExecutionPolicy Bypass -File '__WINDOWS_WORKSPACE__\\scripts\\ops\\mcp-fleet-reaper.ps1' 2>$null; $m = [regex]::Match(($o -join ' '), 'python-total=(\\d+)'); $m.Success -and ([int]$m.Groups[1].Value -lt 120)"
+    cadence: "P3650D"
+    slack: "P1D"
+    secret_fields: []
+    privacy_class: local-only
+    break_recipe: "spawn 120+ dummy python processes in a sandbox => python-total >= 120 => RED"
+    expected_red: "RED (python-total >= 120: MCP fleet accumulation past budget)"
+    state: active
+    notes: "Plan 01 Task 1.5. Report-only reaper run as probe; budget alarm at 120 (live baseline ~0-6 thanks to the M0 supersede guard - the reaper is the backstop, -Execute reaps dead-parent orphan trees only)."
+
+  # Plan 01 Phase 8 (2026-07-08): mission + portfolio heartbeats. Neglect becomes visible
+  # - a domain whose monthly review digest goes stale surfaces a Q7 RED banner. Keyed to
+  # the domain's latest monthly review artifact (the _digests are per-tag, so the probe
+  # matches any mission-review-*.md within cadence - a missed monthly cron REDs all of them).
+  - id: mission-heartbeat-applications
+    class: eval
+    config_path: "__WINDOWS_WORKSPACE__/.planning/missions/applications/MISSION.md"
+    owner: "Jonathan"
+    probe_cmd: "[bool](Get-ChildItem '__WINDOWS_WORKSPACE__\\.planning\\missions\\_digests\\mission-review-*.md' -EA SilentlyContinue | Where-Object { $_.LastWriteTime -gt (Get-Date).AddDays(-75) })"
+    cadence: "P30D"
+    slack: "P45D"
+    secret_fields: []
+    privacy_class: local-only
+    break_recipe: "dry-run: age all mission-review-*.md past 75 days => RED (portfolio neglected)"
+    expected_red: "no monthly mission review within 75 days for applications"
+    state: active
+    notes: "Task 8.1 heartbeat. Latest monthly review is the liveness artifact."
+  - id: mission-heartbeat-__PRIVATE_TOKEN_14__
+    class: eval
+    config_path: "__WINDOWS_WORKSPACE__/.planning/missions/__PRIVATE_TOKEN_14__/MISSION.md"
+    owner: "Jonathan"
+    probe_cmd: "[bool](Get-ChildItem '__WINDOWS_WORKSPACE__\\.planning\\missions\\_digests\\mission-review-*.md' -EA SilentlyContinue | Where-Object { $_.LastWriteTime -gt (Get-Date).AddDays(-75) })"
+    cadence: "P30D"
+    slack: "P45D"
+    secret_fields: []
+    privacy_class: local-only
+    break_recipe: "dry-run: age all mission-review-*.md past 75 days => RED"
+    expected_red: "no monthly mission review within 75 days for __PRIVATE_TOKEN_14__"
+    state: active
+    notes: "Task 8.1 heartbeat."
+  - id: mission-heartbeat-__PRIVATE_TOKEN_13__
+    class: eval
+    config_path: "__WINDOWS_WORKSPACE__/.planning/missions/__PRIVATE_TOKEN_13__/MISSION.md"
+    owner: "Jonathan"
+    probe_cmd: "[bool](Get-ChildItem '__WINDOWS_WORKSPACE__\\.planning\\missions\\_digests\\mission-review-*.md' -EA SilentlyContinue | Where-Object { $_.LastWriteTime -gt (Get-Date).AddDays(-75) })"
+    cadence: "P30D"
+    slack: "P45D"
+    secret_fields: []
+    privacy_class: local-only
+    break_recipe: "dry-run: age all mission-review-*.md past 75 days => RED"
+    expected_red: "no monthly mission review within 75 days for __PRIVATE_TOKEN_13__"
+    state: active
+    notes: "Task 8.1 heartbeat."
+  - id: mission-heartbeat-__PRIVATE_TOKEN_12__
+    class: eval
+    config_path: "__WINDOWS_WORKSPACE__/.planning/missions/__PRIVATE_TOKEN_12__/MISSION.md"
+    owner: "Jonathan"
+    probe_cmd: "[bool](Get-ChildItem '__WINDOWS_WORKSPACE__\\.planning\\missions\\_digests\\mission-review-*.md' -EA SilentlyContinue | Where-Object { $_.LastWriteTime -gt (Get-Date).AddDays(-75) })"
+    cadence: "P30D"
+    slack: "P45D"
+    secret_fields: []
+    privacy_class: local-only
+    break_recipe: "dry-run: age all mission-review-*.md past 75 days => RED"
+    expected_red: "no monthly mission review within 75 days for __PRIVATE_TOKEN_12__"
+    state: active
+    notes: "Task 8.1 heartbeat."
+  - id: mission-heartbeat-community-mission
+    class: eval
+    config_path: "__WINDOWS_WORKSPACE__/.planning/missions/community-mission/MISSION.md"
+    owner: "Jonathan"
+    probe_cmd: "[bool](Get-ChildItem '__WINDOWS_WORKSPACE__\\.planning\\missions\\_digests\\mission-review-*.md' -EA SilentlyContinue | Where-Object { $_.LastWriteTime -gt (Get-Date).AddDays(-75) })"
+    cadence: "P30D"
+    slack: "P45D"
+    secret_fields: []
+    privacy_class: local-only
+    break_recipe: "dry-run: age all mission-review-*.md past 75 days => RED"
+    expected_red: "no monthly mission review within 75 days for community-mission"
+    state: active
+    notes: "Task 8.1 heartbeat. CARE domain - the monthly review carries the consent standing check."
+  - id: portfolio-heartbeat
+    class: eval
+    config_path: "__WINDOWS_WORKSPACE__/.planning/missions"
+    owner: "Jonathan"
+    probe_cmd: "[bool](Get-ChildItem '__WINDOWS_WORKSPACE__\\.planning\\missions\\_digests\\rebalance-*.md' -EA SilentlyContinue | Where-Object { $_.LastWriteTime -gt (Get-Date).AddDays(-135) })"
+    cadence: "P90D"
+    slack: "P45D"
+    secret_fields: []
+    privacy_class: local-only
+    break_recipe: "dry-run: age all rebalance-*.md past 135 days => RED (portfolio never rebalanced)"
+    expected_red: "no quarterly portfolio rebalance within 135 days"
+    state: active
+    notes: "Task 8.1. Keyed to the quarterly rebalance artifact."
+
+  # Plan 01 Phase 6 (2026-07-08): recursive review-loop crons on the VPS n8n. Dead-man
+  # expiry on the latest digest each produces; a missed run goes RED at SessionStart.
+  # external:true so planned VPS downtime is H5-ackable rather than crying wolf.
+  - id: review-weekly
+    class: eval
+    config_path: "__WINDOWS_WORKSPACE__/.planning/missions/_digests"
+    owner: "Jonathan"
+    external: true
+    probe_cmd: "[bool](Get-ChildItem '__WINDOWS_WORKSPACE__\\.planning\\missions\\_digests\\initiative-*.md' -EA SilentlyContinue | Where-Object { $_.LastWriteTime -gt (Get-Date).AddDays(-8) })"
+    cadence: "P7D"
+    slack: "P1D"
+    secret_fields: []
+    privacy_class: local-only
+    break_recipe: "dry-run: age the newest initiative-*.md past 8 days in a sandbox => probe RED"
+    expected_red: "no initiative-*.md digest newer than 8 days (weekly review cron missed or n8n down)"
+    state: active
+    notes: "Task 6.1. n8n workflow HiZkpZilC7RQL72E (Mon 15:00 UTC). Read-only digest, no adopt-gate."
+  - id: review-monthly
+    class: eval
+    config_path: "__WINDOWS_WORKSPACE__/.planning/missions/_digests"
+    owner: "Jonathan"
+    external: true
+    probe_cmd: "[bool](Get-ChildItem '__WINDOWS_WORKSPACE__\\.planning\\missions\\_digests\\mission-review-*.md' -EA SilentlyContinue | Where-Object { $_.LastWriteTime -gt (Get-Date).AddDays(-45) })"
+    cadence: "P31D"
+    slack: "P14D"
+    secret_fields: []
+    privacy_class: local-only
+    break_recipe: "dry-run: age the newest mission-review-*.md past 45 days => probe RED"
+    expected_red: "no mission-review-*.md newer than 45 days (monthly review cron missed)"
+    state: active
+    notes: "Task 6.2. n8n workflow VVa9rKBjK1FSbOxl (1st 16:00 UTC). Human adopt-gate; INERT digest."
+  - id: review-quarterly
+    class: eval
+    config_path: "__WINDOWS_WORKSPACE__/.planning/missions/_digests"
+    owner: "Jonathan"
+    external: true
+    probe_cmd: "[bool](Get-ChildItem '__WINDOWS_WORKSPACE__\\.planning\\missions\\_digests\\rebalance-*.md' -EA SilentlyContinue | Where-Object { $_.LastWriteTime -gt (Get-Date).AddDays(-100) })"
+    cadence: "P90D"
+    slack: "P10D"
+    secret_fields: []
+    privacy_class: local-only
+    break_recipe: "dry-run: age the newest rebalance-*.md past 100 days => probe RED"
+    expected_red: "no rebalance-*.md newer than 100 days (quarterly rebalance cron missed)"
+    state: active
+    notes: "Task 6.3. n8n workflow cLqbRpKmG3C0Uzyb (quarterly 17:00 UTC). Human adopt-gate; INERT."
+
+  # Plan 01 Phase 7 (2026-07-08): ops lifecycle P1/P2 surfaces.
+  - id: versions-drift
+    class: eval
+    config_path: "__WINDOWS_WORKSPACE__/VERSIONS.lock"
+    owner: "Jonathan"
+    probe_cmd: "Test-Path -LiteralPath '__WINDOWS_WORKSPACE__\\VERSIONS.lock'"
+    cadence: "P30D"
+    slack: "P7D"
+    secret_fields: []
+    privacy_class: local-only
+    break_recipe: "dry-run: rename VERSIONS.lock in a sandbox => probe RED (missing lock)"
+    expected_red: "VERSIONS.lock missing (upgrade wrapper bypassed - installed vs locked unverifiable)"
+    state: active
+    notes: "Task 7.1. Installed-vs-locked component versions; updates go through scripts/ops/upgrade.ps1 (snapshot->upgrade->probe+eval smoke->auto-rollback on RED)."
+  - id: model-catalog
+    class: eval
+    config_path: "__WINDOWS_WORKSPACE__/output/ops/model-catalog.hash"
+    owner: "Jonathan"
+    probe_cmd: "$global:LASTEXITCODE=0; & powershell.exe -NoProfile -ExecutionPolicy Bypass -File '__WINDOWS_WORKSPACE__\\scripts\\ops\\probes\\probe-model-catalog.ps1' | Out-Null; $LASTEXITCODE -eq 0"
+    cadence: "P7D"
+    slack: "P2D"
+    secret_fields: []
+    privacy_class: local-only
+    break_recipe: "reference a nonexistent LOCAL-tier model in routing-policy.json => RED; a changed ollama catalog hash => YELLOW note (gate stays GREEN per D15)"
+    expected_red: "MODEL-CATALOG RED (routing/council references a model absent both locally and from the cloud cache)"
+    state: active
+    notes: "Task 7.2. YELLOW (D15) on catalog-hash change or unverifiable routed model (stale cloud cache); RED only for a genuinely absent reference. ollama unreachable => YELLOW."
+  - id: gpu-budget
+    class: eval
+    config_path: "__WINDOWS_WORKSPACE__/scripts/ops/gpu-arbiter.ps1"
+    owner: "Jonathan"
+    probe_cmd: "$global:LASTEXITCODE=0; & powershell.exe -NoProfile -ExecutionPolicy Bypass -File '__WINDOWS_WORKSPACE__\\scripts\\ops\\gpu-arbiter.ps1' | Out-Null; $LASTEXITCODE -eq 0"
+    cadence: "P3650D"
+    slack: "P1D"
+    secret_fields: []
+    privacy_class: local-only
+    severity: degrade
+    break_recipe: "dry-run: rename gpu-arbiter.ps1 in a sandbox => probe fails; a no-GPU host reports GPU-ABSENT skip (DEGRADE, not RED)"
+    expected_red: "gpu-arbiter.ps1 missing or errors; GPU contention is DEGRADE-severity (image gen non-critical), never core RED"
+    state: active
+    notes: "Task 7.3. Arbiter subordinates local Ollama keep-alive to a ComfyUI job when free VRAM < threshold, then restores. GPU-ABSENT on this host is a graceful skip."
+
+  # Plan 01 Task 2C.2 (2026-07-08): CARE fail-closed enforcement for the
+  # community-mission domain - built BEFORE any community data exists (D8).
+  - id: practice-loop
+    class: eval
+    config_path: "__WINDOWS_WORKSPACE__/output/practice-loop/active-hashes.json"
+    owner: "Jonathan"
+    probe_cmd: "$global:LASTEXITCODE=0; & powershell.exe -NoProfile -ExecutionPolicy Bypass -File '__WINDOWS_WORKSPACE__\\scripts\\ops\\probes\\probe-practice-loop.ps1' | Out-Null; $LASTEXITCODE -eq 0"
+    cadence: "P7D"
+    slack: "P2D"
+    secret_fields: []
+    privacy_class: local-only
+    break_recipe: "strip the is_injection gate in learning_loop.py (canary-result missed>0 => RED); OR edit filter-prompt-v1.txt/a seed pack in place (hash drift => RED); OR skip a weekly run (digest ages past P7D+P2D => RED)"
+    expected_red: "RED (missed canary / filter-prompt or seed-pack hash drift / stale digest)"
+    state: active
+    notes: "Plan 01 Phase 5. Probe = scripts/ops/probes/probe-practice-loop.ps1 (digest<8d + all 10 canaries CAUGHT + active-hashes.json pins match). Weekly runner scripts/practice-loop/run_weekly.py; swap-filter.ps1 gates any filter change (corpus replay + canary revalidation, replay judge != filter model). Kit twin export/orchestration-layer/practice-loop (renamed from m15-practice-loop 2026-07-31, export token policy) ships the canary pool + the GATE, digest-only default, adopt-write path physically excluded. 'practice-loop' is on the I2 denylist (root + export) - verified tripwire-biting 2026-07-08."
+
+  # M12 (2026-07-07): remaining nav-chain docs under freshness control + the standing
+  # quarterly cold-start probe (PLAN.md M12 steps 12.2-12.3).
+  - id: doc-llm-triage-card
+    class: doc
+    config_path: "__WINDOWS_WORKSPACE__/.claude/LLM-TRIAGE-CARD.md"
+    owner: "Jonathan"
+    probe_cmd: "[bool](Select-String -LiteralPath '__WINDOWS_WORKSPACE__\\.claude\\LLM-TRIAGE-CARD.md' -Pattern 'START HERE' -SimpleMatch -ErrorAction SilentlyContinue)"
+    cadence: "P3650D"
+    slack: "P1D"
+    secret_fields: []
+    privacy_class: local-only
+    freshness_after:
+      - "__WINDOWS_WORKSPACE__/.claude/LLM-OPS-RUNBOOK.md"
+    break_recipe: "dry-run: touch LLM-OPS-RUNBOOK.md newer than the triage card in a sandbox"
+    expected_red: "DOC_STALE:doc-llm-triage-card"
+    state: active
+    notes: "Triage card routes into runbook sections; if the runbook changes materially the card must be re-checked. Probe also proves the START HERE reciprocal link survives edits."
+  - id: doc-llm-ops-runbook
+    class: doc
+    config_path: "__WINDOWS_WORKSPACE__/.claude/LLM-OPS-RUNBOOK.md"
+    owner: "Jonathan"
+    probe_cmd: "[bool](Select-String -LiteralPath '__WINDOWS_WORKSPACE__\\.claude\\LLM-OPS-RUNBOOK.md' -Pattern 'START HERE' -SimpleMatch -ErrorAction SilentlyContinue)"
+    cadence: "P3650D"
+    slack: "P1D"
+    secret_fields: []
+    privacy_class: local-only
+    freshness_after:
+      - "__WINDOWS_WORKSPACE__/SURFACE-GRAPH.yaml"
+      - "__WINDOWS_WORKSPACE__/scripts/graph-gate.ps1"
+    freshness_grace: "P30D"
+    break_recipe: "dry-run: touch graph-gate.ps1 newer than the runbook in a sandbox"
+    expected_red: "DOC_STALE:doc-llm-ops-runbook"
+    state: active
+    notes: "Runbook describes gate/recovery machinery. Grace P30D (not default P7D) per M12 review: SURFACE-GRAPH.yaml churns with routine row additions that rarely change recovery procedures; P7D invited touch-to-silence."
+  # M14 (2026-07-08): ComfyUI registered as a NON-CRITICAL surface. severity: degrade =>
+  # probe/expiry failures report DEGRADED (visible, counted) without flipping the gate.
+  - id: comfyui
+    class: mcp
+    config_path: "__WINDOWS_WORKSPACE__/bindings.local.yaml"
+    owner: "Jonathan"
+    probe_cmd: "$global:LASTEXITCODE=0; & powershell.exe -NoProfile -ExecutionPolicy Bypass -File '__WINDOWS_WORKSPACE__\\scripts\\probe-comfyui.ps1' | Out-Null; $LASTEXITCODE -eq 0"
+    cadence: "P3650D"
+    slack: "P1D"
+    secret_fields: []
+    privacy_class: local-only
+    severity: degrade
+    break_recipe: "stop the ComfyUI server (or rename a manifest-pinned model in a sandbox) => probe exits 1 => row DEGRADED, gate stays GREEN"
+    expected_red: "DEGRADED (any probe failure incl. COMFYUI_DOWN / MANIFEST_MISSING / MODELS_DRIFT / MANIFEST_TAMPERED / BINDING_MISSING - the graph gate sees ok/not-ok, so severity degrade softens ALL failure classes; exit-code distinctions only apply to direct probe invocation). This row never REDs the gate by design and is EXCLUDED from mutation rotation."
+    state: active
+    notes: "M14. Probe = /system_stats + models-manifest compare (filenames+sizes; .sha256 sidecar guards accidental corruption, not tamper; never hashes blobs) + GPU note. Endpoint/models-root/manifest paths come from bindings.local.yaml (Q10, local-only). Kit twin = m11/modules/image-video (opt-in, GPU-gated, reference workflows only - private models/workflows never ship)."
+  - id: probe-cold-start-nav
+    class: eval
+    config_path: "__WINDOWS_WORKSPACE__/output/cold-start/latest.json"
+    owner: "Jonathan"
+    probe_cmd: "$c = Get-Content -Raw -LiteralPath '__WINDOWS_WORKSPACE__\\output\\cold-start\\latest.json' -ErrorAction SilentlyContinue; [bool]$c -and ($c -match '\"status\"\\s*:\\s*\"PASS\"')"
+    cadence: "P90D"
+    slack: "P7D"
+    secret_fields: []
+    privacy_class: local-only
+    break_recipe: "dry-run: point the probe at an absent latest.json in a sandbox; expiry also fires if no fresh probe ran within a quarter"
+    expected_red: "COLD_START_PROBE_STALE_OR_FAILED"
+    state: active
+    notes: "Standing quarterly cold-start probe (M12.3): a fresh weaker-LLM session follows the START HERE nav index and completes the scripted task via tests/m12-cold-start-probe.ps1. Expiry (P90D+P7D) forces a quarterly rerun; probe fails if the last run did not PASS."
+  - id: blueprint-registry
+    class: eval
+    config_path: "__WINDOWS_WORKSPACE__/.planning/missions/community-mission/blueprints/CATALOG.md"
+    owner: "Jonathan"
+    probe_cmd: "[bool]((Test-Path '__WINDOWS_WORKSPACE__\\.planning\\missions\\community-mission\\blueprints\\CATALOG.md') -and ((Get-Item '__WINDOWS_WORKSPACE__\\.planning\\missions\\community-mission\\blueprints\\CATALOG.md').LastWriteTime -gt (Get-Date).AddDays(-100)) -and ((Get-ChildItem '__WINDOWS_WORKSPACE__\\.planning\\missions\\community-mission\\blueprints\\BRIEF-*.md' -EA SilentlyContinue).Count -eq 5))"
+    cadence: "P30D"
+    slack: "P45D"
+    secret_fields: []
+    privacy_class: local-only
+    break_recipe: "rename CATALOG.md"
+    expected_red: "blueprint registry stale (CATALOG.md older than 100 days) or BRIEF-*.md count != 5"
+    state: active
+    notes: "Plan 02 Task 4.2(b): blueprint-registry freshness heartbeat (D13). Probe logic verbatim from the plan's concrete block (CATALOG.md fresher than 100 days AND 5 briefs), expressed in this graph's boolean probe style per the schema block and Checkpoint 4 Step B (see Plan 02 DEVIATIONS.md, Task 4.2(b) entry). CARE domain: registry is local-only and scrub-denied."
+  - id: autoexperiment-control-plane
+    class: eval
+    config_path: "__WINDOWS_WORKSPACE__/scripts/autoexperiment/control-plane.ps1"
+    owner: "Jonathan"
+    probe_cmd: "$o=& powershell.exe -NoProfile -ExecutionPolicy Bypass -File '__WINDOWS_WORKSPACE__\\scripts\\autoexperiment\\control-plane.ps1' -Command status; $j=($o -join ' ')|ConvertFrom-Json; [bool]$j -and $j.dispatch_activation -eq 'manual_report_only'"
+    cadence: "P3650D"
+    slack: "P1D"
+    secret_fields: []
+    privacy_class: local-only
+    break_recipe: "dry-run: point the control-plane status command at an absent schedules contract in a sandbox copy"
+    expected_red: "AUTOEXPERIMENT_CONTROL_PLANE_MISSING_OR_UNTRUTHFUL"
+    state: active
+  - id: autoexperiment-schedules
+    class: eval
+    config_path: "__WINDOWS_WORKSPACE__/.planning/autoexperiment-control-plane/contracts/schedules.yaml"
+    owner: "Jonathan"
+    probe_cmd: "$j=Get-Content -Raw -LiteralPath '__WINDOWS_WORKSPACE__\\.planning\\autoexperiment-control-plane\\contracts\\schedules.yaml'|ConvertFrom-Json; $j.activation -eq 'manual_report_only' -and @($j.chains).Count -eq 3"
+    cadence: "P3650D"
+    slack: "P1D"
+    secret_fields: []
+    privacy_class: local-only
+    break_recipe: "dry-run: change activation in a sandbox contract copy; the probe must reject it"
+    expected_red: "AUTOEXPERIMENT_SCHEDULE_CONTRACT_DRIFT"
+    state: active
+  - id: autoexperiment-state
+    class: eval
+    config_path: "__WINDOWS_WORKSPACE__/.planning/autoexperiment-control-plane/state/experiments.jsonl"
+    owner: "Jonathan"
+    probe_cmd: "Test-Path -LiteralPath '__WINDOWS_WORKSPACE__\\.planning\\autoexperiment-control-plane\\state\\experiments.jsonl'"
+    cadence: "P3650D"
+    slack: "P1D"
+    secret_fields: []
+    privacy_class: local-only
+    break_recipe: "dry-run: hide the JSONL ledger from a sandbox path"
+    expected_red: "AUTOEXPERIMENT_LEDGER_MISSING"
+    state: active
+  - id: kit-autoexperiment-skill
+    class: kit-component
+    config_path: "__WINDOWS_WORKSPACE__/skills-shared/autoexperiment/SKILL.md"
+    owner: "Jonathan"
+    probe_cmd: "[bool](Select-String -LiteralPath '__WINDOWS_WORKSPACE__\\skills-shared\\autoexperiment\\SKILL.md' -Pattern 'name: autoexperiment' -SimpleMatch -ErrorAction SilentlyContinue)"
+    cadence: "P3650D"
+    slack: "P1D"
+    secret_fields: []
+    privacy_class: local-only
+    break_recipe: "dry-run: remove the name frontmatter from a sandbox copy"
+    expected_red: "AUTOEXPERIMENT_SKILL_INVALID"
+    state: active
+    notes: "Dormant canonical source through Plan 07; Plan 08 owns any targeted active-tier promotion."

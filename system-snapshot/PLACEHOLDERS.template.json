@@ -1,0 +1,16 @@
+{
+  "__GLOBAL_NPM__": "<local-value>",
+  "__LINUX_USER__": "<local-value>",
+  "__OWNER_HANDLE__": "<local-value>",
+  "__PRIVATE_TOKEN_01__": "<local-value>",
+  "__PRIVATE_TOKEN_02__": "<local-value>",
+  "__PRIVATE_TOKEN_03__": "<local-value>",
+  "__PRIVATE_TOKEN_04__": "<local-value>",
+  "__PRIVATE_TOKEN_05__": "<local-value>",
+  "__PRIVATE_TOKEN_08__": "<local-value>",
+  "__PRIVATE_TOKEN_12__": "<local-value>",
+  "__PRIVATE_TOKEN_13__": "<local-value>",
+  "__PRIVATE_TOKEN_14__": "<local-value>",
+  "__TAILSCALE_IPV4__": "<local-value>",
+  "__WINDOWS_USER__": "<local-value>"
+}

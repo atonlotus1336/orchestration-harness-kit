@@ -1,0 +1,10 @@
+{
+  "schema_version": "1.0",
+  "schedule": {"day": "Wednesday", "time": "14:00", "timezone": "America/New_York", "enabled_by_default": false},
+  "components": ["hermes", "prime", "omp"],
+  "outcomes": ["PROMOTED", "FAILED_RESTORED", "SKIPPED"],
+  "halt_classes": ["ROLLBACK_UNVERIFIED", "INTEGRITY_FAILURE", "CREDENTIAL_FAILURE", "SHARED_INFRASTRUCTURE_FAILURE"],
+  "prohibited_mutations": ["credentials", "provider_policy", "permissions", "memory_store", "network_policy", "session_data"],
+  "automatic_push": false,
+  "retention_runs": 12
+}

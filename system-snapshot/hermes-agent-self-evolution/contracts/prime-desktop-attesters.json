@@ -1,0 +1,19 @@
+{
+  "schema_version": "1.0",
+  "namespace": "hermes-prime-attester-v1",
+  "principal": "hermes-prime-attester@__PRIVATE_TOKEN_02__",
+  "ttl_seconds": 300,
+  "clock_skew_seconds": 30,
+  "clients": {
+    "NUCBOX-MINI-ULTRA": {
+      "endpoint": "http://127.0.0.1:8642",
+      "public_key": "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFK2oibw7zwXXRL3WJpSdx6Y5hVs0TqDl7pbP9OIzNG3 hermes-prime-operator@nucbox-mini-ultra",
+      "fingerprint": "SHA256:gDHP9I9jTVRHtITnBSX5v4UfR68HO7CO6ZbpXtjRkDM"
+    },
+    "DESKTOP-2S7VQDO": {
+      "endpoint": "http://__TAILSCALE_IPV4__:8642",
+      "public_key": null,
+      "fingerprint": null
+    }
+  }
+}

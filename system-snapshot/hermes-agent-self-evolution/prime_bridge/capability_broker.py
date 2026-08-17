@@ -1,0 +1,118 @@
+"""Hermes-owned forwarding boundary for Prime capability requests."""
+
+from __future__ import annotations
+
+import hashlib
+import json
+from collections.abc import Awaitable, Callable
+from typing import Any, Protocol
+
+from prime_bridge.capability_ledger import CapabilityLedger, CapabilityLedgerError
+from prime_bridge.capability_policy import CapabilityPolicy, CapabilityPolicyError
+
+
+class CapabilityAdapter(Protocol):
+    async def call(self, server: str, tool: str, arguments: dict[str, Any]) -> Any: ...
+    def configured(self) -> tuple[str, ...]: ...
+
+
+class CapabilityBrokerError(RuntimeError):
+    pass
+
+
+class CapabilityBroker:
+    def __init__(
+        self, policy: CapabilityPolicy, ledger: CapabilityLedger,
+        adapter: CapabilityAdapter, *, job_ledger: Any | None = None,
+        internal_handlers: dict[str, Callable[[str, dict[str, Any], dict[str, str]], Awaitable[Any]]] | None = None,
+    ):
+        self.policy = policy
+        self.ledger = ledger
+        self.adapter = adapter
+        self.job_ledger = job_ledger
+        self.internal_handlers = dict(internal_handlers or {})
+
+    def _audit(self, job_id: str, kind: str, data: dict[str, Any]) -> None:
+        if self.job_ledger is not None:
+            self.job_ledger.note(job_id, kind, data)
+
+    async def handle(self, request: dict[str, Any]) -> dict[str, Any]:
+        if not isinstance(request, dict) or set(request) - {"job_id", "profile", "alias", "arguments", "request_id"}:
+            raise CapabilityBrokerError("invalid capability request")
+        job_id, profile, alias = request.get("job_id"), request.get("profile"), request.get("alias")
+        if not all(isinstance(value, str) for value in (job_id, profile, alias)):
+            raise CapabilityBrokerError("invalid capability request identity")
+        active_request_id: str | None = None
+        try:
+            decision = self.policy.decision(alias)
+            arguments = self.policy.canonical_arguments(request.get("arguments", {}))
+            request_id = request.get("request_id")
+            if request_id is None:
+                record = self.ledger.create(
+                    job_id=job_id, profile=profile, alias=alias,
+                    decision=decision, arguments=arguments,
+                )
+                self._audit(job_id, "capability_requested", {
+                    "request_id": record["request_id"], "alias": alias,
+                    "classification": decision.classification,
+                    "argument_hash": arguments.digest,
+                    "approval": decision.approval,
+                })
+                if record["status"] == "pending":
+                    return {
+                        "status": "approval_required", "request_id": record["request_id"],
+                        "alias": alias, "classification": decision.classification,
+                    }
+                request_id = record["request_id"]
+            elif not isinstance(request_id, str):
+                raise CapabilityBrokerError("invalid capability request ID")
+            existing = self.ledger.get(request_id)
+            active_request_id = request_id
+            if existing["alias"] != alias:
+                raise CapabilityBrokerError("approval binding mismatch")
+            self.ledger.authorize(
+                request_id, profile=profile, job_id=job_id,
+                argument_hash=arguments.digest,
+            )
+            if decision.server in self.internal_handlers:
+                result = await self.internal_handlers[decision.server](
+                    decision.tool, arguments.value(), {"job_id": job_id, "profile": profile},
+                )
+            else:
+                result = await self.adapter.call(decision.server, decision.tool, arguments.value())
+            sanitized = self.policy.sanitize_result(result)
+            encoded = json.dumps(sanitized, sort_keys=True, separators=(",", ":"), ensure_ascii=False).encode()
+            summary = {"status": "ok", "bytes": len(encoded), "result_hash": hashlib.sha256(encoded).hexdigest()}
+            self.ledger.complete(request_id, outcome="ok", result_summary=summary)
+            self._audit(job_id, "capability_completed", {
+                "request_id": request_id, "alias": alias,
+                "classification": decision.classification,
+                "result_hash": summary["result_hash"], "approval": existing["approval_provenance"]["kind"],
+            })
+            return {"status": "ok", "request_id": request_id, "result": sanitized}
+        except (CapabilityPolicyError, CapabilityLedgerError) as exc:
+            raise CapabilityBrokerError(str(exc)) from exc
+        except CapabilityBrokerError:
+            raise
+        except Exception as exc:
+            if active_request_id is not None:
+                try:
+                    self.ledger.complete(active_request_id, outcome="error", result_summary={"status": "error", "type": type(exc).__name__})
+                except CapabilityLedgerError:
+                    pass
+            raise CapabilityBrokerError(f"capability execution failed: {type(exc).__name__}") from exc
+
+    def health(self) -> dict[str, str]:
+        try:
+            configured = set(self.adapter.configured()) | set(self.internal_handlers)
+            targets = {item.server for item in self.policy.aliases.values()}
+            retrieval_targets = {item.server for item in self.policy.aliases.values() if item.classification == "retrieval"}
+            transport = "configured" if targets & configured else "unavailable"
+            retrieval = "configured" if retrieval_targets & configured else "unavailable"
+        except Exception:  # noqa: BLE001 - readiness must fail closed for any adapter/config failure
+            transport = retrieval = "unavailable"
+        return {
+            "liveness": "ready", "policy": "ready" if self.policy.enabled else "disabled",
+            "mcp_transport": transport, "retrieval": retrieval,
+            "remote": "not-probed", "authentication": "host-owned",
+        }

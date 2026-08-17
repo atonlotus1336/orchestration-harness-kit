@@ -1,0 +1,37 @@
+{
+  "schema_version": "1.0",
+  "enabled": true,
+  "decisions": {
+    "ALLOW_LSP": {
+      "classification": "retrieval",
+      "approval": "auto",
+      "description": "Read-only LSP navigation inside an admitted Prime code job"
+    },
+    "ALLOW_HASH_PREVIEW": {
+      "classification": "action",
+      "approval": "required",
+      "description": "Hash-bound edit preview; never an authoritative write"
+    },
+    "ALLOW_WORKER": {
+      "classification": "action",
+      "approval": "required",
+      "description": "Transient OMP worker in a disposable worktree"
+    },
+    "DENY_NATIVE_FALLBACK": {
+      "classification": "action",
+      "approval": "required",
+      "description": "OMP must never select a native/alternate model fallback"
+    }
+  },
+  "deny": {
+    "direct_omp": true,
+    "nested_omp": true,
+    "omp_to_prime": true,
+    "omp_to_hermes": true,
+    "subagent": true,
+    "missing_stale_parent": true,
+    "disabled_profile_global": true
+  },
+  "shared_budget": true,
+  "require_ready_feasibility_hash": true
+}

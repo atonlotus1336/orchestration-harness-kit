@@ -1,0 +1,220 @@
+model:
+  provider: ollama-cloud
+  default: deepseek-v4-flash:cloud
+routing:
+  policy_path: __WINDOWS_WORKSPACE__\.planning\hermes-master-plan\routing-policy.json
+  route_ledger: __WINDOWS_WORKSPACE__\.planning\hermes-master-plan\eval\route-ledger.jsonl
+  council_presets: shared
+custom_providers:
+- name: ollama-cloud-local
+  base_url: http://127.0.0.1:11434/v1
+  model: deepseek-v4-flash:cloud
+  models:
+  - deepseek-v4-flash:cloud
+  - deepseek-v3.1:671b-cloud
+  - deepseek-v4-pro:cloud
+  - devstral-2:123b-cloud
+  - devstral-small-2:24b-cloud
+  - gemma4:31b-cloud
+  - glm-5.1:cloud
+  - glm-5.2:cloud
+  - gpt-oss:120b-cloud
+  - gpt-oss:20b-cloud
+  - kimi-k2.6:cloud
+  - ministral-3:14b-cloud
+  - nemotron-3-nano:30b-cloud
+  - qwen3-coder:480b-cloud
+  - qwen3-next:80b-cloud
+  - qwen3-vl:235b-cloud
+  - qwen3.5:cloud
+  api_key: ollama
+  api_mode: chat_completions
+fallback_providers:
+- provider: ollama-cloud
+  model: deepseek-v4-pro:cloud
+  base_url: http://127.0.0.1:11434/v1
+  api_key: ollama
+  api_mode: chat_completions
+- provider: ollama-cloud
+  model: gemma4:31b-cloud
+  base_url: http://127.0.0.1:11434/v1
+  api_key: ollama
+  api_mode: chat_completions
+display:
+  show_cost: true
+  personality: concise
+toolsets:
+  - hermes-cli
+memory:
+  memory_enabled: true
+  user_profile_enabled: true
+  memory_char_limit: 4000
+  user_char_limit: 2500
+  nudge_interval: 10
+  flush_min_turns: 6
+mcp_servers:
+  obsidian:
+    command: /home/__LINUX_USER__/.local/bin/node
+    args:
+    - __GLOBAL_NPM__/mcp-obsidian/dist/index.js
+    - __WSL_WORKSPACE__
+  rag-orchestrator:
+    command: __WSL_WORKSPACE__/.mcp-servers/rag-orchestrator/launch-hermes.sh
+    args: []
+  memoryweaver-mcp:
+    command: /home/__LINUX_USER__/.local/share/memoryweaver-mcp/venv/bin/python3.11
+    args:
+    - __WSL_WORKSPACE__/.mcp-servers/memoryweaver-mcp/server.py
+    env:
+      MEMORYWEAVER_DATA_DIR: __WSL_WORKSPACE__/.claude/Memory/memoryweaver
+      MEMORYWEAVER_FTS_DB_PATH: /home/__LINUX_USER__/.local/share/memoryweaver-runtime/fts.db
+  __PRIVATE_TOKEN_02__-control-plane:
+    command: bash
+    args:
+    - -lc
+    - exec bash __WSL_WORKSPACE__/.codex/mcp-servers/__PRIVATE_TOKEN_02__-control-plane/launch-hermes.sh
+    env:
+      WINDOWS_USER: __WINDOWS_USER__
+      __PRIVATE_TOKEN_02___USER_ROOT: /mnt/c/Users/__WINDOWS_USER__
+      __PRIVATE_TOKEN_02___WORKSPACE_ROOT: __WSL_WORKSPACE__
+  context-mode:
+    command: python3
+    args:
+    - __WSL_WORKSPACE__/.mcp-servers/context-mode/server.py
+providers:
+  local-ollama:
+    api: http://127.0.0.1:11434/v1
+    name: Windows Ollama
+    default_model: hermes3:8b
+    api_key: ollama
+    api_mode: chat_completions
+    models:
+      deepseek-coder-v2-lite:q3: {}
+      deepseek-coder-v2-lite:q4: {}
+      deepseek-coder-v2-lite:q5: {}
+      dolphin3:latest: {}
+      gemma4-ollamauncensored-32k:latest: {}
+      hermes3:8b: {}
+      hf.co/bartowski/MN-12B-Mag-Mell-R1-GGUF:Q4_K_M: {}
+      llava:7b-v1.6-vicuna-q2_K: {}
+      mistral:7b: {}
+      nomic-embed-text:latest: {}
+      qwen2.5-coder:14b: {}
+      vanilj/mistral-nemo-12b-celeste-v1.9:latest: {}
+  ollama-cloud:
+    api: http://127.0.0.1:11434/v1
+    name: Ollama Cloud
+    default_model: glm-5.2:cloud
+    api_key: ollama
+    api_mode: chat_completions
+    models:
+      deepseek-v3.1:671b-cloud: {}
+      deepseek-v4-pro:cloud: {}
+      devstral-2:123b-cloud: {}
+      devstral-small-2:24b-cloud: {}
+      gemma4:31b-cloud: {}
+      glm-5.1:cloud: {}
+      glm-5.2:cloud: {}
+      gpt-oss:120b-cloud: {}
+      gpt-oss:20b-cloud: {}
+      kimi-k2.6:cloud: {}
+      ministral-3:14b-cloud: {}
+      nemotron-3-nano:30b-cloud: {}
+      qwen3-coder:480b-cloud: {}
+      qwen3-next:80b-cloud: {}
+      qwen3-vl:235b-cloud: {}
+      qwen3.5:cloud: {}
+  ollama-cloud-local:
+    api: http://127.0.0.1:11434/v1
+    name: Ollama Cloud via local Ollama
+    default_model: glm-5.2:cloud
+    api_key: ollama
+    api_mode: chat_completions
+    models:
+      deepseek-v3.1:671b-cloud: {}
+      deepseek-v4-pro:cloud: {}
+      devstral-2:123b-cloud: {}
+      devstral-small-2:24b-cloud: {}
+      gemma4:31b-cloud: {}
+      glm-5.1:cloud: {}
+      glm-5.2:cloud: {}
+      gpt-oss:120b-cloud: {}
+      gpt-oss:20b-cloud: {}
+      kimi-k2.6:cloud: {}
+      ministral-3:14b-cloud: {}
+      nemotron-3-nano:30b-cloud: {}
+      qwen3-coder:480b-cloud: {}
+      qwen3-next:80b-cloud: {}
+      qwen3-vl:235b-cloud: {}
+      qwen3.5:cloud: {}
+  ollama-local:
+    api: http://127.0.0.1:11434/v1
+    name: Ollama Local
+    default_model: hermes3:8b
+    api_key: ollama
+    api_mode: chat_completions
+    models:
+      deepseek-coder-v2-lite:q3: {}
+      deepseek-coder-v2-lite:q4: {}
+      deepseek-coder-v2-lite:q5: {}
+      dolphin3:latest: {}
+      gemma4-ollamauncensored-32k:latest: {}
+      hermes3:8b: {}
+      hf.co/bartowski/MN-12B-Mag-Mell-R1-GGUF:Q4_K_M: {}
+      llava:7b-v1.6-vicuna-q2_K: {}
+      mistral:7b: {}
+      nomic-embed-text:latest: {}
+      qwen2.5-coder:14b: {}
+      vanilj/mistral-nemo-12b-celeste-v1.9:latest: {}
+skills:
+  external_dirs:
+  - __WSL_WORKSPACE__/skills-active
+  template_vars: true
+  inline_shell: false
+  inline_shell_timeout: 10
+  guard_agent_created: false
+  creation_nudge_interval: 15
+cron:
+  wrap_response: true
+  max_parallel_jobs: null
+kanban:
+  dispatch_in_gateway: true
+  dispatch_interval_seconds: 60
+plugins:
+  enabled:
+  - quotes-batch
+  - christnews-trigger
+  - fusion-frontends
+  - image_gen/comfyui-bridge
+  - __PRIVATE_TOKEN_02__-parity
+  disabled: []
+delegation:
+  model: ''
+  provider: ''
+  base_url: ''
+  inherit_mcp_toolsets: true
+  max_iterations: 50
+  child_timeout_seconds: 600
+  reasoning_effort: ''
+  max_concurrent_children: 3
+  max_spawn_depth: 1
+  orchestrator_enabled: true
+  subagent_auto_approve: false
+mcp_servers_disabled:
+  wordpress:
+    command: /home/__LINUX_USER__/.hermes/hermes-agent/venv/bin/python
+    args:
+    - __WSL_WORKSPACE__/.mcp-servers/wordpress/server.py
+    env:
+      WORDPRESS_SITE_BASE: https://example.com
+      WORDPRESS_TOKEN_URL: https://example.com/wp-json/api/v1/token
+      WORDPRESS_TOKEN_VALIDATE_URL: https://example.com/wp-json/api/v1/token-validate
+      WORDPRESS_POSTS_URL: https://example.com/wp-json/wp/v2/posts
+  local-rag:
+    command: /home/__LINUX_USER__/.local/bin/node
+    args:
+    - __GLOBAL_NPM__/mcp-local-rag/dist/index.js
+    env:
+      BASE_DIR: __WSL_WORKSPACE__
+      DB_PATH: __WSL_WORKSPACE__/.rag/db
+      CACHE_DIR: __WSL_WORKSPACE__/.rag/cache

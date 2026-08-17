@@ -10,6 +10,11 @@ It ships the **system, never the author's content**: no memories (your store sta
 empty), no private projects, no identity. Machine-specific values are placeholders
 (`alice`, `D:\MyVault`, `__STORE__`) you fill in once during install.
 
+Because this repository is private, it also carries a credential-free snapshot of
+the owner's real Hermes implementation. That snapshot contains implementation code
+and operating policy, never tokens, memories, project content, or mutable runtime
+state.
+
 The default topology is **one agentic system on one PC**. That PC owns the
 home disk, memory, approvals, and backups. VPS and second-PC connections are
 optional modules you enable later; neither becomes a second storage writer.
@@ -32,6 +37,7 @@ optional modules you enable later; neither becomes a second storage writer.
 | [`modules/topology/`](modules/topology/) | Solo-PC default plus optional VPS and second-PC role profiles | Expand without changing who owns the home disk or exposing the dashboard |
 | [`modules/prime-omp/`](modules/prime-omp/) | A strict contract for letting Prime Agent coordinate oh-my-pi coding workers through Hermes | Add a powerful coding lane without handing workers your real repository or final authority |
 | [`modules/verified-maintenance/`](modules/verified-maintenance/) | Daily, weekly, and monthly improvement windows that start only after a successful backup | Keep self-improvement recoverable, sandboxed, and human-approved |
+| [`system-snapshot/`](system-snapshot/) | The actual sanitized Prime/OMP, Hermes Telegram, auto-learning, autoexperiment, maintenance, backup, and restore implementation | Preserve the recent systemic updates rather than only their portable interfaces |
 
 ## Start here: one PC
 
@@ -64,6 +70,9 @@ top to bottom: placeholders → memory engine (empty store) → per-harness wiri
 smoke tests. Then [`REMOTE-ACCESS.md`](REMOTE-ACCESS.md) to reach it from your phone,
 and [`modules/messaging/`](modules/messaging/) to text it.
 
+For the owner's complete recent implementation, verify and restore the private
+snapshot using [`docs/PRIVATE-SYSTEM-SNAPSHOT.md`](docs/PRIVATE-SYSTEM-SNAPSHOT.md).
+
 **Independence matrix** — what needs what:
 
 | Part | Depends on | Standalone test |
@@ -78,6 +87,7 @@ and [`modules/messaging/`](modules/messaging/) to text it.
 | hooks | the memory engine | guide §3.4 |
 | prime-omp | Hermes plus locally installed Prime Agent and OMP | contract verifier plus harmless patch rehearsal |
 | verified-maintenance | your backup command and scheduler | schedule verifier plus intentionally failed backup test |
+| private system snapshot | Python 3.11 and a destination workspace | hash-verifying restore dry-run |
 
 ## Why it's safe to share (the 30-second version)
 
@@ -104,6 +114,8 @@ state.
 - **Skill/agent marketplaces** — install those from their own sources; the
   `system/build-skills-manifest.py` generator indexes whatever skills *you* have.
 - **Secrets** — `config.env` is gitignored; every machine fills its own.
+- **Runtime state and live evidence** — the private snapshot preserves code and
+  policy, while ledgers, logs, signed receipts, caches, and credentials stay local.
 
 ## For AI agents and maintainers
 

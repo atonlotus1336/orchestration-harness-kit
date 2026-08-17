@@ -1,0 +1,54 @@
+{
+  "schema_version": "1.0.0",
+  "required_tier_fields": ["id", "priority", "allowed_uses", "max_age_hours", "privacy_classes", "quarantine", "authorization"],
+  "required_handle_fields": ["source_id", "uri_or_path", "retrieved_at", "sha256", "tier", "privacy_class", "quarantine_state"],
+  "handles_only_in_working_context": true,
+  "raw_content_store": "__WINDOWS_WORKSPACE__/.planning/autoexperiment-control-plane/evidence/quarantine",
+  "tiers": [
+    {
+      "id": "T0-authority",
+      "priority": 0,
+      "allowed_uses": ["authorize", "constrain", "verify"],
+      "max_age_hours": 168,
+      "privacy_classes": ["local-only"],
+      "quarantine": "none",
+      "authorization": "canonical_path"
+    },
+    {
+      "id": "T1-local-measurement",
+      "priority": 1,
+      "allowed_uses": ["baseline", "hypothesis", "verify", "rank"],
+      "max_age_hours": 24,
+      "privacy_classes": ["local-only", "slot"],
+      "quarantine": "none",
+      "authorization": "registered_surface_or_campaign_scope"
+    },
+    {
+      "id": "T2-primary-research",
+      "priority": 2,
+      "allowed_uses": ["hypothesis", "design_context"],
+      "max_age_hours": 720,
+      "privacy_classes": ["shareable", "local-only"],
+      "quarantine": "required",
+      "authorization": "source_allowlist"
+    },
+    {
+      "id": "T3-secondary-research",
+      "priority": 3,
+      "allowed_uses": ["hypothesis_only"],
+      "max_age_hours": 336,
+      "privacy_classes": ["shareable"],
+      "quarantine": "required",
+      "authorization": "source_allowlist"
+    },
+    {
+      "id": "T4-community-indigenous",
+      "priority": 4,
+      "allowed_uses": [],
+      "max_age_hours": 0,
+      "privacy_classes": ["local-only"],
+      "quarantine": "locked",
+      "authorization": "community_authorization_plus_CARE_terms"
+    }
+  ]
+}
