@@ -50,15 +50,16 @@ behavior that only works with a frontier model driving.
 
 ## Current roadmap (update this list when you change it)
 
-- **Role-aware topology (v2, designed not built):** solo single-PC install
-  as the default role; opt-in multi-PC module with Tailscale as recommended
+- **Role-aware topology (v2 portable core built):** `modules/topology` makes
+  solo single-PC the default role and provides opt-in VPS/second-PC profiles,
+  with Tailscale as recommended
   (not required) transport; per-machine identity file + service-address
   indirection so scaling out is a config edit, not a re-architecture.
   Bind policy: chat/API surfaces may bind wide with auth; admin/dashboard
   surfaces stay loopback + tunnel. Verification probes must run FROM the
   remote machine (local green proves nothing about remote reach).
-  The MANUAL version of this ships today as `REMOTE-ACCESS.md` (access-surface
-  map, phone-browser setup, bind/security rules) — v2 automates that guide.
+  `REMOTE-ACCESS.md` supplies the network procedure; the topology module
+  renders disabled local role files and verifies the storage/bind contract.
 - **Docs re-curation:** `docs/` copies lag their upstream originals; they
   are curated per-file, not auto-synced.
 - **Messaging:** more reference adapters welcome (Discord/Slack examples)

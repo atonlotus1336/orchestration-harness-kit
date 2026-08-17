@@ -45,6 +45,10 @@ Because both speak the same API, an adapter written once works against either
   supports without this kit naming any of them. Wire your credentials in n8n
   itself, never in this file. See also `../../n8n-integration/` for n8n binding checks.
 
+- `telegram-adapter.py` — direct deny-by-default Telegram long polling with a
+  numeric sender allowlist. See `TELEGRAM.md`. It does not execute tools and
+  only calls the authenticated chat endpoint.
+
 ## Design rules (inherited from the source system's incident history)
 
 - Deny-by-default sender allowlist. Unknown sender: no reply, log only.

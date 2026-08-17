@@ -208,7 +208,8 @@ companions, then starts the Workspace UI on port `3000`.
 
 Known-good launch state:
 
-![Hermes Workspace launch health showing all services ready](docs/assets/hermes-workspace-launch-health-ready-2026-06-25.png)
+The source-system screenshot is intentionally omitted from the portable kit.
+Use the live health checks below as evidence.
 
 The screenshot above is the visual baseline future agents should compare
 against. It means:

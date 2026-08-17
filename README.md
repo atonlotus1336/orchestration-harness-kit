@@ -10,6 +10,10 @@ It ships the **system, never the author's content**: no memories (your store sta
 empty), no private projects, no identity. Machine-specific values are placeholders
 (`alice`, `D:\MyVault`, `__STORE__`) you fill in once during install.
 
+The default topology is **one agentic system on one PC**. That PC owns the
+home disk, memory, approvals, and backups. VPS and second-PC connections are
+optional modules you enable later; neither becomes a second storage writer.
+
 ## What's in the box (plain-language tour)
 
 | Part | What it does | Why you'd want it |
@@ -25,6 +29,24 @@ empty), no private projects, no identity. Machine-specific values are placeholde
 | [`practice-loop/`](practice-loop/) | A learning loop that turns content you consume into one action, one lesson, one rep — with quality canaries | Stops "watched a tutorial, did nothing" syndrome |
 | `hooks/` | Session hooks that write memory digests automatically | Glue between your harness and the memory engine |
 | [`tools/`](tools/) | The kit's own build/scrub/verify machinery | Only needed if you maintain or extend the kit |
+| [`modules/topology/`](modules/topology/) | Solo-PC default plus optional VPS and second-PC role profiles | Expand without changing who owns the home disk or exposing the dashboard |
+| [`modules/prime-omp/`](modules/prime-omp/) | A strict contract for letting Prime Agent coordinate oh-my-pi coding workers through Hermes | Add a powerful coding lane without handing workers your real repository or final authority |
+| [`modules/verified-maintenance/`](modules/verified-maintenance/) | Daily, weekly, and monthly improvement windows that start only after a successful backup | Keep self-improvement recoverable, sandboxed, and human-approved |
+
+## Start here: one PC
+
+Run the preflight for your operating system, then render the disabled solo
+profile:
+
+```bash
+python modules/topology/configure-topology.py --selftest
+python modules/topology/configure-topology.py --role solo --output topology-local.json
+```
+
+Fill the `<local-value>` entries and verify local services before setting
+`enabled` to `true`. Ignore every optional module until the solo core passes.
+Small local models should read
+[`docs/SMALL-MODEL-START.md`](docs/SMALL-MODEL-START.md) first.
 
 ## Install: choose your path
 
@@ -49,10 +71,13 @@ and [`modules/messaging/`](modules/messaging/) to text it.
 | guards | nothing (Python stdlib) | its self-test, 32 cases |
 | reasoning-shapes | nothing (they're documents) | follow one on a hard question |
 | messaging | any OpenAI-compatible endpoint | `GATEWAY_URL=... python modules/messaging/generic-adapter.py "hi"` |
+| topology | nothing | `python modules/topology/configure-topology.py --selftest` |
 | recipe-miner | a harness that saves transcripts | run it on any transcript file |
 | docs | nothing | read them |
 | system (memory+RAG) | Python 3.11, guide §3 | guide §4 smoke tests |
 | hooks | the memory engine | guide §3.4 |
+| prime-omp | Hermes plus locally installed Prime Agent and OMP | contract verifier plus harmless patch rehearsal |
+| verified-maintenance | your backup command and scheduler | schedule verifier plus intentionally failed backup test |
 
 ## Why it's safe to share (the 30-second version)
 

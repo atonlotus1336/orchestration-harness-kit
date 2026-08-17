@@ -1,7 +1,7 @@
 # Modules — agentic-patterns additions (2026-07-31)
 
-Three self-contained modules distilled from the vault's agentic-patterns v1
-milestone. Each is harness-agnostic and ships with its own verification.
+Self-contained modules for safety, reasoning, topology, messaging, governed
+workers, and verified maintenance. Each ships with a verification path.
 
 ## guards/ — dry-run destructive-command gate
 
@@ -36,3 +36,23 @@ anything — staging + human review is the only path in. Configure via
 `SKILL_STAGING` and `SKILLS_STORE` env vars; wire as a SessionEnd hook.
 Candidates are hash-deduped against a ledger so rejected proposals are
 never re-proposed.
+
+## topology/ — solo first, remote roles optional
+
+Makes one PC the default storage and orchestration authority. VPS and
+second-PC profiles use authenticated APIs and keep the dashboard loopback-only.
+
+## messaging/ — Telegram and generic messenger adapters
+
+Includes the vendor-neutral adapter contract plus a deny-by-default Telegram
+long-poll adapter, sender allowlist, setup guide, and self-test.
+
+## prime-omp/ — governed coding workers
+
+Prepares checksum-bound, disabled local configuration for Prime Agent and OMP.
+Hermes remains responsible for applying and verifying returned patches.
+
+## verified-maintenance/ — backup-gated improvement
+
+Runs daily, weekly, or monthly report-only improvement commands only after the
+corresponding backup command succeeds, with JSON evidence for every execution.

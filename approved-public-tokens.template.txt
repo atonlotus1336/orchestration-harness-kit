@@ -19,3 +19,4 @@ C:\...\index.js
 /mnt/
 prefix:G:\\MyVault
 com.com
+api.telegram.org

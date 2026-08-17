@@ -1,0 +1,11 @@
+{
+  "schema_version": 1,
+  "activation": "manual_report_only",
+  "chains": [
+    {"cadence": "daily", "backup_task": "<local-value>", "backup_must_succeed": true, "scope": "sandbox_analysis"},
+    {"cadence": "weekly", "backup_task": "<local-value>", "backup_must_succeed": true, "scope": "sandbox_analysis"},
+    {"cadence": "monthly", "backup_task": "<local-value>", "backup_must_succeed": true, "scope": "sandbox_analysis"}
+  ],
+  "production_write_requires_human_confirmation": true,
+  "evidence": {"backup_receipt_required": true, "report_required": true}
+}

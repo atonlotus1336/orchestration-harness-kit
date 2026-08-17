@@ -5,6 +5,10 @@
 - Windows preflight script syntax and required tool detection.
 - Linux/WSL preflight script syntax.
 - Module manifest shape.
+- Solo-PC topology default, single storage authority, loopback dashboard, and
+  authenticated remote-role contracts.
+- Telegram adapter sender-denial self-test (no live token is exercised).
+- Prime/OMP provenance preparation and backup-gated maintenance self-tests.
 - Hermes snapshot provenance and checksums.
 - Clone-eval public subset contains only `code-fix` and `agentic-file-op`.
 - Privacy scrub over the M11 kit surface.
@@ -14,6 +18,8 @@
 - Clean VM/container full install.
 - Full module execution in a fresh environment.
 - Recipient clone-eval within 10 points of shipped reference.
+- Live Telegram send/receive using recipient credentials.
+- Remote-side VPS or second-PC reachability and firewall checks.
 
 ## Manual Matrix
 

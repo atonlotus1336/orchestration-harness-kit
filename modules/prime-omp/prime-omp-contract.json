@@ -1,0 +1,24 @@
+{
+  "schema_version": 1,
+  "enabled": false,
+  "controller": "prime-agent",
+  "worker": "oh-my-pi",
+  "authoritative_repository": "<local-value>",
+  "worker_workspace": "disposable-worktree",
+  "allowed_modes": ["read_only_analysis", "patch_preview", "disposable_worker"],
+  "forbidden_capabilities": [
+    "authoritative_repo_write",
+    "direct_patch_apply",
+    "container_socket",
+    "shared_memory",
+    "tool_discovery",
+    "worker_delegation",
+    "alternate_model_provider"
+  ],
+  "patch_flow": {
+    "worker_returns_patch": true,
+    "hermes_applies_patch": true,
+    "hermes_runs_verification": true,
+    "audit_receipt_required": true
+  }
+}

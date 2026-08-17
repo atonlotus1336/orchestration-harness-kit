@@ -44,10 +44,18 @@ $manifestPath = Join-Path $installer "modules\module-manifest.json"
 try {
   $manifest = Get-Content -Raw -LiteralPath $manifestPath | ConvertFrom-Json
   $ids = @($manifest.modules | ForEach-Object { $_.id })
-  $missing = @("memory","rag","harness","hermes-snapshot","clone-eval" | Where-Object { $_ -notin $ids })
+  $missing = @("memory","rag","harness","hermes-snapshot","topology","clone-eval" | Where-Object { $_ -notin $ids })
   Add-Step "module-manifest" $(if ($missing.Count -eq 0) { "GREEN" } else { "RED" }) @{ missing = @($missing) }
 } catch {
   Add-Step "module-manifest" "RED" @{ error = $_.Exception.Message }
+}
+
+$topologyCheck = Join-Path $kit "modules\topology\configure-topology.py"
+if (Test-Path -LiteralPath $topologyCheck) {
+  & python $topologyCheck --selftest | Out-Null
+  Add-Step "topology-solo-default" $(if ($LASTEXITCODE -eq 0) { "GREEN" } else { "RED" }) @{ exit = $LASTEXITCODE }
+} else {
+  Add-Step "topology-solo-default" "RED" @{ missing = $topologyCheck }
 }
 
 $cloneTasks = @(Get-ChildItem -LiteralPath (Join-Path $installer "clone-eval\tasks") -Filter "*.yaml" | ForEach-Object { $_.Name })

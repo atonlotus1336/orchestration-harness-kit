@@ -23,6 +23,9 @@ adapter turns "SSH into the machine" into "send a text."
   run n8n, one webhook workflow gives you every messenger n8n supports — Telegram,
   Discord, Slack, WhatsApp — without writing any adapter code.
 
+- The **direct Telegram route**: `telegram-adapter.py` plus `TELEGRAM.md` gives
+  a complete deny-by-default long-poll setup without requiring n8n.
+
 ## Install just this part
 
 You need one thing already running: an OpenAI-compatible endpoint for your agent
@@ -31,5 +34,8 @@ You need one thing already running: an OpenAI-compatible endpoint for your agent
 1. Test the reference adapter against it (command above).
 2. Pick your platform and either adapt `generic-adapter.py` (~50 lines) or import
    the n8n template and swap in your platform's trigger node.
-3. Keep the auth rule from the contract: **network reachability is never
+3. For Telegram, follow [`TELEGRAM.md`](TELEGRAM.md) and run
+`python telegram-adapter.py --selftest` before loading any token.
+
+4. Keep the auth rule from the contract: **network reachability is never
    authentication** — the adapter always presents the API key.

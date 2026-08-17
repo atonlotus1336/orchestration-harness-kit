@@ -54,7 +54,7 @@ or LAN that gives devices stable private addresses works the same way.
 
 ## Relationship to the roadmap
 
-This guide covers manual setup. The planned role-aware topology module
-(see AGENTS.md roadmap) will automate it: per-machine role files, a service
-address registry, per-role install profiles, and remote-side verification
-probes. Until then, the steps above are the supported path.
+This guide supplies the network steps for the role-aware topology module in
+`modules/topology/`. Render a disabled `vps` or `second-pc` role file there,
+fill its local service addresses, then follow this guide. The solo PC remains
+the only storage authority. Complete the final probe from the remote machine.

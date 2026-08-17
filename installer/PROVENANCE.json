@@ -1,18 +1,19 @@
 ﻿{
     "schema_version":  1,
-    "phase":  "M11",
+    "phase":  "M11-patched",
     "bundle":  "orchestration-layer/installer",
-    "generated_at":  "2026-07-13T20:36:58.7362036Z",
+    "generated_at":  "2026-08-17T20:52:36.3657459Z",
     "source_dependencies":  [
-                                "M7 routing-policy.json",
-                                "M10 scrub-v2 and graph-derived kit core",
-                                "memory-orchestration-kit/bootstrap.sh"
+                                "solo-first topology contract",
+                                "Prime/OMP governed-worker contract",
+                                "backup-gated maintenance contract",
+                                "MemoryWeaver and RAG portable core"
                             ],
     "verification":  {
                          "checksum_algorithm":  "sha256",
                          "clean_target":  "requires M11_CLEAN_TARGET for formal closure",
                          "privacy_scrub":  "m10-scrub-v2 GREEN required before ship",
-                         "clone_eval_baseline":  "clone-eval/baseline.json public subset with exact task/fixture hash key sets"
+                         "clone_eval_baseline":  "cloud parity baseline plus honest local-small-model reference"
                      },
     "files":  [
                   {
@@ -22,8 +23,8 @@
                   },
                   {
                       "path":  "clone-eval\\eval-run.ps1",
-                      "sha256":  "ff78093c7d33b9c8a8e05ff9989471e0088849bbe0fcdb764229ba66fc48932e",
-                      "bytes":  27620
+                      "sha256":  "c9a5ad4742dd1fff1ebe3a49b784220cce787aa503687c85ad38d4e4b762571a",
+                      "bytes":  28175
                   },
                   {
                       "path":  "clone-eval\\fixtures\\agentic-file-op-01\\initial\\active.md",
@@ -106,6 +107,11 @@
                       "bytes":  1680
                   },
                   {
+                      "path":  "clone-eval\\small-model-reference.json",
+                      "sha256":  "d131511ec93df66c2f505f86d419731b0d96cb6e64e4b676c59d568fe345e734",
+                      "bytes":  690
+                  },
+                  {
                       "path":  "clone-eval\\tasks\\agentic-file-op-01.yaml",
                       "sha256":  "243f7de8375f6007ab23d18ccbea26f83e30626e79295cff0861452829e7e7a9",
                       "bytes":  951
@@ -147,13 +153,13 @@
                   },
                   {
                       "path":  "coverage\\DECLARED-COVERAGE.md",
-                      "sha256":  "f46602167398b8b30097220be7dd5de36dea1e26f91da7f2b9329df07b760531",
-                      "bytes":  1302
+                      "sha256":  "513751a249a4bfa326e2236509c666211270799a02f4af29a06967ea9f4072eb",
+                      "bytes":  1718
                   },
                   {
                       "path":  "gate.ps1",
-                      "sha256":  "2f94a8768cd6673de42b89ddc936fd401f44cb9c8ecfb13c521479b105d66dc1",
-                      "bytes":  12763
+                      "sha256":  "eb34a1ee108ecd60af6a6527e564c099de92bc82ff448503d8afbb72d298c0b8",
+                      "bytes":  13593
                   },
                   {
                       "path":  "modules\\harness\\README.md",
@@ -166,44 +172,9 @@
                       "bytes":  1951
                   },
                   {
-                      "path":  "modules\\hermes-snapshot\\vault-parity\\__init__.py",
-                      "sha256":  "6a0fbfc46eefcb74b4b273e59a1a3f2f2eaf782e8631222e4fbae12e4a59c045",
-                      "bytes":  3723
-                  },
-                  {
-                      "path":  "modules\\hermes-snapshot\\vault-parity\\digest.py",
-                      "sha256":  "73eeed64b4ea1789ab12d89193b2149147213f1b53ef24a9d89a5e368f9b2b2e",
-                      "bytes":  4948
-                  },
-                  {
-                      "path":  "modules\\hermes-snapshot\\vault-parity\\graph_gate.py",
-                      "sha256":  "c1b4183575e78a026eb005ee94b8867d6d4d09e7ef4109edd4aa60367e75f0fa",
-                      "bytes":  377
-                  },
-                  {
-                      "path":  "modules\\hermes-snapshot\\vault-parity\\plugin.yaml",
-                      "sha256":  "88cbb37cd405aed4e2dc5aabcd5133bf7630d6c2de6e1f2a647cc560bfff26ed",
-                      "bytes":  415
-                  },
-                  {
-                      "path":  "modules\\hermes-snapshot\\vault-parity\\routing.py",
-                      "sha256":  "4c6d4f0a08383e739752bac2ddef453b27bc79d8875c27173e67f1a0e8e00000",
-                      "bytes":  8280
-                  },
-                  {
-                      "path":  "modules\\hermes-snapshot\\vault-parity\\session_ledger.py",
-                      "sha256":  "25925d11faeb470ec5be14b7a20dd0dc0f8161ed7d566d785c2756872eae84ec",
-                      "bytes":  5372
-                  },
-                  {
-                      "path":  "modules\\hermes-snapshot\\vault-parity\\standing_plan.py",
-                      "sha256":  "1dad38471abed78e0adda301543f9c7321be2dca0912b3ca76900a0a42a7a9b8",
-                      "bytes":  12158
-                  },
-                  {
                       "path":  "modules\\hermes-snapshot\\profile-home.template.yaml",
-                      "sha256":  "a5a8d4349cfdd5ea0da1fa31ec8eb9785cc5cfa1639d4d50f14ac94b0a33e8af",
-                      "bytes":  741
+                      "sha256":  "dbc0f9f2b9b0d047c441f8a51fad4c6a9991e82e7c972eab81d91cfb289b31ff",
+                      "bytes":  763
                   },
                   {
                       "path":  "modules\\hermes-snapshot\\README.md",
@@ -217,8 +188,73 @@
                   },
                   {
                       "path":  "modules\\hermes-snapshot\\SNAPSHOT.json",
-                      "sha256":  "96deaee37109c29dc256220686f52ebf12146a1f5695289ed1eebbdbc396af25",
-                      "bytes":  1250
+                      "sha256":  "fb39da62b70c8710478dab2c5596c7d2aeb9d3e4201228c4a8050e8742e7be4b",
+                      "bytes":  1238
+                  },
+                  {
+                      "path":  "modules\\hermes-snapshot\\vault-parity\\__init__.py",
+                      "sha256":  "d39a1b29ce071419244d16e8f67e2d695783657e5568b16b0bd6a3fce6e62065",
+                      "bytes":  3813
+                  },
+                  {
+                      "path":  "modules\\hermes-snapshot\\vault-parity\\__pycache__\\__init__.cpython-311.pyc",
+                      "sha256":  "0217bdaf9cfa5b7fa3a55dd7b12903894a8857d93b38d0f43921dc3882562482",
+                      "bytes":  4954
+                  },
+                  {
+                      "path":  "modules\\hermes-snapshot\\vault-parity\\__pycache__\\digest.cpython-311.pyc",
+                      "sha256":  "7234e24b738083190dac14fa7e4b8fecdcc1a1d76dfcc9fad2a3ddb0dc353aac",
+                      "bytes":  8997
+                  },
+                  {
+                      "path":  "modules\\hermes-snapshot\\vault-parity\\__pycache__\\graph_gate.cpython-311.pyc",
+                      "sha256":  "7cb095af20359dcc759fdc8130fcbb5fc1247be674b0957d1bfd44952a273b6f",
+                      "bytes":  544
+                  },
+                  {
+                      "path":  "modules\\hermes-snapshot\\vault-parity\\__pycache__\\routing.cpython-311.pyc",
+                      "sha256":  "e5e6879eff29cc9b01d67003893ffdc4deff3e771b8fd51e30a76859e1ccd630",
+                      "bytes":  14899
+                  },
+                  {
+                      "path":  "modules\\hermes-snapshot\\vault-parity\\__pycache__\\session_ledger.cpython-311.pyc",
+                      "sha256":  "8edfa79e9a6ac460d45b8b5ed7a535c02e6b060530a56974390fbba7a5c4c6f4",
+                      "bytes":  8804
+                  },
+                  {
+                      "path":  "modules\\hermes-snapshot\\vault-parity\\__pycache__\\standing_plan.cpython-311.pyc",
+                      "sha256":  "30072bc5e45e85a7426d35fdcbc0ce8b13001824306edab42e23496b98a43a37",
+                      "bytes":  21699
+                  },
+                  {
+                      "path":  "modules\\hermes-snapshot\\vault-parity\\digest.py",
+                      "sha256":  "0bbe6a9052e9a65ce97f94805949913fdb637803c5f41daee8f677f9d46a6198",
+                      "bytes":  5087
+                  },
+                  {
+                      "path":  "modules\\hermes-snapshot\\vault-parity\\graph_gate.py",
+                      "sha256":  "fd3c5d6b42970a2f3890ae6380de31a6635c983ef2e714e9de4069234e10a5a0",
+                      "bytes":  384
+                  },
+                  {
+                      "path":  "modules\\hermes-snapshot\\vault-parity\\plugin.yaml",
+                      "sha256":  "8d21ed6f87b95334bd71eede11eafa0da7cb26c32bf8e1339df1507bb5b9989a",
+                      "bytes":  426
+                  },
+                  {
+                      "path":  "modules\\hermes-snapshot\\vault-parity\\routing.py",
+                      "sha256":  "8803c0187c0a70dee4e14ff5d9e94741a016b6135bbe897c813d318c939af51b",
+                      "bytes":  8494
+                  },
+                  {
+                      "path":  "modules\\hermes-snapshot\\vault-parity\\session_ledger.py",
+                      "sha256":  "60e0b7008b9833d40a66c5759050beb48c04fb7bdd03e9fd173067a3f5065cde",
+                      "bytes":  5504
+                  },
+                  {
+                      "path":  "modules\\hermes-snapshot\\vault-parity\\standing_plan.py",
+                      "sha256":  "ecff18d30f60cf1a194caa2c5ae76bf406a275a9f8e92f318c0758d8a98f39ba",
+                      "bytes":  12494
                   },
                   {
                       "path":  "modules\\image-video\\install.ps1",
@@ -247,8 +283,8 @@
                   },
                   {
                       "path":  "modules\\module-manifest.json",
-                      "sha256":  "bc2ab1f4e2b1aa9ee3b6b32b8e454def6ca37114d4d491c91d07b36cbfce0fb8",
-                      "bytes":  2390
+                      "sha256":  "f0afa3355fec2dca999c293d640bd1c2eb9bbee393ca99b2137cb83fd1c53612",
+                      "bytes":  3481
                   },
                   {
                       "path":  "modules\\rag\\README.md",
@@ -264,6 +300,11 @@
                       "path":  "preflight\\preflight.sh",
                       "sha256":  "a946262360c64ae9cfb55e22148a545f5d20d283555be4f6b88d92988a399736",
                       "bytes":  578
+                  },
+                  {
+                      "path":  "README.md",
+                      "sha256":  "c60b09597bcaeae92f2f627260dbacbec03d6bb6435afa7bb57503266495ee55",
+                      "bytes":  2374
                   }
               ]
 }

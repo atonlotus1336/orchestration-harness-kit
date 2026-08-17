@@ -18,8 +18,15 @@ commands and hope." Every stage leaves evidence; a failed stage names itself.
   - `harness/` — per-harness (Claude/Codex/Hermes) configuration
   - `hermes-snapshot/` — a *pinned snapshot* of the Hermes agent setup (versioned
     deliberately — it tracks a known-good state, not a moving target)
+  - `../../modules/topology/` — required solo-PC role contract; VPS and
+    second-PC profiles are optional and disabled when rendered
   - `image-video/` — scaffolding for wiring your own ComfyUI (structure only;
     no models ship in this kit)
+  - `prime-omp/` — opt-in Prime Agent and oh-my-pi worker contract; Hermes
+    retains final patch and verification authority
+  - `verified-maintenance/` — opt-in backup-gated daily, weekly, and monthly
+    maintenance policy; it is report-only until a human acts
+  - `../../modules/messaging/TELEGRAM.md` — optional direct Telegram setup
   - `module-manifest.json` — what's installable, with per-module exclusions
 - `gate.ps1` — the stage-by-stage verifier.
 - `clone-eval/` — fixture tasks that prove an installed clone actually *works*

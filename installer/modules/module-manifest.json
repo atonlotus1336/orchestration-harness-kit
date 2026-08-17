@@ -1,10 +1,11 @@
 {
-  "version": "modules-v2",
+  "version": "modules-v3",
   "default_path": [
     "memory",
     "rag",
     "harness",
     "hermes-snapshot",
+    "topology",
     "clone-eval"
   ],
   "modules": [
@@ -37,19 +38,47 @@
       "description": "Versioned snapshot of profile template, routing policy, and parity plugin metadata."
     },
     {
-      "id": "clone-eval",
+      "id": "topology",
       "stage": 5,
+      "required": true,
+      "source": "modules/topology",
+      "description": "Render the solo-PC default role; VPS and second-PC roles remain disabled optional expansions."
+    },
+    {
+      "id": "clone-eval",
+      "stage": 6,
       "required": true,
       "source": "installer/clone-eval",
       "description": "Public eval subset proving clone parity for code-fix and agentic-file-op only."
     },
     {
       "id": "image-video",
-      "stage": 6,
+      "stage": 7,
       "required": false,
       "gpu_required": true,
       "source": "installer/modules/image-video",
       "description": "OPTIONAL GPU-gated ComfyUI image/video tier (M14). Installs only when preflight finds an NVIDIA GPU; skips-with-note otherwise. Ships reference workflows only - never private models/workflows."
+    },
+    {
+      "id": "prime-omp",
+      "stage": 8,
+      "required": false,
+      "source": "modules/prime-omp",
+      "description": "OPTIONAL Hermes-governed Prime Agent and oh-my-pi coding-worker contract. Workers use disposable worktrees and return patches for Hermes to verify and apply."
+    },
+    {
+      "id": "verified-maintenance",
+      "stage": 9,
+      "required": false,
+      "source": "modules/verified-maintenance",
+      "description": "OPTIONAL daily, weekly, and monthly backup-gated maintenance policy. Analysis is sandbox-only and production changes require human confirmation."
+    },
+    {
+      "id": "telegram",
+      "stage": 10,
+      "required": false,
+      "source": "modules/messaging/TELEGRAM.md",
+      "description": "OPTIONAL deny-by-default Telegram connection to the authenticated Hermes gateway."
     },
     {
       "id": "domain",

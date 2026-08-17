@@ -31,6 +31,17 @@
 
 ---
 
+### 0.1 Topology choice
+
+Choose `solo` unless you already have a working solo installation. The solo PC
+is the only storage authority. Optional VPS and second-PC roles use the
+authenticated gateway, memory, RAG, or job APIs; they do not become additional
+database writers. Render roles with `modules/topology/configure-topology.py`.
+
+Direct network mounts are disabled by default. If you use SMB/NFS, restrict it
+to read-only project access or backup transfer. Keep live SQLite and Chroma
+stores on the solo PC.
+
 ## 1. Dependency inventory (exact)
 
 | Component | Version / source | Needed for |

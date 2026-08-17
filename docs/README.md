@@ -5,6 +5,10 @@ consistently — the part of the stack that isn't code at all. Load them into an
 harness (via CLAUDE.md / AGENTS.md pointers) and every agent you run inherits the
 same discipline.
 
+Small local open-source models should begin with
+[`SMALL-MODEL-START.md`](SMALL-MODEL-START.md). It reduces installation to one
+command and one pass/fail flag at a time.
+
 ## Reading order for newcomers
 
 1. **`REPLICATION-GUIDE.md`** — the full-stack install, start here if you're setting up.

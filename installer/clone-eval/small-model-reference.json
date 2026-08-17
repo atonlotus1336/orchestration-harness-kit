@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "purpose": "Honest reference for a locally tested open 8B model; this is guidance, not the main parity baseline.",
+  "route": "local-ollama:hermes3:8b",
+  "evidence_file": "results/20260707-005847-404-22980.json",
+  "class_means": {
+    "agentic-file-op": 31.25,
+    "code-fix": 0
+  },
+  "interpretation": "The model followed some file-operation tasks but did not meet code-fix parity. Use reasoning shapes, narrower tasks, and deterministic verification; do not claim full autonomous parity.",
+  "pass_rule": "Compare only against a baseline measured on the same model and task hashes.",
+  "recommended_output_contract": "PASS, FAIL, or BLOCKED plus evidence"
+}

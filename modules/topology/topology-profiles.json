@@ -1,0 +1,37 @@
+{
+  "schema_version": 1,
+  "default_role": "solo",
+  "storage_rule": "exactly_one_storage_authority",
+  "profiles": {
+    "solo": {
+      "description": "One PC owns orchestration, storage, memory, approvals, and backups.",
+      "storage_authority": true,
+      "home_disk_access": "local",
+      "gateway": {"bind": "127.0.0.1", "authentication_required": true},
+      "dashboard": {"bind": "127.0.0.1", "remote_access": "disabled"},
+      "remote_verification_required": false
+    },
+    "vps": {
+      "description": "Optional remote gateway or automation node; it never owns the home disk.",
+      "storage_authority": false,
+      "home_disk_access": "authenticated_api",
+      "gateway": {"bind": "private-overlay", "authentication_required": true},
+      "dashboard": {"bind": "127.0.0.1", "remote_access": "ssh_tunnel"},
+      "remote_verification_required": true
+    },
+    "second-pc": {
+      "description": "Optional compute or thin-client node; the solo PC remains storage authority.",
+      "storage_authority": false,
+      "home_disk_access": "authenticated_api",
+      "gateway": {"bind": "private-overlay", "authentication_required": true},
+      "dashboard": {"bind": "127.0.0.1", "remote_access": "ssh_tunnel"},
+      "remote_verification_required": true
+    }
+  },
+  "direct_network_mount": {
+    "enabled": false,
+    "warning": "Do not place SQLite, Chroma, or another multi-writer store on a shared mount.",
+    "allowed_use": "read-only project files or backup transfer",
+    "single_writer_required": true
+  }
+}

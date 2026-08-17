@@ -9,6 +9,10 @@ sync-shareable.sh
 .shareable-preview/
 .sanitize-rules.local.json
 approved-public-tokens.txt
+topology-local.json
+prime-omp-local.json
+.telegram-offset
+maintenance-evidence/
 
 # data / stores (the system installs with an EMPTY store; data never travels)
 *.db
