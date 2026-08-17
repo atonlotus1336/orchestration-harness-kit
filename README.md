@@ -19,6 +19,16 @@ The default topology is **one agentic system on one PC**. That PC owns the
 home disk, memory, approvals, and backups. VPS and second-PC connections are
 optional modules you enable later; neither becomes a second storage writer.
 
+## Harness hierarchy
+
+![Architecture diagram: Hermes OS contains Prime Agent, which contains Oh My Pi. Codex, Hermes OS, and Claude each independently connect only to the shared memory system.](assets/harness-fusion-hierarchy.png)
+
+Hermes OS is the orchestration layer: it hosts Prime Agent, and Prime Agent
+governs the Oh My Pi coding lane. Codex, Claude, and Hermes OS remain separate
+harnesses. Each connects independently to the shared memory system—there are no
+direct harness-to-harness links—so decisions and durable context can move with
+the work rather than being trapped in one tool.
+
 ## What's in the box (plain-language tour)
 
 | Part | What it does | Why you'd want it |
