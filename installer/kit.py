@@ -14,6 +14,7 @@ import json
 import os
 import re
 import shutil
+import subprocess
 import sys
 import tempfile
 import zipfile
@@ -192,6 +193,31 @@ def command_doctor(args) -> int:
     checks = []
     for name in ("managed-files.json", "config.local.yaml", "system/memoryweaver/store/chroma.py", "modules/topology/configure-topology.py"):
         checks.append({"name": name, "status": "PASS" if (target / name).is_file() else "FAIL"})
+    if args.prime_omp:
+        diagnostic = target / "modules" / "prime-omp" / "diagnose-prime-omp.py"
+        command = [
+            sys.executable, str(diagnostic),
+            "--hermes-bin", args.hermes_bin,
+            "--profile", args.profile,
+        ]
+        if args.session_tools_json:
+            command.extend(["--session-tools-json", str(args.session_tools_json)])
+        if args.omp_probe:
+            command.extend(["--omp-probe", str(args.omp_probe)])
+        if args.omp_python:
+            command.extend(["--omp-python", args.omp_python])
+        if args.omp_runtime_path:
+            command.extend(["--omp-runtime-path", args.omp_runtime_path])
+        result = subprocess.run(command, capture_output=True, text=True, check=False)
+        try:
+            detail = json.loads(result.stdout)
+        except json.JSONDecodeError:
+            detail = {"next_action": "DIAGNOSTIC_DID_NOT_RETURN_JSON"}
+        checks.append({
+            "name": "prime-omp-live",
+            "status": "PASS" if result.returncode == 0 else "FAIL",
+            "detail": detail,
+        })
     status = "PASS" if all(c["status"] == "PASS" for c in checks) else "FAIL"
     return emit(status, "doctor", checks, "Re-run the installer after reviewing its dry-run." if status == "FAIL" else "")
 
@@ -252,7 +278,15 @@ def parser() -> argparse.ArgumentParser:
     build = mut("build", command_build); build.add_argument("--output", type=Path, required=True)
     configure = mut("configure", command_configure); configure.add_argument("--output", type=Path, default=ROOT / "installer-staging" / "config.local.yaml"); configure.add_argument("--target", type=Path, required=True); configure.add_argument("--data-dir", type=Path, required=True); configure.add_argument("--harness", choices=["generic", "claude", "codex", "hermes"], default="generic")
     install = mut("install", command_install); install.add_argument("--target", type=Path, required=True); install.add_argument("--data-dir", type=Path, required=True); install.add_argument("--harness", choices=["generic", "claude", "codex", "hermes"], default="generic")
-    doctor = sub.add_parser("doctor"); doctor.add_argument("--target", type=Path, required=True); doctor.set_defaults(func=command_doctor)
+    doctor = sub.add_parser("doctor"); doctor.add_argument("--target", type=Path, required=True)
+    doctor.add_argument("--prime-omp", action="store_true", help="run the optional live Prime/OMP diagnostic")
+    doctor.add_argument("--hermes-bin", default="hermes")
+    doctor.add_argument("--profile", default="workspace")
+    doctor.add_argument("--session-tools-json", type=Path)
+    doctor.add_argument("--omp-probe", type=Path)
+    doctor.add_argument("--omp-python")
+    doctor.add_argument("--omp-runtime-path")
+    doctor.set_defaults(func=command_doctor)
     uninstall = mut("uninstall", command_uninstall); uninstall.add_argument("--target", type=Path, required=True)
     privacy = sub.add_parser("privacy-gate"); privacy.add_argument("--root", type=Path, default=ROOT); privacy.set_defaults(func=command_privacy)
     bundle = mut("bundle", command_bundle); bundle.add_argument("--output", type=Path, required=True)

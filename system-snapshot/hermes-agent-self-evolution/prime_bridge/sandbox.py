@@ -126,8 +126,8 @@ def _podman_json(*arguments: str) -> Any:
 
 def admit(repo: Path) -> Admission:
     repo = repo.resolve()
-    if os.name != "posix" or os.environ.get("WSL_DISTRO_NAME") != "Ubuntu-restored":
-        raise ContainmentError("containment is admitted only in Ubuntu-restored WSL")
+    if os.name != "posix" or os.environ.get("WSL_DISTRO_NAME") != "__WSL_DISTRO__":
+        raise ContainmentError("containment is admitted only in __WSL_DISTRO__ WSL")
     if os.geteuid() == 0:
         raise ContainmentError("Podman containment must run as the normal rootless user")
 

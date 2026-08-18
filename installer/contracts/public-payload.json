@@ -4,7 +4,8 @@
   "groups": {
     "core": [
       ".gitattributes", ".gitignore", "LICENSE", "README.md", "CHANGELOG.md",
-      "AGENTS.md", "CLAUDE.md", "REMOTE-ACCESS.md", "modules/**", "hooks/**"
+      "AGENTS.md", "CLAUDE.md", "REMOTE-ACCESS.md", "modules/**", "hooks/**",
+      "tools/init-maintainer-policy.py", "tools/verify-prime-omp-client-path.py"
     ],
     "memory": ["system/memoryweaver/**", "system/memoryweaver-mcp/**", "system/tests/**", "system/README.md", "system/pyproject.toml"],
     "docs": ["docs/**", "n8n-integration/**", "practice-loop/**"],

@@ -147,7 +147,7 @@ def render_profile_overlay(
                 # Hermes sanitizes inherited environment variables for stdio
                 # MCP servers. Carry the approved containment identity in the
                 # managed entry so the Prime worker can prove its WSL boundary.
-                "WSL_DISTRO_NAME": "Ubuntu-restored",
+                "WSL_DISTRO_NAME": "__WSL_DISTRO__",
             },
         }
         servers[policy.mcp_server["name"]] = server

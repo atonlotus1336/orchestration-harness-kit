@@ -69,6 +69,7 @@ BUILTIN_RECIPIENT_PLACEHOLDERS = {
     "__OWNER_HANDLE__",
     "__TAILSCALE_IPV4__",
     "__WINDOWS_USER__",
+    "__WSL_DISTRO__",
 }
 
 
@@ -210,6 +211,11 @@ def sanitized_bytes(
         text = re.sub(re.escape(source), replacement, text, flags=re.IGNORECASE)
     for source, replacement in identity_rules:
         text = re.sub(re.escape(source), replacement, text, flags=re.IGNORECASE)
+    # The local privacy rules intentionally replace the maintainer's WSL distro
+    # name with a neutral marker.  That marker is not executable on a recipient
+    # machine, so turn it into an explicit restore-time value instead of
+    # shipping a silently non-runnable containment policy.
+    text = text.replace("Ubuntu-restored", "__WSL_DISTRO__")
     # Network topology and self-hosted service addresses are recipient data too.
     text = re.sub(
         r"\b100\.(?:6[4-9]|[78]\d|9\d|1[01]\d|12[0-7])\.\d{1,3}\.\d{1,3}\b",

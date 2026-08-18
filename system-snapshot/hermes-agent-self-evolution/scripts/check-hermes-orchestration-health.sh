@@ -69,8 +69,25 @@ for server in obsidian memoryweaver-mcp rag-orchestrator wordpress; do
   fi
 done
 
+# Prime is workspace-profile infrastructure. Test the actual MCP handshake,
+# not merely whether its launcher process exists or config entry is enabled.
+if ! HERMES_HOME="$USER_HOME/.hermes/profiles/workspace" \
+  "$HERMES_BIN" mcp test prime-agent >> "$LOG_FILE" 2>&1; then
+  say "Hermes orchestration MCP check degraded for prime-agent. See $LOG_FILE"
+  status=1
+fi
+
+# omp-runtime-lock.json is immutable provenance, not a status document. This
+# fail-closed probe is the single authority for live OMP runtime readiness.
+OMP_PROBE=__WSL_WORKSPACE__/hermes-agent-self-evolution/scripts/probe-omp-feasibility.py
+if ! "$USER_HOME/.hermes/hermes-agent/venv/bin/python" \
+  "$OMP_PROBE" --strict >> "$LOG_FILE" 2>&1; then
+  say "Hermes orchestration OMP readiness check degraded. See $LOG_FILE"
+  status=1
+fi
+
 if [ "$status" -eq 0 ]; then
-  say "Hermes orchestration checks ready: hooks, lint guardrails, hook regressions, and MCP endpoints passed"
+  say "Hermes orchestration checks ready: hooks, lint guardrails, MCP endpoints, Prime handshake, and OMP readiness passed"
   exit 0
 fi
 

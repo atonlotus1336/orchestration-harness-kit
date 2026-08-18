@@ -151,7 +151,13 @@ def main() -> int:
         target.parent.mkdir(parents=True, exist_ok=True)
         text = source.read_text(encoding="utf-8")
         for placeholder, value in substitutions.items():
-            text = text.replace(placeholder, str(value))
+            rendered = str(value)
+            if target.suffix.lower() in {".json", ".jsonl"}:
+                # Placeholders occur inside JSON strings. Escape the content,
+                # not the surrounding quotes, so Windows paths cannot create
+                # invalid sequences such as \A or \U during restoration.
+                rendered = json.dumps(rendered, ensure_ascii=False)[1:-1]
+            text = text.replace(placeholder, rendered)
         target.write_text(text, encoding="utf-8")
     print(json.dumps(result, indent=2))
     return 0

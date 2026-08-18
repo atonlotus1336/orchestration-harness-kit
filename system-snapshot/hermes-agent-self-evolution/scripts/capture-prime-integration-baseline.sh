@@ -8,7 +8,7 @@ die() {
 
 repo_root="$(git rev-parse --show-toplevel 2>/dev/null || true)"
 [[ "$repo_root" == "__WSL_WORKSPACE__/hermes-agent-self-evolution" ]] || die "wrong repository"
-[[ "${WSL_DISTRO_NAME:-}" == "Ubuntu-restored" ]] || die "must run in Ubuntu-restored"
+[[ "${WSL_DISTRO_NAME:-}" == "__WSL_DISTRO__" ]] || die "must run in __WSL_DISTRO__"
 [[ "$(id -u)" != "0" ]] || die "must run as the normal WSL user"
 bash "$repo_root/scripts/sync-phase01-tools-env.sh" --check >/dev/null
 python_bin="$(bash "$repo_root/scripts/sync-phase01-tools-env.sh" --python)"

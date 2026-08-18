@@ -50,7 +50,7 @@
       "additionalProperties": false,
       "required": ["distro", "version", "kernel", "cgroup_controllers", "subuid", "subgid", "graphroot"],
       "properties": {
-        "distro": {"const": "Ubuntu-restored"},
+        "distro": {"const": "__WSL_DISTRO__"},
         "version": {"const": "24.04"},
         "kernel": {"type": "string", "pattern": "microsoft.*WSL2"},
         "cgroup_controllers": {

@@ -19,6 +19,9 @@ Add-Step "solo-topology" $LASTEXITCODE
 & python (Join-Path $kit "tools\restore-private-system-snapshot.py") --selftest | Out-Null
 Add-Step "optional-snapshot-integrity" $LASTEXITCODE
 
+& python (Join-Path $kit "tools\verify-prime-omp-client-path.py") --selftest | Out-Null
+Add-Step "prime-omp-client-path" $LASTEXITCODE
+
 $stage = Join-Path ([System.IO.Path]::GetTempPath()) ("orchestration-gate-" + [guid]::NewGuid().ToString("N"))
 & python (Join-Path $PSScriptRoot "kit.py") build --output $stage --apply --yes | Out-Null
 Add-Step "client-payload-build" $LASTEXITCODE

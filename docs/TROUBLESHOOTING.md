@@ -20,3 +20,30 @@ that the data paths belong to the recipient account.
 
 Optional RAG, Hermes, messaging, remote, and GPU modules do not affect core
 doctor status. Troubleshoot them from their module README after core passes.
+
+## Prime configuration exists but its tools are missing from a chat
+
+Do not use the chat's tool search as the availability test. Run:
+
+```sh
+hermes --profile workspace mcp test prime-agent
+```
+
+If the handshake succeeds and reports discovered tools, reload MCP inside
+Hermes and open a new session. Restart Claude Code or Codex after changing
+their MCP configuration because those harnesses snapshot tools at startup.
+
+Run `modules/prime-omp/diagnose-prime-omp.py` to distinguish a failed MCP
+handshake from a stale session snapshot. For OMP readiness, run the canonical
+feasibility probe. `omp-runtime-lock.json` is provenance and contains no live
+`status` or `runnable_image` fields.
+
+For an installed kit, the same check is available through doctor:
+
+```sh
+python installer/kit.py doctor --target /path/to/install --prime-omp \
+  --hermes-bin /path/to/hermes --profile workspace \
+  --session-tools-json /path/to/session-tools.json \
+  --omp-probe /path/to/probe-omp-feasibility.py \
+  --omp-python /path/to/hermes/venv/bin/python
+```

@@ -9,6 +9,7 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Any, Mapping
 
+from prime_bridge.delegation_advisory import advisory_requested, prime_advisory
 
 class IntentPolicyError(RuntimeError):
     pass
@@ -101,6 +102,18 @@ def _normalized_request(message: str) -> str:
         if prefix is None:
             break
         text = text[len(prefix):].lstrip()
+    # An optional delegation clause is routing metadata, not part of the work.
+    text = re.sub(
+        r"\s+(?:if\s+(?:prime(?:\s+agent)?\s+is\s+)?(?:useful|appropriate|worthwhile)|"
+        r"using\s+prime\s+if\s+(?:useful|appropriate|worthwhile))\b.*$",
+        "",
+        text,
+    )
+    text = re.sub(
+        r"^(?:if\s+(?:prime(?:\s+agent)?\s+is\s+)?(?:useful|appropriate|worthwhile),?\s*)",
+        "",
+        text,
+    )
     return text
 
 
@@ -114,9 +127,9 @@ def _decision(*, outcome: str, reason: str, policy: IntentPolicy, family: str | 
     }
 
 
-def classify(message: str, *, profile: str, mode: str, readiness: bool, compatibility: bool,
-             admitted: bool, ponytail: Mapping[str, Any], policy: IntentPolicy,
-             project_scope: bool = False) -> dict[str, Any]:
+def _classify(message: str, *, profile: str, mode: str, readiness: bool, compatibility: bool,
+              admitted: bool, ponytail: Mapping[str, Any], policy: IntentPolicy,
+              project_scope: bool = False) -> dict[str, Any]:
     """Return a route candidate without filesystem, network, or worker side effects."""
     if not isinstance(message, str) or not _PROFILE.fullmatch(profile):
         return _decision(outcome="REJECTED", reason="INVALID_REQUEST", policy=policy)
@@ -176,3 +189,27 @@ def classify(message: str, *, profile: str, mode: str, readiness: bool, compatib
             return _decision(outcome="NATIVE", reason="NO_PROJECT_SCOPE", policy=policy, family=family, ponytail_fingerprint=fingerprint)
         return _decision(outcome="PRIME_CODE", reason="ELIGIBLE", policy=policy, family=family, ponytail_fingerprint=fingerprint)
     return _decision(outcome="PRIME_AUTO", reason="ELIGIBLE", policy=policy, family=family, ponytail_fingerprint=fingerprint)
+
+
+def classify(message: str, *, profile: str, mode: str, readiness: bool, compatibility: bool,
+             admitted: bool, ponytail: Mapping[str, Any], policy: IntentPolicy,
+             project_scope: bool = False) -> dict[str, Any]:
+    """Classify a request and always attach an explainable Prime advisory."""
+    decision = _classify(
+        message,
+        profile=profile,
+        mode=mode,
+        readiness=readiness,
+        compatibility=compatibility,
+        admitted=admitted,
+        ponytail=ponytail,
+        policy=policy,
+        project_scope=project_scope,
+    )
+    return {
+        **decision,
+        "prime_advisory": prime_advisory(
+            decision,
+            requested=advisory_requested(message),
+        ),
+    }

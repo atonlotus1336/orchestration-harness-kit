@@ -19,14 +19,13 @@ import asyncio
 import datetime as dt
 import hashlib
 import json
+import os
 import re
 import subprocess
 import sys
 import tempfile
 import threading
 from pathlib import Path
-
-from jsonschema import Draft202012Validator
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
@@ -42,6 +41,15 @@ PINNED_PACKAGE = "@oh-my-pi/pi-coding-agent"
 PINNED_VERSION = "17.3.0"
 PINNED_INTEGRITY = "sha512-Ad2VB+dRxmKACarbq7eM9/cjfWlZWeKBliqAP5OpWU8vrj8i4xLVtuJpTJ3q3Ile9Tau2YbzBSJeWHDNAMtIhw=="
 BUN_MINIMUM = "1.3.14"
+WSL_DISTRO = os.environ.get("HERMES_WSL_DISTRO", "Ubuntu")
+WSL_PYTHON = os.environ.get(
+    "HERMES_WSL_PYTHON",
+    "/home/__LINUX_USER__/.hermes/hermes-agent/venv/bin/python",
+)
+WSL_RUNTIME_PATH = os.environ.get(
+    "HERMES_WSL_RUNTIME_PATH",
+    "/home/__LINUX_USER__/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+)
 
 # Canonical Phase 9 live route receipt markers (from 09-04-SUMMARY.md / 09-04-PLAN.md).
 PHASE9_RECEIPT_MARKERS = (
@@ -55,6 +63,41 @@ PHASE9_RECEIPT_MARKERS = (
 
 def _now() -> str:
     return dt.datetime.now(dt.timezone.utc).isoformat().replace("+00:00", "Z")
+
+
+def _canonical_wsl_script_path() -> str:
+    """Translate this repository script to its canonical WSL mount path."""
+    resolved = Path(__file__).resolve()
+    drive = resolved.drive.rstrip(":").lower()
+    if not drive:
+        raise RuntimeError("Windows OMP probe path has no drive letter")
+    relative = resolved.as_posix().split(":", 1)[1].lstrip("/")
+    return f"/mnt/{drive}/{relative}"
+
+
+def _rerun_in_canonical_wsl(arguments: list[str]) -> int:
+    """Prevent Windows-only APIs from producing false OMP readiness failures."""
+    command = [
+        "wsl.exe", "-d", WSL_DISTRO, "--",
+        "env", f"PATH={WSL_RUNTIME_PATH}",
+        WSL_PYTHON, _canonical_wsl_script_path(), *arguments,
+    ]
+    try:
+        result = subprocess.run(command, capture_output=True, text=True, check=False)
+    except (OSError, subprocess.SubprocessError) as exc:
+        print(json.dumps({
+            "schema_version": "1.0",
+            "verdict": "RUNTIME_UNAVAILABLE",
+            "captured_at": _now(),
+            "reasons": ["canonical_wsl_probe_unavailable"],
+            "probe_error": str(exc),
+        }, sort_keys=True))
+        return 2
+    if result.stdout:
+        sys.stdout.write(result.stdout)
+    if result.stderr:
+        sys.stderr.write(result.stderr)
+    return result.returncode
 
 
 def _sha256_bytes(data: bytes) -> str:
@@ -289,6 +332,11 @@ def _verdict(phase9: dict, runtime: dict, sdk: dict) -> tuple[str, list[str]]:
 
 
 def main() -> int:
+    if os.name == "nt":
+        return _rerun_in_canonical_wsl(sys.argv[1:])
+
+    from jsonschema import Draft202012Validator
+
     parser = argparse.ArgumentParser(description="OMP feasibility probe")
     parser.add_argument("--strict", action="store_true", help="fail closed on any non-READY verdict")
     parser.add_argument("--write-evidence", action="store_true", help="write the evidence JSON")

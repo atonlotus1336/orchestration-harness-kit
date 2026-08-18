@@ -33,6 +33,11 @@ Forbidden edges (all closed): OMP cannot call Prime, Hermes delegation, another 
 - `config/omp-runtime-lock.json` pins `@oh-my-pi/pi-coding-agent@17.3.0`, Bun `>=1.3.14`, source commit `326d24bd40d9858e24e1036ae739c27c72eeb543`, license MIT, image digest, and SBOM hash.
 - The image `localhost/hermes-omp-sidecar:phase10-a` is built from `containers/omp/Dockerfile`.
 - SBOM: `containers/omp/sbom.spdx.json`.
+- The lock is provenance, not live status. It intentionally has no `status` or
+  `runnable_image` fields. Missing fields do not prove the runtime is down.
+- The live readiness authority is `python scripts/probe-omp-feasibility.py
+  --strict`, run in the canonical WSL runtime. Windows callers are dispatched
+  into that runtime automatically.
 
 ## 4. Status and cancel
 

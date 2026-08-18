@@ -64,5 +64,39 @@ its own. Its built-in self-test exercises every one of those failure cases:
 python verify-prime-omp-contract.py --selftest
 ```
 
+## Diagnose a missing Prime or OMP tool
+
+The connector, the current chat's tool snapshot, and the OMP runtime are three
+different boundaries. Test them separately:
+
+```bash
+python diagnose-prime-omp.py \
+  --hermes-bin /path/to/hermes \
+  --profile workspace \
+  --session-tools-json /path/to/session-tools.json \
+  --omp-probe /path/to/probe-omp-feasibility.py \
+  --omp-python /path/to/hermes/venv/bin/python
+```
+
+The session-tools file is optional. It may be a JSON string list or an object
+with a `tools` list. If Prime's MCP handshake succeeds but that list has no
+Prime tool, `session_tools` is `STALE` and the next action is
+`RELOAD_MCP_AND_OPEN_NEW_SESSION`. Do not inspect `omp-runtime-lock.json` for
+live status; pass the canonical feasibility probe. If the Hermes executable
+and its Python live in the same directory, the diagnostic selects that Python
+automatically. Otherwise, provide `--omp-python` explicitly.
+
+Run the diagnostic's named failure cases without a Hermes installation:
+
+```bash
+python diagnose-prime-omp.py --selftest
+```
+
 This package ships the port and its safety contract, not the third-party
 applications, a model route, a local machine path, or any runtime credentials.
+
+Authorized users of the full Git repository also receive the sanitized bridge
+implementation under `system-snapshot/`. Follow
+`docs/PRIME-OMP-CLIENT-SETUP.md` to restore it, register `prime-agent` with
+Hermes, and run the clean-client plus live acceptance gates. The smaller public
+release payload does not include that private implementation snapshot.

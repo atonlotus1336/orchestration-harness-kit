@@ -96,6 +96,12 @@ distributed to clients.
 | system (memory+RAG) | Python 3.11, guide §3 | guide §4 smoke tests |
 | hooks | the memory engine | guide §3.4 |
 | prime-omp | Hermes plus locally installed Prime Agent and OMP | contract verifier plus harmless patch rehearsal |
+
+Prime/OMP has two distribution tiers. The public client payload ships the
+contract and diagnostic only. Authorized full-Git recipients can restore and
+register the bridge by following
+[`docs/PRIME-OMP-CLIENT-SETUP.md`](docs/PRIME-OMP-CLIENT-SETUP.md); their machine
+must still pass the live Hermes handshake, Prime runtime, and OMP runtime gates.
 | verified-maintenance | your backup command and scheduler | schedule verifier plus intentionally failed backup test |
 | private system snapshot | Python 3.11 and a destination workspace | hash-verifying restore dry-run |
 

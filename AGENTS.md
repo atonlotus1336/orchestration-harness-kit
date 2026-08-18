@@ -37,6 +37,20 @@ behavior that only works with a frontier model driving.
 7. **Stage, never auto-install.** Anything that generates skills/config for
    the user's system writes to a staging area for human review.
 
+## Prime/OMP diagnostic authority
+
+- Do not use the current chat's tool list or `tool_search` as proof that Prime
+  is unavailable. Test the configured MCP server with `hermes --profile
+  <profile> mcp test prime-agent`. A successful handshake plus missing session
+  tools means the session snapshot is stale. Reload MCP and open a new session.
+- Do not treat `omp-runtime-lock.json` as live status. It records provenance
+  and pins. Run the installation's canonical OMP feasibility probe instead.
+- OMP is an executable worker governed through Prime. It is not merely an
+  advisory policy, and an advisory recommendation must never bypass its
+  feasibility, capability, or human-approval gates.
+- GSD/Ponytail routing is an orchestration decision. A missing model-visible
+  Prime tool is a connector/session fault, not a routing verdict.
+
 ## Recipe: adding a new module
 
 1. Create `modules/<name>/` with: the artifact(s), a README section or

@@ -7,7 +7,7 @@
       "aliases": ["NUCBOX_M6ULTRA", "nucbox-m6ultra"],
       "role": "repair-authority",
       "windows_user": "__OWNER_HANDLE__",
-      "wsl_distro": "Ubuntu-restored",
+      "wsl_distro": "__WSL_DISTRO__",
       "wsl_user": "__PRIVATE_TOKEN_01__",
       "allowed_sources": ["nucbox-local", "repair-verifier"]
     },

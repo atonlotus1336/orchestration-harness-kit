@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "captured_at_utc": "2026-08-17T21:56:57.934985+00:00",
+  "captured_at_utc": "2026-08-18T10:48:06+00:00",
   "purpose": "Private restorable implementation snapshot; credentials and runtime state excluded.",
   "source": {
     "hermes_git_head": "fde87710655e99cfc9e8292a8c620d56593faf3b",
@@ -44,7 +44,8 @@
     "__PRIVATE_TOKEN_13__",
     "__PRIVATE_TOKEN_14__",
     "__TAILSCALE_IPV4__",
-    "__WINDOWS_USER__"
+    "__WINDOWS_USER__",
+    "__WSL_DISTRO__"
   ],
   "workspace_placeholders": [
     "__WINDOWS_WORKSPACE__",
@@ -52,7 +53,7 @@
     "__WINDOWS_WORKSPACE__",
     "__WSL_WORKSPACE__"
   ],
-  "file_count": 311,
+  "file_count": 312,
   "files": [
     {
       "path": "hermes-agent-self-evolution/comfyui_bridge/HERMES_SKILL_OVERRIDE.md",
@@ -66,8 +67,8 @@
     },
     {
       "path": "hermes-agent-self-evolution/config/connectivity-authority.json",
-      "sha256": "1019fc204ad74412b9f1a76f209a167105ee7b01d069054e89a9a3e94185a178",
-      "bytes": 3108
+      "sha256": "2cd7ec66e8b2d4a5c4eba4d27d8ebefd4f3e3f25862546ba6912cd439bd39a20",
+      "bytes": 3107
     },
     {
       "path": "hermes-agent-self-evolution/config/omp-coding-policy.json",
@@ -211,8 +212,8 @@
     },
     {
       "path": "hermes-agent-self-evolution/contracts/phase01-podman-prerequisite.schema.json",
-      "sha256": "4d810be900dccb915c4d1e6de88101dafa8bedfd19f632431b223cdf016b9444",
-      "bytes": 5064
+      "sha256": "63ad927994f6d77fe85bdbbd2acf0eb828f257280c4139498884896978c908c4",
+      "bytes": 5063
     },
     {
       "path": "hermes-agent-self-evolution/contracts/prime-bridge.schema.json",
@@ -261,8 +262,8 @@
     },
     {
       "path": "hermes-agent-self-evolution/docs/OMP-PRIME-CODING-RUNBOOK.md",
-      "sha256": "639c973a46f2ef86a7ad6900e854b71c039f8e0dace86ac32d9c5736a7b5547c",
-      "bytes": 3613
+      "sha256": "53cdacdd7cefbeb401e5aa57adcf02af83539394532c1ccec2fee0236353c27d",
+      "bytes": 3956
     },
     {
       "path": "hermes-agent-self-evolution/docs/plans/2026-05-22-g-managed-telegram-profile.md",
@@ -396,8 +397,8 @@
     },
     {
       "path": "hermes-agent-self-evolution/prime_bridge/auto_handoff.py",
-      "sha256": "e2fdf37c4e0ed60cf0f16fa65086f92c658170eb6a03f1c26a806b9acda23b6e",
-      "bytes": 2560
+      "sha256": "5a053572b2d523ef607739ff1ae1cc6815d8af1fa5eb68af9a9c88873c58c015",
+      "bytes": 2976
     },
     {
       "path": "hermes-agent-self-evolution/prime_bridge/capability_broker.py",
@@ -460,6 +461,11 @@
       "bytes": 7897
     },
     {
+      "path": "hermes-agent-self-evolution/prime_bridge/delegation_advisory.py",
+      "sha256": "c9262ab19055e0879eb5b0fd75095f74043c165153544b9c7a58da9b48643721",
+      "bytes": 1960
+    },
+    {
       "path": "hermes-agent-self-evolution/prime_bridge/emergency_control.py",
       "sha256": "47db28c6aed7a37fadd44b4c39ca8e59b4f4cbffe8b42e64d89b310ce26cf5ee",
       "bytes": 4921
@@ -481,8 +487,8 @@
     },
     {
       "path": "hermes-agent-self-evolution/prime_bridge/intent_router.py",
-      "sha256": "c708f018a6978604b3cd1c97592892d2e83ab1c105636b380dc0813d51e6c95b",
-      "bytes": 9962
+      "sha256": "fbb16fdacbb223ea598ef86d02242dbcc304d9c85236a754dfa7e9dc394beff6",
+      "bytes": 11231
     },
     {
       "path": "hermes-agent-self-evolution/prime_bridge/jcs.py",
@@ -566,8 +572,8 @@
     },
     {
       "path": "hermes-agent-self-evolution/prime_bridge/profile_policy.py",
-      "sha256": "15ece1a6069f1fd50580ae309af8e628710778c60f45d2d85a08c6bde42add6e",
-      "bytes": 8739
+      "sha256": "f4c87a1ea1836408c9c906024e929abdfff5267e4446a4b3c881f298e7395020",
+      "bytes": 8738
     },
     {
       "path": "hermes-agent-self-evolution/prime_bridge/project_instructions.py",
@@ -601,8 +607,8 @@
     },
     {
       "path": "hermes-agent-self-evolution/prime_bridge/sandbox.py",
-      "sha256": "2ff8b8d3f3a7b8fbb63e5449f18f49178295fe01d62b55c25b37dca98fdbe14b",
-      "bytes": 18510
+      "sha256": "696e4010e92116bbb62c3fc0aab29ae73a2c4df605a8bd30daa1ae38ba0b38d2",
+      "bytes": 18508
     },
     {
       "path": "hermes-agent-self-evolution/prime_bridge/session_control.py",
@@ -671,8 +677,8 @@
     },
     {
       "path": "hermes-agent-self-evolution/scripts/apply-hermes-profile-to-wsl.sh",
-      "sha256": "9cda1282719190236ab702ccd98b422152779187156c8383451ce5f0443ed02b",
-      "bytes": 24819
+      "sha256": "d70053361b9a9fecb45a87f7ab07647f3f9ceb5a23ff9dc1e028b70f22c8f6d4",
+      "bytes": 24818
     },
     {
       "path": "hermes-agent-self-evolution/scripts/audit-prime-profile-overlays.py",
@@ -681,18 +687,18 @@
     },
     {
       "path": "hermes-agent-self-evolution/scripts/capture-prime-desktop-attestation.ps1",
-      "sha256": "03ed918c4e2df92c67c692f24a6d55a62e41a04ff112e918baf8118e1f6e77b1",
-      "bytes": 3685
+      "sha256": "ae5d021a19a26d7457d4fec424ac50266ae975b318974ac3e3e41a1324a0ea68",
+      "bytes": 3735
     },
     {
       "path": "hermes-agent-self-evolution/scripts/capture-prime-integration-baseline.sh",
-      "sha256": "ffa529a5faa9f814cd62c547ed52a61b4535e651f13176b2de5ab95942ad367d",
-      "bytes": 12646
+      "sha256": "41ed867edb17560e85b062681ff0ec9e797b7878f9a42aad422ad9075d3c0113",
+      "bytes": 12644
     },
     {
       "path": "hermes-agent-self-evolution/scripts/check-hermes-orchestration-health.sh",
-      "sha256": "ad30808998da4baacfe9171fe2a6b0f2a6c787b8b8a172b469eba58ef84435a5",
-      "bytes": 2780
+      "sha256": "862b253cbdd78bdcca25368591c2de9e37fcd679010f6126ec51e7f9196c9676",
+      "bytes": 3600
     },
     {
       "path": "hermes-agent-self-evolution/scripts/check-prime-install.sh",
@@ -761,8 +767,8 @@
     },
     {
       "path": "hermes-agent-self-evolution/scripts/maintenance/register-weekly-maintenance.ps1",
-      "sha256": "611758961e9ceeeeaa95e09e84bcccdf05d2889a09c22f0122666da3ae2de3c7",
-      "bytes": 1221
+      "sha256": "0297c189951387aaeba324d22b0512f3cc6fa82c2a758820e44dea7427a0a33f",
+      "bytes": 1232
     },
     {
       "path": "hermes-agent-self-evolution/scripts/maintenance/run-weekly-maintenance.py",
@@ -811,8 +817,8 @@
     },
     {
       "path": "hermes-agent-self-evolution/scripts/probe-omp-feasibility.py",
-      "sha256": "b8d0158f0e815ae54c744c6f4e6ad98848bf5b0518d39cb1cc18c5eee17cf0c8",
-      "bytes": 13188
+      "sha256": "837fb8b9231566bdb7e631500779f303971d51fe1008b0b7b09a1727bb56d69b",
+      "bytes": 14930
     },
     {
       "path": "hermes-agent-self-evolution/scripts/render-prime-profile-overlay.py",
@@ -966,8 +972,8 @@
     },
     {
       "path": "hermes-agent-self-evolution/tests/integration/test_omp_feasibility.py",
-      "sha256": "bce3ce670f0aebc8a191c3a9c84cfd13f0c6a6b7e10ccb6f97c1bc25927b816e",
-      "bytes": 3021
+      "sha256": "0378d99d52a6728439c255fa5505e6fdb7550238f7f24818fc386c1fd8f3ee66",
+      "bytes": 4141
     },
     {
       "path": "hermes-agent-self-evolution/tests/integration/test_omp_phase_closure.py",
@@ -991,8 +997,8 @@
     },
     {
       "path": "hermes-agent-self-evolution/tests/integration/test_prime_auto_handoff.py",
-      "sha256": "a7a8bcdbb92411fedc2cf5a1d95056502ad2f1ac1f2b99ef41d065f32a6e93e5",
-      "bytes": 1577
+      "sha256": "42341d38277ba048509cb12a5c592f078e1afa0d450d01512ff706c5fd3babe3",
+      "bytes": 3785
     },
     {
       "path": "hermes-agent-self-evolution/tests/integration/test_prime_baseline_contract.py",
@@ -1046,8 +1052,8 @@
     },
     {
       "path": "hermes-agent-self-evolution/tests/integration/test_prime_intent_router.py",
-      "sha256": "84e10146ae540bece451f3a82ffaae049ef4e17c2b70731f2ddaa1e585c626f4",
-      "bytes": 7682
+      "sha256": "c23fdc1daf0b29853c7bc41094513bbbf6ded182b13aeaefa55bd78771c18ba4",
+      "bytes": 8640
     },
     {
       "path": "hermes-agent-self-evolution/tests/integration/test_prime_job_cli.py",
@@ -1101,8 +1107,8 @@
     },
     {
       "path": "hermes-agent-self-evolution/tests/integration/test_prime_profile_overlay.py",
-      "sha256": "7670764b60f2e0e799eade5e86c1e4b327d7ac688d38d17bd08af67bc2aa243d",
-      "bytes": 5695
+      "sha256": "30d7e2ac7e25247b60cb04204af36e8b7720b09237ac3e4771e2e88ca428055f",
+      "bytes": 5694
     },
     {
       "path": "hermes-agent-self-evolution/tests/integration/test_prime_promotion_engine.py",

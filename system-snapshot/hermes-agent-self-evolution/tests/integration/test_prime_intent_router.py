@@ -10,10 +10,11 @@ from prime_bridge.intent_router import IntentPolicy, IntentPolicyError, classify
 ROOT = Path(__file__).resolve().parents[2]
 POLICY = IntentPolicy.load(ROOT / "config/prime-auto-route-policy.json")
 SKILL = ROOT.parent / "skills-shared/ponytail/skills/ponytail/SKILL.md"
+SKILL_BYTES = SKILL.read_bytes() if SKILL.is_file() else b"# Ponytail\n"
 
 
 def ponytail():
-    return {"available": True, "path": POLICY.ponytail_path, "intensity": "full", "fingerprint": hashlib.sha256(SKILL.read_bytes()).hexdigest()}
+    return {"available": True, "path": POLICY.ponytail_path, "intensity": "full", "fingerprint": hashlib.sha256(SKILL_BYTES).hexdigest()}
 
 
 @pytest.mark.parametrize("message,family", [
@@ -156,6 +157,23 @@ def test_ponytail_invocation_gate_failure_blocks_with_prime_required_unavailable
 def test_existing_families_unchanged_by_ponytail_detector(message, family):
     result = classify(message, profile="workspace", mode="prime-default", readiness=True, compatibility=True, admitted=True, ponytail=ponytail(), policy=POLICY)
     assert result["outcome"] == "PRIME_AUTO" and result["family"] == family
+
+
+@pytest.mark.parametrize("message", ["make a gsd plan", "run ponytail"])
+def test_gsd_and_ponytail_evaluations_always_include_prime_advisory(message):
+    result = classify(message, profile="workspace", mode="prime-default", readiness=True, compatibility=True, admitted=True, ponytail=ponytail(), policy=POLICY)
+    assert result["prime_advisory"]["recommendation"] == "DELEGATE_TO_PRIME"
+
+
+def test_blocked_ponytail_evaluation_still_includes_prime_advisory():
+    result = classify("run ponytail", profile="workspace", mode="prime-default", readiness=False, compatibility=True, admitted=True, ponytail=ponytail(), policy=POLICY)
+    assert result["outcome"] == "PRIME_REQUIRED_UNAVAILABLE"
+    assert result["prime_advisory"] == {
+        "requested": False,
+        "recommendation": "KEEP_NATIVE",
+        "reason": "READINESS_UNVERIFIED",
+        "family": "ponytail_invocation",
+    }
 
 
 def test_non_ponytail_gate_failure_still_native():

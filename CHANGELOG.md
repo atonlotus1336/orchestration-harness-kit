@@ -17,6 +17,25 @@
   Oh My Pi worker runtime, Hermes Telegram tooling, auto-learning, autoexperiment,
   verified maintenance, and backup/restore operations.
 - Deterministic snapshot exporter, SHA-256 manifest, and dry-run-first restore tool.
+- Prime/OMP diagnostics that distinguish MCP connectivity, stale session tool
+  snapshots, and canonical OMP runtime readiness.
+- Advisory receipts for optional Prime delegation and Prime-governed OMP use.
+- A dry-run-first initializer for the gitignored maintainer privacy policies
+  required by the pre-commit tripwire.
+- A clean-recipient Prime/OMP restore and Hermes-overlay acceptance gate, plus
+  documentation separating the public contract-only payload from the full-Git
+  bridge restoration path.
+
+### Fixed
+
+- Replaced the sanitized fixed WSL distribution label with a required
+  `__WSL_DISTRO__` restore placeholder so recipient containment policies bind
+  to the actual client distribution.
+
+- Prevented Windows callers from producing false OMP runtime failures by
+  dispatching the feasibility probe into the configured WSL runtime.
+- Prevented `tool_search` and the immutable OMP runtime lock from being used as
+  live availability authorities.
 
 ### Security and snapshot boundary
 

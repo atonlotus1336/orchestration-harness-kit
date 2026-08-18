@@ -81,3 +81,46 @@ def test_install_doctor_rerun_and_uninstall(tmp_path):
     code, removed = run_kit("uninstall", "--target", target, "--apply", "--yes")
     assert code == 0 and removed["status"] == "PASS"
     assert (data / "recipient-memory.txt").is_file()
+
+
+def test_prime_omp_diagnostic_named_failure_cases():
+    diagnostic = ROOT / "modules" / "prime-omp" / "diagnose-prime-omp.py"
+    proc = subprocess.run(
+        [sys.executable, str(diagnostic), "--selftest"],
+        text=True, capture_output=True, check=False,
+    )
+    result = json.loads(proc.stdout)
+    assert proc.returncode == 0
+    assert result == {"cases": 4, "failures": []}
+
+
+def test_git_clone_prime_omp_client_path():
+    verifier = ROOT / "tools" / "verify-prime-omp-client-path.py"
+    proc = subprocess.run(
+        [sys.executable, str(verifier), "--selftest"],
+        text=True, capture_output=True, check=False,
+    )
+    assert proc.returncode == 0, proc.stdout + proc.stderr
+
+
+def test_contract_only_payload_prime_omp_gate_skips_cleanly(tmp_path):
+    destination = tmp_path / "public-payload"
+    code, result = run_kit("build", "--output", destination, "--apply", "--yes")
+    assert code == 0 and result["status"] == "PASS"
+    verifier = destination / "tools" / "verify-prime-omp-client-path.py"
+    proc = subprocess.run(
+        [sys.executable, str(verifier), "--selftest"],
+        text=True, capture_output=True, check=False,
+    )
+    assert proc.returncode == 0, proc.stdout + proc.stderr
+    assert json.loads(proc.stdout)["status"] == "SKIPPED"
+
+
+def test_maintainer_policy_initializer_selftest():
+    initializer = ROOT / "tools" / "init-maintainer-policy.py"
+    proc = subprocess.run(
+        [sys.executable, str(initializer), "--selftest"],
+        text=True, capture_output=True, check=False,
+    )
+    assert proc.returncode == 0
+    assert json.loads(proc.stdout) == {"cases": 3, "failures": 0}

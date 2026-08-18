@@ -45,6 +45,9 @@ Copy `system-snapshot/PLACEHOLDERS.template.json` to a file outside Git, replace
 every `<local-value>`, and pass that file to the restore command.
 `__WINDOWS_WORKSPACE__` and `__WSL_WORKSPACE__` are filled automatically from
 `--workspace-root`.
+`__WSL_DISTRO__` must be filled with the recipient's exact `wsl.exe -l -q`
+distribution name. This value is load-bearing because the Prime containment
+gate rejects execution in any other WSL identity.
 
 Prime lifecycle tests that consume live attestation context or the pinned Prime
 source checkout are environment-bound. After restoration, run the included Prime
@@ -90,3 +93,6 @@ python tools/sync-private-system-snapshot.py `
 
 The exporter fails closed when it finds token-shaped credentials and regenerates
 the hash manifest on success.
+
+For the complete recipient activation and live acceptance sequence, see
+[`PRIME-OMP-CLIENT-SETUP.md`](PRIME-OMP-CLIENT-SETUP.md).

@@ -46,6 +46,16 @@ own local, GITIGNORED policy files, which you create once:
 - `approved-public-tokens.txt` — placeholder vocabulary allowed to ship.
 Then the loop is: edit → commit (tripwire) → push.
 
+On a fresh clone, initialize both ignored policy files without printing their
+contents:
+
+```bash
+python tools/init-maintainer-policy.py --root . --apply
+```
+
+The command refuses to overwrite an existing policy unless `--force` is
+explicitly supplied. Review the files locally before the first commit.
+
 ## Hard rules (do not negotiate these away)
 
 - **Commit metadata is a publish channel no scanner checks.** Author/committer

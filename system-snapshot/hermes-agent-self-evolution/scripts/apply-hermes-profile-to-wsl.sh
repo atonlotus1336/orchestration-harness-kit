@@ -655,7 +655,7 @@ fi
 # Prime's containment admission uses this value to refuse execution outside the
 # approved NUCBOX distribution, so preserve the actual supported target across
 # the gateway -> MCP -> Prime worker process tree.
-export WSL_DISTRO_NAME="${WSL_DISTRO_NAME:-Ubuntu-restored}"
+export WSL_DISTRO_NAME="${WSL_DISTRO_NAME:-__WSL_DISTRO__}"
 
 PYTHONPATH="__WSL_WORKSPACE__/hermes-agent-self-evolution${PYTHONPATH:+:$PYTHONPATH}" \
     nohup "$HERMES_BIN" --profile "$RUNTIME_PROFILE" gateway run --replace >> "$LOG_DIR/gateway.log" 2>&1 &

@@ -12,5 +12,6 @@
   "__PRIVATE_TOKEN_13__": "<local-value>",
   "__PRIVATE_TOKEN_14__": "<local-value>",
   "__TAILSCALE_IPV4__": "<local-value>",
-  "__WINDOWS_USER__": "<local-value>"
+  "__WINDOWS_USER__": "<local-value>",
+  "__WSL_DISTRO__": "<local-value>"
 }

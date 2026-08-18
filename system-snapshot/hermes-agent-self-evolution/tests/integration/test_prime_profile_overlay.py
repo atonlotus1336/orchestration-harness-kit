@@ -53,7 +53,7 @@ def test_overlay_preserves_global_orchestration_and_projects_restrictions(tmp_pa
     assert server["trust"] == "full"
     assert server["env"]["HERMES_PRIME_PROFILE"] == "home"
     assert server["env"]["HERMES_PRIME_MODE"] == "prime-available"
-    assert server["env"]["WSL_DISTRO_NAME"] == "Ubuntu-restored"
+    assert server["env"]["WSL_DISTRO_NAME"] == "__WSL_DISTRO__"
     assert receipt["explicit_handoff_required"] is True
     assert receipt["activation"] == "restart-boundary"
     assert receipt["restriction_fingerprint"] == restriction_projection(before)["fingerprint"]

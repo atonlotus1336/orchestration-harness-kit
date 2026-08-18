@@ -6,6 +6,7 @@ import hashlib
 from pathlib import Path
 from typing import Any
 
+from prime_bridge.delegation_advisory import omp_advisory
 from prime_bridge.intent_router import IntentPolicy, classify
 
 
@@ -43,13 +44,24 @@ async def auto_handoff(
         # project-scoped and may route to PRIME_CODE.
         project_scope=True,
     )
+    decision = {
+        **decision,
+        "ohmypi_advisory": omp_advisory(decision),
+    }
     if decision["outcome"] not in {"PRIME_AUTO", "PRIME_CODE"}:
         # An explicit Ponytail invocation that failed a Prime gate hard-blocks
         # with PRIME_REQUIRED_UNAVAILABLE; it must never fall back to native.
         return {"route": decision, "job": None}
     # ponytail: the canonical skill is injected once at the delegated boundary; a
     # separate prompt framework is unnecessary until multiple governed skills exist.
-    prompt = f"{ponytail['content']}\n\n## User task\n{message}"
+    prompt = (
+        f"{ponytail['content']}\n\n"
+        "## OhMyPi advisory\n"
+        f"{decision['ohmypi_advisory']}\n"
+        "This is a recommendation only. Do not start OhMyPi automatically; its "
+        "existing feasibility and operator-approval gates remain mandatory.\n\n"
+        f"## User task\n{message}"
+    )
     try:
         job = await service.start_session({
             "prompt": prompt, "workspace": workspace, "project": project,
