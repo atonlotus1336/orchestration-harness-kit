@@ -4,11 +4,12 @@
 (the standard tool protocol all major harnesses speak):
 
 - **`memoryweaver/` + `memoryweaver-mcp/`** — cross-session memory. Stores
-  decisions and facts as they happen, recalls them by *hybrid search* (keyword +
-  semantic vector, fused). Two-tier retrieval keeps it cheap: agents fetch tiny
+  decisions and facts as they happen, recalls them by deterministic hybrid search
+  (SQLite FTS plus portable token similarity, fused). Two-tier retrieval keeps it cheap: agents fetch tiny
   "stubs" first and pull full text only for the hits that matter. Embeddings run
   locally (no per-token API cost). Your store starts **empty** — it fills with
-  *your* work, not the author's.
+  *your* work, not the author's. The client core is offline-capable and downloads
+  no embedding model.
 - **`rag-orchestrator/`** — one query endpoint in front of all your knowledge
   backends, so agents ask a single tool instead of juggling five. Reports honest
   `degraded` status when a backend is down instead of pretending health.

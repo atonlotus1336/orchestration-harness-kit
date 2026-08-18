@@ -1,0 +1,21 @@
+{
+  "schema_version": 1,
+  "generated": "2026-08-17",
+  "results": [
+    {
+      "platform": "Windows 11",
+      "python": "3.11",
+      "artifact": "reproducible client ZIP",
+      "checks": ["dry-run", "install", "doctor", "rerun", "uninstall", "data-preserved"],
+      "status": "PASS"
+    },
+    {
+      "platform": "Ubuntu 24.04 under WSL2",
+      "python": "3.12.3",
+      "artifact": "same reproducible client ZIP",
+      "checks": ["dry-run", "install", "doctor", "rerun", "uninstall", "data-preserved"],
+      "status": "PASS"
+    }
+  ],
+  "note": "Evidence was produced from the staged client artifact, not the maintainer workspace."
+}

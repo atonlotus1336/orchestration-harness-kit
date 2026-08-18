@@ -20,7 +20,11 @@ maintenance-evidence/
 *.done
 *.error
 *.lance
-store/
+/store/
+/installer-staging/
+/release/
+config.local.yaml
+managed-files.json
 
 # generated-on-target (regenerate with build-skills-manifest.py against local skills)
 system/SKILLS.json

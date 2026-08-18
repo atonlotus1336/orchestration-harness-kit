@@ -1,0 +1,13 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "required": ["version", "default_groups", "groups", "forbidden_roots", "forbidden_names"],
+  "properties": {
+    "version": {"type": "integer", "minimum": 1},
+    "default_groups": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+    "groups": {"type": "object", "additionalProperties": {"type": "array", "items": {"type": "string"}}},
+    "forbidden_roots": {"type": "array", "items": {"type": "string"}},
+    "forbidden_names": {"type": "array", "items": {"type": "string"}}
+  },
+  "additionalProperties": false
+}

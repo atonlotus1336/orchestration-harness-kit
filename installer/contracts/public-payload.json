@@ -1,0 +1,30 @@
+{
+  "version": 1,
+  "default_groups": ["core", "memory", "docs", "installer"],
+  "groups": {
+    "core": [
+      ".gitattributes", ".gitignore", "LICENSE", "README.md", "CHANGELOG.md",
+      "AGENTS.md", "CLAUDE.md", "REMOTE-ACCESS.md", "modules/**", "hooks/**"
+    ],
+    "memory": ["system/memoryweaver/**", "system/memoryweaver-mcp/**", "system/tests/**", "system/README.md", "system/pyproject.toml"],
+    "docs": ["docs/**", "n8n-integration/**", "practice-loop/**"],
+    "installer": [
+      "installer/contracts/**", "installer/coverage/**", "installer/lib/**",
+      "installer/modules/**", "installer/preflight/**", "installer/templates/**",
+      "installer/tests/**", "installer/clone-eval/install-guidance-*.txt",
+      "installer/clone-eval/install-guidance-reference.json",
+      "installer/clone-eval/validate-install-guidance.py",
+      "installer/README.md", "installer/kit.py", "installer/gate.ps1", "installer/gate.sh",
+      "installer/configure.ps1", "installer/configure.sh", "installer/doctor.ps1",
+      "installer/doctor.sh", "install.ps1", "install.sh", "make-bundle.ps1", "make-bundle.sh"
+    ]
+  },
+  "forbidden_roots": [
+    ".git", "Projects", "system-snapshot", "release", "installer-staging",
+    ".reasoning-runs", ".m10-quarantine"
+  ],
+  "forbidden_names": [
+    ".env", ".private-denylist", "approved-public-tokens.txt",
+    ".sanitize-rules.local.json", "config.local.yaml", "managed-files.json"
+  ]
+}

@@ -1,0 +1,2 @@
+Output this command and nothing else:
+python3 installer/kit.py doctor --target "$HOME/agent-kit"

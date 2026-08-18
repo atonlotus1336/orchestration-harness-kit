@@ -1,0 +1,10 @@
+{
+  "date": "2026-08-17",
+  "model": "hermes3:8b",
+  "cards": 4,
+  "expected_commands_present": 4,
+  "invented_commands": 0,
+  "extraneous_prose_responses": 2,
+  "result": "PASS_WITH_DETERMINISTIC_EXTRACTION",
+  "rule": "Execute only the single exact allowlisted command found in the selected state card; reject zero, multiple, or altered commands."
+}

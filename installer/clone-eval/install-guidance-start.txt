@@ -1,0 +1,2 @@
+Output this command and nothing else:
+python3 installer/kit.py install --target "$HOME/agent-kit" --data-dir "$HOME/agent-data"

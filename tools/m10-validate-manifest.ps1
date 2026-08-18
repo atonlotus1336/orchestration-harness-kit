@@ -1,75 +1,44 @@
 param(
-  [string]$Graph = "SURFACE-GRAPH.yaml",
-  [string]$GeneratedDir = "",
+  [string]$Manifest = "",
   [switch]$Json
 )
 
-$ErrorActionPreference = "Continue"
-if (-not $GeneratedDir) {
-  $GeneratedDir = Join-Path (Split-Path -Parent $PSScriptRoot) "generated"
-}
-if (-not (Test-Path -LiteralPath $Graph) -and $Graph -eq "SURFACE-GRAPH.yaml") {
-  $candidateGraph = Join-Path (Split-Path -Parent $PSScriptRoot) "..\..\SURFACE-GRAPH.yaml"
-  if (Test-Path -LiteralPath $candidateGraph) { $Graph = $candidateGraph }
-}
-$errors = New-Object System.Collections.Generic.List[string]
-
-foreach ($file in @("INSTALL-STAGES.json", "PARITY-VERIFIER.json", "SYNC-ALLOWLIST.json", "SYNC-ALLOWLIST.txt", "MANUAL.md", "PROVENANCE.json", "bindings.local.template.yaml")) {
-  if (-not (Test-Path -LiteralPath (Join-Path $GeneratedDir $file))) {
-    $errors.Add("GENERATED_MISSING:$file")
-  }
-}
+$ErrorActionPreference = "Stop"
+$kit = Split-Path -Parent $PSScriptRoot
+if (-not $Manifest) { $Manifest = Join-Path $kit "installer\modules\module-manifest.json" }
+$errors = [System.Collections.Generic.List[string]]::new()
 
 try {
-  $freshDir = [System.IO.Path]::Combine([System.IO.Path]::GetTempPath(), "m10-validate-" + [guid]::NewGuid().ToString("N"))
-  $null = & powershell.exe -NoProfile -ExecutionPolicy Bypass -File (Join-Path $PSScriptRoot "m10-generate-from-surface-graph.ps1") -Graph $Graph -OutputDir $freshDir
-  if ($LASTEXITCODE -ne 0) { $errors.Add("GRAPH_INVALID") }
-  foreach ($file in @("INSTALL-STAGES.json", "PARITY-VERIFIER.json", "SYNC-ALLOWLIST.json", "SYNC-ALLOWLIST.txt", "MANUAL.md", "PROVENANCE.json", "bindings.local.template.yaml")) {
-    $generatedPath = Join-Path $GeneratedDir $file
-    $freshPath = Join-Path $freshDir $file
-    if ((Test-Path -LiteralPath $generatedPath) -and (Test-Path -LiteralPath $freshPath)) {
-      $generatedHash = (Get-FileHash -Algorithm SHA256 -LiteralPath $generatedPath).Hash
-      $freshHash = (Get-FileHash -Algorithm SHA256 -LiteralPath $freshPath).Hash
-      if ($generatedHash -ne $freshHash) {
-        $errors.Add("GENERATED_DRIFT:$file")
-      }
-    }
+  $root = [System.IO.Path]::GetFullPath($kit).TrimEnd('\', '/')
+  $doc = Get-Content -Raw -LiteralPath $Manifest | ConvertFrom-Json
+  $ids = @($doc.modules | ForEach-Object { [string]$_.id })
+  if (@($ids | Group-Object | Where-Object Count -gt 1).Count -gt 0) {
+    $errors.Add("DUPLICATE_MODULE_ID")
   }
-} catch {
-  $errors.Add("GRAPH_INVALID:$($_.Exception.Message)")
-} finally {
-  if ($freshDir) {
-    Remove-Item -LiteralPath $freshDir -Recurse -Force -ErrorAction SilentlyContinue
-  }
-}
-
-try {
-  $prov = Get-Content -Raw -LiteralPath (Join-Path $GeneratedDir "PROVENANCE.json") | ConvertFrom-Json
-  foreach ($entry in $prov.checksums.PSObject.Properties) {
-    $path = Join-Path $GeneratedDir $entry.Name
-    if (-not (Test-Path -LiteralPath $path)) {
-      $errors.Add("CHECKSUM_TARGET_MISSING:$($entry.Name)")
+  foreach ($module in @($doc.modules)) {
+    if (-not $module.source) { continue }
+    $source = [string]$module.source
+    if ([System.IO.Path]::IsPathRooted($source) -or $source -match '(^|[\/])\.\.([\/]|$)') {
+      $errors.Add("UNSAFE_SOURCE:$($module.id)")
       continue
     }
-    $actual = (Get-FileHash -Algorithm SHA256 -LiteralPath $path).Hash.ToLowerInvariant()
-    if ($actual -ne [string]$entry.Value) {
-      $errors.Add("CHECKSUM_MISMATCH:$($entry.Name)")
+    $resolved = [System.IO.Path]::GetFullPath((Join-Path $root $source))
+    if (-not ($resolved -eq $root -or $resolved.StartsWith($root + [System.IO.Path]::DirectorySeparatorChar))) {
+      $errors.Add("SOURCE_ESCAPE:$($module.id)")
+    } elseif (-not (Test-Path -LiteralPath $resolved)) {
+      $errors.Add("SOURCE_MISSING:$($module.id):$source")
     }
   }
+  foreach ($id in @($doc.default_path)) {
+    $module = @($doc.modules | Where-Object id -eq $id)
+    if ($module.Count -ne 1) { $errors.Add("DEFAULT_MODULE_INVALID:$id") }
+    elseif (-not [bool]$module[0].required) { $errors.Add("DEFAULT_MODULE_NOT_REQUIRED:$id") }
+  }
 } catch {
-  $errors.Add("PROVENANCE_INVALID:$($_.Exception.Message)")
+  $errors.Add("MANIFEST_INVALID:$($_.Exception.Message)")
 }
 
-$status = "GREEN"
-if ($errors.Count -ne 0) { $status = "RED" }
-$result = [ordered]@{
-  status = $status
-  errors = @($errors)
-}
-if ($Json) {
-  $result | ConvertTo-Json -Depth 8
-}
-if ($errors.Count -ne 0) {
-  exit 2
-}
+$result = [ordered]@{ status = $(if ($errors.Count) { "RED" } else { "GREEN" }); errors = @($errors) }
+if ($Json) { $result | ConvertTo-Json -Depth 6 } else { $result }
+if ($errors.Count) { exit 2 }
 exit 0

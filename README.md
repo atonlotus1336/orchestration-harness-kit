@@ -10,10 +10,9 @@ It ships the **system, never the author's content**: no memories (your store sta
 empty), no private projects, no identity. Machine-specific values are placeholders
 (`alice`, `D:\MyVault`, `__STORE__`) you fill in once during install.
 
-Because this repository is private, it also carries a credential-free snapshot of
-the owner's real Hermes implementation. That snapshot contains implementation code
-and operating policy, never tokens, memories, project content, or mutable runtime
-state.
+The private maintainer repository also carries an optional credential-free owner
+snapshot. Client release ZIPs exclude that snapshot and all Git history. It is not
+part of core installation or support.
 
 The default topology is **one agentic system on one PC**. That PC owns the
 home disk, memory, approvals, and backups. VPS and second-PC connections are
@@ -75,13 +74,14 @@ worked. The safety gate is the best first pick: two files, no dependencies,
 python modules/guards/test-dry-run-gate.py   # see it pass its own 32 tests first
 ```
 
-**Path B — the full stack.** Follow [`docs/REPLICATION-GUIDE.md`](docs/REPLICATION-GUIDE.md)
-top to bottom: placeholders → memory engine (empty store) → per-harness wiring →
-smoke tests. Then [`REMOTE-ACCESS.md`](REMOTE-ACCESS.md) to reach it from your phone,
-and [`modules/messaging/`](modules/messaging/) to text it.
+**Path B — the client core.** Follow [`docs/QUICK-START.md`](docs/QUICK-START.md):
+dry-run → confirmed install → doctor. It installs an empty memory engine, safety
+modules, solo topology, and local harness template. RAG, remote access, messaging,
+Hermes, and GPU features remain explicit add-ons.
 
-For the owner's complete recent implementation, verify and restore the private
-snapshot using [`docs/PRIVATE-SYSTEM-SNAPSHOT.md`](docs/PRIVATE-SYSTEM-SNAPSHOT.md).
+Maintainers may verify the owner snapshot separately using
+[`docs/PRIVATE-SYSTEM-SNAPSHOT.md`](docs/PRIVATE-SYSTEM-SNAPSHOT.md). It is not
+distributed to clients.
 
 **Independence matrix** — what needs what:
 
@@ -114,8 +114,9 @@ for your own tokens.
 git pull        # that's it — updates arrive as commits
 ```
 
-No git on the target? `bash make-bundle.sh` produces an offline zip of the committed
-state.
+No Git on the target? `make-bundle.sh --output orchestration-harness-kit.zip
+--apply --yes` produces a scrubbed offline ZIP without Git history or the owner
+snapshot.
 
 ## What is deliberately NOT here
 

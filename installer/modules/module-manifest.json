@@ -1,26 +1,22 @@
 {
-  "version": "modules-v4",
+  "version": "modules-v5-client-core",
   "default_path": [
     "memory",
-    "rag",
     "harness",
-    "hermes-snapshot",
-    "private-system-snapshot",
-    "topology",
-    "clone-eval"
+    "topology"
   ],
   "modules": [
     {
       "id": "memory",
       "stage": 1,
       "required": true,
-      "source": "../memory-orchestration-kit/bootstrap.sh",
+      "source": "installer/modules/memory/bootstrap.py",
       "description": "Install empty MemoryWeaver runtime and MCP memory bridge."
     },
     {
       "id": "rag",
       "stage": 2,
-      "required": true,
+      "required": false,
       "source": "system/rag-orchestrator",
       "description": "Install RAG front-door MCP using recipient-owned corpus paths."
     },
@@ -28,20 +24,20 @@
       "id": "harness",
       "stage": 3,
       "required": true,
-      "source": "generated/bindings.local.template.yaml",
+      "source": "installer/modules/harness/bindings.local.template.yaml",
       "description": "Create local capability bindings; concrete providers and endpoints stay local."
     },
     {
       "id": "hermes-snapshot",
       "stage": 4,
-      "required": true,
+      "required": false,
       "source": "installer/modules/hermes-snapshot",
       "description": "Versioned snapshot of profile template, routing policy, and parity plugin metadata."
     },
     {
       "id": "private-system-snapshot",
       "stage": 5,
-      "required": true,
+      "required": false,
       "source": "system-snapshot",
       "description": "Credential-free snapshot of the actual Prime/OMP, Hermes Telegram, auto-learning, maintenance, autoexperiment, backup, and restore implementation."
     },
@@ -55,7 +51,7 @@
     {
       "id": "clone-eval",
       "stage": 7,
-      "required": true,
+      "required": false,
       "source": "installer/clone-eval",
       "description": "Public eval subset proving clone parity for code-fix and agentic-file-op only."
     },

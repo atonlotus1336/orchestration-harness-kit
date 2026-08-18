@@ -46,6 +46,12 @@ _LOG_DIR = MW_DATA_DIR / "logs"
 _SPOOL_ERROR_LOG = _LOG_DIR / "spool-errors.jsonl"
 
 
+def _runtime_data_dir() -> Path:
+    """Resolve the recipient data root at call time, not module import time."""
+    value = os.environ.get("MEMORYWEAVER_DATA_DIR", "").strip()
+    return Path(value) if value else MW_DATA_DIR
+
+
 # ---------------------------------------------------------------------------
 # Producer (write side)
 # ---------------------------------------------------------------------------
@@ -56,6 +62,7 @@ def write_spool(
     project: Optional[str] = None,
     thread: Optional[str] = None,
     harness: Optional[str] = None,
+    spool_dir: Optional[Path] = None,
 ) -> Path:
     """
     Write a MemoryEnvelope spool file. Returns path to the .json file.
@@ -65,7 +72,8 @@ def write_spool(
     inferred from env if omitted. Used for the per-harness capture heartbeat so
     cross-harness capture parity is observable via `memory_status`.
     """
-    _SPOOL_DIR.mkdir(parents=True, exist_ok=True)
+    spool_dir = Path(spool_dir) if spool_dir else _runtime_data_dir() / "spool"
+    spool_dir.mkdir(parents=True, exist_ok=True)
     if harness is None:
         harness = _infer_harness()
 
@@ -93,12 +101,12 @@ def write_spool(
 
     content_hash = _hash_envelope(envelope)
     for suffix in (".done", ".error"):
-        existing = _SPOOL_DIR / f"{content_hash}{suffix}"
+        existing = spool_dir / f"{content_hash}{suffix}"
         if existing.exists():
             return existing  # already processed or quarantined
 
     ts_prefix = datetime.now(tz=timezone.utc).strftime("%Y%m%dT%H%M%S")
-    spool_path = _SPOOL_DIR / f"{ts_prefix}-{content_hash[:12]}.json"
+    spool_path = spool_dir / f"{ts_prefix}-{content_hash[:12]}.json"
     spool_path.write_text(json.dumps(envelope, indent=2), encoding="utf-8")
     _record_capture(harness, project)  # fail-open per-harness heartbeat (Phase 3)
     return spool_path
@@ -159,10 +167,11 @@ def _record_capture(harness: str, project: Optional[str]) -> None:
     heartbeat increment (acceptable for observability).
     """
     try:
+        capture_status = _runtime_data_dir() / "capture-status.json"
         data = {}
-        if _CAPTURE_STATUS.exists():
+        if capture_status.exists():
             try:
-                data = json.loads(_CAPTURE_STATUS.read_text(encoding="utf-8"))
+                data = json.loads(capture_status.read_text(encoding="utf-8"))
                 if not isinstance(data, dict):
                     data = {}
             except Exception:
@@ -173,9 +182,10 @@ def _record_capture(harness: str, project: Optional[str]) -> None:
         if project:
             rec["last_project"] = project
         data[harness] = rec
-        tmp = _CAPTURE_STATUS.with_suffix(".json.tmp")
+        capture_status.parent.mkdir(parents=True, exist_ok=True)
+        tmp = capture_status.with_suffix(".json.tmp")
         tmp.write_text(json.dumps(data, indent=2), encoding="utf-8")
-        os.replace(tmp, _CAPTURE_STATUS)
+        os.replace(tmp, capture_status)
     except Exception:
         pass  # never break the spool write
 
@@ -183,8 +193,9 @@ def _record_capture(harness: str, project: Optional[str]) -> None:
 def read_capture_status() -> dict:
     """Return the per-harness capture heartbeat map (empty dict if none/unreadable)."""
     try:
-        if _CAPTURE_STATUS.exists():
-            data = json.loads(_CAPTURE_STATUS.read_text(encoding="utf-8"))
+        capture_status = _runtime_data_dir() / "capture-status.json"
+        if capture_status.exists():
+            data = json.loads(capture_status.read_text(encoding="utf-8"))
             return data if isinstance(data, dict) else {}
     except Exception:
         pass
@@ -201,7 +212,7 @@ class SpoolConsumer:
     """
 
     def __init__(self, spool_dir: Optional[Path] = None) -> None:
-        self._spool_dir = Path(spool_dir) if spool_dir else _SPOOL_DIR
+        self._spool_dir = Path(spool_dir) if spool_dir else _runtime_data_dir() / "spool"
         self._spool_dir.mkdir(parents=True, exist_ok=True)
 
     def process_pending(self) -> dict:
@@ -289,7 +300,9 @@ class SpoolConsumer:
 
     def _mark_error(self, spool_file: Path, exc: Exception) -> None:
         """Quarantine a failed envelope and append structured diagnostics."""
-        _LOG_DIR.mkdir(parents=True, exist_ok=True)
+        log_dir = self._spool_dir.parent / "logs"
+        error_log = log_dir / "spool-errors.jsonl"
+        log_dir.mkdir(parents=True, exist_ok=True)
         error_path = _error_path_for_spool(spool_file, self._spool_dir)
         row = {
             "ts": datetime.now(tz=timezone.utc).isoformat(),
@@ -300,7 +313,7 @@ class SpoolConsumer:
             "traceback_tail": traceback.format_exc(limit=6),
         }
         try:
-            with _SPOOL_ERROR_LOG.open("a", encoding="utf-8") as fh:
+            with error_log.open("a", encoding="utf-8") as fh:
                 fh.write(json.dumps(row, ensure_ascii=False) + "\n")
         except Exception:
             pass

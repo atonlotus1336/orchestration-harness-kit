@@ -1,0 +1,11 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "required": ["kit_version", "install_root", "data_root", "files"],
+  "properties": {
+    "kit_version": {"type": "string"},
+    "install_root": {"type": "string"},
+    "data_root": {"type": "string"},
+    "files": {"type": "array", "items": {"type": "string"}, "uniqueItems": true}
+  }
+}

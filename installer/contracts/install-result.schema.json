@@ -1,0 +1,12 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "required": ["status", "command", "checks"],
+  "properties": {
+    "status": {"enum": ["PASS", "FAIL", "BLOCKED", "SKIPPED", "DRY-RUN"]},
+    "command": {"type": "string"},
+    "checks": {"type": "array", "items": {"type": "object"}},
+    "next_step": {"type": "string"}
+  },
+  "additionalProperties": true
+}

@@ -64,7 +64,13 @@ $patterns = [ordered]@{
 
 $hits = New-Object System.Collections.Generic.List[object]
 $files = Get-ChildItem -LiteralPath $Root -Recurse -File -Force |
-  Where-Object { $_.FullName -notmatch '\\\.git\\' -and $_.FullName -notmatch '\\\.m10-quarantine\\' }
+  Where-Object {
+    $_.FullName -notmatch '\\\.git\\' -and
+    $_.FullName -notmatch '\\\.m10-quarantine\\' -and
+    $_.FullName -notmatch '\\__pycache__\\' -and
+    $_.FullName -notmatch '\\\.pytest_cache\\' -and
+    $_.Extension -notin @('.pyc', '.png', '.jpg', '.jpeg', '.gif', '.zip')
+  }
 
 foreach ($file in $files) {
   $text = Get-Content -Raw -LiteralPath $file.FullName -ErrorAction SilentlyContinue

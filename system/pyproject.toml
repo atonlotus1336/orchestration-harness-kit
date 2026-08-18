@@ -1,0 +1,17 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "orchestration-memoryweaver"
+version = "1.0.0"
+description = "Portable, empty-by-default memory core for the Orchestration Harness Kit"
+requires-python = ">=3.11"
+dependencies = []
+
+[project.optional-dependencies]
+mcp = ["mcp>=1.0,<2"]
+test = ["pytest>=8,<9"]
+
+[tool.setuptools]
+packages = ["memoryweaver", "memoryweaver.commands", "memoryweaver.store"]

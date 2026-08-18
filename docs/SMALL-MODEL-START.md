@@ -7,10 +7,36 @@ this file first. Do not ask it to read the whole repository.
 
 Install the solo-PC core, prove each step, and stop on the first failed check.
 
+For a client installation, follow `QUICK-START.md`. Run only its deterministic
+commands and record the returned status. Coding ability is not an installation
+requirement.
+
+For Linux or WSL, the first command is exactly:
+
+```sh
+python3 installer/kit.py install --target "$HOME/agent-kit" --data-dir "$HOME/agent-data"
+```
+
+Do not create the directories first. Do not add `--apply` or `--yes` until this
+command returns `DRY-RUN`. Never substitute an equivalent command.
+
+Use this fixed transition table for the client install:
+
+| Last result | Next command |
+|---|---|
+| Start | `python3 installer/kit.py install --target "$HOME/agent-kit" --data-dir "$HOME/agent-data"` |
+| `DRY-RUN` | `python3 installer/kit.py install --target "$HOME/agent-kit" --data-dir "$HOME/agent-data" --apply --yes` |
+| Install `PASS` | `python3 installer/kit.py doctor --target "$HOME/agent-kit"` |
+| Doctor `PASS` | Stop. Report core installation complete. |
+
+The solo-PC checklist later in this file is an optional topology exercise. It is
+not part of the three-command client install.
+
 ## Rules for the agent
 
 1. Perform one numbered step at a time.
-2. After every command, record exactly one flag: `PASS`, `FAIL`, or `BLOCKED`.
+2. After every command, record exactly one flag: `PASS`, `FAIL`, `BLOCKED`,
+   `SKIPPED`, or `DRY-RUN`.
 3. Never infer success from prose. Use the command output.
 4. On `FAIL`, stop and report the command, exit code, and last useful line.
 5. Do not enable VPS, second-PC, Telegram, Prime/OMP, or maintenance modules

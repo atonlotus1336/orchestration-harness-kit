@@ -1,9 +1,8 @@
-# installer — the staged full-stack installer
+# installer — the client-safe staged installer
 
-**What it is:** the "all-in" path. Where the per-module READMEs let you cherry-pick
-parts, this directory installs the whole stack in verified stages, with a gate
-(`gate.ps1`) that checks each stage actually worked before the next one runs —
-including proof that a *clean machine* can reproduce the install.
+**What it is:** the deterministic client path. It installs a small core first and
+keeps external services optional. Commands are dry-run by default and require both
+`--apply` and `--yes` before writing.
 
 **Why you'd want it:** if you're replicating the complete system (memory + RAG +
 doctrine + modules) onto a new machine, staged-with-verification beats "run twenty
@@ -39,7 +38,7 @@ commands and hope." Every stage leaves evidence; a failed stage names itself.
 
 ## Use
 
-Read `preflight/`, run it for your OS, then work through `modules/` in manifest
-order, running `gate.ps1` between stages. Windows-first (PowerShell); the `.sh`
-twins cover WSL/Linux paths. Cherry-pickers can ignore this entire directory —
-the `modules/*` at repo root install standalone without it.
+Follow `../docs/QUICK-START.md`. The portable implementation is `kit.py`; the
+PowerShell and shell files are thin entrypoints. Use `doctor` after installation.
+Optional modules remain independent and must be enabled deliberately after core
+health passes.

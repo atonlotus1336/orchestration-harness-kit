@@ -1,0 +1,2 @@
+Output this line and nothing else:
+STOP: core installation complete

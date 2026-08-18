@@ -1,0 +1,9 @@
+{
+  "version": 1,
+  "install_root": "<recipient-install-root>",
+  "data_root": "<recipient-data-root>",
+  "python": "python3",
+  "harness": "generic",
+  "secret_environment_variables": [],
+  "optional_modules": []
+}

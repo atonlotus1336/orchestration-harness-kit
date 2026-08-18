@@ -1,0 +1,8 @@
+version: 1
+memory:
+  command: "__PYTHON__"
+  args: ["__KIT_ROOT__/system/memoryweaver-mcp/server.py"]
+  env:
+    MEMORYWEAVER_DATA_DIR: "__DATA_DIR__"
+    MEMORYWEAVER_FTS_DB_PATH: "__DATA_DIR__/fts.db"
+optional_services: {}

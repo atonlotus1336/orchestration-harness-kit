@@ -62,7 +62,10 @@ def test_recent_decisions_filters_noise_and_keeps_source_line():
 def test_error_envelope_is_logged_and_not_respooled():
     session = Path(_TMP) / "2026-07-05-bad.md"
     session.write_text("## Broken\nbody\n", encoding="utf-8")
-    spool_path = write_spool(session_path=session, project="demo", harness="codex")
+    spool_path = write_spool(
+        session_path=session, project="demo", harness="codex",
+        spool_dir=Path(_TMP) / "spool",
+    )
 
     class BadStore:
         def upsert(self, rec):
@@ -85,7 +88,10 @@ def test_error_envelope_is_logged_and_not_respooled():
     assert row["exception_type"] == "RuntimeError"
     assert "boom" in row["message"]
 
-    again = write_spool(session_path=session, project="demo", harness="codex")
+    again = write_spool(
+        session_path=session, project="demo", harness="codex",
+        spool_dir=Path(_TMP) / "spool",
+    )
     assert again == errors[0], "same failing content is quarantined until explicit retry"
 
 
