@@ -41,6 +41,42 @@ uses an SSH tunnel.
 Run the final reachability test from the remote machine. A successful local
 probe does not prove that the firewall and bind address work remotely.
 
+## Verify a key-only management hop
+
+Use the included verifier when a thin client must reach a separate Windows
+host and, optionally, its WSL runtime. It refuses password and interactive
+keyboard fallback, requires an already trusted host key, and runs only a fixed
+identity probe (`hostname` plus `id -un`). It never prints or reads private-key
+contents.
+
+```bash
+python verify-key-only-transport.py \
+  --identity-file /path/to/key \
+  --destination alice@example.com \
+  --expected-host 'example-host' \
+  --expected-user alice
+```
+
+For a Windows host that owns a Linux runtime, add the runtime identity:
+
+```bash
+python verify-key-only-transport.py \
+  --identity-file /path/to/key \
+  --destination alice@example.com \
+  --expected-host 'example-host' \
+  --expected-user alice \
+  --wsl-distribution example-distro \
+  --runtime-user alice
+```
+
+The first command verifies the SSH account. The second additionally verifies
+the WSL user. Both commands require a previously recorded SSH host key; they
+do not accept a new key automatically. Test the refusal cases with:
+
+```bash
+python verify-key-only-transport.py --selftest
+```
+
 ## Home-disk rule
 
 The solo PC is the only storage writer. Remote machines should use the memory,
