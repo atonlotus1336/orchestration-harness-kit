@@ -124,3 +124,11 @@ def test_maintainer_policy_initializer_selftest():
     )
     assert proc.returncode == 0
     assert json.loads(proc.stdout) == {"cases": 3, "failures": 0}
+
+
+def test_orchestration_layer_never_instructs_live_vault_lightrag_indexing():
+    document = (ROOT / "docs" / "ORCHESTRATION-LAYER.md").read_text(encoding="utf-8-sig")
+    assert "index-vault.bat" not in document
+    assert "/documents/scan" not in document
+    assert "Never point LightRAG's input directory at the vault" in document
+    assert "do not use `DELETE /documents`" in document

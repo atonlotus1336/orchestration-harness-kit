@@ -418,6 +418,13 @@ curl -s http://10.0.0.1:9621/health | jq .
 - Check disk space in `D:\MyVault\.rag\lightrag`
 - Check Ollama (LightRAG backend) is running: `curl http://10.0.0.1:11434/api/tags`
 
+**Source-data safety boundary:**
+- Never point LightRAG's input directory at the vault, a project root, or any directory that contains source files.
+- Use a dedicated disposable intake directory containing copies of the documents selected for retrieval.
+- Do not call LightRAG document-management endpoints from runbooks, schedules, or automation. In particular, do not use `DELETE /documents` against a directory containing source material.
+- If an index must be rebuilt, preserve the source intake and take a backup first.
+- Rebuild only LightRAG's working storage after reviewing the installed version's behavior.
+
 ---
 
 ### Hermes Gateway (WebUI/Workspace Connection)
@@ -684,9 +691,9 @@ grep -i obsidian ~/.claude/settings.json
 ```
 
 **Fix:**
-1. âœ“ Reindex LightRAG/vault (server must be up via `start-lightrag.bat`): `[PowerShell] D:\MyVault\.rag\index-vault.bat`. There is NO `POST /rebuild` HTTP endpoint â€” that path returns 404. If a direct call is needed, the live server exposes `curl -s -X POST http://10.0.0.1:9621/documents/scan`.
-2. âœ“ Wait for indexing to complete: `curl http://10.0.0.1:9621/health | jq '.pipeline_busy'`
-3. âœ“ For local-rag, re-ingest via its MCP tools (e.g. `mcp__local-rag__ingest_file` / `ingest_data`) against `BASE_DIR=D:\MyVault`. There is no `local-rag-ingest` CLI binary; local-rag is an MCP server (`mcp-local-rag`). DB at `D:\MyVault\.rag\db`, cache at `D:\MyVault\.rag\cache`.
+1. Verify that LightRAG's input directory is a disposable, curated intake directory — never the vault or a project root.
+2. Do not run a full-vault reindex or call LightRAG document-management endpoints. If retrieval is stale, use the existing local-rag or MemoryWeaver route while you review a safe, version-specific ingestion procedure.
+3. For local-rag, re-ingest via its MCP tools (e.g. `mcp__local-rag__ingest_file` / `ingest_data`) against `BASE_DIR=D:\MyVault`. There is no `local-rag-ingest` CLI binary; local-rag is an MCP server (`mcp-local-rag`). DB at `D:\MyVault\.rag\db`, cache at `D:\MyVault\.rag\cache`.
 
 ---
 
@@ -733,7 +740,7 @@ Snapshot of which tiers are live. Re-check with `/layer-status` or `memoryweaver
 - [ ] Check memory ingestion: `ls -la /mnt/d/MyVault/.claude/Memory/memoryweaver/`
 
 **Monthly:**
-- [ ] Rebuild RAG indexes: `[PowerShell] D:\MyVault\.rag\index-vault.bat` (LightRAG must be running first via `start-lightrag.bat`). There is no `POST /rebuild` HTTP endpoint â€” that URL returns 404.
+- [ ] Review LightRAG health and its configured input directory. Never schedule a full-vault rebuild or LightRAG document-management call.
 - [ ] Sync Hermes profile to WSL: `bash /mnt/d/MyVault/hermes-agent-self-evolution/scripts/apply-hermes-profile-to-wsl.sh`
 - [ ] Update MCP packages: `npm update -g mcp-obsidian mcp-local-rag`
 - [ ] Check disk space in `D:\MyVault\.rag` (should be < 80% full)
