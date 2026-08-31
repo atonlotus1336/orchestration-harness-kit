@@ -84,7 +84,7 @@ escalation paths after indexed routes fail or a full audit is explicitly request
 
 For non-trivial retrieval work, include:
 
-- Route used: index, Obsidian, Memoryweaver, LightRAG, GraphRAG, Graphify, direct
+- Route used: index, Obsidian, Memoryweaver, GraphRAG, Graphify, direct
   file read, or command output.
 - Evidence read: exact file, note, command, or MCP result when practical.
 - Confidence boundary: stale, ambiguous, unavailable, or unverified parts.

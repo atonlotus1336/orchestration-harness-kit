@@ -632,8 +632,8 @@
     },
     {
       "path": "hermes-agent-self-evolution/profiles/telegram/config.yaml",
-      "sha256": "528bb41b929fcc8b60410d586bd0566fcedea6247a3d1f0f8ffeab2e97236f6d",
-      "bytes": 17748
+      "sha256": "dd323b8abeb5d9a16fb780fb6bb08eb293ab46c56a74b48a52987312dc60fbfc",
+      "bytes": 17701
     },
     {
       "path": "hermes-agent-self-evolution/profiles/telegram/README.md",
@@ -747,8 +747,8 @@
     },
     {
       "path": "hermes-agent-self-evolution/scripts/ensure-rag-stack.sh",
-      "sha256": "7c2915bd4a0cfae48bc113b82ddaec274e2de1c72dd6792b6361176d75788a22",
-      "bytes": 6676
+      "sha256": "ce5e9c66e6719430548c9c7ee616653505e3b0db18716cfd69b145ea948de3d4",
+      "bytes": 5019
     },
     {
       "path": "hermes-agent-self-evolution/scripts/ensure-telegram-ollama-model.sh",
@@ -1447,8 +1447,8 @@
     },
     {
       "path": "workspace-support/.claude/AUTHORITY-CONSTITUTION.md",
-      "sha256": "e7d2473bbe6df7c70c32253702a55b290c3ad1636dba8afd2ed8879e204e4a7b",
-      "bytes": 5430
+      "sha256": "e0994e593df5405dea8bfdead69dff3bc2632ddf9ca80c28ebb1a4fdcaec95da",
+      "bytes": 5420
     },
     {
       "path": "workspace-support/.planning/autoexperiment-control-plane/01-01-PLAN.md",

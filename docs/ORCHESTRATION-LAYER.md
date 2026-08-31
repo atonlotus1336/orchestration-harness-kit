@@ -46,7 +46,7 @@ powershell -NoProfile -ExecutionPolicy Bypass -File D:\MyVault\.planning\level5-
 ```
 
 The default Level 5 MCP surface is intentionally small: `local-rag`,
-`rag-orchestrator`, and `MyVault-control-plane`. GraphRAG, LightRAG, Obsidian,
+`rag-orchestrator`, and `MyVault-control-plane`. GraphRAG, Obsidian,
 autoresearch, and Comfy video orchestration are opt-in deep/domain profiles.
 
 The readiness source of truth is:
@@ -71,7 +71,7 @@ The optimized path is **route first, read second**:
 2. Use `D:\MyVault\.claude\MASTER-INDEX.md` for skill/agent routing before
    opening any `SKILL.md`.
 3. Use `D:\MyVault\.claude\RETRIEVAL-PLAYBOOK.md` to choose the cheapest source:
-   Obsidian exact read, local-rag/skills index, Memoryweaver, LightRAG,
+   Obsidian exact read, local-rag/skills index, Memoryweaver,
    GraphRAG, Graphify, or direct file read.
 4. Use `D:\MyVault\.claude\contracts\` and
    `D:\MyVault\.claude\retrieval-evals\` only as subordinate contract/eval
@@ -80,7 +80,7 @@ The optimized path is **route first, read second**:
 5. Use `D:\MyVault\.claude\METHODOLOGY-CHARTER.md` for reasoning, build,
    answer-structure, and edge-case process guidance after routing.
 6. Use `rag-orchestrator` as the preferred app-facing semantic interface.
-   Direct `local-rag`, `lightrag`, and `graphrag` MCPs are useful for Claude
+   Direct `local-rag` and `graphrag` MCPs are useful for Claude
    Code/Codex diagnostics and specialized queries, but future apps should start
    with `rag-orchestrator` plus `obsidian`.
 
@@ -106,7 +106,6 @@ false healthy result.
 | `rg` / direct file reads | Fast exact fallback | Best when Obsidian MCP search is slow or a path is already known. |
 | local-rag | Hybrid keyword/vector corpus | General vault document corpus (NOT the skill index unless the client exposes collection selection). |
 | Memoryweaver | Session/project memory | Best for prior decisions and recurring patterns. Always-on, file-based. |
-| LightRAG | Vault semantic/graph RAG | Windows service on port 9621. Probe the live candidate URLs reported by `gateway_status`/audit instead of hardcoding one host alias. |
 | GraphRAG | Relationship/community queries | Query existing parquet outputs under `D:\MyVault\.rag\graphrag\output`; never auto-reindex. |
 | Graphify | Code/doc graph traversal | Use existing `D:\MyVault\graphify-out\graph.json` for local relationship exploration when present. |
 
@@ -139,7 +138,7 @@ For a new machine or rebuilt runtime, preserve this shape:
    - `DB_PATH=D:\MyVault\.rag\db`
    - `CACHE_DIR=D:\MyVault\.rag\cache`
 6. Point every app at `rag-orchestrator` for merged semantic search, then add
-   direct `local-rag`, `lightrag`, or `graphrag` only when the app benefits from
+   direct `local-rag` or `graphrag` only when the app benefits from
    direct diagnostics or specialized tools.
 7. Rebuild the skill routing artifacts after changing skills or agents:
    ```powershell
@@ -341,9 +340,9 @@ vendor model always being planner, writer, reviewer, or judge.
 â”œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¤
 â”‚                                                                  â”‚
 â”‚  â”Œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”   â”Œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”   â”Œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”   â”‚
-â”‚  â”‚   LightRAG   â”‚   â”‚  GraphRAG    â”‚   â”‚   Local-RAG      â”‚   â”‚
-â”‚  â”‚ (10.0.0.1â”‚   â”‚  (Graphed    â”‚   â”‚  (ChromaDB       â”‚   â”‚
-â”‚  â”‚   :9621)     â”‚   â”‚   indexing)  â”‚   â”‚   local)         â”‚   â”‚
+â”‚  â”‚ Memoryweaver â”‚   â”‚  GraphRAG    â”‚   â”‚   Local-RAG      â”‚   â”‚
+â”‚  â”‚ (file-based) â”‚   â”‚  (Graphed    â”‚   â”‚  (ChromaDB       â”‚   â”‚
+â”‚  â”‚   memory)    â”‚   â”‚   indexing)  â”‚   â”‚   local)         â”‚   â”‚
 â”‚  â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”˜   â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”˜   â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”˜   â”‚
 â”‚                                                                  â”‚
 â”‚  â”Œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”   â”Œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”   â”Œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”   â”‚
@@ -396,34 +395,13 @@ unavailability:**
 
 ## Component Health Checks
 
-### LightRAG (Vector + Graph Indexing)
+### Retired document-management integration
 
-**Status check:**
-```bash
-curl -s http://10.0.0.1:9621/health | jq .
-```
-
-**Healthy =** `.status` is `"healthy"`. Do NOT exact-match the whole body â€” the live response also includes `configuration` (e.g. `llm_model: mistral:latest`, `embedding_model: nomic-embed-text`), `pipeline_busy`, `api_version`, etc., and these fields/values vary. Sample shape:
-```json
-{
-  "status": "healthy",
-  "webui_available": true,
-  "working_directory": "G:\\MyVault\\.rag\\lightrag",
-  "core_version": "1.4.15"
-}
-```
-
-**If failing:**
-- LightRAG service crashed â€” restart on Windows: `[PowerShell] D:\MyVault\.rag\start-lightrag.bat` (must bind `--host 0.0.0.0 --port 9621`, not 127.0.0.1, or WSL clients cannot reach it). Hermes startup also auto-starts it via `[WSL/bash] bash /mnt/d/MyVault/hermes-agent-self-evolution/scripts/ensure-rag-stack.sh` (a script path, never a `hermes` subcommand).
-- Check disk space in `D:\MyVault\.rag\lightrag`
-- Check Ollama (LightRAG backend) is running: `curl http://10.0.0.1:11434/api/tags`
-
-**Source-data safety boundary:**
-- Never point LightRAG's input directory at the vault, a project root, or any directory that contains source files.
-- Use a dedicated disposable intake directory containing copies of the documents selected for retrieval.
-- Do not call LightRAG document-management endpoints from runbooks, schedules, or automation. In particular, do not use `DELETE /documents` against a directory containing source material.
-- If an index must be rebuilt, preserve the source intake and take a backup first.
-- Rebuild only LightRAG's working storage after reviewing the installed version's behavior.
+The former document-management backend was removed because its file-handling
+surface was not appropriate for a source vault. Do not restore an automated
+backend that can delete or mutate files in its input directory. Use Obsidian
+for exact reads, local-rag for semantic document search, Memoryweaver for past
+decisions, and GraphRAG for relationships.
 
 ---
 
@@ -508,10 +486,7 @@ grep -A5 "memory:" "$(hermes config path)"
 
 **1. Ensure all services are installed:**
 ```bash
-# LightRAG
-curl http://10.0.0.1:9621/health 2>/dev/null || echo "LightRAG not running"
-
-# Ollama (LightRAG backend)
+# Ollama
 curl http://10.0.0.1:11434/api/tags 2>/dev/null || echo "Ollama not running"
 
 # Node MCPs
@@ -525,9 +500,6 @@ ls /home/alice/.local/share/memoryweaver-mcp/venv 2>/dev/null || echo "Missing m
 
 **2. If services missing, install:**
 ```bash
-# LightRAG â€” use your existing setup
-# (already healthy at 10.0.0.1:9621)
-
 # Ollama â€” already running
 # (verify with curl http://10.0.0.1:11434/api/tags)
 
@@ -567,7 +539,7 @@ bash ensure-orchestration-layer.sh
 
 1. **Update shared sources first:**
    - Obsidian vault â†’ documented
-   - RAG index (LightRAG) â†’ already centralized
+   - local-rag index â†’ already centralized
    - Skills folder â†’ `/mnt/d/MyVault/.claude/skills`
 
 2. **Sync to each system:**
@@ -613,10 +585,7 @@ curl -sf http://127.0.0.1:9119/api/status || echo "Dashboard DOWN"
 # 2. Are MCP servers loaded? (grep the raw YAML; the styled `hermes config` summary cannot be grepped)
 grep -A20 "mcp_servers:" "$(hermes config path)" | head -25
 
-# 3. Can gateway reach LightRAG?
-curl -sf http://10.0.0.1:9621/health || echo "LightRAG unreachable"
-
-# 4. Check gateway logs (active profile is telegram; --replace re-binds an existing gateway)
+# 3. Check gateway logs (active profile is telegram; --replace re-binds an existing gateway)
 hermes --profile telegram gateway run --replace 2>&1 | head -50
 ```
 
@@ -680,9 +649,6 @@ python3 /mnt/c/Users/alice/.claude/hooks/memoryweaver-spool.py
 
 **Diagnosis:**
 ```bash
-# LightRAG indexing status
-curl -s http://10.0.0.1:9621/health | jq '.pipeline_busy'
-
 # Local-RAG last update
 ls -la /mnt/d/MyVault/.rag/db/ | tail -5
 
@@ -691,9 +657,8 @@ grep -i obsidian ~/.claude/settings.json
 ```
 
 **Fix:**
-1. Verify that LightRAG's input directory is a disposable, curated intake directory — never the vault or a project root.
-2. Do not run a full-vault reindex or call LightRAG document-management endpoints. If retrieval is stale, use the existing local-rag or MemoryWeaver route while you review a safe, version-specific ingestion procedure.
-3. For local-rag, re-ingest via its MCP tools (e.g. `mcp__local-rag__ingest_file` / `ingest_data`) against `BASE_DIR=D:\MyVault`. There is no `local-rag-ingest` CLI binary; local-rag is an MCP server (`mcp-local-rag`). DB at `D:\MyVault\.rag\db`, cache at `D:\MyVault\.rag\cache`.
+1. Do not run an automated document-management backend against the vault root.
+2. For local-rag, re-ingest via its MCP tools (e.g. `mcp__local-rag__ingest_file` / `ingest_data`) against `BASE_DIR=D:\MyVault`. There is no `local-rag-ingest` CLI binary; local-rag is an MCP server (`mcp-local-rag`). DB at `D:\MyVault\.rag\db`, cache at `D:\MyVault\.rag\cache`.
 
 ---
 
@@ -701,7 +666,7 @@ grep -i obsidian ~/.claude/settings.json
 
 | System | Config File | MCP Servers |
 |--------|-------------|------------|
-| **Claude Code project** | `D:\MyVault\.mcp.json` | obsidian, local-rag, lightrag, graphrag, rag-orchestrator, autoresearch, comfy-video-orchestrator |
+| **Claude Code project** | `D:\MyVault\.mcp.json` | obsidian, local-rag, graphrag, rag-orchestrator, autoresearch, comfy-video-orchestrator |
 | **Claude Code user** | `C:\Users\alice\.claude\settings.json` | startup hooks, permissions, user-level MCP allowances; project `.mcp.json` supplies MyVault MCPs when launched from `D:\MyVault` |
 | **Codex user** | `C:\Users\alice\.codex\config.toml` | obsidian, local-rag, graphrag, rag-orchestrator, autoresearch, comfy-video-orchestrator, wordpress |
 | **Codex project** | `D:\MyVault\.codex\config.toml` | obsidian, local-rag, graphrag, rag-orchestrator, autoresearch |
@@ -719,7 +684,7 @@ Snapshot of which tiers are live. Re-check with `/layer-status` or `memoryweaver
 
 - **GraphRAG** (`.rag/graphrag`, wired to the `graphrag` MCP): **populated** â€” index complete
   (entities / relationships / communities / community_reports present).
-- **LightRAG** (:9621) + **local-rag** (`.rag/db`): document RAG corpus live.
+- **local-rag** (`.rag/db`): document RAG corpus live.
 - **MemoryWeaver**: **healthy & consistent**. `memoryweaver status` reports Chroma
   explicit=6 + inferred=48 = **54 == fts_index 54**. The Chroma vector tier is populated and
   embedded **locally** â€” ChromaDB's default ONNX MiniLM via `documents=` upsert, **no
@@ -734,13 +699,12 @@ Snapshot of which tiers are live. Re-check with `/layer-status` or `memoryweaver
 ## Maintenance Checklist
 
 **Weekly:**
-- [ ] Run LightRAG health check: `curl http://10.0.0.1:9621/health`
 - [ ] Verify Hermes Workspace launch health: `[PowerShell] Invoke-RestMethod http://127.0.0.1:3000/api/fusion/status`
 - [ ] Verify gateway and dashboard: `[PowerShell] Invoke-RestMethod http://127.0.0.1:8642/health; Invoke-RestMethod http://127.0.0.1:9119/api/status`
 - [ ] Check memory ingestion: `ls -la /mnt/d/MyVault/.claude/Memory/memoryweaver/`
 
 **Monthly:**
-- [ ] Review LightRAG health and its configured input directory. Never schedule a full-vault rebuild or LightRAG document-management call.
+- [ ] Confirm no automated document-management backend targets the vault root.
 - [ ] Sync Hermes profile to WSL: `bash /mnt/d/MyVault/hermes-agent-self-evolution/scripts/apply-hermes-profile-to-wsl.sh`
 - [ ] Update MCP packages: `npm update -g mcp-obsidian mcp-local-rag`
 - [ ] Check disk space in `D:\MyVault\.rag` (should be < 80% full)
@@ -775,8 +739,7 @@ Snapshot of which tiers are live. Re-check with `/layer-status` or `memoryweaver
 | Hermes Dashboard | 127.0.0.1 | 9119 | Dashboard/status/session/config APIs |
 | Hermes OpenAI Proxy | 127.0.0.1 | 8105 | Local browser-safe proxy to Hermes/Ollama model catalog |
 | Ollama | 127.0.0.1 | 11434 | Local Ollama daemon and Ollama Cloud subscription catalog |
-| Ollama | 10.0.0.1 | 11434 | WSL route to Windows Ollama, used by LightRAG/Hermes-in-WSL |
-| LightRAG | 10.0.0.1 | 9621 | Vector + graph RAG indexing |
+| Ollama | 10.0.0.1 | 11434 | WSL route to Windows Ollama used by Hermes-in-WSL |
 
 > Historical note: older launchers and notes mention `8787`. The current
 > canonical `START-HERMES.cmd` path verified on 2026-06-25 uses `8642`,
@@ -788,7 +751,6 @@ Snapshot of which tiers are live. Re-check with `/layer-status` or `memoryweaver
 ## When to Escalate
 
 File an issue if:
-- LightRAG consistently returns unhealthy status
 - Gateway fails to start after `ensure-orchestration-layer.sh`
 - MCP wrapper scripts fail (not a simple path/permission issue)
 - Memory ingestion never completes despite configuration being correct
@@ -798,8 +760,6 @@ Before escalating, gather:
 ```bash
 # Logs (active profile is telegram; --replace re-binds an existing gateway)
 hermes --profile telegram gateway run --replace 2>&1 | tee /tmp/hermes-gateway.log
-curl http://10.0.0.1:9621/health > /tmp/lightrag-status.json
-
 # Config snapshot (copy the raw active config; `hermes config` only prints a styled summary)
 cp "$(hermes config path)" /tmp/hermes-config.yaml
 cat ~/.hermes/.env > /tmp/hermes-env.txt

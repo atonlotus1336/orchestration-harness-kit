@@ -533,7 +533,6 @@ mcp_servers:
     env:
       MEMORYWEAVER_DATA_DIR: __WSL_WORKSPACE__/.claude/Memory/memoryweaver
       MEMORYWEAVER_FTS_DB_PATH: /home/__LINUX_USER__/.local/share/memoryweaver-runtime/fts.db
-      LIGHTRAG_BASE_URL: http://127.0.0.1:9621
   memoryweaver-mcp:
     command: /home/__LINUX_USER__/.local/share/memoryweaver-mcp/venv/bin/python3.11
     args:

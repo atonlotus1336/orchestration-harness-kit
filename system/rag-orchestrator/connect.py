@@ -7,7 +7,7 @@ Use this for scripts, hooks, agents, or any Python tool that
 needs to query the knowledge stack without going through MCP.
 
 Usage:
-    from connect import rag, memory, lightrag, graphrag
+    from connect import rag, memory, graphrag
 
     # Query all backends at once
     results = await rag.query("project architecture decisions")
@@ -31,7 +31,6 @@ import sys
 MCP_ROOT       = "/mnt/d/MyVault/.mcp-servers"
 MEMORYWEAVER_SRC = "/mnt/d/MyVault/.claude/memoryweaver"
 MEMORYWEAVER_DATA = "/mnt/d/MyVault/.claude/Memory/memoryweaver"
-LIGHTRAG_URL   = "http://localhost:9621"
 GRAPHRAG_ROOT  = "/mnt/d/MyVault/.rag/graphrag"
 VENV_PYTHON    = "/home/alice/.local/share/rag-orchestrator/.venv/bin/python3.11"
 
@@ -41,11 +40,10 @@ sys.path.insert(0, MEMORYWEAVER_SRC)
 sys.path.insert(0, f"{MCP_ROOT}/rag-orchestrator")
 
 # Import registry and all backends from server
-from server import registry, MemoryweaverBackend, LightRAGBackend, GraphRAGBackend
+from server import registry, MemoryweaverBackend, GraphRAGBackend
 
 # Named handles for direct use
 memory   = registry.get("memoryweaver")
-lightrag = registry.get("lightrag")
 graphrag = registry.get("graphrag")
 
 

@@ -22,8 +22,7 @@ Three AI harnesses (Claude Code, Codex, Hermes) share one backend stack:
 
 - `rag-orchestrator` â€” main MCP server merging all RAG backends. Source of
   truth: `D:\MyVault\.mcp-servers\rag-orchestrator\server.py` (run from WSL).
-- Backends behind it: Memoryweaver (memories, always-on, file-based),
-  LightRAG (vault semantic RAG, Windows service on port 9621),
+- Backends behind it: Memoryweaver (memories, always-on, file-based) and
   GraphRAG (relationship queries over prebuilt parquet files).
 - `obsidian` MCP â€” exact note reads from the vault `D:\MyVault`.
 - `local-rag` MCP â€” general vault document corpus (ChromaDB at
@@ -39,7 +38,6 @@ Three AI harnesses (Claude Code, Codex, Hermes) share one backend stack:
 | rag-orchestrator venv | `/home/alice/.local/share/rag-orchestrator/.venv` (`venv` is a symlink to it; always call `bin/python3.11`) |
 | memoryweaver-mcp source | `D:\MyVault\.mcp-servers\memoryweaver-mcp\server.py` |
 | Memoryweaver data | `D:\MyVault\.claude\Memory\memoryweaver` (capital M is canonical) |
-| LightRAG index | `D:\MyVault\.rag\lightrag` â€” service start: `D:\MyVault\.rag\start-lightrag.bat` |
 | GraphRAG outputs | `D:\MyVault\.rag\graphrag\output` â€” rebuild: `D:\MyVault\.rag\index-graphrag.bat` (30â€“90 min; NEVER auto-run) |
 | Chroma DB (local-rag + skills_index) | `D:\MyVault\.rag\db` |
 | npm global root (canonical) | `G:\AIStorage\npm\global` (per `C:\Users\alice\.npmrc`) |
@@ -121,8 +119,8 @@ Step 1 - full read-only audit for RAG/MCP/memory backend issues:
 [PowerShell] powershell -ExecutionPolicy Bypass -File "D:/MyVault/.mcp-servers/audit-orchestration.ps1"
 ```
 
-Expected: every "Canonical Paths" line says OK; LightRAG `status: healthy`;
-the "Unified Gateway Status" section says `gateway: status=healthy`; all six
+Expected: every "Canonical Paths" line says OK; the "Unified Gateway Status"
+section says `gateway: status=healthy`; all six
 GraphRAG parquet lines OK; MCP servers listed as Connected. If fallback is
 being used, the gateway must say `status=degraded` and show the recovery or
 manual remediation metadata. Treat any fallback-backed "healthy" report as
@@ -136,12 +134,12 @@ session):
   /mnt/d/MyVault/.mcp-servers/rag-orchestrator/server.py --status-json
 ```
 
-Expected: `memoryweaver`, `lightrag`, `graphrag` each show `"status": "healthy"`
+Expected: `memoryweaver` and `graphrag` each show `"status": "healthy"`
 with `"primary_ok": true`. If a backend is partially working through fallback or
 repair, it must show `"status": "degraded"` plus `repair_action` details.
 
 Interpretation rules:
-- LightRAG `status: broken` or `status: degraded` with `last_error` â†’ go to 4.1.
+- Obsidian or local-rag document retrieval fails â†’ go to 4.1.
 - GraphRAG missing parquet outputs â†’ go to 4.2.
 - Memoryweaver sqlite/FTS error but Chroma works â†’ go to 4.3 (degraded, not down).
 - Everything healthy but a harness lacks tools â†’ go to 4.4.
@@ -150,24 +148,13 @@ Interpretation rules:
 
 ## 4. Failure Procedures
 
-### 4.1 LightRAG unreachable
+### 4.1 Current-document retrieval unavailable
 
-1. Run the unified probe first:
-   `[WSL/bash] /home/alice/.local/share/rag-orchestrator/.venv/bin/python3.11 /mnt/d/MyVault/.mcp-servers/rag-orchestrator/server.py --status-json`
-2. If `lightrag.recovery_in_progress=true`, wait a few seconds and rerun the
-   probe once. The gateway already attempted its bounded safe restart path.
-3. Check the current candidate URLs from `lightrag.raw_status.candidates`.
-   Do not hardcode one WSL host alias when the live candidate list disagrees.
-4. If the service is still down after the auto-recovery budget is exhausted,
-   preview the manual remediation:
-   `[PowerShell] powershell -ExecutionPolicy Bypass -File D:\MyVault\.mcp-servers\remediation\Invoke-MyVaultBackendRemediation.ps1 -Backend lightrag -RemediationId lightrag-start-service -DryRun`
-5. Then execute the manual remediation:
-   `[PowerShell] powershell -ExecutionPolicy Bypass -File D:\MyVault\.mcp-servers\remediation\Invoke-MyVaultBackendRemediation.ps1 -Backend lightrag -RemediationId lightrag-start-service`
-6. If the remediation fails verification, troubleshoot the service directly with
-   `[PowerShell] D:\MyVault\.rag\start-lightrag.bat` and confirm it binds
-   `--host 0.0.0.0 --port 9621`.
-7. A `/health` 200 with a later `/query` timeout is NOT a health failure â€” 
-   retry the query alone.
+1. Use the Obsidian MCP for an exact note read when the path or title is known.
+2. Use local-rag for semantic document retrieval when that MCP is configured.
+3. If both routes fail, verify their MCP registrations before changing any
+   index or source directory.
+4. Never point an automated document-management service at the vault root.
 
 ### 4.2 GraphRAG not ready
 
@@ -349,4 +336,3 @@ Stop and report to the user (do not improvise) when:
 
 When reporting, include: the procedure section you ran, the exact command, the
 exact output (secrets redacted), and what you expected instead.
-

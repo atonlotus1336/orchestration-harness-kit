@@ -23,7 +23,6 @@
 | `<FTS_DB>` | FTS index on a **fast/native** fs (NOT the vault drive) | `/home/<USER>/.local/share/memoryweaver-runtime/fts.db` |
 | `<VENV>` | python venv for the MCP server | `/home/<USER>/.local/share/memoryweaver-mcp/venv` |
 | `<PY>` | the venv's python 3.11 | `<VENV>/bin/python3.11` |
-| `<RAG_HOST>` | host for LightRAG/Ollama (RAG front-door only) | `10.0.0.1` |
 
 > **Golden rule:** the store and the FTS index must live on different filesystems only
 > if your store sits on a slow/network mount (see §3.3). On a normal local disk, put both
@@ -53,7 +52,7 @@ stores on the solo PC.
 | MemoryWeaver package | the `memoryweaver/` source (this repo) | the engine |
 | MCP server | `memoryweaver-mcp/server.py` (this repo) | exposes 9 tools |
 | A harness | Claude Code **≥2.1.139** (for native `/goal`), and/or Codex, and/or Hermes | the agent that calls memory |
-| *(optional)* LightRAG + Ollama | LightRAG on `:9621`, Ollama on `:11434` | RAG front-door semantic doc search |
+| *(optional)* Ollama | Ollama on `:11434` | Local model inference for compatible tools |
 | *(optional)* Node | for `obsidian` / `local-rag` MCPs | vault + doc RAG |
 
 **Core is just the first six rows.** Everything else is optional enrichment.
@@ -132,7 +131,7 @@ A Stop hook that spools session notes → `memoryweaver spool` → `memoryweaver
 - **Hermes:** `config.yaml` `mcp_servers.memoryweaver-mcp` = §3.5; `prefill_messages_file` = a 2-line few-shot priming "consult memory first" (fail-safe, read per-call).
 
 ### 3.9 *(optional)* RAG front-door + skill index
-- **rag-orchestrator** merges memory + LightRAG + GraphRAG behind one `rag_query` (so harnesses without the direct MCP still get recall). Needs `<RAG_HOST>` services.
+- **rag-orchestrator** merges Memoryweaver + GraphRAG behind one `rag_query` (so harnesses without direct backend MCPs still get recall).
 - **Skill index:** a generated `MASTER-INDEX` (discovery) + a hand-kept `SKILL-INTEGRATION` (coordination) + a `skills_index` RAG collection. Replicable but vault-specific; optional.
 
 ---
