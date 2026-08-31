@@ -29,7 +29,7 @@ smallest sufficient source.
 | Exact note by title/path | `mcp__obsidian__search_notes` → `mcp__obsidian__read_notes` |
 | Entity / relationship question | `mcp__rag-orchestrator__rag_query` (routes to GraphRAG) |
 
-Standardize on **limit 5**. Weak clients: do NOT introspect your own tool params — just call `mcp__rag-orchestrator__rag_query`. Backends behind the orchestrator: Memoryweaver = past decisions/sessions · LightRAG = current vault docs · GraphRAG = vault-wide relationships.
+Standardize on **limit 5**. Weak clients: do NOT introspect your own tool params — just call `mcp__rag-orchestrator__rag_query`. Backends behind the orchestrator: Memoryweaver = past decisions/sessions · GraphRAG = vault-wide relationships. Use Obsidian or local-rag for current vault documents.
 
 1. Classify the request.
    - Skill or agent procedure: use the skills pipeline.
@@ -61,7 +61,7 @@ Standardize on **limit 5**. Weak clients: do NOT introspect your own tool params
    - Broad semantic question: use `mcp__rag-orchestrator__rag_query` with a small limit (5).
    - Backend-specific question:
      - Memory/session facts: Memoryweaver.
-     - Current vault docs: LightRAG.
+     - Current vault docs: Obsidian exact reads or local-rag.
      - Community/entity relationships: GraphRAG.
    - Read only cited chunks or the smallest cited source section.
 
@@ -91,7 +91,7 @@ Standardize on **limit 5**. Weak clients: do NOT introspect your own tool params
    - Do not auto-run GraphRAG indexing unless explicitly requested; it can be long-running.
 
 8. Answer discipline.
-   - State which route was used: index, Obsidian, Memoryweaver, LightRAG, GraphRAG, or Graphify.
+   - State which route was used: index, Obsidian, local-rag, Memoryweaver, GraphRAG, or Graphify.
    - Cite the exact file or note read when practical.
    - If retrieval is stale or ambiguous, say so and name the next smallest check.
    - If evidence conflicts with narration, memory, or a prior summary, follow

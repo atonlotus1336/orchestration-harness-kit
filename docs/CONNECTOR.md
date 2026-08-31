@@ -1,6 +1,6 @@
 # RAG + MCP Stack — Connector Key
 tags: connector, rag, mcp, orchestrator, backend, integration, key, quickstart, wiring
-keywords: connect, plug-in, backend, registry, lightrag, graphrag, memoryweaver, mcp-server, hermes, claude-code, codex, new-backend, python, single-source
+keywords: connect, plug-in, backend, registry, graphrag, memoryweaver, mcp-server, hermes, claude-code, codex, new-backend, python, single-source
 
 > START HERE chain, step 3 — canonical index: `ORCHESTRATION-LAYER.md` § "START HERE — Cold-Start Navigation Index" (vault root).
 
@@ -12,7 +12,7 @@ keywords: connect, plug-in, backend, registry, lightrag, graphrag, memoryweaver,
 ## What this is
 
 One reference for connecting anything to the unified RAG + memory backend stack.
-All knowledge systems (LightRAG, GraphRAG, Memoryweaver) feed through a single
+All knowledge systems (GraphRAG and Memoryweaver) feed through a single
 orchestrator. New tools, scripts, agents, and apps connect to the orchestrator
 only — they never need to know about individual backends.
 
@@ -20,8 +20,8 @@ Important distinction:
 - `rag-orchestrator` is the MCP server clients connect to.
 - `memoryweaver-mcp` is an optional direct MCP server for Memoryweaver-only tools.
 - `wordpress` is a separate action MCP server for example.com WordPress editing. It is not a RAG backend and should stay in the global `mcp_servers` block.
-- LightRAG and GraphRAG are backend services/runtime layers behind `rag-orchestrator`.
-  Claude Code and Codex may also register direct `lightrag`, `graphrag`, and
+- GraphRAG is a backend runtime layer behind `rag-orchestrator`.
+  Claude Code and Codex may also register direct `graphrag` and
   `local-rag` MCP servers for diagnostics or specialized tools, but new apps
   should start with `rag-orchestrator` plus `obsidian` to avoid duplicated
   wiring and split retrieval paths.
@@ -73,11 +73,11 @@ Your App (Hermes / Claude Code / Codex / script / agent)
          v
   rag-orchestrator  (MCP stdio server OR direct Python import)
          |
-    +---------+----------+
-    |         |          |
-Memoryweaver LightRAG  GraphRAG   <-- backends (add more here)
-    |         |          |
-D:/MyVault/.claude/Memory/memoryweaver   port 9621   D:/MyVault/.rag/graphrag
+       +--------------+
+       |              |
+Memoryweaver       GraphRAG   <-- backends (add more here)
+       |              |
+D:/MyVault/.claude/Memory/memoryweaver   D:/MyVault/.rag/graphrag
 ```
 
 ---
@@ -325,7 +325,7 @@ For direct tool references, use Hermes runtime names such as `mcp_wordpress_word
 ```python
 import sys
 sys.path.insert(0, "/mnt/d/MyVault/.mcp-servers/rag-orchestrator")
-from connect import rag, memory, lightrag, graphrag
+from connect import rag, memory, graphrag
 
 # Query everything
 results = await rag.query("example-project architecture decisions")
@@ -397,8 +397,6 @@ No app configs need changing. No new MCP connections needed.
 | Memoryweaver data/DB    | /mnt/d/MyVault/.claude/Memory/memoryweaver/                  |
 | Obsidian MCP JS entry   | G:\AIStorage\npm\global\node_modules\mcp-obsidian\dist\index.js |
 | Obsidian vault arg      | D:\MyVault                                                   |
-| LightRAG index          | /mnt/d/MyVault/.rag/lightrag/                                |
-| LightRAG service        | Windows service on port 9621; from WSL prefer http://10.0.0.1:9621 or set LIGHTRAG_BASE_URL explicitly |
 | GraphRAG index          | /mnt/d/MyVault/.rag/graphrag/                                |
 | GraphRAG batch indexer  | D:\MyVault\.rag\index-graphrag.bat                         |
 | Orchestrator venv       | /home/alice/.local/share/rag-orchestrator/.venv/ (venv is a symlink to it; always call bin/python3.11) |
@@ -411,7 +409,6 @@ No app configs need changing. No new MCP connections needed.
 | Backend      | Always on? | Activation                          |
 |--------------|------------|-------------------------------------|
 | memoryweaver | Yes        | Auto (file-based, no service needed)                 |
-| lightrag     | No         | Start `start-lightrag.bat` on Windows; orchestrator reaches it through Windows-host networking from WSL |
 | graphrag     | No         | Keep GraphRAG outputs indexed under `D:\MyVault\.rag\graphrag\output`; query via orchestrator's Windows Python wrapper |
 | wordpress    | Yes, when credentials are configured | Hermes starts `/mnt/d/MyVault/.mcp-servers/wordpress/server.py` from the active profile; auth comes from `WORDPRESS_JWT_TOKEN` or `WORDPRESS_USERNAME` + `WORDPRESS_PASSWORD` |
 
@@ -432,8 +429,6 @@ No app configs need changing. No new MCP connections needed.
   sync G → runtime, never the reverse.
 - Hermes on WSL should launch Obsidian via Windows `node.exe` plus Windows-style paths (`C:\...\index.js`, `D:\MyVault`); passing `/mnt/...` paths to Windows Node breaks module resolution
 - Hermes on WSL should launch WordPress via WSL Python plus the G-drive source path `/mnt/d/MyVault/.mcp-servers/wordpress/server.py`. Do not copy WordPress secrets into this repo; put them in the active Hermes profile environment or another approved secret store.
-- LightRAG may already be healthy on Windows even when WSL `localhost:9621` fails; check `http://10.0.0.1:9621/health` from WSL or set `LIGHTRAG_BASE_URL=http://10.0.0.1:9621`
-- `start-lightrag.bat` must bind `--host 0.0.0.0`, not `127.0.0.1`, or WSL clients cannot reach it through the Windows host gateway
 - GraphRAG cannot be treated as ready just because `output/` exists; query requires at least `communities.parquet`, `community_reports.parquet`, `entities.parquet`, `relationships.parquet`, and `text_units.parquet`
 - If GraphRAG status shows only `documents.parquet`, `text_units.parquet`, `stats.json`, and `context.json`, the prior index run did not finish; rerun `D:\MyVault\.rag\index-graphrag.bat` and wait for completion
 - Running the Windows `graphrag.exe` directly from WSL can fail with a uv trampoline error; prefer the Windows Python runtime with an explicit `sys.path` wrapper if you need to query from WSL
@@ -451,16 +446,15 @@ through `ensure-hermes-api.sh`.
 What it does:
 - probes `rag-orchestrator` with retry during startup reconciliation
 - treats Memoryweaver as the always-on baseline backend when its Chroma semantic store is healthy; an unavailable SQLite FTS index is a warning because Memoryweaver hybrid queries already degrade to semantic-only
-- attempts to auto-start LightRAG via `D:\MyVault\.rag\start-lightrag.bat` when port 9621 is not reachable
 - records final backend health in `~/.hermes/logs/rag-stack.log`
 - does not auto-run GraphRAG indexing, because `index-graphrag.bat` can take 30-90 minutes
-- returns success by default even when RAG is degraded so Workspace can still open with visible warnings; set `REQUIRE_RAG_READY=1` to make degraded Memoryweaver/LightRAG block startup
+- returns success by default even when RAG is degraded so Workspace can still open with visible warnings; set `REQUIRE_RAG_READY=1` to make degraded Memoryweaver block startup
 - only starts GraphRAG indexing when `AUTO_INDEX_GRAPHRAG=1` is explicitly set
 
 Runtime fallback is handled inside `rag-orchestrator`:
 - `rag_query` retries each backend and skips unavailable ones while returning the skipped status
 - `rag_backend_query(..., fallback=true)` retries the requested backend and queries available backup backends if the requested one is offline
-- `rag_status` reports retry attempts, missing GraphRAG outputs, and LightRAG candidate URLs
+- `rag_status` reports retry attempts and missing GraphRAG outputs
 
 ## Session MCP Registration Gap (Critical Failure Mode)
 
@@ -475,7 +469,7 @@ MCP servers spin up ───► Health checks pass ───────► Too
 **Why this happens:**
 1. `ensure-hermes-api.sh` launches the gateway as soon as the health endpoint responds.
 2. Sessions created in the first few seconds inherit whatever MCP tools were registered at that moment.
-3. If `rag-orchestrator` or `lightrag` takes 2-10 seconds longer to become healthy than the gateway startup time, the session will never see those tools — even though `hermes mcp list` later shows them as enabled.
+3. If `rag-orchestrator` takes 2-10 seconds longer to become healthy than the gateway startup time, the session will never see those tools — even though `hermes mcp list` later shows them as enabled.
 4. There is no "push new MCP tools to active sessions" signal in Hermes. Each session's toolset is fixed at creation.
 
 **Symptoms:**
@@ -517,7 +511,7 @@ If steps 1-3 pass but the session doesn't have the tools, you've hit this gap.
 |--------|-----|-------------|
 | `/reload-mcp` in chat | Type `/reload-mcp` directly in Hermes web UI or Telegram | Quick, immediate |
 | Restart session | Close and reopen the chat / Workspace session | When slash commands unavailable |
-| `execute_code` + connect.py | Use the Python connector directly: `from connect import rag, memory, lightrag, graphrag` | Any time — bypasses MCP entirely, works even when MCP tools are missing |
+| `execute_code` + connect.py | Use the Python connector directly: `from connect import rag, memory, graphrag` | Any time — bypasses MCP entirely, works even when MCP tools are missing |
 | Gateway restart | `systemctl --user restart hermes-gateway` then reopen session | Full reset, picks up all MCP tools fresh |
 
 **Permanent fix applied by startup scripts:**
@@ -535,8 +529,7 @@ The `ensure-orchestration-layer.sh` script now signals the running gateway to re
 6. Check `~/.hermes/logs/orchestration-layer.last` for the full startup health summary.
 7. After MCP/RAG/memory fixes, reload MCP or restart Hermes before trusting the next status or tool result from the same session.
 8. If the task must outlive the current chat session, move it to a durable mechanism instead of re-testing through an interruptible foreground conversation.
-9. **LightRAG timeout during query is not a health failure** — LightRAG's `/health` endpoint may return 200 while actual `/query` calls timeout (especially when GraphRAG subprocess is also querying). Retry the query alone.
-10. **Set a startup timeout on every WSL-spawned MCP server.** A wedged WSL
+9. **Set a startup timeout on every WSL-spawned MCP server.** A wedged WSL
    hangs the spawn without limit. The harness then blocks at session start.
    Symptom: the harness "becomes unusable" at random. Users often blame
    hooks; measure before you accept that. Set `startup_timeout_sec = 30`
@@ -555,7 +548,7 @@ The `ensure-orchestration-layer.sh` script now signals the running gateway to re
 context window: tool/file output runs in a sandboxed subprocess and only summaries
 enter context. **It is NOT a RAG backend and does NOT route through
 `rag-orchestrator`** — it sits BESIDE the RAG stack. Use RAG
-(`rag-orchestrator`/`obsidian`/`local-rag`/LightRAG/GraphRAG) for durable vault
+(`rag-orchestrator`/`obsidian`/`local-rag`/GraphRAG) for durable vault
 knowledge; use context-mode (`ctx_execute`/`ctx_execute_file`/`ctx_search`) to
 contain large, ephemeral in-session tool/file output. Installed 2026-06-14,
 v1.0.162. Requires Node ≥22.5 (built-in `node:sqlite`).
