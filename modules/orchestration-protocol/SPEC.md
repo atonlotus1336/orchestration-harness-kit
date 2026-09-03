@@ -55,6 +55,13 @@ tool-schema, selected-content, rendered-total, and saved bytes separately.
 Provider accounting records actual calls, input tokens, output tokens, route class,
 and pay-per-token status. Zero is an explicit value, not a missing field.
 
+An `optimization.plan` request may add `request_text` and `available_tools`
+together inside its constraints. The core then returns `tool_projection` with the
+classification, selected and disabled tool identifiers, discovery-preservation
+status, and deterministic reason. Omitting both fields retains the generation-2
+context-only behavior; supplying only one fails closed. Adapters never implement
+their own request classifier or tool-selection policy.
+
 ## Activation and rollback
 
 Activation states are `inactive`, `shadow`, `review`, and `production`. A transition

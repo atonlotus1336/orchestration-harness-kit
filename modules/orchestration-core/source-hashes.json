@@ -2,21 +2,22 @@
   "schema": "lapart.core-source-hashes.v1",
   "algorithm": "sha256",
   "files": {
-    "modules/orchestration-core/README.md": "4ed37f56b6bad19b7fd6b9c7dbffcd390a8d44adf41ef82819688f6cc3446dec",
+    "modules/orchestration-core/README.md": "4d3538002f30abc824732de7f500aee604cd2fb02f4c1f72eaf43a142b0fdd2e",
     "modules/orchestration-core/bootstrap-context.json": "2e67022dd1f687641797a31ad41bc00e9820c7d16c1172692b4c189c7072ae7a",
     "modules/orchestration-core/check-envelope.py": "ac5b02022b207317a4fae420337ed78b5808739869c0682d9e89ab9ca362dc77",
-    "modules/orchestration-core/core-policy.json": "cbe223378b85d13e6d977187eb45b7cdd0e5544613eff6d1fb0f957fa95b2b5c",
+    "modules/orchestration-core/core-policy.json": "237d54f0a712d47e2b1227695e9ba37e25f09f989774ce83de6235451187cd34",
     "modules/orchestration-core/envelope-budget.json": "421ce94ab2c806376263b53ea1eb5f64d59265e47675ea35adbe12a6e52f75ec",
     "modules/orchestration-core/lapart_core/__init__.py": "70015fa1339265e6d2d5360342cc95f98d792aac860213045933123040dcf7a9",
     "modules/orchestration-core/lapart_core/authority.py": "610a3d4967794ad4d19f974bca83d4c6415ed67a0ebffdda6a22bcd538542f1d",
     "modules/orchestration-core/lapart_core/capabilities.py": "51347711f567bc66fdf3590639b13ff1dca128dc8685583b15d00f99bba7c415",
     "modules/orchestration-core/lapart_core/context.py": "b783f41646effaaaa01138d56f5973373779ee693b577d109acce489aead5a6b",
-    "modules/orchestration-core/lapart_core/core.py": "473006bae8f213ae9bba97bac0f9c6df53f15e0a036b73b963e065cd8a61fe5e",
+    "modules/orchestration-core/lapart_core/core.py": "a3a4f4fed593da2088b4a3a4d86f8f08e7b4f5e4315e0a418012a3ea7c4aa172",
     "modules/orchestration-core/lapart_core/errors.py": "45b46598040e9f35d57ab385da021d64d2ec1c172b1ca47f0140f9ee7c80b6f1",
-    "modules/orchestration-core/lapart_core/policy.py": "6848476848104ab3600acc5ff2ce5c63dd44c90192f49267168660efc13016f2",
+    "modules/orchestration-core/lapart_core/policy.py": "fd30507b9d8551c6cd6b8e340119253970dd20950c1e48edb774b31fd341b861",
+    "modules/orchestration-core/lapart_core/projection.py": "7c9273c7fdbb9d22dd0b8fda5b4d384ff752ccf0682742cc46b6db7068a5e4b0",
     "modules/orchestration-core/lapart_core/providers.py": "045e1ab04d86d9d9869e42d863dbc1db69f56ba799b590885d1035c3635ac089",
     "modules/orchestration-core/lapart_core/routing.py": "2ff23d414f991d5f2c4569ac7059a68ba09fafc819ecbc4e7879bbd11bd9e969",
     "modules/orchestration-core/lapart_core/state.py": "5c797e45b40e95806979c91c1feb2900851737eac546a6060f582f71f8669610",
-    "modules/orchestration-core/verify-core.py": "7e63cdf9d280673b6176f88eb74bfca37a53a4ccc251caff2850f06abd1bd2d2"
+    "modules/orchestration-core/verify-core.py": "91a768250a8f14f8989533a0190e026a83678169ccf0fb07f68384e2631927aa"
   }
 }

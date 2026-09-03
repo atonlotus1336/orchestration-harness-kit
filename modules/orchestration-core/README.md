@@ -25,3 +25,11 @@ python verify-core.py --selftest
 The verifier executes every protocol operation against isolated in-memory ports,
 checks provider-free accounting, tests the fixed-envelope sentinel, and exercises
 fail-closed policy mutations. It does not start a service or call a provider.
+
+## Shared tool projection
+
+`optimization.plan` owns deterministic request classification and tool projection
+when `request_text` and `available_tools` are supplied together. Explicit
+read-only requests keep safe read tools plus every discovery-prefixed tool;
+mutating, empty, or ambiguous requests retain the full tool set. Authority and
+capability catalogs are never removed to reduce context size.

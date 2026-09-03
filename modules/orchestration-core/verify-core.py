@@ -167,6 +167,18 @@ def verify_negative_cases() -> list[str]:
         else:
             failures.append("pay-per-token policy mutation passed")
 
+    policy = json.loads((MODULE_ROOT / "core-policy.json").read_text(encoding="utf-8"))
+    policy["tool_projection"]["discovery_prefixes"].remove("skill")
+    with tempfile.TemporaryDirectory() as folder:
+        path = Path(folder) / "policy.json"
+        path.write_text(json.dumps(policy), encoding="utf-8")
+        try:
+            CorePolicy.load(path)
+        except Exception:
+            pass
+        else:
+            failures.append("capability-discovery removal mutation passed")
+
     envelope_module = load_envelope_module()
     budget = json.loads((MODULE_ROOT / "envelope-budget.json").read_text(encoding="utf-8"))
     measured = envelope_module.measure(MODULE_ROOT / "bootstrap-context.json")
@@ -221,7 +233,7 @@ def main() -> int:
     print("PASS: 31/31 protocol operations exercised with explicit provider_calls=0")
     print(f"PASS: fixed envelope {measured['rendered_total_bytes']} bytes within 5% ceiling")
     if args.selftest:
-        print("PASS: 6 fail-closed policy and regression mutations")
+        print("PASS: 7 fail-closed policy and regression mutations")
     return 0
 
 

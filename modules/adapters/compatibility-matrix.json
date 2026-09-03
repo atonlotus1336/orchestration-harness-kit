@@ -1,0 +1,25 @@
+{
+  "schema": "lapart.adapter-compatibility-matrix.v1",
+  "sdk_version": "2.0.0-dev",
+  "protocol_versions": [1, 2],
+  "adapters": [
+    {
+      "id": "hermes-os-reference",
+      "tested_harness_version": "source-contract",
+      "qualification": "source-qualified",
+      "runtime_activation": "unchanged"
+    },
+    {
+      "id": "opencode",
+      "tested_harness_version": "1.17.14",
+      "qualification": "source-qualified",
+      "runtime_activation": "unchanged"
+    },
+    {
+      "id": "pi-coding-agent",
+      "tested_harness_version": "0.84.4",
+      "qualification": "source-qualified",
+      "runtime_activation": "unchanged"
+    }
+  ]
+}

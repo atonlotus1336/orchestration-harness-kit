@@ -1,5 +1,5 @@
 {
-  "version": "modules-v10-hermes-reference-adapter",
+  "version": "modules-v11-opencode-pi-adapters",
   "default_path": [
     "orchestration-protocol",
     "orchestration-core",
@@ -44,6 +44,20 @@
       "required": false,
       "source": "modules/adapters/hermes",
       "description": "OPTIONAL canonical Hermes OS translation adapter and source-only profile contract; installation does not alter live profiles."
+    },
+    {
+      "id": "adapter-opencode",
+      "stage": 4,
+      "required": false,
+      "source": "modules/adapters/opencode",
+      "description": "OPTIONAL OpenCode plugin-event adapter; shared-core routing and optimization remain centralized."
+    },
+    {
+      "id": "adapter-pi",
+      "stage": 4,
+      "required": false,
+      "source": "modules/adapters/pi",
+      "description": "OPTIONAL Pi extension-event adapter; shared-core routing and optimization remain centralized."
     },
     {
       "id": "memory",

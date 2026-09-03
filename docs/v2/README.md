@@ -14,3 +14,6 @@ implied by files in this directory.
 - [Universal harness adapter SDK](../../modules/adapter-sdk/README.md)
 - [Provider-free conformance kit](../../modules/conformance-kit/README.md)
 - [Hermes OS reference adapter](../../modules/adapters/hermes/README.md)
+- [Reference-adapter matrix](../../modules/adapters/README.md)
+- [OpenCode adapter](../../modules/adapters/opencode/README.md)
+- [Pi adapter](../../modules/adapters/pi/README.md)

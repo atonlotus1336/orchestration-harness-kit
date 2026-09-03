@@ -1,0 +1,37 @@
+{
+  "schema": "lapart.harness-manifest.v2",
+  "name": "pi-coding-agent",
+  "display_name": "Pi Universal Adapter",
+  "harness_version": "2.0.0",
+  "adapter": {
+    "language": "python",
+    "entrypoint": "pi_adapter.py",
+    "class": "PiAdapter",
+    "sdk_version": 2
+  },
+  "protocol_versions": [1, 2],
+  "operations": {
+    "mode": "all",
+    "include": [],
+    "exclude": []
+  },
+  "capabilities": {
+    "streaming": true,
+    "tools": true,
+    "skills": true,
+    "mcp": true,
+    "memory": true,
+    "retrieval": true
+  },
+  "configuration": {
+    "config_reference": "recipient://pi/extension",
+    "data_reference": "recipient://pi/data",
+    "authentication": null
+  },
+  "lifecycle": {
+    "initialize": "initialize",
+    "shutdown": "shutdown",
+    "readiness": "readiness_signal",
+    "rollback": "rollback_signal"
+  }
+}

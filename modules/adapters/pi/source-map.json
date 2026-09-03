@@ -1,0 +1,23 @@
+{
+  "schema": "lapart.adapter-source-map.v1",
+  "repository": "hermes-self-evolution",
+  "provenance_commit": "fcc853d323b4b34321a35b8e966577f90d8aaa6c",
+  "predecessor": {
+    "path": "integrations/pi/lapart-request-projection.ts",
+    "git_blob": "436af56df10a4ea08705b02e445b2139d3a7b31f",
+    "origin_commit": "b6c94ba41547654663f653c4de07b82f71634f1c"
+  },
+  "migration": {
+    "classification": "evolve",
+    "preserved": [
+      "extension-event-boundary",
+      "progressive-capability-discovery",
+      "shadow-first-activation"
+    ],
+    "moved_to_shared_core": [
+      "request-classification",
+      "tool-selection",
+      "token-compute-optimization"
+    ]
+  }
+}

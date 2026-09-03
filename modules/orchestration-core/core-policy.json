@@ -18,5 +18,11 @@
     },
     "required_components": ["system_prompt", "authority_context"]
   },
+  "tool_projection": {
+    "read_only_signals": ["analyze", "analyse", "audit", "check", "compare", "diagnose", "explain", "inspect", "review", "summarize", "summarise", "verify", "how", "what", "when", "where", "which", "why"],
+    "mutation_signals": ["add", "apply", "build", "change", "commit", "create", "delete", "deploy", "edit", "execute", "fix", "implement", "install", "merge", "modify", "patch", "push", "remove", "restart", "run", "ship", "update", "write"],
+    "safe_tools": ["read", "grep", "find", "glob", "ls"],
+    "discovery_prefixes": ["mcp", "skill", "search", "tool_search"]
+  },
   "activation_states": ["inactive", "shadow", "review", "production"]
 }

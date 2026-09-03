@@ -23,6 +23,7 @@ POLICY_KEYS = {
     "production_activation_allowed",
     "required_promotion_gates",
     "context",
+    "tool_projection",
     "activation_states",
 }
 TIERS = {"atomic", "standard", "complex", "high_risk"}
@@ -32,6 +33,14 @@ TIERS = {"atomic", "standard", "complex", "high_risk"}
 class TierPolicy:
     maximum_bytes: int
     maximum_provider_calls: int
+
+
+@dataclass(frozen=True)
+class ToolProjectionPolicy:
+    read_only_signals: frozenset[str]
+    mutation_signals: frozenset[str]
+    safe_tools: frozenset[str]
+    discovery_prefixes: tuple[str, ...]
 
 
 @dataclass(frozen=True)
@@ -47,6 +56,7 @@ class CorePolicy:
     tiers: Mapping[str, TierPolicy]
     required_context_components: frozenset[str]
     maximum_growth_percent: float
+    tool_projection: ToolProjectionPolicy
     activation_states: tuple[str, ...]
     fingerprint: str
 
@@ -99,6 +109,18 @@ class CorePolicy:
         required_components = context.get("required_components")
         if set(required_components or []) != {"system_prompt", "authority_context"}:
             raise CoreError("POLICY_INVALID", "Required context components changed.")
+        projection = value.get("tool_projection")
+        projection_keys = {"read_only_signals", "mutation_signals", "safe_tools", "discovery_prefixes"}
+        if not isinstance(projection, dict) or set(projection) != projection_keys:
+            raise CoreError("POLICY_INVALID", "Tool projection policy keys are invalid.")
+        for key in projection_keys:
+            rows = projection[key]
+            if not isinstance(rows, list) or not rows or len(rows) != len(set(rows)) or any(not isinstance(row, str) or not row for row in rows):
+                raise CoreError("POLICY_INVALID", f"Tool projection {key} is invalid.")
+        if set(projection["safe_tools"]) != {"read", "grep", "find", "glob", "ls"}:
+            raise CoreError("POLICY_INVALID", "Read-only tool safety baseline changed.")
+        if set(projection["discovery_prefixes"]) != {"mcp", "skill", "search", "tool_search"}:
+            raise CoreError("POLICY_INVALID", "Capability discovery projection changed.")
         states = value.get("activation_states")
         if states != ["inactive", "shadow", "review", "production"]:
             raise CoreError("POLICY_INVALID", "Activation states changed.")
@@ -114,6 +136,12 @@ class CorePolicy:
             tiers=MappingProxyType(normalized),
             required_context_components=frozenset(required_components),
             maximum_growth_percent=float(growth),
+            tool_projection=ToolProjectionPolicy(
+                read_only_signals=frozenset(projection["read_only_signals"]),
+                mutation_signals=frozenset(projection["mutation_signals"]),
+                safe_tools=frozenset(projection["safe_tools"]),
+                discovery_prefixes=tuple(projection["discovery_prefixes"]),
+            ),
             activation_states=tuple(states),
             fingerprint=hashlib.sha256(raw).hexdigest(),
         )

@@ -117,6 +117,72 @@ def test_required_authority_context_cannot_be_optimized_away():
     assert response["error"]["code"] == "REQUIRED_CONTEXT_MISSING"
 
 
+def test_read_only_tool_projection_is_core_owned_and_preserves_discovery():
+    context = json.loads((MODULE / "bootstrap-context.json").read_text(encoding="utf-8"))
+    response = make_core().handle(
+        request(
+            "optimization.plan",
+            {
+                "request_reference": "read-only-selection",
+                "constraints": {
+                    "task_tier": "atomic",
+                    "items": context["items"],
+                    "request_text": "Explain why this test failed",
+                    "available_tools": ["read", "write", "bash", "tool_search", "mcp.memory", "skill.load", "read"],
+                },
+            },
+        )
+    )
+    projection = response["payload"]["tool_projection"]
+    assert projection == {
+        "mode": "read_only",
+        "selected_tools": ["read", "tool_search", "mcp.memory", "skill.load"],
+        "disabled_tools": ["write", "bash"],
+        "discovery_preserved": True,
+        "reason": "explicit-read-only",
+    }
+    assert response["provider_accounting"]["provider_calls"] == 0
+
+
+def test_mutation_or_ambiguous_request_keeps_full_tool_set():
+    context = json.loads((MODULE / "bootstrap-context.json").read_text(encoding="utf-8"))
+    for text in ("Explain and fix this test", "Consider this module"):
+        response = make_core().handle(
+            request(
+                "optimization.plan",
+                {
+                    "request_reference": text,
+                    "constraints": {
+                        "task_tier": "atomic",
+                        "items": context["items"],
+                        "request_text": text,
+                        "available_tools": ["read", "write", "tool_search"],
+                    },
+                },
+            )
+        )
+        assert response["payload"]["tool_projection"]["mode"] == "full"
+        assert response["payload"]["tool_projection"]["selected_tools"] == ["read", "write", "tool_search"]
+
+
+def test_partial_tool_projection_input_fails_closed():
+    context = json.loads((MODULE / "bootstrap-context.json").read_text(encoding="utf-8"))
+    response = make_core().handle(
+        request(
+            "optimization.plan",
+            {
+                "request_reference": "partial",
+                "constraints": {
+                    "task_tier": "atomic",
+                    "items": context["items"],
+                    "request_text": "Explain this",
+                },
+            },
+        )
+    )
+    assert response["error"]["code"] == "OPTIMIZATION_CONSTRAINTS_INVALID"
+
+
 def test_production_activation_is_disabled():
     response = make_core().handle(
         request(

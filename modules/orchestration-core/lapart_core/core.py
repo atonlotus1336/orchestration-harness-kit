@@ -12,6 +12,7 @@ from installer.lib.versioning import IncompatibleProtocolError, negotiate_protoc
 from .authority import decide_authority
 from .capabilities import CapabilityRegistry
 from .context import select_context
+from .projection import project_tools
 from .errors import CoreError
 from .policy import CorePolicy
 from .providers import ProviderAccounting, ProviderRegistry
@@ -401,12 +402,26 @@ class OrchestrationCore:
 
     def _optimization_plan(self, payload: dict[str, Any]) -> dict[str, Any]:
         constraints = payload["constraints"]
-        if not isinstance(constraints, dict) or set(constraints) != {"task_tier", "items"}:
+        required = {"task_tier", "items"}
+        optional = {"request_text", "available_tools"}
+        if (
+            not isinstance(constraints, dict)
+            or not required.issubset(constraints)
+            or not set(constraints).issubset(required | optional)
+            or ({"request_text", "available_tools"}.intersection(constraints) and not optional.issubset(constraints))
+        ):
             raise CoreError("OPTIMIZATION_CONSTRAINTS_INVALID", "Optimization constraints are closed.")
         selection = select_context(constraints["items"], constraints["task_tier"], self.policy)
         reference = str(payload["request_reference"])
         self.context_selections[reference] = selection
-        return {"selection": selection["selection"], "attribution": reference, "_context_attribution": dict(selection["attribution"])}
+        result = {"selection": selection["selection"], "attribution": reference, "_context_attribution": dict(selection["attribution"])}
+        if optional.issubset(constraints):
+            request_text = constraints["request_text"]
+            available_tools = constraints["available_tools"]
+            if not isinstance(request_text, str) or not isinstance(available_tools, list) or any(not isinstance(item, str) for item in available_tools):
+                raise CoreError("OPTIMIZATION_CONSTRAINTS_INVALID", "Tool projection inputs are invalid.")
+            result["tool_projection"] = project_tools(request_text, available_tools, self.policy)
+        return result
 
     def _provider_resolve(self, payload: dict[str, Any]) -> dict[str, Any]:
         constraints = payload["constraints"]
