@@ -106,7 +106,7 @@ def _relative(text: str) -> Path:
 
 def _safe_root(path: Path) -> Path:
     resolved = path.resolve()
-    if resolved == Path(resolved.anchor) or resolved == ROOT.resolve():
+    if resolved == Path(resolved.anchor):
         raise ValueError("unsafe managed root")
     return resolved
 
@@ -309,6 +309,10 @@ def command_install(args) -> int:
         target, data = _safe_root(args.target), _safe_root(args.data_dir)
     except ValueError:
         return emit("BLOCKED", "install", [{"name": "safe-paths", "status": "BLOCKED"}])
+    source = ROOT.resolve()
+    source_is_distribution = (source / ".git").exists() or (source / "RELEASE-MANIFEST.json").exists()
+    if source_is_distribution and (target == source or data == source):
+        return emit("BLOCKED", "install", [{"name": "source-boundary", "status": "BLOCKED"}], "Choose install and data roots outside the source distribution.")
     if not args.apply:
         return emit("DRY-RUN", "install", [{"name": "preflight", "status": "PASS"}, {"name": "writes", "status": "SKIPPED"}])
     if not args.yes:

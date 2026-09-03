@@ -13,13 +13,13 @@
 - Phase 77 status: committed (`9250671`); live Antigravity runtime unchanged
 - Phase 78 status: committed (`94bba22`); live harnesses unchanged
 - Phase 79 status: committed (`6b73fac`); provider-free lifecycle qualification complete
-- Phase 80 status: qualification runner implemented; clean-clone platform evidence
-  waits for the runner commit
+- Phase 80 status: runner committed (`1658e33`); first Windows run truthfully
+  held on installed-controller self-root detection; root-cause fix is qualified
 - Status: seven portable harness adapters plus install/connect/doctor/verify/upgrade/
   rollback/uninstall pass from a clean 291-file payload; live harnesses unchanged
 - Provider calls: 2 subscription-backed coding-router readiness requests; SDK tests 0
 - Service restarts: 0
 - Activation changes: 0
 - Tags or pushes: 0
-- Next gate: commit the Phase 80 qualification runner after confirmation, run it
-  from clean Windows and Linux/WSL clones, then bind the platform receipts
+- Next gate: commit the scoped self-root fix after confirmation, rerun Windows
+  and Linux/WSL clean clones, then bind the platform receipts

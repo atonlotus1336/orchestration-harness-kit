@@ -1,0 +1,8 @@
+.planning/STATE.md
+.planning/phases/80-clean-room-qualification/STAGING-MANIFEST-SELF-ROOT-FIX.txt
+.planning/phases/80-clean-room-qualification/VERIFY.md
+installer/contracts/public-payload.json
+installer/kit.py
+installer/lifecycle-qualification-phase80.json
+installer/verify-lifecycle.py
+tools/tests/test_clean_room_qualification.py

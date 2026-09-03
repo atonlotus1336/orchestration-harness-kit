@@ -1,6 +1,8 @@
 from __future__ import annotations
 
 import importlib.util
+import subprocess
+import sys
 from pathlib import Path
 
 import pytest
@@ -50,3 +52,33 @@ def test_selftest_and_static_safety_contract():
     assert '"live_activation": "unchanged"' in source
     assert MODULE.inside(ROOT / "nested" / "receipt.json", ROOT)
     assert not MODULE.inside(ROOT.parent / "receipt.json", ROOT)
+
+
+def test_installed_controller_can_doctor_its_own_root(tmp_path):
+    kit_path = ROOT / "installer/kit.py"
+    spec = importlib.util.spec_from_file_location("installed_controller_fixture", kit_path)
+    kit = importlib.util.module_from_spec(spec)
+    assert spec and spec.loader
+    spec.loader.exec_module(kit)
+    target, data = tmp_path / "installed", tmp_path / "data"
+    files = kit.copy_payload(ROOT, target)
+    data.mkdir()
+    kit._atomic_json(target / "config.local.yaml", {"recipient": "fixture"})
+    kit._atomic_json(
+        target / "managed-files.json",
+        kit._managed_value(target, data, files, ["config.local.yaml"], "generic"),
+    )
+
+    result = subprocess.run(
+        [sys.executable, str(target / "installer/kit.py"), "doctor", "--target", str(target)],
+        cwd=target, text=True, capture_output=True, check=False,
+    )
+    assert result.returncode == 0, result.stdout + result.stderr
+
+    blocked = subprocess.run(
+        [sys.executable, str(kit_path), "install", "--target", str(ROOT),
+         "--data-dir", str(tmp_path / "other-data")],
+        cwd=ROOT, text=True, capture_output=True, check=False,
+    )
+    assert blocked.returncode == 2
+    assert '"name": "source-boundary"' in blocked.stdout

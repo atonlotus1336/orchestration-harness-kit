@@ -2,9 +2,9 @@
 
 ## Current verdict
 
-SOURCE_READY. The provider-free qualification runner and focused tests pass in
-the working tree. Platform promotion remains pending until this exact source is
-committed and rerun from clean Windows and Linux clones.
+HOLD pending the scoped installed-controller fix commit. Runner commit `1658e33`
+correctly stopped its first Windows clean-room rehearsal when the installed
+controller could not doctor its own root. No Linux promotion run was started.
 
 ## Implemented gates
 
@@ -24,7 +24,7 @@ committed and rerun from clean Windows and Linux clones.
 | Managed uninstall boundary | implemented |
 | Path and identity redaction | implemented |
 
-## Pre-commit evidence
+## Runner-commit evidence
 
 - Runner self-test: 2/2 PASS
 - Focused runner unit tests: 4/4 PASS
@@ -33,9 +33,25 @@ committed and rerun from clean Windows and Linux clones.
 - Service restarts: 0
 - Activation changes: 0
 
+## First Windows run and root cause
+
+- Decision: HOLD
+- Typed failure: `QualificationError`
+- Failing boundary: installed `doctor`
+- Root cause: `_safe_root` treated `target == ROOT` as unsafe everywhere. For an
+  installed controller, `ROOT` is the managed installation itself, not the
+  development source tree.
+- Fix: keep filesystem-root rejection in `_safe_root`; enforce source-directory
+  rejection specifically in `install` when `ROOT` is a Git checkout or release
+  distribution.
+- Regression proof: installed self-doctor passes, while install-over-source is
+  still blocked by the named `source-boundary` gate.
+- Historical Phase 79 lifecycle receipt remains unchanged; the corrected current
+  source is bound by `lifecycle-qualification-phase80.json`.
+
 ## Pending after implementation commit
 
-- native Windows clean-clone receipt
+- fresh native Windows clean-clone receipt after the fix commit
 - Linux/WSL clean-clone receipt
 - cross-platform artifact-hash comparison
 - current-source aggregate receipt and independent verification
