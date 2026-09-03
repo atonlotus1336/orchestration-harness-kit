@@ -1,0 +1,36 @@
+{
+  "schema": "lapart.adapter-qualification.v1",
+  "phase": 77,
+  "decision": "SOURCE_QUALIFIED",
+  "adapters": ["hermes-os-reference", "opencode", "pi-coding-agent", "antigravity"],
+  "operation_paths": 93,
+  "tests_passed": 166,
+  "fixed_envelope_bytes": 311,
+  "provider_calls": 0,
+  "provider_tokens": 0,
+  "pay_per_token": false,
+  "live_activation": "unchanged",
+  "clean_build_files": 266,
+  "historical_receipt": {
+    "path": "modules/adapters/qualification.json",
+    "commit": "9a986fcf2e7d97ff71268f66c06e2a86c302315c",
+    "state": "HISTORICAL_DO_NOT_USE_FOR_CURRENT_SOURCE"
+  },
+  "source_hashes": {
+    "docs/v2/README.md": "5f06ef5e611d684b2c019b069893ae397777fdfb4505b32a917379e364fd5f70",
+    "installer/modules/module-manifest.json": "f904ac56a6f5de35f1d44c57f10361b576bd197d6cc7d65e872272ed921d2cd7",
+    "installer/kit.py": "f1f689ccf733c52889ef622e931c23018bd0d3c651c43b5fdcc6b45cd85501c3",
+    "installer/tests/test_antigravity_adapter.py": "0184730fc121866d0c61d4f40385b5ba39e9d2ff54507499526f0f719450d2af",
+    "installer/tests/test_release_core.py": "113a95ca14f30c4a5955f3e755086dd847413f8531e4118b2cb2e3fec19c3ac2",
+    "modules/adapters/README.md": "3ff823ee8dab63ebc62dd325fe47ea61417a79465135a279e456f5c18a456a79",
+    "modules/adapters/compatibility-matrix.json": "0ce19277eab8fb269a9170db76a6da66abf010b2ef5b6f520128b45760649910",
+    "modules/adapters/verify-adapters.py": "ab30a195c48c42f2a8cfc75f460913c714694d68c6188351204952e68998cfce",
+    "modules/adapters/qualification.json": "91e9ef90b3de5833c3077ba61f17a2685002b2f03d24d384e1ca9ca26c2a579b",
+    "modules/adapters/hermes/source-hashes.json": "3951aebcbf4309d89f25c5c9c7dd7ad0fd79350d4debe350e264aa7b95e04b9d",
+    "modules/adapters/opencode/source-hashes.json": "cc2db16b2a19a0f36cc9e99216d6f4fb109e0431a1edcc4a6d4e3077d7d8cbc4",
+    "modules/adapters/pi/source-hashes.json": "3374470fd24f59ece9872cb82500362e63f4abd15877e264eb873f2a33c60432",
+    "modules/adapters/antigravity/source-hashes.json": "3b03078c805e81c84862bc6414d4a9528956405fb95977923baba75715c38636",
+    "modules/orchestration-core/source-hashes.json": "f2b9c0ecd87ee3dfe65cbeb3b0bc7d711bee41a2e7c51bbebe38bedb1a016d83",
+    "modules/orchestration-protocol/source-hashes.json": "87a706aa69e0af5817617e0a68af527de8594e739d082fd02dac1fda0f9acb97"
+  }
+}

@@ -20,6 +20,12 @@
       "tested_harness_version": "0.84.4",
       "qualification": "source-qualified",
       "runtime_activation": "unchanged"
+    },
+    {
+      "id": "antigravity",
+      "tested_harness_version": "unreported-cli-build",
+      "qualification": "source-qualified",
+      "runtime_activation": "unchanged"
     }
   ]
 }

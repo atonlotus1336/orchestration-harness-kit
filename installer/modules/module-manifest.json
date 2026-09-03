@@ -1,5 +1,5 @@
 {
-  "version": "modules-v11-opencode-pi-adapters",
+  "version": "modules-v12-antigravity-adapter",
   "default_path": [
     "orchestration-protocol",
     "orchestration-core",
@@ -58,6 +58,13 @@
       "required": false,
       "source": "modules/adapters/pi",
       "description": "OPTIONAL Pi extension-event adapter; shared-core routing and optimization remain centralized."
+    },
+    {
+      "id": "adapter-antigravity",
+      "stage": 4,
+      "required": false,
+      "source": "modules/adapters/antigravity",
+      "description": "OPTIONAL Antigravity CLI-event adapter; shared-core policy remains centralized and installation does not activate a live runtime."
     },
     {
       "id": "memory",

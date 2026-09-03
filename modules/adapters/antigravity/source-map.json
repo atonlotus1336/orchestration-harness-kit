@@ -1,0 +1,34 @@
+{
+  "schema": "lapart.adapter-source-map.v1",
+  "repository": "hermes-self-evolution",
+  "provenance_commit": "fcc853d323b4b34321a35b8e966577f90d8aaa6c",
+  "predecessor": {
+    "path": "integrations/antigravity/lapart-token-compute-adapter.ps1",
+    "git_blob": "1365cfd2cc66b608c0d0dd126af85c49231110fe",
+    "origin_commit": "6d1354161bcd6c7c431c8cfc2aa01e5d242ec42b"
+  },
+  "supporting_sources": [
+    {
+      "path": "integrations/launchers/antigravity-lapart.ps1",
+      "git_blob": "23cfb6d65ea5f16f78511dc937c23a058e1adadf"
+    },
+    {
+      "path": "tests/integration/test_phase63_antigravity_governed_adapter.py",
+      "git_blob": "ae283ccd3d992f25d45ae762409dbd28f835b65d"
+    }
+  ],
+  "migration": {
+    "classification": "evolve",
+    "preserved": [
+      "cli-invocation-boundary",
+      "fail-closed-governed-execution",
+      "shadow-first-activation"
+    ],
+    "moved_to_shared_core": [
+      "prime-lane-selection",
+      "execution-budgets",
+      "provider-call-accounting",
+      "token-compute-optimization"
+    ]
+  }
+}

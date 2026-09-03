@@ -1,0 +1,11 @@
+{
+  "schema": "lapart.adapter-module-source-hashes.v1",
+  "algorithm": "sha256",
+  "files": {
+    "modules/adapters/antigravity/README.md": "492cddc3fbd65f8a044ca780ac6f8667103f15ed943465e2600c8e55dea0fa64",
+    "modules/adapters/antigravity/antigravity_adapter.py": "9e7225e20034c7f43ab79995eba4d1ca908de6928134eafce8a63ad9dcc56307",
+    "modules/adapters/antigravity/conformance_driver.py": "f5546c2f4f0dd4c372afe80c3b29a2e9075124c6362dc4b4c4324d0e6c3c1e70",
+    "modules/adapters/antigravity/harness-manifest.json": "dcba19b30e560d419572b5d867ba00a80a58c7471e4c0e16be4000dddeca7bd3",
+    "modules/adapters/antigravity/source-map.json": "c0d651ca871f1a8c2b319cbd79d004353cc36d81f6f95dc000bdd3e71d295085"
+  }
+}

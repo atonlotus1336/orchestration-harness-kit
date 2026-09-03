@@ -48,6 +48,17 @@ def test_payload_excludes_snapshot_runtime_and_symlink(tmp_path):
     assert not any("system-snapshot" in value or "escape.txt" in value for value in files)
 
 
+def test_payload_excludes_generated_artifacts(tmp_path):
+    source = tmp_path / "source"
+    (source / "modules" / "__pycache__").mkdir(parents=True)
+    (source / "modules" / "node_modules" / "package").mkdir(parents=True)
+    (source / "modules" / "safe.py").write_text("safe")
+    (source / "modules" / "__pycache__" / "safe.pyc").write_bytes(b"generated")
+    (source / "modules" / "node_modules" / "package" / "index.js").write_text("generated")
+    files = {p.as_posix() for p in selected_files(source, load_contract())}
+    assert files == {"modules/safe.py"}
+
+
 @pytest.mark.parametrize("content,kind", [
     ("-----BEGIN " + "PRIVATE KEY-----", "private_key"),
     ("api_" + "key=" + "abcdefghijklmnop1234", "credential_assignment"),

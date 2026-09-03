@@ -17,3 +17,4 @@ implied by files in this directory.
 - [Reference-adapter matrix](../../modules/adapters/README.md)
 - [OpenCode adapter](../../modules/adapters/opencode/README.md)
 - [Pi adapter](../../modules/adapters/pi/README.md)
+- [Antigravity adapter](../../modules/adapters/antigravity/README.md)

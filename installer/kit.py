@@ -34,6 +34,8 @@ SECRET_PATTERNS = {
     "email": re.compile(r"[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}"),
 }
 TEXT_SUFFIXES = {".py", ".ps1", ".sh", ".md", ".json", ".yaml", ".yml", ".txt", ".toml", ".js", ".mjs", ".cmd", ".bat"}
+GENERATED_DIRS = {"__pycache__", "node_modules", ".pytest_cache", ".mypy_cache", ".ruff_cache"}
+GENERATED_SUFFIXES = {".pyc", ".pyo"}
 
 
 def emit(status: str, command: str, checks: list[dict], next_step: str = "") -> int:
@@ -72,7 +74,11 @@ def selected_files(source: Path, contract: dict) -> list[Path]:
                     if not path.is_file() or path.is_symlink():
                         continue
                     rel = path.relative_to(source)
-                    if any(part in forbidden_roots for part in rel.parts) or rel.name in forbidden_names:
+                    if (
+                        any(part in forbidden_roots or part in GENERATED_DIRS for part in rel.parts)
+                        or rel.name in forbidden_names
+                        or rel.suffix.lower() in GENERATED_SUFFIXES
+                    ):
                         continue
                     selected.add(rel)
     return sorted(selected, key=lambda p: p.as_posix())

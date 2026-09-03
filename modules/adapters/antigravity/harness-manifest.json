@@ -1,0 +1,37 @@
+{
+  "schema": "lapart.harness-manifest.v2",
+  "name": "antigravity",
+  "display_name": "Antigravity Universal Adapter",
+  "harness_version": "unreported-cli-build",
+  "adapter": {
+    "language": "python",
+    "entrypoint": "antigravity_adapter.py",
+    "class": "AntigravityAdapter",
+    "sdk_version": 2
+  },
+  "protocol_versions": [1, 2],
+  "operations": {
+    "mode": "all",
+    "include": [],
+    "exclude": []
+  },
+  "capabilities": {
+    "streaming": true,
+    "tools": true,
+    "skills": true,
+    "mcp": true,
+    "memory": true,
+    "retrieval": true
+  },
+  "configuration": {
+    "config_reference": "recipient://antigravity/cli",
+    "data_reference": "recipient://antigravity/data",
+    "authentication": null
+  },
+  "lifecycle": {
+    "initialize": "initialize",
+    "shutdown": "shutdown",
+    "readiness": "readiness_signal",
+    "rollback": "rollback_signal"
+  }
+}

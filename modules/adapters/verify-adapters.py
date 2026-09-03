@@ -26,6 +26,13 @@ def _load(path: Path, name: str):
     return module
 
 
+MOVED_TO_CORE = {
+    "opencode": {"request-classification", "tool-selection", "token-compute-optimization"},
+    "pi": {"request-classification", "tool-selection", "token-compute-optimization"},
+    "antigravity": {"prime-lane-selection", "execution-budgets", "provider-call-accounting", "token-compute-optimization"},
+}
+
+
 def _source_errors(module: Path, provenance_commit: str) -> list[str]:
     failures: list[str] = []
     source_map = json.loads((module / "source-map.json").read_text(encoding="utf-8"))
@@ -35,8 +42,11 @@ def _source_errors(module: Path, provenance_commit: str) -> list[str]:
     for field in ("git_blob", "origin_commit"):
         if not re.fullmatch(r"[0-9a-f]{40}", predecessor.get(field, "")):
             failures.append(f"{module.name}: {field} is not an immutable Git identifier")
+    for supporting in source_map.get("supporting_sources", []):
+        if not supporting.get("path") or not re.fullmatch(r"[0-9a-f]{40}", supporting.get("git_blob", "")):
+            failures.append(f"{module.name}: supporting source is not immutably identified")
     moved = set(source_map.get("migration", {}).get("moved_to_shared_core", []))
-    if moved != {"request-classification", "tool-selection", "token-compute-optimization"}:
+    if moved != MOVED_TO_CORE[module.name]:
         failures.append(f"{module.name}: predecessor policy was not fully moved to the core")
     hashes = json.loads((module / "source-hashes.json").read_text(encoding="utf-8"))
     if hashes.get("schema") != "lapart.adapter-module-source-hashes.v1" or hashes.get("algorithm") != "sha256":
@@ -56,7 +66,7 @@ def verify() -> list[str]:
         if row.get("repository") == "hermes-self-evolution" and row.get("classification") == "SOUND"
     )
     runner = _load(CONFORMANCE / "run-conformance.py", "portable_adapter_conformance")
-    for name in ("opencode", "pi"):
+    for name in ("opencode", "pi", "antigravity"):
         module = ADAPTERS / name
         report = runner.execute(module)
         if report["status"] != "PASS" or report["provider_calls"] != 0 or not report["core_unchanged"]:
@@ -66,15 +76,15 @@ def verify() -> list[str]:
         failures.extend(_source_errors(module, provenance_commit))
 
     matrix = json.loads((ADAPTERS / "compatibility-matrix.json").read_text(encoding="utf-8"))
-    if {row.get("id") for row in matrix.get("adapters", [])} != {"hermes-os-reference", "opencode", "pi-coding-agent"}:
+    if {row.get("id") for row in matrix.get("adapters", [])} != {"hermes-os-reference", "opencode", "pi-coding-agent", "antigravity"}:
         failures.append("compatibility matrix is incomplete")
     if any(row.get("qualification") != "source-qualified" or row.get("runtime_activation") != "unchanged" for row in matrix.get("adapters", [])):
         failures.append("compatibility matrix overstates runtime activation")
 
-    receipt = json.loads((ADAPTERS / "qualification.json").read_text(encoding="utf-8"))
+    receipt = json.loads((ADAPTERS / "qualification-phase77.json").read_text(encoding="utf-8"))
     if (
         receipt.get("schema") != "lapart.adapter-qualification.v1"
-        or receipt.get("phase") != 76
+        or receipt.get("phase") != 77
         or receipt.get("decision") != "SOURCE_QUALIFIED"
         or receipt.get("provider_calls") != 0
         or receipt.get("pay_per_token") is not False
@@ -82,10 +92,10 @@ def verify() -> list[str]:
     ):
         failures.append("adapter qualification receipt is invalid")
     if (
-        receipt.get("operation_paths") != 62
-        or receipt.get("tests_passed") != 159
+        receipt.get("operation_paths") != 93
+        or receipt.get("tests_passed") != 166
         or receipt.get("fixed_envelope_bytes") != 311
-        or receipt.get("clean_build_files") != 351
+        or receipt.get("clean_build_files") != 266
     ):
         failures.append("adapter qualification measurements are invalid")
     for relative, expected in receipt.get("source_hashes", {}).items():
@@ -102,8 +112,8 @@ def main() -> int:
         for failure in failures:
             print(f"- {failure}")
         return 1
-    print("PASS: OpenCode and Pi universal adapters")
-    print("PASS: 62/62 operation paths, provider_calls=0, shared core unchanged")
+    print("PASS: OpenCode, Pi, and Antigravity universal adapters")
+    print("PASS: 93/93 operation paths, provider_calls=0, shared core unchanged")
     print("PASS: predecessor policy moved to shared core; live harnesses unchanged")
     return 0
 
