@@ -1,0 +1,201 @@
+{
+  "schema": "lapart.protocol-fixtures.v2",
+  "positive": [
+    {
+      "name": "initialize request",
+      "envelope": {
+        "protocol_version": 2,
+        "message_id": "msg-init-1",
+        "kind": "request",
+        "operation": "lifecycle.initialize",
+        "harness": {"name": "fake", "version": "1.0", "adapter_version": "2.0"},
+        "session": {"id": "session-1", "state": "new"},
+        "authentication": {"kind": "environment", "reference": "HARNESS_API_REFERENCE"},
+        "payload": {"manifest": "fake-harness", "supported_versions": [1, 2]}
+      }
+    },
+    {
+      "name": "context attribution response",
+      "envelope": {
+        "protocol_version": 2,
+        "message_id": "msg-context-1",
+        "correlation_id": "msg-context-request-1",
+        "kind": "response",
+        "operation": "context.attribute",
+        "harness": {"name": "fake", "version": "1.0", "adapter_version": "2.0"},
+        "session": {"id": "session-1", "state": "active"},
+        "payload": {"attribution": "context-attribution-1"},
+        "context_attribution": {
+          "system_prompt_bytes": 100,
+          "authority_context_bytes": 200,
+          "skills_index_bytes": 50,
+          "tool_schema_bytes": 75,
+          "selected_content_bytes": 300,
+          "rendered_total_bytes": 725,
+          "saved_bytes": 125
+        }
+      }
+    },
+    {
+      "name": "provider-free accounting response",
+      "envelope": {
+        "protocol_version": 2,
+        "message_id": "msg-account-1",
+        "kind": "response",
+        "operation": "provider.account",
+        "harness": {"name": "fake", "version": "1.0", "adapter_version": "2.0"},
+        "session": {"id": "session-1", "state": "active"},
+        "payload": {"accounting": "provider-accounting-1"},
+        "provider_accounting": {
+          "provider_calls": 0,
+          "input_tokens": 0,
+          "output_tokens": 0,
+          "route_class": "provider_free",
+          "pay_per_token": false
+        }
+      }
+    },
+    {
+      "name": "review activation request",
+      "envelope": {
+        "protocol_version": 2,
+        "message_id": "msg-activate-1",
+        "kind": "request",
+        "operation": "activation.transition",
+        "harness": {"name": "fake", "version": "1.0", "adapter_version": "2.0"},
+        "session": {"id": "session-1", "state": "active"},
+        "payload": {
+          "profile": "isolated-review",
+          "previous_state": "shadow",
+          "requested_state": "review",
+          "approval_reference": "approval-1",
+          "gates": ["quality", "calls", "latency", "rollback", "tokens"],
+          "rollback_reference": "rollback-1"
+        }
+      }
+    },
+    {
+      "name": "structured protocol error",
+      "envelope": {
+        "protocol_version": 2,
+        "message_id": "msg-error-1",
+        "kind": "error",
+        "operation": "capabilities.negotiate",
+        "harness": {"name": "fake", "version": "1.0", "adapter_version": "2.0"},
+        "session": {"id": "session-1", "state": "failed"},
+        "payload": {},
+        "error": {
+          "code": "INCOMPATIBLE_PROTOCOL",
+          "message": "No mutually supported orchestration protocol version.",
+          "retryable": false,
+          "operation": "capabilities.negotiate",
+          "details": {"local_supported": [1, 2], "remote_supported": [3]}
+        }
+      }
+    }
+  ],
+  "negative": [
+    {
+      "name": "credential value",
+      "expected_error": "authentication may contain references only",
+      "envelope": {
+        "protocol_version": 2,
+        "message_id": "bad-auth",
+        "kind": "request",
+        "operation": "lifecycle.initialize",
+        "harness": {"name": "fake", "version": "1.0", "adapter_version": "2.0"},
+        "session": {"id": "session-1", "state": "new"},
+        "authentication": {"kind": "environment", "reference": "AUTH_REFERENCE", "value": "not-allowed"},
+        "payload": {"manifest": "fake-harness", "supported_versions": [2]}
+      }
+    },
+    {
+      "name": "missing operation payload field",
+      "expected_error": "missing request payload fields",
+      "envelope": {
+        "protocol_version": 2,
+        "message_id": "bad-payload",
+        "kind": "request",
+        "operation": "session.detach",
+        "harness": {"name": "fake", "version": "1.0", "adapter_version": "2.0"},
+        "session": {"id": "session-1", "state": "active"},
+        "payload": {"session_id": "session-1"}
+      }
+    },
+    {
+      "name": "credential embedded in tool arguments",
+      "expected_error": "credential values are forbidden",
+      "envelope": {
+        "protocol_version": 2,
+        "message_id": "bad-tool-credential",
+        "kind": "request",
+        "operation": "tool.invoke",
+        "harness": {"name": "fake", "version": "1.0", "adapter_version": "2.0"},
+        "session": {"id": "session-1", "state": "active"},
+        "payload": {
+          "tool_id": "example.tool",
+          "arguments": {"api_key": "not-allowed"},
+          "approval_reference": "approval-1"
+        }
+      }
+    },
+    {
+      "name": "activation without approval",
+      "expected_error": "missing request payload fields",
+      "envelope": {
+        "protocol_version": 2,
+        "message_id": "bad-activation",
+        "kind": "request",
+        "operation": "activation.transition",
+        "harness": {"name": "fake", "version": "1.0", "adapter_version": "2.0"},
+        "session": {"id": "session-1", "state": "active"},
+        "payload": {
+          "profile": "production",
+          "previous_state": "review",
+          "requested_state": "production",
+          "gates": [],
+          "rollback_reference": "rollback-1"
+        }
+      }
+    },
+    {
+      "name": "unattributed context",
+      "expected_error": "context attribution is required",
+      "envelope": {
+        "protocol_version": 2,
+        "message_id": "bad-context",
+        "kind": "response",
+        "operation": "context.attribute",
+        "harness": {"name": "fake", "version": "1.0", "adapter_version": "2.0"},
+        "session": {"id": "session-1", "state": "active"},
+        "payload": {"attribution": "missing"}
+      }
+    },
+    {
+      "name": "unaccounted provider operation",
+      "expected_error": "provider accounting is required",
+      "envelope": {
+        "protocol_version": 2,
+        "message_id": "bad-accounting",
+        "kind": "response",
+        "operation": "provider.account",
+        "harness": {"name": "fake", "version": "1.0", "adapter_version": "2.0"},
+        "session": {"id": "session-1", "state": "active"},
+        "payload": {"accounting": "missing"}
+      }
+    },
+    {
+      "name": "error without structured error",
+      "expected_error": "error object is required",
+      "envelope": {
+        "protocol_version": 2,
+        "message_id": "bad-error",
+        "kind": "error",
+        "operation": "health.readiness",
+        "harness": {"name": "fake", "version": "1.0", "adapter_version": "2.0"},
+        "session": {"id": "session-1", "state": "failed"},
+        "payload": {}
+      }
+    }
+  ]
+}

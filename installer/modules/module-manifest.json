@@ -1,11 +1,19 @@
 {
-  "version": "modules-v5-client-core",
+  "version": "modules-v6-universal-protocol",
   "default_path": [
+    "orchestration-protocol",
     "memory",
     "harness",
     "topology"
   ],
   "modules": [
+    {
+      "id": "orchestration-protocol",
+      "stage": 0,
+      "required": true,
+      "source": "modules/orchestration-protocol",
+      "description": "Install the versioned shared-core protocol, operation catalog, and provider-free verifier used by every harness adapter."
+    },
     {
       "id": "memory",
       "stage": 1,

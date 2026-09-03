@@ -1,0 +1,151 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.invalid/lapart/orchestration-envelope-v2.schema.json",
+  "title": "LapArt Universal Orchestration Envelope v2",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "protocol_version",
+    "message_id",
+    "kind",
+    "operation",
+    "harness",
+    "session",
+    "payload"
+  ],
+  "properties": {
+    "protocol_version": {"type": "integer", "enum": [1, 2]},
+    "message_id": {"type": "string", "minLength": 1},
+    "correlation_id": {"type": "string", "minLength": 1},
+    "kind": {"type": "string", "enum": ["request", "response", "event", "error"]},
+    "operation": {
+      "type": "string",
+      "enum": [
+        "lifecycle.initialize",
+        "lifecycle.shutdown",
+        "capabilities.negotiate",
+        "session.create",
+        "session.continue",
+        "session.detach",
+        "session.reattach",
+        "message.submit",
+        "message.stream",
+        "mcp.discover",
+        "mcp.connect",
+        "tool.discover",
+        "tool.invoke",
+        "skill.discover",
+        "skill.load",
+        "memory.read",
+        "memory.write",
+        "retrieval.query",
+        "routing.prime.select",
+        "execution.omp.request",
+        "execution.omp.patch",
+        "authority.decide",
+        "context.attribute",
+        "optimization.plan",
+        "provider.resolve",
+        "provider.account",
+        "telemetry.report",
+        "health.readiness",
+        "activation.transition",
+        "rollback.execute",
+        "verification.run"
+      ]
+    },
+    "harness": {"$ref": "#/$defs/harness"},
+    "session": {"$ref": "#/$defs/session"},
+    "authentication": {"$ref": "#/$defs/authentication_reference"},
+    "payload": {"type": "object"},
+    "context_attribution": {"$ref": "#/$defs/context_attribution"},
+    "provider_accounting": {"$ref": "#/$defs/provider_accounting"},
+    "error": {"$ref": "#/$defs/error"},
+    "extensions": {"type": "object"}
+  },
+  "$defs": {
+    "harness": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name", "version", "adapter_version"],
+      "properties": {
+        "name": {"type": "string", "minLength": 1},
+        "version": {"type": "string", "minLength": 1},
+        "adapter_version": {"type": "string", "minLength": 1}
+      }
+    },
+    "session": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "state"],
+      "properties": {
+        "id": {"type": "string", "minLength": 1},
+        "state": {
+          "type": "string",
+          "enum": ["new", "active", "detached", "closed", "failed"]
+        }
+      }
+    },
+    "authentication_reference": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["kind", "reference"],
+      "properties": {
+        "kind": {"type": "string", "enum": ["environment", "secret_store", "managed_identity"]},
+        "reference": {"type": "string", "minLength": 1}
+      }
+    },
+    "context_attribution": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "system_prompt_bytes",
+        "authority_context_bytes",
+        "skills_index_bytes",
+        "tool_schema_bytes",
+        "selected_content_bytes",
+        "rendered_total_bytes",
+        "saved_bytes"
+      ],
+      "properties": {
+        "system_prompt_bytes": {"type": "integer", "minimum": 0},
+        "authority_context_bytes": {"type": "integer", "minimum": 0},
+        "skills_index_bytes": {"type": "integer", "minimum": 0},
+        "tool_schema_bytes": {"type": "integer", "minimum": 0},
+        "selected_content_bytes": {"type": "integer", "minimum": 0},
+        "rendered_total_bytes": {"type": "integer", "minimum": 0},
+        "saved_bytes": {"type": "integer", "minimum": 0}
+      }
+    },
+    "provider_accounting": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "provider_calls",
+        "input_tokens",
+        "output_tokens",
+        "route_class",
+        "pay_per_token"
+      ],
+      "properties": {
+        "provider_calls": {"type": "integer", "minimum": 0},
+        "input_tokens": {"type": "integer", "minimum": 0},
+        "output_tokens": {"type": "integer", "minimum": 0},
+        "route_class": {"type": "string", "enum": ["provider_free", "subscription", "pay_per_token"]},
+        "pay_per_token": {"type": "boolean"}
+      }
+    },
+    "error": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["code", "message", "retryable", "operation", "details"],
+      "properties": {
+        "code": {"type": "string", "minLength": 1},
+        "message": {"type": "string", "minLength": 1},
+        "retryable": {"type": "boolean"},
+        "operation": {"type": "string", "minLength": 1},
+        "details": {"type": "object"}
+      }
+    }
+  }
+}

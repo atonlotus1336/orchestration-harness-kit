@@ -8,3 +8,5 @@ Current status: design and provenance qualification. No v2 runtime activation is
 implied by files in this directory.
 
 - [Provenance audit](PROVENANCE-AUDIT.md)
+- [v1 compatibility](V1-COMPATIBILITY.md)
+- [Universal orchestration protocol](../../modules/orchestration-protocol/SPEC.md)

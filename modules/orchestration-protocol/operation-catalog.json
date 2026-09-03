@@ -1,0 +1,191 @@
+{
+  "schema": "lapart.operation-catalog.v2",
+  "protocol_version": 2,
+  "compatible_versions": [1, 2],
+  "operation_processor": "shared_core",
+  "core_owned": [
+    "prime_routing",
+    "governed_omp_execution",
+    "authority_safety_policy",
+    "skills_capability_discovery",
+    "progressive_tool_disclosure",
+    "mcp_connectivity",
+    "shared_memory",
+    "rag_retrieval_routing",
+    "context_selection",
+    "token_compute_optimization",
+    "provider_model_policy",
+    "provider_call_accounting",
+    "telemetry",
+    "health_reporting",
+    "activation_state",
+    "rollback_contracts",
+    "deterministic_verification"
+  ],
+  "adapter_owned": [
+    "session_message_translation",
+    "invocation_streaming_translation",
+    "tool_call_translation",
+    "authentication_reference_translation",
+    "lifecycle_translation",
+    "configuration_location_translation",
+    "health_rollback_signal_translation"
+  ],
+  "operations": [
+    {
+      "name": "lifecycle.initialize",
+      "request_required": ["manifest", "supported_versions"],
+      "response_required": ["selected_version", "capabilities", "readiness"]
+    },
+    {
+      "name": "lifecycle.shutdown",
+      "request_required": ["reason"],
+      "response_required": ["state"]
+    },
+    {
+      "name": "capabilities.negotiate",
+      "request_required": ["supported_versions", "capabilities"],
+      "response_required": ["selected_version", "negotiated", "degraded"]
+    },
+    {
+      "name": "session.create",
+      "request_required": ["client_session_id"],
+      "response_required": ["session_id", "state"]
+    },
+    {
+      "name": "session.continue",
+      "request_required": ["session_id"],
+      "response_required": ["session_id", "state"]
+    },
+    {
+      "name": "session.detach",
+      "request_required": ["session_id", "last_sequence"],
+      "response_required": ["state", "reattach_reference"]
+    },
+    {
+      "name": "session.reattach",
+      "request_required": ["session_id", "reattach_reference", "last_sequence"],
+      "response_required": ["state", "next_sequence"]
+    },
+    {
+      "name": "message.submit",
+      "request_required": ["role", "content"],
+      "response_required": ["message_id", "accepted"]
+    },
+    {
+      "name": "message.stream",
+      "request_required": ["session_id", "after_sequence"],
+      "response_required": ["sequence", "delta", "terminal"]
+    },
+    {
+      "name": "mcp.discover",
+      "request_required": ["query"],
+      "response_required": ["servers", "deferred_count"]
+    },
+    {
+      "name": "mcp.connect",
+      "request_required": ["server_id", "config_reference", "approval_reference"],
+      "response_required": ["state", "capabilities"]
+    },
+    {
+      "name": "tool.discover",
+      "request_required": ["query"],
+      "response_required": ["tools", "deferred_count"]
+    },
+    {
+      "name": "tool.invoke",
+      "request_required": ["tool_id", "arguments", "approval_reference"],
+      "response_required": ["result", "state"]
+    },
+    {
+      "name": "skill.discover",
+      "request_required": ["query"],
+      "response_required": ["skills", "deferred_count"]
+    },
+    {
+      "name": "skill.load",
+      "request_required": ["skill_id"],
+      "response_required": ["skill_id", "instructions_hash", "content"]
+    },
+    {
+      "name": "memory.read",
+      "request_required": ["scope", "query", "purpose"],
+      "response_required": ["records", "boundary"]
+    },
+    {
+      "name": "memory.write",
+      "request_required": ["scope", "records", "purpose"],
+      "response_required": ["accepted", "receipt"]
+    },
+    {
+      "name": "retrieval.query",
+      "request_required": ["query", "purpose"],
+      "response_required": ["sources", "answer_context"]
+    },
+    {
+      "name": "routing.prime.select",
+      "request_required": ["task", "task_tier"],
+      "response_required": ["recommended_lane", "actual_lane", "rationale"]
+    },
+    {
+      "name": "execution.omp.request",
+      "request_required": ["job_reference", "task", "context_reference", "capability_limits"],
+      "response_required": ["accepted", "worker_reference"]
+    },
+    {
+      "name": "execution.omp.patch",
+      "request_required": ["worker_reference"],
+      "response_required": ["patch_reference", "source_hashes", "verification"]
+    },
+    {
+      "name": "authority.decide",
+      "request_required": ["action", "resource", "risk"],
+      "response_required": ["decision", "approval_reference", "rules"]
+    },
+    {
+      "name": "context.attribute",
+      "request_required": ["selection_reference"],
+      "response_required": ["attribution"]
+    },
+    {
+      "name": "optimization.plan",
+      "request_required": ["request_reference", "constraints"],
+      "response_required": ["selection", "attribution"]
+    },
+    {
+      "name": "provider.resolve",
+      "request_required": ["profile", "constraints"],
+      "response_required": ["provider_reference", "model_reference", "route_class", "rationale"]
+    },
+    {
+      "name": "provider.account",
+      "request_required": ["operation_reference"],
+      "response_required": ["accounting"]
+    },
+    {
+      "name": "telemetry.report",
+      "request_required": ["operation_reference", "metrics"],
+      "response_required": ["accepted", "receipt"]
+    },
+    {
+      "name": "health.readiness",
+      "request_required": ["components"],
+      "response_required": ["overall", "components"]
+    },
+    {
+      "name": "activation.transition",
+      "request_required": ["profile", "previous_state", "requested_state", "approval_reference", "gates", "rollback_reference"],
+      "response_required": ["state", "activated"]
+    },
+    {
+      "name": "rollback.execute",
+      "request_required": ["rollback_reference", "target_state", "reason"],
+      "response_required": ["restored_state", "verification"]
+    },
+    {
+      "name": "verification.run",
+      "request_required": ["subject_reference", "gates", "source_hashes"],
+      "response_required": ["decision", "evidence", "source_hashes"]
+    }
+  ]
+}
