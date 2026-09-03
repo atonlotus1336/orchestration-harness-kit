@@ -1,0 +1,10 @@
+.gitattributes
+.planning/STATE.md
+.planning/phases/80-clean-room-qualification/STAGING-MANIFEST-CROSS-PLATFORM-DETERMINISM.txt
+.planning/phases/80-clean-room-qualification/VERIFY.md
+installer/contracts/public-payload.json
+installer/kit.py
+installer/lifecycle-qualification-phase80-r2.json
+installer/tests/test_release_core.py
+installer/verify-lifecycle.py
+tools/tests/test_clean_room_qualification.py

@@ -15,6 +15,7 @@ from installer import kit
 
 
 SOURCE_PATHS = {
+    ".gitattributes",
     "README.md",
     "docs/QUICK-START.md",
     "docs/UPDATE-AND-REMOVE.md",
@@ -25,7 +26,10 @@ SOURCE_PATHS = {
     "installer/contracts/rollback-snapshot.schema.json",
     "installer/kit.py",
     "installer/lifecycle-qualification.json",
+    "installer/lifecycle-qualification-phase80.json",
+    "installer/tests/test_release_core.py",
     "installer/tests/test_lifecycle_commands.py",
+    "installer/verify-lifecycle.py",
     "modules/adapters/README.md",
     "modules/adapters/qualification-phase78.json",
     "modules/adapters/verify-adapters.py",
@@ -48,11 +52,12 @@ def _commands() -> set[str]:
 
 def verify() -> list[str]:
     failures: list[str] = []
-    receipt_path = ROOT / "installer/lifecycle-qualification-phase80.json"
+    receipt_path = ROOT / "installer/lifecycle-qualification-phase80-r2.json"
     receipt = json.loads(receipt_path.read_text(encoding="utf-8"))
     if (
         receipt.get("schema") != "lapart.lifecycle-qualification.v1"
         or receipt.get("phase") != 80
+        or receipt.get("revision") != 2
         or receipt.get("decision") != "PORTABLE_LIFECYCLE_QUALIFIED"
         or receipt.get("provider_calls") != 0
         or receipt.get("provider_tokens") != 0
@@ -65,7 +70,7 @@ def verify() -> list[str]:
         failures.append("lifecycle command receipt is incomplete")
     if set(receipt.get("harnesses", [])) != REQUIRED_HARNESSES:
         failures.append("harness receipt is incomplete")
-    if receipt.get("tests_passed") != 202 or receipt.get("clean_build_files") != 292:
+    if receipt.get("tests_passed") != 204 or receipt.get("clean_build_files") != 293:
         failures.append("lifecycle qualification measurements are invalid")
     if not REQUIRED_COMMANDS.issubset(_commands()):
         failures.append("portable lifecycle commands are not registered")

@@ -2,9 +2,9 @@
 
 ## Current verdict
 
-HOLD pending the scoped installed-controller fix commit. Runner commit `1658e33`
-correctly stopped its first Windows clean-room rehearsal when the installed
-controller could not doctor its own root. No Linux promotion run was started.
+HOLD pending the atomic cross-platform artifact-determinism fix commit and fresh
+target-local reruns from that exact commit. Windows and Linux both passed the
+functional matrix at `85ac8a4`, but their payload and bundle hashes differed.
 
 ## Implemented gates
 
@@ -58,3 +58,35 @@ controller could not doctor its own root. No Linux promotion run was started.
 
 No Phase 80 clean-room PASS may be claimed until those target-local results are
 recorded after the implementation commit.
+
+## Cross-platform artifact-determinism diagnosis
+
+The first paired Windows/Linux runs at `85ac8a4` each passed all nine functional
+checks, with zero provider calls and no activation change, but failed the Phase
+80 cross-platform hash requirement. Persistent clean payloads reproduced 85
+differences:
+
+- 74 platform/Python-version-specific `.pyc` files generated when payload
+  verification ran without Python's no-bytecode flag
+- 10 public text files whose Windows CRLF bytes normalized exactly to the Linux
+  LF hashes
+- `RELEASE-MANIFEST.json`, which differed downstream of those source bytes
+
+The scoped candidate fix runs payload verification with `-B`, declares LF as
+the default checkout EOL with explicit CRLF exceptions for Windows scripts, and
+adds regression tests for both boundaries. It also adds an immutable revision-2
+lifecycle receipt while preserving the earlier Phase 79 and Phase 80 receipts as
+historical evidence.
+
+Candidate verification before commit:
+
+- 204/204 scoped tests PASS
+- six current-source verifiers PASS
+- fixed envelope PASS at 311 bytes
+- public privacy scan PASS
+- clean payload PASS at 293 allowlisted files
+- generated payload bytecode artifacts: 0
+- provider calls/tokens, service restarts, and activation changes: 0
+
+Cross-platform payload and bundle equality remains pending a clean exact-commit
+rerun; the candidate receipt states this explicitly and is not promotion proof.

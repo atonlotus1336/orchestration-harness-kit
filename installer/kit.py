@@ -252,7 +252,7 @@ def _payload_verification_errors(payload: Path) -> list[str]:
     failures: list[str] = []
     for relative in commands:
         result = subprocess.run(
-            [sys.executable, relative], cwd=payload,
+            [sys.executable, "-B", relative], cwd=payload,
             capture_output=True, text=True, check=False,
         )
         if result.returncode:

@@ -10,7 +10,13 @@ import pytest
 
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT))
-from installer.kit import load_contract, scan_public_payload, scan_tree, selected_files
+from installer.kit import (
+    _payload_verification_errors,
+    load_contract,
+    scan_public_payload,
+    scan_tree,
+    selected_files,
+)
 from installer.lib.redaction import redact
 
 
@@ -152,6 +158,27 @@ def test_contract_only_payload_prime_omp_gate_skips_cleanly(tmp_path):
     )
     assert proc.returncode == 0, proc.stdout + proc.stderr
     assert json.loads(proc.stdout)["status"] == "SKIPPED"
+
+
+def test_payload_verification_does_not_generate_python_bytecode(tmp_path):
+    destination = tmp_path / "public-payload"
+    for relative in (
+        "modules/orchestration-core/verify-core.py",
+        "modules/adapters/hermes/verify-hermes-adapter.py",
+        "modules/adapters/verify-adapters.py",
+        "installer/verify-lifecycle.py",
+    ):
+        script = destination / relative
+        script.parent.mkdir(parents=True, exist_ok=True)
+        (script.parent / "helper.py").write_text("VALUE = 1\n", encoding="utf-8")
+        script.write_text("import helper\n", encoding="utf-8")
+    assert _payload_verification_errors(destination) == []
+    generated = [
+        path.relative_to(destination).as_posix()
+        for path in destination.rglob("*")
+        if path.is_file() and (path.suffix == ".pyc" or "__pycache__" in path.parts)
+    ]
+    assert generated == []
 
 
 def test_maintainer_policy_initializer_selftest():

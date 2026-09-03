@@ -54,6 +54,14 @@ def test_selftest_and_static_safety_contract():
     assert not MODULE.inside(ROOT.parent / "receipt.json", ROOT)
 
 
+def test_repository_declares_cross_platform_checkout_eol_contract():
+    attributes = (ROOT / ".gitattributes").read_text(encoding="utf-8").splitlines()
+    assert "* text=auto eol=lf" in attributes
+    assert "*.ps1 text eol=crlf" in attributes
+    assert "*.bat text eol=crlf" in attributes
+    assert "*.cmd text eol=crlf" in attributes
+
+
 def test_installed_controller_can_doctor_its_own_root(tmp_path):
     kit_path = ROOT / "installer/kit.py"
     spec = importlib.util.spec_from_file_location("installed_controller_fixture", kit_path)
