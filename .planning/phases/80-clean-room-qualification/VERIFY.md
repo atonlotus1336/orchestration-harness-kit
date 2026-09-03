@@ -90,3 +90,13 @@ Candidate verification before commit:
 
 Cross-platform payload and bundle equality remains pending a clean exact-commit
 rerun; the candidate receipt states this explicitly and is not promotion proof.
+
+## First exact-commit determinism rerun
+
+Commit `b697b4d` held on both Windows and Linux at the same source-verification
+boundary, before install or any live action. The revision-2 receipt's
+`.gitattributes` hash had been measured from the pre-commit Windows working-tree
+bytes; the committed clean checkout correctly normalized that file to LF. The
+other 19 bound source paths matched on the clean checkout. The follow-up changes
+only the receipt's expected `.gitattributes` hash to the committed LF byte hash;
+it does not alter implementation or claim artifact equivalence.

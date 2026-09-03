@@ -1,0 +1,4 @@
+.planning/STATE.md
+.planning/phases/80-clean-room-qualification/STAGING-MANIFEST-CLEAN-HASH-CORRECTION.txt
+.planning/phases/80-clean-room-qualification/VERIFY.md
+installer/lifecycle-qualification-phase80-r2.json
