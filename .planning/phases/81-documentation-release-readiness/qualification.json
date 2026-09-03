@@ -1,0 +1,33 @@
+{
+  "schema": "lapart.release-candidate-aggregate.v1",
+  "phase": 81,
+  "decision": "CROSS_PLATFORM_RELEASE_CANDIDATE_QUALIFIED",
+  "source_commit": "1a81a4d86440dad3e14ee13619fb8198e61015d2",
+  "platforms": ["windows-native", "linux-wsl-ubuntu-restored", "docker-linux"],
+  "artifacts": {
+    "payload_files": 300,
+    "payload_tree_sha256": "1ce407d1a1a5972b1019da700547bb78b99db3be1462707ce509ab38bb9d9787",
+    "bundle_sha256": "f85f6005d7afe19f398d1bfa8b7fd114f2682c5b0afcd8b099fb6d92badeb64d",
+    "release_manifest_sha256": "02decd60d1fe919a3e56a45b4133b31da77e3b075a32af3dd7af661601870249",
+    "qualifier_sha256": "7864d451a62b437d980f719a6cbb5dfa6d10d93310fc931f4787fd3a6ae53c81"
+  },
+  "receipt_sha256": {
+    "windows-native": "bfdf99d5b47acd5a04d4c4bde0dab8fb4622430bf49440aafb1efe115770af94",
+    "linux-wsl-ubuntu-restored": "96000f789feb2f1526636fb180b6b3808ebc449e2d138d3e24ba46cfce4a21da",
+    "docker-linux": "6ff065b5dcf6e84f1e4a6b543c4f6a011ca6dd58df0f2ca65b656290b9f46bf3"
+  },
+  "verifier_sha256": "c688bec92cf1832ba42359ecaf0bac5648ff5a9b1bff9018c206c91e730e26a3",
+  "release_readiness_verifier_sha256": "0a01fa2831280bc636a68d31ba9754983d9690349e2cfda81f9328c7b738a5ec",
+  "publication": {
+    "client_payload": "QUALIFIED",
+    "git_source": "HOLD_PRIVATE_HISTORY",
+    "repository_visibility": "PRIVATE",
+    "published": false
+  },
+  "activation": "READY_FOR_SEPARATE_AUTHORIZATION",
+  "provider_calls": 0,
+  "provider_tokens": 0,
+  "pay_per_token": false,
+  "service_restarts": 0,
+  "live_activation": "unchanged"
+}

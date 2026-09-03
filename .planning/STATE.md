@@ -1,7 +1,7 @@
 # v2 State
 
 - Branch: `release/v2-universal-orchestration`
-- Current phase: 81 — documentation and release readiness
+- Current phase: complete — Phase 81 release readiness and Phase 82 activation boundary
 - Phase 69 status: committed and merged with published v1 history
 - Phase 70 status: committed
 - Phase 71 status: committed
@@ -15,13 +15,17 @@
 - Phase 79 status: committed (`6b73fac`); provider-free lifecycle qualification complete
 - Phase 80 status: qualified at `cd88f0a`; Windows and Linux exact-commit
   receipts pass all nine gates with matching payload, manifest, and bundle hashes
-- Status: seven portable harness adapters plus install/connect/doctor/verify/upgrade/
-  rollback/uninstall pass from an identical cross-platform 293-file payload;
+- Phase 81 status: implementation committed at `1a81a4d`; Windows, Linux/WSL,
+  and Docker exact-commit receipts pass from an identical 300-file payload
+- Phase 82 status: portable scope complete at READY_FOR_SEPARATE_ACTIVATION_AUTHORIZATION;
+  live deployment remains an optional operational action
+- Status: universal v2 SDK release candidate complete; seven thin adapters plus
+  install/connect/doctor/verify/upgrade/rollback/uninstall are reproducible;
   live harnesses unchanged
 - Provider calls: 2 subscription-backed coding-router readiness requests; SDK tests 0
 - Service restarts: 0
 - Activation changes: 0
 - Tags or pushes: 0
-- Next gate: commit Phase 80's paired receipts and falsifiable aggregate verifier
-  after confirmation, then execute the bounded Phase 81 documentation and
-  release-readiness plan without publishing
+- Next gate: commit the final Phase 81 evidence and locally merge the release
+  branch after confirmation. Publication, tagging, pushing, repository visibility,
+  and live activation remain separately authorized operations. No Phase 83.

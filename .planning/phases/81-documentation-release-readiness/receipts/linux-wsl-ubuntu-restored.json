@@ -1,0 +1,65 @@
+{
+  "schema": "lapart.clean-room-platform.v1",
+  "phase": 80,
+  "decision": "CLEAN_ROOM_PASS",
+  "platform": "linux-wsl-ubuntu-restored",
+  "runtime": {
+    "system": "Linux",
+    "python": "3.12.3"
+  },
+  "source_commit": "1a81a4d86440dad3e14ee13619fb8198e61015d2",
+  "v1_commit": "04b7630937557c2dd4e6b429fc033873d5edf127",
+  "checks": [
+    {
+      "name": "clean-local-clone",
+      "status": "PASS"
+    },
+    {
+      "name": "v1-ancestry",
+      "status": "PASS"
+    },
+    {
+      "name": "source-verifiers",
+      "status": "PASS",
+      "count": 6
+    },
+    {
+      "name": "reproducible-payload",
+      "status": "PASS",
+      "files": 300
+    },
+    {
+      "name": "reproducible-bundle",
+      "status": "PASS"
+    },
+    {
+      "name": "install-doctor-verify",
+      "status": "PASS"
+    },
+    {
+      "name": "seven-harness-connect",
+      "status": "PASS",
+      "count": 7
+    },
+    {
+      "name": "v1-upgrade-rollback",
+      "status": "PASS"
+    },
+    {
+      "name": "managed-uninstall",
+      "status": "PASS"
+    }
+  ],
+  "artifacts": {
+    "payload_files": 300,
+    "payload_tree_sha256": "1ce407d1a1a5972b1019da700547bb78b99db3be1462707ce509ab38bb9d9787",
+    "bundle_sha256": "f85f6005d7afe19f398d1bfa8b7fd114f2682c5b0afcd8b099fb6d92badeb64d",
+    "release_manifest_sha256": "02decd60d1fe919a3e56a45b4133b31da77e3b075a32af3dd7af661601870249",
+    "qualifier_sha256": "7864d451a62b437d980f719a6cbb5dfa6d10d93310fc931f4787fd3a6ae53c81"
+  },
+  "provider_calls": 0,
+  "provider_tokens": 0,
+  "pay_per_token": false,
+  "service_restarts": 0,
+  "live_activation": "unchanged"
+}

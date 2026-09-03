@@ -1,0 +1,9 @@
+.planning/STATE.md
+.planning/phases/81-documentation-release-readiness/VERIFY.md
+.planning/phases/81-documentation-release-readiness/qualification.json
+.planning/phases/81-documentation-release-readiness/receipts/docker-linux.json
+.planning/phases/81-documentation-release-readiness/receipts/linux-wsl-ubuntu-restored.json
+.planning/phases/81-documentation-release-readiness/receipts/windows-native.json
+.planning/phases/81-documentation-release-readiness/STAGING-MANIFEST-EVIDENCE.txt
+tools/tests/test_release_candidate_evidence.py
+tools/verify-release-candidate.py
