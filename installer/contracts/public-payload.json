@@ -18,7 +18,7 @@
       "installer/clone-eval/validate-install-guidance.py",
       "installer/README.md", "installer/kit.py", "installer/verify-lifecycle.py",
       "installer/lifecycle-qualification.json", "installer/lifecycle-qualification-phase80.json",
-      "installer/lifecycle-qualification-phase80-r2.json",
+      "installer/lifecycle-qualification-phase80-r2.json", "installer/lifecycle-qualification-phase81.json",
       "installer/gate.ps1", "installer/gate.sh",
       "installer/configure.ps1", "installer/configure.sh", "installer/doctor.ps1",
       "installer/doctor.sh", "install.ps1", "install.sh", "make-bundle.ps1", "make-bundle.sh"

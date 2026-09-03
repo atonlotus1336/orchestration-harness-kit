@@ -80,6 +80,10 @@ provider-free verify. The same controller performs content-addressed upgrade and
 rollback while preserving recipient-local state. Harness activation remains a
 separate, explicit deployment decision.
 
+The v2 release-candidate documentation, compatibility matrix, migration path,
+adapter-authoring contract, and publication checklist are indexed at
+[`docs/v2/README.md`](docs/v2/README.md).
+
 Maintainers may verify the owner snapshot separately using
 [`docs/PRIVATE-SYSTEM-SNAPSHOT.md`](docs/PRIVATE-SYSTEM-SNAPSHOT.md). It is not
 distributed to clients.

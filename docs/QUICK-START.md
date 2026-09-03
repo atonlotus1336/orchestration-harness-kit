@@ -1,7 +1,11 @@
-# Client quick start
+# Client quick start — ten-minute provider-free path
 
 Prerequisite: Python 3.11 or newer. The core does not require an LLM, GPU, cloud
 account, or API key.
+
+Expected elapsed time on a normal development machine is under ten minutes. At
+the end, the SDK is installed, one thin adapter is connected by reference, and
+all deterministic checks pass. Nothing is activated and no provider is called.
 
 A small local model should receive only `SMALL-MODEL-INSTALL.md` while guiding
 these commands.
@@ -39,6 +43,10 @@ references, use only `env://`, `file://`, `secret://`, or `recipient://` values.
 
 Run `verify` without `--harness` for the entire provider-free SDK verification
 matrix. Run it with one harness name for that adapter's conformance path.
+
+If the final command does not report `PASS`, leave the harness inactive and use
+[`TROUBLESHOOTING.md`](TROUBLESHOOTING.md). Do not work around a failed gate by
+copying credentials into the kit or enabling a provider fallback.
 
 ## Upgrade and rollback
 

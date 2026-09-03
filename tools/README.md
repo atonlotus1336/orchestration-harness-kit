@@ -23,6 +23,12 @@ Run it with `--selftest` to exercise its fail-closed negative cases.
 `verify-v1-compatibility.py` pins the immutable v1 rollback commit and proves that
 v2 retains the v1 CLI, config schema, migration boundaries, and protocol fallback.
 
+`verify-release-readiness.py` closes the v2 candidate without publishing it. It
+checks the public documentation set, compatibility claims, Phase 80 evidence,
+public-payload privacy, historical-source boundary, commit metadata posture, and
+inactive production policy. Historical holds are reported as holds; they are not
+silently converted into public-release proof.
+
 ## The philosophy (why this isn't just "being careful")
 
 - **Allowlist-in, never scrub-out**: only explicitly named files can enter the

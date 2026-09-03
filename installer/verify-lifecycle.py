@@ -16,14 +16,24 @@ from installer import kit
 
 SOURCE_PATHS = {
     ".gitattributes",
+    "CHANGELOG.md",
     "README.md",
     "docs/QUICK-START.md",
     "docs/UPDATE-AND-REMOVE.md",
+    "docs/v2/ACTIVATION.md",
+    "docs/v2/ADAPTER-AUTHORING.md",
+    "docs/v2/COMPATIBILITY.md",
+    "docs/v2/MIGRATION-GUIDE.md",
+    "docs/v2/README.md",
+    "docs/v2/RELEASE-CHECKLIST.md",
+    "docs/v2/RELEASE-NOTES-2.0.0.md",
     "installer/README.md",
     "installer/contracts/harness-connection.schema.json",
     "installer/contracts/managed-files.schema.json",
     "installer/contracts/public-payload.json",
     "installer/contracts/rollback-snapshot.schema.json",
+    "installer/coverage/DECLARED-COVERAGE.md",
+    "installer/coverage/SUPPORTED-PLATFORMS.md",
     "installer/kit.py",
     "installer/lifecycle-qualification.json",
     "installer/lifecycle-qualification-phase80.json",
@@ -52,12 +62,12 @@ def _commands() -> set[str]:
 
 def verify() -> list[str]:
     failures: list[str] = []
-    receipt_path = ROOT / "installer/lifecycle-qualification-phase80-r2.json"
+    receipt_path = ROOT / "installer/lifecycle-qualification-phase81.json"
     receipt = json.loads(receipt_path.read_text(encoding="utf-8"))
     if (
         receipt.get("schema") != "lapart.lifecycle-qualification.v1"
-        or receipt.get("phase") != 80
-        or receipt.get("revision") != 2
+        or receipt.get("phase") != 81
+        or receipt.get("revision") != 1
         or receipt.get("decision") != "PORTABLE_LIFECYCLE_QUALIFIED"
         or receipt.get("provider_calls") != 0
         or receipt.get("provider_tokens") != 0
@@ -70,7 +80,7 @@ def verify() -> list[str]:
         failures.append("lifecycle command receipt is incomplete")
     if set(receipt.get("harnesses", [])) != REQUIRED_HARNESSES:
         failures.append("harness receipt is incomplete")
-    if receipt.get("tests_passed") != 206 or receipt.get("clean_build_files") != 293:
+    if receipt.get("tests_passed") != 216 or receipt.get("clean_build_files") != 300:
         failures.append("lifecycle qualification measurements are invalid")
     if not REQUIRED_COMMANDS.issubset(_commands()):
         failures.append("portable lifecycle commands are not registered")

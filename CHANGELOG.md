@@ -1,5 +1,36 @@
 # Changelog
 
+## 2.0.0 release candidate — not published
+
+### Added
+
+- A versioned universal orchestration protocol and one deterministic shared core.
+- A thin-adapter SDK plus reference adapters for Hermes OS, OpenCode, Pi,
+  Antigravity, Codex, Claude Code, and MOA.
+- Provider-free conformance, fixed-envelope attribution, call accounting, and
+  fail-closed activation/rollback contracts.
+- Dry-run-first install, connect, doctor, verify, upgrade, rollback, uninstall,
+  and deterministic offline-bundle lifecycle.
+- Native Windows and Linux/WSL clean-room qualification with identical payload
+  and archive bytes.
+
+### Compatibility and safety
+
+- v1 remains an immutable rollback point and protocol generation 1 remains
+  negotiable.
+- Major upgrades are never automatic; recipient data, credentials, and unmanaged
+  files remain recipient-owned.
+- Source qualification does not activate any harness, provider, model, service,
+  or production profile.
+
+### Publication state
+
+- The runtime version remains `2.0.0-dev` until a separately authorized release
+  stamp, tag, and publication action.
+- The GitHub repository is currently private. The public client bundle remains
+  the supported disclosure boundary because historical Git objects are not a
+  public-release surface.
+
 ## Unreleased — patched ecosystem release
 
 ### Added

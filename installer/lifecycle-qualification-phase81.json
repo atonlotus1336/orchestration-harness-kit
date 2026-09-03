@@ -1,0 +1,64 @@
+{
+  "schema": "lapart.lifecycle-qualification.v1",
+  "phase": 81,
+  "revision": 1,
+  "decision": "PORTABLE_LIFECYCLE_QUALIFIED",
+  "qualification_scope": "provider-free lifecycle plus release-candidate documentation",
+  "cross_platform_artifact_equivalence": "PENDING_CLEAN_COMMIT_REHEARSAL",
+  "commands": ["install", "connect", "doctor", "verify", "upgrade", "rollback", "uninstall"],
+  "harnesses": ["hermes", "opencode", "pi", "antigravity", "codex", "claude-code", "moa"],
+  "tests_passed": 216,
+  "clean_build_files": 300,
+  "provider_calls": 0,
+  "provider_tokens": 0,
+  "pay_per_token": false,
+  "live_activation": "unchanged",
+  "service_restarts": 0,
+  "historical_evidence": [
+    {
+      "path": "installer/lifecycle-qualification-phase80-r2.json",
+      "commit": "cd88f0a829cb62a9e8647b0b40baeabf512a4ea2",
+      "state": "HISTORICAL_PHASE80_CROSS_PLATFORM_PREREQUISITE"
+    },
+    {
+      "path": "installer/lifecycle-qualification-phase80.json",
+      "commit": "85ac8a47cb763b5f1db23af44249c9de2bf6e8d2",
+      "state": "HISTORICAL_DO_NOT_USE_FOR_CURRENT_LIFECYCLE_SOURCE"
+    },
+    {
+      "path": "installer/lifecycle-qualification.json",
+      "commit": "6b73fac214131d3dbf4cb6931dfa02e22ebcff2c",
+      "state": "HISTORICAL_DO_NOT_USE_FOR_CURRENT_LIFECYCLE_SOURCE"
+    }
+  ],
+  "source_hashes": {
+    ".gitattributes": "d6af44c77cd11ec3967a07260834f7bb6c378bfbd8b00690f063b1300afe22db",
+    "CHANGELOG.md": "25e1670606b2c4c05bc77367695535e7e598204d8583f2573befb2f2d5090126",
+    "README.md": "a4acc6607b667d89d5f2de1b2d5a0f6941ed77eae3c4b69e3645c6d87e65186c",
+    "docs/QUICK-START.md": "00b1751d6765e80fa759264001f94aeff63cfebc34fb152d2482e75a07c84919",
+    "docs/UPDATE-AND-REMOVE.md": "15e6cea0daa217589e071086b6cb4f351eae56d90b4a3a8f341efbf9cc7c93cc",
+    "docs/v2/ACTIVATION.md": "e929c22ab5f2da6843ef312fa6d89b83e93768051a07106401773c198d6013d9",
+    "docs/v2/ADAPTER-AUTHORING.md": "373708516450fc6c23e1f9627a76ba5c44e61fc4563139f116e831b23e4ea14c",
+    "docs/v2/COMPATIBILITY.md": "fe59f38d44dab01a041ba84eef14824d7873f31bda4f9d7f0bb5542e58d3da46",
+    "docs/v2/MIGRATION-GUIDE.md": "eea10ab987a4da4698a16c7bdecafac3a68a33fb841cd28600fef8cfffb1f28e",
+    "docs/v2/README.md": "701c3485d496660e6e9c2b8581bfb07a0f5d5120e0232abdaca7d3defaaba0a0",
+    "docs/v2/RELEASE-CHECKLIST.md": "ae5824ca3834af7493dc6181637774e87eb1ad7fcadbe69e528e0e4b01cbbf2c",
+    "docs/v2/RELEASE-NOTES-2.0.0.md": "f950eeda901de25b49a637d0e89d9370c59b0fe300b6624069a52661ae9c2e17",
+    "installer/README.md": "e0457c196f340f6439743cc33b8b50f0466382656f15a0b6365ce02bd0c46609",
+    "installer/contracts/harness-connection.schema.json": "c5270d489dcd954522cb05158450dc8762df40dcfa072a9b9d890467f39a08f6",
+    "installer/contracts/managed-files.schema.json": "440cc0a170f8699519379d3929c042faac831a1b3b60ad05210872f2b70e39c1",
+    "installer/contracts/public-payload.json": "279428435ffaaca1c15d84b58f07f92bc559dee81d71f374e489be6418065235",
+    "installer/contracts/rollback-snapshot.schema.json": "b60f8b4fb95fdacf17d8ef6849ca00e519504dd1db86788dbe7f760ab05d0a5f",
+    "installer/coverage/DECLARED-COVERAGE.md": "c2dc396752552cb8626f8b46cacd9513bc9e03e06ed1343f0e2218dd24378d32",
+    "installer/coverage/SUPPORTED-PLATFORMS.md": "e019254877a1719935749394c0a31a6240eb09ee0a16be64f3ea55b102c30995",
+    "installer/kit.py": "be43f327b9029c44865a7835b991eeb787f4d282f900ff9fb6aa5c6259927bef",
+    "installer/lifecycle-qualification-phase80.json": "ab8040ccbf05587942433d166c4726c2d2fc370f9e51ae1de8ef4affc22fc4d3",
+    "installer/lifecycle-qualification.json": "15ead6b144a40d0644380174b9ea305722f09ce4af170617ad5e739afa884eda",
+    "installer/tests/test_lifecycle_commands.py": "63520e449430e5d8a79e2243adc025c3efe4288d542490292e48c3cc48e57696",
+    "installer/tests/test_release_core.py": "f7ec31ed5df5ac2bc236a943b808a05a66aefa8059f0ad3ac1f203868f13fa04",
+    "installer/verify-lifecycle.py": "bbcc5dfd5c0bac12ec4e658dd6245ae6caa8586bbcde1d6fd0a0866e994478ea",
+    "modules/adapters/README.md": "8478174463fba031afd0b22b0df9623b092c7c38413c720b80624256a13fca6a",
+    "modules/adapters/qualification-phase78.json": "967a5b334c01b2e63c99464aa8c7fb3ad78ab878584e823fe5650ef561034af7",
+    "modules/adapters/verify-adapters.py": "c3f4e9e2df5604853d8b6e7af602f0c234aadaed03e451cf3b96497f99d369b0"
+  }
+}
