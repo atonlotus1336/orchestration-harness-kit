@@ -1,0 +1,19 @@
+{
+  "name": "lapart-orchestration",
+  "version": "2.0.0-dev",
+  "description": "Connect Cursor to the portable LapArt orchestration core and MemoryWeaver without embedding policy or credentials.",
+  "author": {"name": "LapArt"},
+  "license": "MIT",
+  "keywords": ["orchestration", "memory", "mcp", "safety"],
+  "hooks": "hooks/hooks.json",
+  "mcpServers": "mcp.json",
+  "variables": {
+    "type": "object",
+    "properties": {
+      "LAPART_PYTHON": {"type": "string", "title": "Python executable"},
+      "LAPART_KIT_ROOT": {"type": "string", "title": "Installed SDK root"},
+      "LAPART_DATA_ROOT": {"type": "string", "title": "Recipient data root"}
+    },
+    "required": ["LAPART_PYTHON", "LAPART_KIT_ROOT", "LAPART_DATA_ROOT"]
+  }
+}

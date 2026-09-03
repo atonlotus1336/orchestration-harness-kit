@@ -1,0 +1,14 @@
+.planning/cursor-extension/STAGING-MANIFEST-ADAPTER.txt
+modules/adapters/cursor/README.md
+modules/adapters/cursor/conformance_driver.py
+modules/adapters/cursor/cursor_adapter.py
+modules/adapters/cursor/cursor-plugin/.cursor-plugin/plugin.json
+modules/adapters/cursor/cursor-plugin/hooks/hooks.json
+modules/adapters/cursor/cursor-plugin/mcp.json
+modules/adapters/cursor/cursor-plugin/scripts/_bridge.py
+modules/adapters/cursor/cursor-plugin/scripts/before_shell.py
+modules/adapters/cursor/cursor-plugin/scripts/session_start.py
+modules/adapters/cursor/harness-manifest.json
+modules/adapters/cursor/source-hashes.json
+modules/adapters/cursor/source-map.json
+system/memoryweaver-mcp/server.py

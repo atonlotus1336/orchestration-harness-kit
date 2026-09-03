@@ -13,7 +13,7 @@ from mcp.server.stdio import stdio_server
 
 DEFAULT_MEMORYWEAVER_DATA_DIR = "__STORE__"
 DEFAULT_MEMORYWEAVER_FTS_DB_PATH = "__STORE__/fts.db"
-MEMORYWEAVER_SOURCE_DIR = "__SRC_MW__"
+MEMORYWEAVER_SOURCE_DIR = os.environ.get("MEMORYWEAVER_SOURCE_DIR", "__SRC_MW__")
 
 # Set data dir and FTS DB path before importing memoryweaver.
 os.environ["MEMORYWEAVER_DATA_DIR"] = os.environ.get(

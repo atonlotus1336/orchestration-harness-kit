@@ -1,0 +1,17 @@
+{
+  "schema": "lapart.adapter-module-source-hashes.v1",
+  "algorithm": "sha256",
+  "files": {
+    "modules/adapters/cursor/conformance_driver.py": "4bc1495d6d545b078101c50452ae302fc9cf948ff2c8e9a4c5fd004532833380",
+    "modules/adapters/cursor/cursor_adapter.py": "4038e73122182ce4a311308839efb87b315dd26dd5111697408999d24421be0f",
+    "modules/adapters/cursor/cursor-plugin/.cursor-plugin/plugin.json": "680bcb7648fe1a5b06d326769a25a6f864143665e17900e0b0f16c67c050b9c8",
+    "modules/adapters/cursor/cursor-plugin/hooks/hooks.json": "67dddc76a1708a9e7ea13beb6f340004e435487f4d0b25fb32e20e1177f7ce5d",
+    "modules/adapters/cursor/cursor-plugin/mcp.json": "292396eaf7c22fac8c0ecd06d063054fb23961bf7f2b03d801b2a770c157f5c8",
+    "modules/adapters/cursor/cursor-plugin/scripts/_bridge.py": "285fd4df058b817eda0136d11a85207cc4a43cc990475809aab7643da68a3fab",
+    "modules/adapters/cursor/cursor-plugin/scripts/before_shell.py": "a0cd75d6fa1f0b7fbdba5394d712d39b710ff7613f2acdb21c93ab2cfc402b01",
+    "modules/adapters/cursor/cursor-plugin/scripts/session_start.py": "1d428b451b920d75172fceccdcb25b3cbd30dca56c127167d981ae31bf8087ba",
+    "modules/adapters/cursor/harness-manifest.json": "a9e7aa929619c9bb67fd6b4cdb7808617c132bf92fa2b61d0848f921d5b822c7",
+    "modules/adapters/cursor/README.md": "9a7a84715f171fd833fc5c1d4ca85ca7d2fcd0c3d484bdeee73534d15d4b2449",
+    "modules/adapters/cursor/source-map.json": "d749b72e47a24a5547e90688e6556757d2f09947f552fafc24a395c02cafe4f1"
+  }
+}

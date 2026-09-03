@@ -1,0 +1,16 @@
+{
+  "version": 1,
+  "hooks": {
+    "sessionStart": [
+      {"command": "\"${LAPART_PYTHON}\" \"scripts/session_start.py\"", "timeout": 10}
+    ],
+    "beforeShellExecution": [
+      {
+        "command": "\"${LAPART_PYTHON}\" \"scripts/before_shell.py\"",
+        "timeout": 10,
+        "failClosed": true,
+        "matcher": "rm|Remove-Item|del |rmdir|dd |mkfs|Format-Volume|git clean|git reset|git push|DROP |TRUNCATE |DELETE FROM|docker |uninstall|Set-ExecutionPolicy|icacls|takeown|netsh"
+      }
+    ]
+  }
+}

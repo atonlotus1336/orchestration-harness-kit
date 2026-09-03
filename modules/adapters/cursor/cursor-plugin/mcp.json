@@ -1,0 +1,13 @@
+{
+  "mcpServers": {
+    "memoryweaver": {
+      "command": "${LAPART_PYTHON}",
+      "args": ["${LAPART_KIT_ROOT}/system/memoryweaver-mcp/server.py"],
+      "env": {
+        "MEMORYWEAVER_SOURCE_DIR": "${LAPART_KIT_ROOT}/system",
+        "MEMORYWEAVER_DATA_DIR": "${LAPART_DATA_ROOT}",
+        "MEMORYWEAVER_FTS_DB_PATH": "${LAPART_DATA_ROOT}/fts.db"
+      }
+    }
+  }
+}
