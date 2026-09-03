@@ -13,11 +13,13 @@ and activation remain separate states.
 - `opencode/` — OpenCode plugin-event translation
 - `pi/` — Pi extension-event translation
 - `antigravity/` — Antigravity CLI-event translation
+- `codex/` — Codex notification translation
+- `claude-code/` — Claude Code hook-event translation
+- `moa/` — MOA phase-event translation
 
-`qualification.json` is the immutable Phase 76 receipt for the OpenCode and Pi
-source set. It is historical after Phase 77 and must not be used to prove the
-current adapter matrix. `qualification-phase77.json` is the current-source
-receipt for the four-adapter matrix.
+`qualification.json` and `qualification-phase77.json` are immutable historical
+receipts. Neither may be used to prove the Phase 78 matrix;
+`qualification-phase78.json` is its current-source receipt.
 
 Run `python modules/adapters/verify-adapters.py` for the provider-free reference
 adapter matrix.

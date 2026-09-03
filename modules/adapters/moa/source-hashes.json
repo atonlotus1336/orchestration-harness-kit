@@ -1,0 +1,11 @@
+{
+  "schema": "lapart.adapter-module-source-hashes.v1",
+  "algorithm": "sha256",
+  "files": {
+    "modules/adapters/moa/README.md": "dd66b1af86ed09c60795bcaf2a34509bf5ec7addd71b02dead9ccaa8dc3135d4",
+    "modules/adapters/moa/conformance_driver.py": "f272a134d082a6618556eb9129c0aed4f2cd3b9510e508c9eb3a3ff6aec09658",
+    "modules/adapters/moa/harness-manifest.json": "1f502eb79c4b34c20ed54afe1c45d8ceaccbf3427c2b3d7b7784850b4e52822e",
+    "modules/adapters/moa/moa_adapter.py": "63f9db47de39bf288924d1c63668ac835409d63cddd987d352b02bc779f1151f",
+    "modules/adapters/moa/source-map.json": "c2aab8a1017b657f8ff5fb125b79b2e709068d9564bf3188c52e16ca6cc414cc"
+  }
+}

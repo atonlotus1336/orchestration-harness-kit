@@ -26,6 +26,24 @@
       "tested_harness_version": "unreported-cli-build",
       "qualification": "source-qualified",
       "runtime_activation": "unchanged"
+    },
+    {
+      "id": "codex",
+      "tested_harness_version": "0.147.0",
+      "qualification": "source-qualified",
+      "runtime_activation": "unchanged"
+    },
+    {
+      "id": "claude-code",
+      "tested_harness_version": "2.1.211",
+      "qualification": "source-qualified",
+      "runtime_activation": "unchanged"
+    },
+    {
+      "id": "moa",
+      "tested_harness_version": "0.18.0-source-contract",
+      "qualification": "source-qualified",
+      "runtime_activation": "unchanged"
     }
   ]
 }

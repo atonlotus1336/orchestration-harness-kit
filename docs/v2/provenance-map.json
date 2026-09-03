@@ -51,6 +51,28 @@
       ]
     },
     {
+      "repository": "governed-runtime-adapters",
+      "commit": "a88e13c4a574653b97c28f079ef20e49b6f2b17a",
+      "classification": "SOUND",
+      "import_from": "git_commit",
+      "scope": [
+        "codex-transport-boundary",
+        "claude-code-hook-boundary",
+        "server-owned-mediation-semantics"
+      ]
+    },
+    {
+      "repository": "hermes-moa",
+      "commit": "aa605b66c89cdc021b4f08105a763e79830bcb04",
+      "classification": "SOUND",
+      "import_from": "git_commit",
+      "scope": [
+        "moa-phase-boundary",
+        "moa-trace-attribution",
+        "explicit-moa-cost-slots"
+      ]
+    },
+    {
       "repository": "governed-runtime-phase-evidence",
       "classification": "HISTORICAL",
       "import_from": "documentation_only",

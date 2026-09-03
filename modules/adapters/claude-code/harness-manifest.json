@@ -1,0 +1,16 @@
+{
+  "schema": "lapart.harness-manifest.v2",
+  "name": "claude-code",
+  "display_name": "Claude Code Universal Adapter",
+  "harness_version": "2.1.211",
+  "adapter": {"language": "python", "entrypoint": "claude_code_adapter.py", "class": "ClaudeCodeAdapter", "sdk_version": 2},
+  "protocol_versions": [1, 2],
+  "operations": {"mode": "all", "include": [], "exclude": []},
+  "capabilities": {"streaming": true, "tools": true, "skills": true, "mcp": true, "memory": true, "retrieval": true},
+  "configuration": {
+    "config_reference": "recipient://claude-code/settings",
+    "data_reference": "recipient://claude-code/data",
+    "authentication": null
+  },
+  "lifecycle": {"initialize": "initialize", "shutdown": "shutdown", "readiness": "readiness_signal", "rollback": "rollback_signal"}
+}

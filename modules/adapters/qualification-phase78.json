@@ -1,0 +1,53 @@
+{
+  "schema": "lapart.adapter-qualification.v1",
+  "phase": 78,
+  "decision": "SOURCE_QUALIFIED",
+  "adapters": ["hermes-os-reference", "opencode", "pi-coding-agent", "antigravity", "codex", "claude-code", "moa"],
+  "operation_paths": 186,
+  "tests_passed": 185,
+  "fixed_envelope_bytes": 311,
+  "provider_calls": 0,
+  "provider_tokens": 0,
+  "pay_per_token": false,
+  "live_activation": "unchanged",
+  "clean_build_files": 286,
+  "historical_receipts": [
+    {
+      "path": "modules/adapters/qualification.json",
+      "commit": "9a986fcf2e7d97ff71268f66c06e2a86c302315c",
+      "state": "HISTORICAL_DO_NOT_USE_FOR_CURRENT_SOURCE"
+    },
+    {
+      "path": "modules/adapters/qualification-phase77.json",
+      "commit": "92506716314da05b0295763008b76688f7c15657",
+      "state": "HISTORICAL_DO_NOT_USE_FOR_CURRENT_SOURCE"
+    }
+  ],
+  "source_provenance": {
+    "governed-runtime-adapters": "a88e13c4a574653b97c28f079ef20e49b6f2b17a",
+    "hermes-moa": "aa605b66c89cdc021b4f08105a763e79830bcb04"
+  },
+  "source_hashes": {
+    "docs/v2/README.md": "5859816a6c8fc9c08dcca5f1f81478a6168152238e53390ec4dec9dba9fcd0de",
+    "docs/v2/provenance-map.json": "64df3afc8304492b08a21dfddd514daac1801e391d60c5d2e66eac85a96c4d40",
+    "installer/kit.py": "f1f689ccf733c52889ef622e931c23018bd0d3c651c43b5fdcc6b45cd85501c3",
+    "installer/modules/module-manifest.json": "a0a815083e3bf2842c872f664d12b710dcd7a8c30c16cf096c58e899d3ace0a1",
+    "installer/tests/test_codex_claude_moa_adapters.py": "6ed2516fa4f89dd11ef3f3cf8feb180845b83475274a120fbf76274fae24a34c",
+    "installer/tests/test_release_core.py": "113a95ca14f30c4a5955f3e755086dd847413f8531e4118b2cb2e3fec19c3ac2",
+    "modules/adapters/README.md": "00b4c3d7ba80a594941c94866329a8b20a2c5eac2a75c6f555d8228a2deabe24",
+    "modules/adapters/compatibility-matrix.json": "2b3222891b51872b9924ad4dae28798125e9e5551e621442d95614721605e16a",
+    "modules/adapters/verify-adapters.py": "1854b021dc1502392ebf225f3429bb64dc4950c583fd1ef351086f56735247bb",
+    "modules/adapters/qualification.json": "91e9ef90b3de5833c3077ba61f17a2685002b2f03d24d384e1ca9ca26c2a579b",
+    "modules/adapters/qualification-phase77.json": "07e39086d43645f2c45b1c545c11c77f17fa86bf049b8be4ccc3682f35198636",
+    "modules/adapters/hermes/source-hashes.json": "143ec95031fa1d9f58133d3667699a75bff93a22e290f7e743e225d57199945e",
+    "modules/adapters/opencode/source-hashes.json": "cc2db16b2a19a0f36cc9e99216d6f4fb109e0431a1edcc4a6d4e3077d7d8cbc4",
+    "modules/adapters/pi/source-hashes.json": "3374470fd24f59ece9872cb82500362e63f4abd15877e264eb873f2a33c60432",
+    "modules/adapters/antigravity/source-hashes.json": "3b03078c805e81c84862bc6414d4a9528956405fb95977923baba75715c38636",
+    "modules/adapters/codex/source-hashes.json": "809e22a856c556661e3ab26a1e5c0ae10243484aecab044c48681961d1963b4a",
+    "modules/adapters/claude-code/source-hashes.json": "4befd026e7fb364fdd1b5fd93984fb822fb39c5e9618abf22a13bfd7c5bd3c53",
+    "modules/adapters/moa/source-hashes.json": "34b991d7bd8f41d96ef430d7882b4d28b71d5553d7ca051469efd905055a7323",
+    "modules/orchestration-core/source-hashes.json": "f2b9c0ecd87ee3dfe65cbeb3b0bc7d711bee41a2e7c51bbebe38bedb1a016d83",
+    "modules/orchestration-protocol/source-hashes.json": "33c308b6e8c37d9b7d2b9f744da08ad07b7620800f58675a29df97462860714f",
+    "tools/verify-v2-provenance.py": "5b0e5f5d19f746ec55c92996f1fcaed306477d81ba51582d1e70a76889eac775"
+  }
+}

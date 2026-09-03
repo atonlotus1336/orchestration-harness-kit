@@ -1,0 +1,19 @@
+{
+  "schema": "lapart.adapter-source-map.v1",
+  "repository": "governed-runtime-adapters",
+  "provenance_commit": "a88e13c4a574653b97c28f079ef20e49b6f2b17a",
+  "predecessor": {
+    "path": "src/lapart_executor/adapters/claude_code.py",
+    "git_blob": "1931cc422fd9c66324cb3dc76abaed2edfa51e29",
+    "origin_commit": "e7ca99dba04b3f9384c32c4e45c21de759c85f3f"
+  },
+  "supporting_sources": [
+    {"path": "src/lapart_executor/adapters/codex.py", "git_blob": "232ff4245f5e5aa7cea3d1b5b304658427515543"},
+    {"path": "tests/adapters/test_codex_claude.py", "git_blob": "777e07c7badc742cd417559ff9514f3970dea458"}
+  ],
+  "migration": {
+    "classification": "evolve",
+    "preserved": ["shared-mediation-semantics", "hook-observation-boundary", "fail-closed-mutations"],
+    "moved_to_shared_core": ["authority-safety", "capability-discovery", "provider-call-accounting", "routing", "token-compute-optimization"]
+  }
+}

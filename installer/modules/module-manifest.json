@@ -1,5 +1,5 @@
 {
-  "version": "modules-v12-antigravity-adapter",
+  "version": "modules-v13-universal-reference-adapters",
   "default_path": [
     "orchestration-protocol",
     "orchestration-core",
@@ -65,6 +65,27 @@
       "required": false,
       "source": "modules/adapters/antigravity",
       "description": "OPTIONAL Antigravity CLI-event adapter; shared-core policy remains centralized and installation does not activate a live runtime."
+    },
+    {
+      "id": "adapter-codex",
+      "stage": 4,
+      "required": false,
+      "source": "modules/adapters/codex",
+      "description": "OPTIONAL Codex notification adapter; native events remain transport signals and shared-core policy stays centralized."
+    },
+    {
+      "id": "adapter-claude-code",
+      "stage": 4,
+      "required": false,
+      "source": "modules/adapters/claude-code",
+      "description": "OPTIONAL Claude Code hook adapter; installation does not edit recipient settings or activate hooks."
+    },
+    {
+      "id": "adapter-moa",
+      "stage": 4,
+      "required": false,
+      "source": "modules/adapters/moa",
+      "description": "OPTIONAL MOA phase-event adapter; the Hermes MOA loop and provider/model policy are not copied."
     },
     {
       "id": "memory",

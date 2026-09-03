@@ -1,0 +1,16 @@
+{
+  "schema": "lapart.harness-manifest.v2",
+  "name": "moa",
+  "display_name": "Hermes MOA Universal Adapter",
+  "harness_version": "0.18.0-source-contract",
+  "adapter": {"language": "python", "entrypoint": "moa_adapter.py", "class": "MoaAdapter", "sdk_version": 2},
+  "protocol_versions": [1, 2],
+  "operations": {"mode": "all", "include": [], "exclude": []},
+  "capabilities": {"streaming": true, "tools": true, "skills": true, "mcp": true, "memory": true, "retrieval": true},
+  "configuration": {
+    "config_reference": "recipient://hermes/moa",
+    "data_reference": "recipient://hermes/moa-data",
+    "authentication": null
+  },
+  "lifecycle": {"initialize": "initialize", "shutdown": "shutdown", "readiness": "readiness_signal", "rollback": "rollback_signal"}
+}

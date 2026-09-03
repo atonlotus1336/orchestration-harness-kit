@@ -1,0 +1,11 @@
+{
+  "schema": "lapart.adapter-module-source-hashes.v1",
+  "algorithm": "sha256",
+  "files": {
+    "modules/adapters/claude-code/README.md": "6b7cead92e599daf5161f5c06d248636e41a4fe605ed6c23c79dc57e1bd52f12",
+    "modules/adapters/claude-code/claude_code_adapter.py": "d7ab20c6f161c32cd3f5e7a3273da6888f74c94dc92fd47dbcce1aa7d9c71913",
+    "modules/adapters/claude-code/conformance_driver.py": "c3618da984d21c32b22b5f23b156a29d12398ab939c1c533e57deadf809d8b45",
+    "modules/adapters/claude-code/harness-manifest.json": "2828e8e579b18b31259fb16c51b9bb37478ddaf0094f15f2249c1870f78ae184",
+    "modules/adapters/claude-code/source-map.json": "9805dad116634ccbeddf6e979c301fcc6b14c5eed33b1f6fb37c1fbd70680f4c"
+  }
+}

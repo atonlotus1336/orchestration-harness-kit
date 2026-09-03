@@ -18,3 +18,6 @@ implied by files in this directory.
 - [OpenCode adapter](../../modules/adapters/opencode/README.md)
 - [Pi adapter](../../modules/adapters/pi/README.md)
 - [Antigravity adapter](../../modules/adapters/antigravity/README.md)
+- [Codex adapter](../../modules/adapters/codex/README.md)
+- [Claude Code adapter](../../modules/adapters/claude-code/README.md)
+- [MOA adapter](../../modules/adapters/moa/README.md)

@@ -64,9 +64,14 @@ def verify() -> list[str]:
 
     provenance = json.loads((ROOT / "docs" / "v2" / "provenance-map.json").read_text(encoding="utf-8"))
     source_map = json.loads((MODULE / "source-map.json").read_text(encoding="utf-8"))
-    expected_sources = {(row["repository"], row["commit"]) for row in provenance["sources"] if row.get("classification") == "SOUND"}
+    provenance_sources = {row["repository"]: row["commit"] for row in provenance["sources"] if row.get("classification") == "SOUND"}
     mapped_sources = {(row.get("repository"), row.get("commit")) for row in source_map.get("sources", [])}
-    if mapped_sources != expected_sources or any(not re.fullmatch(r"[0-9a-f]{40}", commit or "") for _, commit in mapped_sources):
+    required_repositories = {"hermes-runtime", "hermes-self-evolution", "governed-runtime"}
+    if (
+        {repository for repository, _ in mapped_sources} != required_repositories
+        or any(provenance_sources.get(repository) != commit for repository, commit in mapped_sources)
+        or any(not re.fullmatch(r"[0-9a-f]{40}", commit or "") for _, commit in mapped_sources)
+    ):
         failures.append("source map does not match immutable SOUND provenance")
 
     hashes = json.loads((MODULE / "source-hashes.json").read_text(encoding="utf-8"))

@@ -1,0 +1,21 @@
+{
+  "schema": "lapart.adapter-source-map.v1",
+  "repository": "hermes-moa",
+  "provenance_commit": "aa605b66c89cdc021b4f08105a763e79830bcb04",
+  "predecessor": {
+    "path": "agent/moa_loop.py",
+    "git_blob": "3b7c5532dfda8dc0f9cc8ca79f132479f2ce74ec",
+    "origin_commit": "aa605b66c89cdc021b4f08105a763e79830bcb04"
+  },
+  "supporting_sources": [
+    {"path": "agent/moa_trace.py", "git_blob": "37a51700812fb0e1e6aa68facbc3d00626d4ec61"},
+    {"path": "hermes_cli/moa_config.py", "git_blob": "b4e2619176a94ba087f223779f9c45e632aba619"},
+    {"path": "hermes_cli/moa_cmd.py", "git_blob": "938d6baeacbf87e0624f6135dba720cc3816c018"},
+    {"path": "tests/agent/test_moa_aggregator_cost_slot.py", "git_blob": "787384609fcc4ad708cfc267913045ba24dff8af"}
+  ],
+  "migration": {
+    "classification": "evolve",
+    "preserved": ["proposal-critique-aggregate-events", "trace-attribution", "explicit-cost-slots"],
+    "moved_to_shared_core": ["authority-safety", "capability-discovery", "provider-call-accounting", "provider-model-policy", "routing", "token-compute-optimization"]
+  }
+}

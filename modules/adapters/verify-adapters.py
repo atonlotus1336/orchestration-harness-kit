@@ -30,14 +30,18 @@ MOVED_TO_CORE = {
     "opencode": {"request-classification", "tool-selection", "token-compute-optimization"},
     "pi": {"request-classification", "tool-selection", "token-compute-optimization"},
     "antigravity": {"prime-lane-selection", "execution-budgets", "provider-call-accounting", "token-compute-optimization"},
+    "codex": {"authority-safety", "capability-discovery", "provider-call-accounting", "routing", "token-compute-optimization"},
+    "claude-code": {"authority-safety", "capability-discovery", "provider-call-accounting", "routing", "token-compute-optimization"},
+    "moa": {"authority-safety", "capability-discovery", "provider-call-accounting", "provider-model-policy", "routing", "token-compute-optimization"},
 }
 
 
-def _source_errors(module: Path, provenance_commit: str) -> list[str]:
+def _source_errors(module: Path, provenance_commits: dict[str, str]) -> list[str]:
     failures: list[str] = []
     source_map = json.loads((module / "source-map.json").read_text(encoding="utf-8"))
     predecessor = source_map.get("predecessor", {})
-    if source_map.get("provenance_commit") != provenance_commit:
+    repository = source_map.get("repository")
+    if repository not in provenance_commits or source_map.get("provenance_commit") != provenance_commits.get(repository):
         failures.append(f"{module.name}: source commit is not the SOUND provenance commit")
     for field in ("git_blob", "origin_commit"):
         if not re.fullmatch(r"[0-9a-f]{40}", predecessor.get(field, "")):
@@ -61,30 +65,31 @@ def _source_errors(module: Path, provenance_commit: str) -> list[str]:
 def verify() -> list[str]:
     failures: list[str] = []
     provenance = json.loads((ROOT / "docs/v2/provenance-map.json").read_text(encoding="utf-8"))
-    provenance_commit = next(
-        row["commit"] for row in provenance["sources"]
-        if row.get("repository") == "hermes-self-evolution" and row.get("classification") == "SOUND"
-    )
+    provenance_commits = {
+        row["repository"]: row["commit"] for row in provenance["sources"]
+        if row.get("classification") == "SOUND"
+    }
     runner = _load(CONFORMANCE / "run-conformance.py", "portable_adapter_conformance")
-    for name in ("opencode", "pi", "antigravity"):
+    for name in ("opencode", "pi", "antigravity", "codex", "claude-code", "moa"):
         module = ADAPTERS / name
         report = runner.execute(module)
         if report["status"] != "PASS" or report["provider_calls"] != 0 or not report["core_unchanged"]:
             failures.append(f"{name}: provider-free conformance failed")
         if runner.adapter_boundary_errors(module / json.loads((module / "harness-manifest.json").read_text())["adapter"]["entrypoint"]):
             failures.append(f"{name}: adapter crossed the translation-only boundary")
-        failures.extend(_source_errors(module, provenance_commit))
+        failures.extend(_source_errors(module, provenance_commits))
 
     matrix = json.loads((ADAPTERS / "compatibility-matrix.json").read_text(encoding="utf-8"))
-    if {row.get("id") for row in matrix.get("adapters", [])} != {"hermes-os-reference", "opencode", "pi-coding-agent", "antigravity"}:
+    expected_adapters = {"hermes-os-reference", "opencode", "pi-coding-agent", "antigravity", "codex", "claude-code", "moa"}
+    if {row.get("id") for row in matrix.get("adapters", [])} != expected_adapters:
         failures.append("compatibility matrix is incomplete")
     if any(row.get("qualification") != "source-qualified" or row.get("runtime_activation") != "unchanged" for row in matrix.get("adapters", [])):
         failures.append("compatibility matrix overstates runtime activation")
 
-    receipt = json.loads((ADAPTERS / "qualification-phase77.json").read_text(encoding="utf-8"))
+    receipt = json.loads((ADAPTERS / "qualification-phase78.json").read_text(encoding="utf-8"))
     if (
         receipt.get("schema") != "lapart.adapter-qualification.v1"
-        or receipt.get("phase") != 77
+        or receipt.get("phase") != 78
         or receipt.get("decision") != "SOURCE_QUALIFIED"
         or receipt.get("provider_calls") != 0
         or receipt.get("pay_per_token") is not False
@@ -92,10 +97,10 @@ def verify() -> list[str]:
     ):
         failures.append("adapter qualification receipt is invalid")
     if (
-        receipt.get("operation_paths") != 93
-        or receipt.get("tests_passed") != 166
+        receipt.get("operation_paths") != 186
+        or receipt.get("tests_passed") != 185
         or receipt.get("fixed_envelope_bytes") != 311
-        or receipt.get("clean_build_files") != 266
+        or receipt.get("clean_build_files") != 286
     ):
         failures.append("adapter qualification measurements are invalid")
     for relative, expected in receipt.get("source_hashes", {}).items():
@@ -112,8 +117,8 @@ def main() -> int:
         for failure in failures:
             print(f"- {failure}")
         return 1
-    print("PASS: OpenCode, Pi, and Antigravity universal adapters")
-    print("PASS: 93/93 operation paths, provider_calls=0, shared core unchanged")
+    print("PASS: OpenCode, Pi, Antigravity, Codex, Claude Code, and MOA adapters")
+    print("PASS: 186/186 operation paths, provider_calls=0, shared core unchanged")
     print("PASS: predecessor policy moved to shared core; live harnesses unchanged")
     return 0
 

@@ -9,6 +9,6 @@
     "modules/adapters/hermes/profile-matrix.json": "a01249a739f689c12044201ac9fad91a6d3a20be6310ffffcb671b0a0038c489",
     "modules/adapters/hermes/reference-contract.json": "ed58a5fadba4dc28eeb64b99861ec2b450a0bf08d52a5e5db22c38d535cd4c90",
     "modules/adapters/hermes/source-map.json": "8d762d01702504f9624b2ac09412a9706a42c856b568246a4790f6bd0bf2b4c2",
-    "modules/adapters/hermes/verify-hermes-adapter.py": "16a79a5171c9db49dacb5cfb386e5497a53441690b3fa04ff9a0ee377da11794"
+    "modules/adapters/hermes/verify-hermes-adapter.py": "4bfee480278666b68cb0d4b374f1a8bbc440c36bdf19fd02cecc6a902987e0c7"
   }
 }

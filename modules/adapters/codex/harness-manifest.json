@@ -1,0 +1,21 @@
+{
+  "schema": "lapart.harness-manifest.v2",
+  "name": "codex",
+  "display_name": "Codex Universal Adapter",
+  "harness_version": "0.147.0",
+  "adapter": {
+    "language": "python",
+    "entrypoint": "codex_adapter.py",
+    "class": "CodexAdapter",
+    "sdk_version": 2
+  },
+  "protocol_versions": [1, 2],
+  "operations": {"mode": "all", "include": [], "exclude": []},
+  "capabilities": {"streaming": true, "tools": true, "skills": true, "mcp": true, "memory": true, "retrieval": true},
+  "configuration": {
+    "config_reference": "recipient://codex/config",
+    "data_reference": "recipient://codex/data",
+    "authentication": null
+  },
+  "lifecycle": {"initialize": "initialize", "shutdown": "shutdown", "readiness": "readiness_signal", "rollback": "rollback_signal"}
+}
