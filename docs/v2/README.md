@@ -11,3 +11,4 @@ implied by files in this directory.
 - [v1 compatibility](V1-COMPATIBILITY.md)
 - [Universal orchestration protocol](../../modules/orchestration-protocol/SPEC.md)
 - [Shared orchestration core](../../modules/orchestration-core/README.md)
+- [Universal harness adapter SDK](../../modules/adapter-sdk/README.md)

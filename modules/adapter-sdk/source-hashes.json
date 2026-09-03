@@ -1,0 +1,18 @@
+{
+  "schema": "lapart.adapter-sdk-source-hashes.v1",
+  "algorithm": "sha256",
+  "files": {
+    "modules/adapter-sdk/README.md": "5f936b980298a7da60b2f02f7067bd6853b23c4e46827ba4465cb41cfef8f995",
+    "modules/adapter-sdk/harness-manifest.schema.json": "aee745f7472db42bc41bd84b230643cddc7ff53be37e0c8064c6eada65f63d09",
+    "modules/adapter-sdk/lapart_adapter/__init__.py": "74b189961dd17d4b127833c668604f766bee05d78ab46ce6a6f391b428a6477f",
+    "modules/adapter-sdk/lapart_adapter/adapter.py": "c27a08a117ca46bd118ea786ec2d9267c25a4358e8bd509f2447a3f968b3e230",
+    "modules/adapter-sdk/lapart_adapter/bridge.py": "199c0e8e62df00cdd154e2bcbf2abc271cc67ac6c4742271e5ee04cd4aa7d859",
+    "modules/adapter-sdk/lapart_adapter/manifest.py": "7fec6fba300077a397cd767146af52006f2ca4c086912e45d8e0f167127d4b2b",
+    "modules/adapter-sdk/lapart_adapter/negotiation.py": "30292e53734a46cbdf37f264b7380902e24e07d9e8b5e4e1edec8577c0b80ec2",
+    "modules/adapter-sdk/lapart_adapter/reference.py": "05b9919c77c1bc877e888217fee7f3552e06809d62074339a902424e4a85e375",
+    "modules/adapter-sdk/templates/README.md": "b03059e2cc12b729f641835cd7405393b15f0ee1814e18aae54d05f82d242887",
+    "modules/adapter-sdk/templates/adapter.py": "2c342a07a833f663d11447a2d85e6b0daedac38b054a2967e89752e7135ff4b7",
+    "modules/adapter-sdk/templates/harness-manifest.json": "02728ee9e863250577fb2594ae0b981f45dab5a6ca015fe37c1f55600406e398",
+    "modules/adapter-sdk/verify-adapter-sdk.py": "a9507e4b1ab262c1a06f8572b9c0d44f8e2cadb2cdeaa3a4879956995897b04a"
+  }
+}

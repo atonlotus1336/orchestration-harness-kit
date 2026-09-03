@@ -1,8 +1,9 @@
 {
-  "version": "modules-v7-shared-core",
+  "version": "modules-v8-adapter-sdk",
   "default_path": [
     "orchestration-protocol",
     "orchestration-core",
+    "adapter-sdk",
     "memory",
     "harness",
     "topology"
@@ -23,57 +24,64 @@
       "description": "Install the provider-free shared processor for routing, authority, context, provider policy, accounting, activation, rollback, and all protocol operations."
     },
     {
-      "id": "memory",
+      "id": "adapter-sdk",
       "stage": 2,
+      "required": true,
+      "source": "modules/adapter-sdk",
+      "description": "Install the closed harness manifest, translation-only adapter interface, universal bridge, and reference templates."
+    },
+    {
+      "id": "memory",
+      "stage": 3,
       "required": true,
       "source": "installer/modules/memory/bootstrap.py",
       "description": "Install empty MemoryWeaver runtime and MCP memory bridge."
     },
     {
       "id": "rag",
-      "stage": 3,
+      "stage": 4,
       "required": false,
       "source": "system/rag-orchestrator",
       "description": "Install RAG front-door MCP using recipient-owned corpus paths."
     },
     {
       "id": "harness",
-      "stage": 4,
+      "stage": 5,
       "required": true,
       "source": "installer/modules/harness/bindings.local.template.yaml",
       "description": "Create local capability bindings; concrete providers and endpoints stay local."
     },
     {
       "id": "hermes-snapshot",
-      "stage": 5,
+      "stage": 6,
       "required": false,
       "source": "installer/modules/hermes-snapshot",
       "description": "Versioned snapshot of profile template, routing policy, and parity plugin metadata."
     },
     {
       "id": "private-system-snapshot",
-      "stage": 6,
+      "stage": 7,
       "required": false,
       "source": "system-snapshot",
       "description": "Credential-free snapshot of the actual Prime/OMP, Hermes Telegram, auto-learning, maintenance, autoexperiment, backup, and restore implementation."
     },
     {
       "id": "topology",
-      "stage": 7,
+      "stage": 8,
       "required": true,
       "source": "modules/topology",
       "description": "Render the solo-PC default role; VPS and second-PC roles remain disabled optional expansions."
     },
     {
       "id": "clone-eval",
-      "stage": 8,
+      "stage": 9,
       "required": false,
       "source": "installer/clone-eval",
       "description": "Public eval subset proving clone parity for code-fix and agentic-file-op only."
     },
     {
       "id": "image-video",
-      "stage": 9,
+      "stage": 10,
       "required": false,
       "gpu_required": true,
       "source": "installer/modules/image-video",
@@ -81,21 +89,21 @@
     },
     {
       "id": "prime-omp",
-      "stage": 10,
+      "stage": 11,
       "required": false,
       "source": "modules/prime-omp",
       "description": "OPTIONAL Hermes-governed Prime Agent and oh-my-pi coding-worker contract. Workers use disposable worktrees and return patches for Hermes to verify and apply."
     },
     {
       "id": "verified-maintenance",
-      "stage": 11,
+      "stage": 12,
       "required": false,
       "source": "modules/verified-maintenance",
       "description": "OPTIONAL daily, weekly, and monthly backup-gated maintenance policy. Analysis is sandbox-only and production changes require human confirmation."
     },
     {
       "id": "telegram",
-      "stage": 12,
+      "stage": 13,
       "required": false,
       "source": "modules/messaging/TELEGRAM.md",
       "description": "OPTIONAL deny-by-default Telegram connection to the authenticated Hermes gateway."
