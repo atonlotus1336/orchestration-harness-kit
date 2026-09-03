@@ -1,0 +1,28 @@
+{
+  "schema": "lapart.hermes-reference-contract.v1",
+  "adapter_boundary": "translation-only",
+  "core_invariants": [
+    "actual-lane-routing",
+    "authority-decision",
+    "progressive-capability-discovery",
+    "context-component-attribution",
+    "fixed-envelope-regression-gate",
+    "subscription-first-provider-resolution",
+    "explicit-provider-call-accounting",
+    "isolated-activation-transition",
+    "deterministic-rollback"
+  ],
+  "live_qualification_required": [
+    "matched-quality",
+    "provider-call-count",
+    "latency",
+    "rollback",
+    "token-envelope"
+  ],
+  "installation_effect": {
+    "runtime_changes": 0,
+    "profile_changes": 0,
+    "provider_calls": 0,
+    "activation_changes": 0
+  }
+}

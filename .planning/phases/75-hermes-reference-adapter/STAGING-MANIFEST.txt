@@ -1,0 +1,17 @@
+.planning/STATE.md
+.planning/phases/75-hermes-reference-adapter/PLAN.md
+.planning/phases/75-hermes-reference-adapter/STAGING-MANIFEST.txt
+.planning/phases/75-hermes-reference-adapter/VERIFY.md
+docs/v2/README.md
+installer/modules/module-manifest.json
+installer/tests/test_hermes_reference_adapter.py
+modules/adapters/hermes/README.md
+modules/adapters/hermes/conformance_driver.py
+modules/adapters/hermes/harness-manifest.json
+modules/adapters/hermes/hermes_adapter.py
+modules/adapters/hermes/profile-matrix.json
+modules/adapters/hermes/reference-contract.json
+modules/adapters/hermes/source-hashes.json
+modules/adapters/hermes/source-map.json
+modules/adapters/hermes/verify-hermes-adapter.py
+modules/orchestration-protocol/source-hashes.json

@@ -13,3 +13,4 @@ implied by files in this directory.
 - [Shared orchestration core](../../modules/orchestration-core/README.md)
 - [Universal harness adapter SDK](../../modules/adapter-sdk/README.md)
 - [Provider-free conformance kit](../../modules/conformance-kit/README.md)
+- [Hermes OS reference adapter](../../modules/adapters/hermes/README.md)

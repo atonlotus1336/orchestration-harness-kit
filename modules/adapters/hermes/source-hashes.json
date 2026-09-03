@@ -1,0 +1,14 @@
+{
+  "schema": "lapart.hermes-adapter-source-hashes.v1",
+  "algorithm": "sha256",
+  "files": {
+    "modules/adapters/hermes/README.md": "036ee2f0169f66cd7f8c61b50fa58a17042b50f920e0b4d196819fd80cfbf557",
+    "modules/adapters/hermes/conformance_driver.py": "83df9a286b6281affdfa101c7c7d2922db5a6c455ad81f56ec39acbc0141c931",
+    "modules/adapters/hermes/harness-manifest.json": "ae1473eedfb4b77647cc1714273303876a7d50439faf5866fa75642342e00148",
+    "modules/adapters/hermes/hermes_adapter.py": "a62939eb5869d10f7235541422b6e8273aef67aa93dd0d49e2f6d4540420e910",
+    "modules/adapters/hermes/profile-matrix.json": "a01249a739f689c12044201ac9fad91a6d3a20be6310ffffcb671b0a0038c489",
+    "modules/adapters/hermes/reference-contract.json": "ed58a5fadba4dc28eeb64b99861ec2b450a0bf08d52a5e5db22c38d535cd4c90",
+    "modules/adapters/hermes/source-map.json": "8d762d01702504f9624b2ac09412a9706a42c856b568246a4790f6bd0bf2b4c2",
+    "modules/adapters/hermes/verify-hermes-adapter.py": "16a79a5171c9db49dacb5cfb386e5497a53441690b3fa04ff9a0ee377da11794"
+  }
+}

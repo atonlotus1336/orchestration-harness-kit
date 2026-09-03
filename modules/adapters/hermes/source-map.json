@@ -1,0 +1,33 @@
+{
+  "schema": "lapart.hermes-source-map.v1",
+  "provenance_reference": "docs/v2/provenance-map.json",
+  "sources": [
+    {
+      "repository": "hermes-runtime",
+      "commit": "e44c840b3d09b5689dd09669977cd176ef394723",
+      "mapped_contracts": [
+        "progressive-capability-discovery",
+        "explicit-provider-call-accounting",
+        "context-component-attribution"
+      ]
+    },
+    {
+      "repository": "hermes-self-evolution",
+      "commit": "fcc853d323b4b34321a35b8e966577f90d8aaa6c",
+      "mapped_contracts": [
+        "actual-lane-routing",
+        "context-component-attribution",
+        "subscription-first-provider-resolution"
+      ]
+    },
+    {
+      "repository": "governed-runtime",
+      "commit": "2bb74ae4754f9738a56a48a2a2e8ffef371239f3",
+      "mapped_contracts": [
+        "fixed-envelope-regression-gate",
+        "isolated-activation-transition",
+        "deterministic-rollback"
+      ]
+    }
+  ]
+}

@@ -7,6 +7,6 @@
     "modules/orchestration-protocol/fixtures.json": "231b4a6d02d821b44847a05fad0fe931ac3ac7d3bd314bfaf63c53cd525a4b37",
     "modules/orchestration-protocol/operation-catalog.json": "1e61841dd906cddcddecb64bd526514c118f56bf13c936de8f4fc88be41db24c",
     "modules/orchestration-protocol/verify-protocol.py": "c8446c05785d274e418c1f9c8997d8767d37716a00182b8c5e158d4774408553",
-    "installer/modules/module-manifest.json": "328052b51d83450480294c9bfebfdbc48a6ad5017f85e2c703a2f7de67bef78f"
+    "installer/modules/module-manifest.json": "09949b3067c509707819f52a9aa37fb68c913ac13c8fd82d68c61097111c582c"
   }
 }

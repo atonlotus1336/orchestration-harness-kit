@@ -1,0 +1,33 @@
+{
+  "schema": "lapart.hermes-profile-matrix.v1",
+  "profiles": [
+    {
+      "id": "home",
+      "channel": "desktop",
+      "qualification": "source-qualified",
+      "runtime_state": "unchanged",
+      "activation_changed": false
+    },
+    {
+      "id": "workspace",
+      "channel": "desktop",
+      "qualification": "source-qualified",
+      "runtime_state": "unchanged",
+      "activation_changed": false
+    },
+    {
+      "id": "nucbox-telegram",
+      "channel": "telegram",
+      "qualification": "source-qualified",
+      "runtime_state": "unchanged",
+      "activation_changed": false
+    },
+    {
+      "id": "vps-telegram",
+      "channel": "telegram",
+      "qualification": "source-qualified",
+      "runtime_state": "unchanged",
+      "activation_changed": false
+    }
+  ]
+}
