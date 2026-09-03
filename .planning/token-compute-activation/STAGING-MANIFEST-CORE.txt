@@ -1,0 +1,8 @@
+.planning/token-compute-activation/STAGING-MANIFEST-CORE.txt
+modules/token-compute-optimization/README.md
+modules/token-compute-optimization/activate-token-compute.py
+modules/token-compute-optimization/lapart_token_compute/__init__.py
+modules/token-compute-optimization/lapart_token_compute/activation.py
+modules/token-compute-optimization/source-hashes.json
+modules/token-compute-optimization/token-compute-policy.json
+modules/token-compute-optimization/verify-token-compute.py

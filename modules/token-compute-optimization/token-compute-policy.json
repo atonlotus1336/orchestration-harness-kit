@@ -1,0 +1,32 @@
+{
+  "schema": "lapart.token-compute-policy.v1",
+  "harnesses": ["hermes", "opencode", "pi", "antigravity", "codex", "claude-code", "moa", "cursor"],
+  "controls": {
+    "budget_admission": "active",
+    "adaptive_depth": "evidence_gated_full_fallback",
+    "context_cache": "active",
+    "context_rendering": "active",
+    "usage_accounting": "count_or_unavailable",
+    "marginal_value_stop": "shadow"
+  },
+  "task_tiers": {
+    "atomic": {"maximum_context_bytes": 32768, "maximum_output_tokens": 4096, "maximum_wall_seconds": 300, "maximum_tool_calls": 20, "maximum_provider_calls": 3},
+    "standard": {"maximum_context_bytes": 131072, "maximum_output_tokens": 8192, "maximum_wall_seconds": 900, "maximum_tool_calls": 60, "maximum_provider_calls": 4},
+    "complex": {"maximum_context_bytes": 262144, "maximum_output_tokens": 16384, "maximum_wall_seconds": 1800, "maximum_tool_calls": 120, "maximum_provider_calls": 5},
+    "high_risk": {"maximum_context_bytes": 524288, "maximum_output_tokens": 32768, "maximum_wall_seconds": 3600, "maximum_tool_calls": 240, "maximum_provider_calls": 6}
+  },
+  "promotion": {
+    "minimum_samples_per_class_per_harness": 100,
+    "minimum_wilson_lower_bound": 0.75,
+    "required_gates": ["quality", "calls", "latency", "rollback", "tokens"]
+  },
+  "safety": {
+    "subscription_first": true,
+    "pay_per_token_allowed": false,
+    "silent_provider_switch_allowed": false,
+    "authority_deletion_allowed": false,
+    "capability_discovery_removal_allowed": false,
+    "provider_calls_during_activation": 0,
+    "service_restarts_during_activation": 0
+  }
+}
