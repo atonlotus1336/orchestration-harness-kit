@@ -16,6 +16,10 @@ like this one (including you, if you fork it and start publishing your own).
 Plus `../sync-shareable-v2.ps1` at repo root, which chains generate → copy →
 sanitize → scrub into one command.
 
+`verify-v2-provenance.py` validates the v2 source map, immutable-import policy,
+v1 HOLD truthfulness, mandatory public exclusions, and no-activation boundaries.
+Run it with `--selftest` to exercise its fail-closed negative cases.
+
 ## The philosophy (why this isn't just "being careful")
 
 - **Allowlist-in, never scrub-out**: only explicitly named files can enter the

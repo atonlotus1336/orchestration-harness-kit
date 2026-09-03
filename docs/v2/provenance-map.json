@@ -1,0 +1,92 @@
+{
+  "schema": "ohk.v2-provenance.v1",
+  "release_branch": "release/v2-universal-orchestration",
+  "history_policy": {
+    "integration": "ordinary_merge",
+    "rewrite_allowed": false
+  },
+  "v1_baseline": {
+    "repository": "orchestration-harness-kit",
+    "commit": "04b7630937557c2dd4e6b429fc033873d5edf127",
+    "provider_free_tests": "PASS",
+    "privacy_gate": "BLOCKED",
+    "privacy_finding_count": 20,
+    "tag_status": "BLOCKED_PENDING_CLASSIFICATION"
+  },
+  "sources": [
+    {
+      "repository": "hermes-runtime",
+      "commit": "e44c840b3d09b5689dd09669977cd176ef394723",
+      "classification": "SOUND",
+      "import_from": "git_commit",
+      "scope": [
+        "progressive_disclosure",
+        "provider_call_accounting",
+        "prompt_envelope_attribution",
+        "review_projection_compatibility"
+      ]
+    },
+    {
+      "repository": "hermes-self-evolution",
+      "commit": "fcc853d323b4b34321a35b8e966577f90d8aaa6c",
+      "classification": "SOUND",
+      "import_from": "git_commit",
+      "scope": [
+        "deterministic_routing",
+        "cross_harness_projection",
+        "context_selection",
+        "token_policy"
+      ]
+    },
+    {
+      "repository": "governed-runtime",
+      "commit": "2bb74ae4754f9738a56a48a2a2e8ffef371239f3",
+      "classification": "SOUND",
+      "import_from": "git_commit",
+      "scope": [
+        "promotion_contracts",
+        "fixed_envelope_measurement",
+        "bounded_canary_controls",
+        "rollback_gates"
+      ]
+    },
+    {
+      "repository": "governed-runtime-phase-evidence",
+      "classification": "HISTORICAL",
+      "import_from": "documentation_only",
+      "scope": [
+        "hold_receipts",
+        "failure_receipts",
+        "non_promotion_receipts"
+      ]
+    }
+  ],
+  "mandatory_exclusions": [
+    "credentials",
+    "environment_files",
+    "private_keys",
+    "raw_provider_sessions",
+    "transcripts",
+    "private_memory",
+    "machine_evidence",
+    "caches",
+    "generated_binaries",
+    "dependency_directories",
+    "bytecode_caches",
+    "temporary_phase_directories",
+    "backups",
+    "real_usernames",
+    "real_hostnames",
+    "real_network_addresses",
+    "machine_absolute_paths"
+  ],
+  "hard_boundaries": {
+    "provider_calls": 0,
+    "service_restarts": 0,
+    "activation_changes": 0,
+    "default_model_changes": 0,
+    "tags_created": 0,
+    "pushes": 0,
+    "production_activation": false
+  }
+}
