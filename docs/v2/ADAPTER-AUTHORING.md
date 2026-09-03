@@ -13,7 +13,7 @@ activation, and rollback decisions remain in the shared core.
 3. Implement the six translation/lifecycle methods named by the manifest.
 4. Put credential references in `env://`, `file://`, `secret://`, or
    `recipient://` form. Never put credential values in a manifest or receipt.
-5. Negotiate the highest mutual protocol version; fail with a structured
+5. Negotiate the highest mutual protocol version. Return a structured
    incompatibility error when there is no mutual version.
 6. Preserve unknown generation-2 extension keys and reject unknown top-level
    keys.
@@ -28,11 +28,11 @@ python3 modules/conformance-kit/run-conformance.py --adapter-dir path/to/adapter
 
 - translation remains deterministic and provider-free
 - discovery summaries remain visible while detail loads progressively
-- context attribution and provider accounting are returned unchanged
-- dry-run, readiness, detach/reattach, and rollback signals are implemented
+- the adapter returns context attribution and provider accounting unchanged
+- the adapter implements dry-run, readiness, detach/reattach, and rollback signals
 - source qualification records zero provider calls and no activation change
 - live activation begins only with an isolated shadow profile and a tested
   rollback reference
 
 Use the Hermes OS adapter as the reference for the complete manifest and the
-other six adapters as examples of harness-specific event translation.
+other seven adapters as examples of harness-specific event translation.

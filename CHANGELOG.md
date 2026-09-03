@@ -6,7 +6,7 @@
 
 - A versioned universal orchestration protocol and one deterministic shared core.
 - A thin-adapter SDK plus reference adapters for Hermes OS, OpenCode, Pi,
-  Antigravity, Codex, Claude Code, and MOA.
+  Antigravity, Codex, Claude Code, MOA, and Cursor.
 - Provider-free conformance, fixed-envelope attribution, call accounting, and
   fail-closed activation/rollback contracts.
 - Dry-run-first install, connect, doctor, verify, upgrade, rollback, uninstall,

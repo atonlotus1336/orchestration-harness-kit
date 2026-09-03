@@ -4,7 +4,7 @@ This directory records the public design and release guidance for the v2 SDK.
 The SDK keeps policy and orchestration in a shared core while harness-specific
 adapters translate local capabilities into one versioned protocol.
 
-Current status: local release candidate. The shared core, seven thin adapters,
+Current status: local release candidate. The shared core, eight thin adapters,
 portable lifecycle, and native Windows/Linux clean-room paths are qualified.
 The GitHub repository is private and no release has been tagged or published.
 No v2 runtime activation is implied by files in this directory.
@@ -30,3 +30,4 @@ No v2 runtime activation is implied by files in this directory.
 - [Codex adapter](../../modules/adapters/codex/README.md)
 - [Claude Code adapter](../../modules/adapters/claude-code/README.md)
 - [MOA adapter](../../modules/adapters/moa/README.md)
+- [Cursor adapter](../../modules/adapters/cursor/README.md)

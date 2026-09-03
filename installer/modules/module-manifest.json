@@ -1,5 +1,5 @@
 {
-  "version": "modules-v13-universal-reference-adapters",
+  "version": "modules-v14-cursor-reference-adapter",
   "default_path": [
     "orchestration-protocol",
     "orchestration-core",
@@ -86,6 +86,13 @@
       "required": false,
       "source": "modules/adapters/moa",
       "description": "OPTIONAL MOA phase-event adapter; the Hermes MOA loop and provider/model policy are not copied."
+    },
+    {
+      "id": "adapter-cursor",
+      "stage": 4,
+      "required": false,
+      "source": "modules/adapters/cursor",
+      "description": "OPTIONAL Cursor hook adapter and reviewable plugin template; installation does not edit Cursor settings or activate the plugin."
     },
     {
       "id": "memory",

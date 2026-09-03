@@ -55,6 +55,22 @@ def test_connect_is_dry_run_then_idempotent_managed_write(tmp_path):
     assert manifest["files"].count("connections/codex.json") == 1
 
 
+def test_cursor_connect_is_reference_only_and_provider_free(tmp_path):
+    target, _ = install(tmp_path)
+    code, result = run_kit(
+        "connect", "--target", target, "--harness", "cursor", "--apply", "--yes",
+    )
+    assert code == 0 and result["status"] == "PASS"
+    connection = json.loads((target / "connections/cursor.json").read_text(encoding="utf-8"))
+    assert connection["activation"] == "installed-not-activated"
+    assert connection["provider_calls"] == 0
+    assert connection["adapter_manifest"] == "modules/adapters/cursor/harness-manifest.json"
+
+    code, verified = run_kit("verify", "--target", target, "--harness", "cursor")
+    adapter = next(check for check in verified["checks"] if check["name"] == "adapter:cursor")
+    assert code == 0 and adapter["provider_calls"] == 0
+
+
 def test_reinstall_preserves_local_configuration_and_connections(tmp_path):
     target, data = install(tmp_path, "codex")
     code, _ = run_kit(

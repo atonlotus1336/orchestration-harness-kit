@@ -1,7 +1,7 @@
 # Activation boundary
 
 SDK installation and adapter connection are not activation. The portable kit
-ends in `installed-not-activated`; this is the safe default for every recipient.
+ends in `installed-not-activated`. This is the safe default for every recipient.
 
 ## Promotion sequence
 
@@ -17,10 +17,10 @@ ends in `installed-not-activated`; this is the safe default for every recipient.
 
 ## Current SDK state
 
-All seven adapters are source-qualified and remain unactivated by the SDK. The
+All eight adapters are source-qualified and remain unactivated by the SDK. The
 shared core deliberately denies production activation by default. Enabling a
-recipient deployment requires a local policy overlay and profile-specific live
-evidence; those recipient secrets and runtime receipts do not enter this repo.
+Recipient deployments need a local policy overlay and profile-specific live
+evidence. Keep those recipient secrets and runtime receipts outside this repo.
 
-This is the end of Phase 82's portable scope. No Phase 83 is required. Live
+This is the end of Phase 82's portable scope, without a Phase 83. Live
 deployment is an operational choice after the SDK release candidate is complete.

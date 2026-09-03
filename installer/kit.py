@@ -46,6 +46,7 @@ HARNESS_ALIASES = {
     "pi": "pi",
     "antigravity": "antigravity",
     "moa": "moa",
+    "cursor": "cursor",
 }
 REFERENCE_RE = re.compile(r"^(?:env|file|secret|recipient)://[^\s]+$")
 SNAPSHOT_RE = re.compile(r"^[0-9a-f]{16}$")

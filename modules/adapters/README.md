@@ -16,6 +16,7 @@ and activation remain separate states.
 - `codex/` — Codex notification translation
 - `claude-code/` — Claude Code hook-event translation
 - `moa/` — MOA phase-event translation
+- `cursor/` — Cursor JSON-hook translation plus an opt-in plugin template
 
 `qualification.json`, `qualification-phase77.json`, and
 `qualification-phase78.json` are immutable historical receipts. Current adapter
@@ -24,4 +25,4 @@ conformance run. A later installer change must not rewrite or falsely invalidate
 that historical evidence.
 
 Run `python modules/adapters/verify-adapters.py` for the provider-free reference
-adapter matrix.
+adapter matrix, including Cursor.

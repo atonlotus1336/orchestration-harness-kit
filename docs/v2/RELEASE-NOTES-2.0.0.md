@@ -1,6 +1,6 @@
 # Universal Orchestration SDK v2 release notes
 
-Status: local release candidate; not tagged or published.
+Status: local release candidate. Maintainers have not tagged or published it.
 
 v2 replaces per-harness orchestration copies with a shared deterministic core
 and thin translation adapters. A new harness implements one small manifest and
@@ -9,7 +9,7 @@ optimization, provider policy, activation, and rollback behavior.
 
 ## Highlights
 
-- seven source-qualified adapters share one protocol and policy core
+- eight source-qualified adapters share one protocol and policy core
 - deterministic T0–T4 routing inputs and actual-lane reporting
 - progressive capability disclosure without silently hiding tools
 - fixed-envelope attribution for authority, skills, tools, and selected context
@@ -20,8 +20,8 @@ optimization, provider policy, activation, and rollback behavior.
 
 ## Boundaries
 
-- `2.0.0-dev` remains the runtime label until release stamping is authorized.
-- No profile is activated merely by installing or connecting an adapter.
+- `2.0.0-dev` remains the runtime label until the owner authorizes release stamping.
+- Installing or connecting an adapter does not activate a profile.
 - macOS is experimental.
 - The Git repository is private and contains historical objects excluded from
   the public client bundle. Publish only a freshly qualified allowlisted bundle

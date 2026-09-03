@@ -11,7 +11,7 @@
   capability discovery, token attribution, provider accounting, activation,
   and rollback policy.
 - Thin adapters are source-qualified for Hermes OS, OpenCode, Pi, Antigravity,
-  Codex, Claude Code, and MOA.
+  Codex, Claude Code, MOA, and Cursor.
 - Install, connect, doctor, verify, upgrade, rollback, and uninstall pass without
   a provider call.
 - The same allowlisted payload and offline bundle are byte-identical on native

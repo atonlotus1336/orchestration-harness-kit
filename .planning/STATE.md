@@ -1,6 +1,6 @@
 # v2 State
 
-- Branch: `release/v2-universal-orchestration`
+- Branch: `main` (local release integration; publication still held)
 - Current phase: complete — Phase 81 release readiness and Phase 82 activation boundary
 - Phase 69 status: committed and merged with published v1 history
 - Phase 70 status: committed
@@ -19,13 +19,15 @@
   and Docker exact-commit receipts pass from an identical 300-file payload
 - Phase 82 status: portable scope complete at READY_FOR_SEPARATE_ACTIVATION_AUTHORIZATION;
   live deployment remains an optional operational action
-- Status: universal v2 SDK release candidate complete; seven thin adapters plus
+- Cursor extension status: source-qualified with 31/31 operation paths, provider-free
+  plugin hooks, MemoryWeaver MCP configuration, and portable lifecycle coverage
+- Status: universal v2 SDK release candidate complete; eight thin adapters plus
   install/connect/doctor/verify/upgrade/rollback/uninstall are reproducible;
   live harnesses unchanged
 - Provider calls: 2 subscription-backed coding-router readiness requests; SDK tests 0
 - Service restarts: 0
 - Activation changes: 0
 - Tags or pushes: 0
-- Next gate: commit the final Phase 81 evidence and locally merge the release
-  branch after confirmation. Publication, tagging, pushing, repository visibility,
-  and live activation remain separately authorized operations. No Phase 83.
+- Next gate: commit the two allowlisted Cursor extension changesets after
+  confirmation. Publication, tagging, pushing, repository visibility, and live
+  activation remain separately authorized operations. No Phase 83.

@@ -44,6 +44,12 @@
       "tested_harness_version": "0.18.0-source-contract",
       "qualification": "source-qualified",
       "runtime_activation": "unchanged"
+    },
+    {
+      "id": "cursor",
+      "tested_harness_version": "source-contract-2026-09-03",
+      "qualification": "source-qualified",
+      "runtime_activation": "unchanged"
     }
   ]
 }

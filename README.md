@@ -4,7 +4,7 @@
 time.** This kit packages a battle-tested personal stack (persistent memory, a
 destructive-command safety gate, reasoning techniques for small local models,
 messenger integration, and the operating doctrine that ties it together) so you can
-run the same system with **Claude Code, Codex, Hermes/OpenCode, or any similar agent**.
+run the same system with **Claude Code, Codex, Hermes/OpenCode, Cursor, or any similar agent**.
 
 It ships the **system, never the author's content**: no memories (your store starts
 empty), no private projects, no identity. Machine-specific values are placeholders

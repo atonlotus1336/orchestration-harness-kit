@@ -15,7 +15,7 @@
   ],
   "properties": {
     "schema": {"const": "lapart.harness-connection.v2"},
-    "harness": {"enum": ["hermes", "opencode", "pi", "antigravity", "codex", "claude-code", "moa"]},
+    "harness": {"enum": ["hermes", "opencode", "pi", "antigravity", "codex", "claude-code", "moa", "cursor"]},
     "adapter_manifest": {"type": "string", "pattern": "^modules/adapters/[a-z-]+/harness-manifest\\.json$"},
     "protocol_version": {"const": 2},
     "config_reference": {"type": "string", "pattern": "^(env|file|secret|recipient)://\\S+$"},

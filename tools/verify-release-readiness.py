@@ -21,9 +21,9 @@ REQUIRED_DOCS = {
     "docs/v2/MIGRATION-GUIDE.md": ("additive migration", "rollback", "recipient"),
     "docs/v2/ADAPTER-AUTHORING.md": ("thin harness adapter", "provider-free", "shared core"),
     "docs/v2/COMPATIBILITY.md": ("Hermes OS", "OpenCode", "MOA"),
-    "docs/v2/RELEASE-NOTES-2.0.0.md": ("not tagged or published", "seven", "v1"),
+    "docs/v2/RELEASE-NOTES-2.0.0.md": ("not tagged or published", "eight", "v1"),
     "docs/v2/RELEASE-CHECKLIST.md": ("Publication gate", "Activation gate", "SHA-256"),
-    "docs/v2/ACTIVATION.md": ("installed-not-activated", "shadow", "No Phase 83"),
+    "docs/v2/ACTIVATION.md": ("installed-not-activated", "shadow", "without a Phase 83"),
 }
 EXPECTED_ADAPTERS = {
     "hermes-os-reference",
@@ -33,6 +33,7 @@ EXPECTED_ADAPTERS = {
     "codex",
     "claude-code",
     "moa",
+    "cursor",
 }
 LINK_DOCS = set(REQUIRED_DOCS) | {"README.md", "docs/v2/README.md"}
 FORBIDDEN_HISTORY_ROOTS = {"system-snapshot", ".private-denylist"}
