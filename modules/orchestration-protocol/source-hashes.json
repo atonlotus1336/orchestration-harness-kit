@@ -6,6 +6,7 @@
     "modules/orchestration-protocol/envelope.schema.json": "5bb07299b47ef3ad2ff23f89c740ecad1e0285e953f2e81d97f667ef17d7928d",
     "modules/orchestration-protocol/fixtures.json": "231b4a6d02d821b44847a05fad0fe931ac3ac7d3bd314bfaf63c53cd525a4b37",
     "modules/orchestration-protocol/operation-catalog.json": "1e61841dd906cddcddecb64bd526514c118f56bf13c936de8f4fc88be41db24c",
-    "installer/modules/module-manifest.json": "f857269fb35f96bf22b0edfe77dbfed8180984d94a021b05b97fff682fbbd00a"
+    "modules/orchestration-protocol/verify-protocol.py": "c8446c05785d274e418c1f9c8997d8767d37716a00182b8c5e158d4774408553",
+    "installer/modules/module-manifest.json": "9ccdc4668ab1c6742a801889291647bbc0fc105763d40053005e3a49801d96c9"
   }
 }

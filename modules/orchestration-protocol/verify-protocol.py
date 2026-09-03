@@ -276,7 +276,7 @@ def validate_envelope(envelope: dict[str, Any], catalog: dict[str, Any], schema:
                 ):
                     errors.append("provider-free accounting must contain explicit zero counts")
 
-    if operation == "activation.transition" and isinstance(payload, dict):
+    if operation == "activation.transition" and kind == "request" and isinstance(payload, dict):
         states = {"inactive", "shadow", "review", "production"}
         if payload.get("previous_state") not in states or payload.get("requested_state") not in states:
             errors.append("invalid activation state")

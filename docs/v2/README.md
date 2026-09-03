@@ -10,3 +10,4 @@ implied by files in this directory.
 - [Provenance audit](PROVENANCE-AUDIT.md)
 - [v1 compatibility](V1-COMPATIBILITY.md)
 - [Universal orchestration protocol](../../modules/orchestration-protocol/SPEC.md)
+- [Shared orchestration core](../../modules/orchestration-core/README.md)

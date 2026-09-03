@@ -1,0 +1,40 @@
+{
+  "schema": "lapart.bootstrap-context.v1",
+  "items": [
+    {
+      "id": "system",
+      "category": "system_prompt",
+      "content": "Apply the portable LapArt orchestration protocol.",
+      "required": true,
+      "priority": 100
+    },
+    {
+      "id": "authority",
+      "category": "authority_context",
+      "content": "Preserve authority, privacy, approval, rollback, and cost boundaries.",
+      "required": true,
+      "priority": 100
+    },
+    {
+      "id": "skills",
+      "category": "skills_index",
+      "content": "Discover skill summaries first and load selected instructions on demand.",
+      "required": false,
+      "priority": 50
+    },
+    {
+      "id": "tools",
+      "category": "tool_schema",
+      "content": "Discover tool summaries first and load selected schemas on demand.",
+      "required": false,
+      "priority": 50
+    },
+    {
+      "id": "selected",
+      "category": "selected_content",
+      "content": "Only task-relevant content enters the rendered context.",
+      "required": false,
+      "priority": 25
+    }
+  ]
+}

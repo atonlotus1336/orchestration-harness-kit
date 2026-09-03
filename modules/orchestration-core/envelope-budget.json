@@ -1,0 +1,12 @@
+{
+  "schema": "lapart.envelope-budget.v1",
+  "maximum_growth_percent": 5.0,
+  "baseline": {
+    "system_prompt_bytes": 49,
+    "authority_context_bytes": 66,
+    "skills_index_bytes": 69,
+    "tool_schema_bytes": 64,
+    "selected_content_bytes": 55,
+    "rendered_total_bytes": 303
+  }
+}
