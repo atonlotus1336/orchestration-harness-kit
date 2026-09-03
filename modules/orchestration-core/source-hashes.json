@@ -2,7 +2,7 @@
   "schema": "lapart.core-source-hashes.v1",
   "algorithm": "sha256",
   "files": {
-    "modules/orchestration-core/README.md": "4d3538002f30abc824732de7f500aee604cd2fb02f4c1f72eaf43a142b0fdd2e",
+    "modules/orchestration-core/README.md": "6e64c44b988e3070707af8ac4b9baf36773831c1bfd2a9020ced7113dca674da",
     "modules/orchestration-core/bootstrap-context.json": "2e67022dd1f687641797a31ad41bc00e9820c7d16c1172692b4c189c7072ae7a",
     "modules/orchestration-core/check-envelope.py": "ac5b02022b207317a4fae420337ed78b5808739869c0682d9e89ab9ca362dc77",
     "modules/orchestration-core/core-policy.json": "237d54f0a712d47e2b1227695e9ba37e25f09f989774ce83de6235451187cd34",

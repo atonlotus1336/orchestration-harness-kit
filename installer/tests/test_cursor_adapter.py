@@ -35,9 +35,9 @@ def components():
     return runner, adapter, driver, bridge
 
 
-def run_hook(name: str, payload: dict) -> tuple[int, dict]:
+def run_hook(name: str, payload: dict, *args: str) -> tuple[int, dict]:
     result = subprocess.run(
-        [sys.executable, str(PLUGIN / "scripts" / name)],
+        [sys.executable, str(PLUGIN / "scripts" / name), *args],
         cwd=PLUGIN, input=json.dumps(payload), text=True, capture_output=True, check=False,
     )
     return result.returncode, json.loads(result.stdout)
@@ -91,7 +91,10 @@ def test_cursor_plugin_contract_is_reference_only():
     hooks = json.loads((PLUGIN / "hooks/hooks.json").read_text(encoding="utf-8"))
     mcp = json.loads((PLUGIN / "mcp.json").read_text(encoding="utf-8"))
     assert manifest["name"] == "lapart-orchestration"
-    assert set(manifest["variables"]["required"]) == {"LAPART_PYTHON", "LAPART_KIT_ROOT", "LAPART_DATA_ROOT"}
+    assert set(manifest["variables"]["required"]) == {
+        "LAPART_PYTHON", "LAPART_KIT_ROOT", "LAPART_DATA_ROOT", "LAPART_TOKEN_COMPUTE_ACTIVATION",
+    }
+    assert hooks["hooks"]["beforeSubmitPrompt"][0]["failClosed"] is True
     assert hooks["hooks"]["beforeShellExecution"][0]["failClosed"] is True
     assert set(mcp["mcpServers"]) == {"memoryweaver"}
     text = json.dumps({"manifest": manifest, "hooks": hooks, "mcp": mcp}).casefold()
@@ -100,9 +103,31 @@ def test_cursor_plugin_contract_is_reference_only():
     assert "password" not in text
 
 
-def test_cursor_hooks_initialize_and_gate_shell_provider_free():
-    code, start = run_hook("session_start.py", {"session_id": "conversation.1"})
-    assert code == 0 and "protocol v2 is ready" in start["additional_context"]
+def test_cursor_hooks_initialize_optimize_and_gate_shell_provider_free(tmp_path):
+    registry = tmp_path / "activation.json"
+    activation = ROOT / "modules/token-compute-optimization/activate-token-compute.py"
+    result = subprocess.run(
+        [
+            sys.executable, str(activation), "activate", "--registry", str(registry),
+            "--harness", "all", "--approval-reference", "cursor-test", "--apply", "--yes",
+        ],
+        cwd=ROOT, text=True, capture_output=True, check=False,
+    )
+    assert result.returncode == 0
+    activation_args = ("--activation-registry", str(registry))
+
+    code, start = run_hook("session_start.py", {"session_id": "conversation.1"}, *activation_args)
+    assert code == 0 and "token-compute optimization are active" in start["additional_context"]
+
+    code, admitted = run_hook("before_submit_prompt.py", {
+        "conversation_id": "conversation.1", "prompt": "Review this result", "attachments": [],
+    }, *activation_args)
+    assert code == 0 and admitted == {"continue": True}
+
+    code, blocked = run_hook("before_submit_prompt.py", {
+        "conversation_id": "conversation.1", "prompt": "x" * 524289, "attachments": [],
+    }, *activation_args)
+    assert code == 0 and blocked["continue"] is False
 
     code, benign = run_hook("before_shell.py", {
         "conversation_id": "conversation.1", "command": "git status", "cwd": ".", "sandbox": True,

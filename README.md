@@ -45,6 +45,7 @@ the work rather than being trapped in one tool.
 | [`tools/`](tools/) | The kit's own build/scrub/verify machinery | Only needed if you maintain or extend the kit |
 | [`modules/topology/`](modules/topology/) | Solo-PC default plus optional VPS and second-PC role profiles | Expand without changing who owns the home disk or exposing the dashboard |
 | [`modules/prime-omp/`](modules/prime-omp/) | A strict contract for letting Prime Agent coordinate oh-my-pi coding workers through Hermes | Add a powerful coding lane without handing workers your real repository or final authority |
+| [`modules/token-compute-optimization/`](modules/token-compute-optimization/) | One provider-free budget, depth, cache, rendering, accounting, and rollback profile for every adapter | Reduce wasted context and calls without weakening quality gates or capability discovery |
 | [`modules/verified-maintenance/`](modules/verified-maintenance/) | Daily, weekly, and monthly improvement windows that start only after a successful backup | Keep self-improvement recoverable, sandboxed, and human-approved |
 | [`system-snapshot/`](system-snapshot/) | The actual sanitized Prime/OMP, Hermes Telegram, auto-learning, autoexperiment, maintenance, backup, and restore implementation | Preserve the recent systemic updates rather than only their portable interfaces |
 
@@ -101,6 +102,7 @@ distributed to clients.
 | system (memory+RAG) | Python 3.11, guide §3 | guide §4 smoke tests |
 | hooks | the memory engine | guide §3.4 |
 | prime-omp | Hermes plus locally installed Prime Agent and OMP | contract verifier plus harmless patch rehearsal |
+| token-compute-optimization | orchestration core plus a recipient-local activation registry | provider-free module verifier plus rollback rehearsal |
 
 Prime/OMP has two distribution tiers. The public client payload ships the
 contract and diagnostic only. Authorized full-Git recipients can restore and

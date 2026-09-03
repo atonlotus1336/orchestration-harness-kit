@@ -14,6 +14,9 @@ optimization, provider policy, activation, and rollback behavior.
 - progressive capability disclosure without silently hiding tools
 - fixed-envelope attribution for authority, skills, tools, and selected context
 - explicit provider-call and token accounting, including meaningful zeroes
+- one rollback-backed token-compute feature profile for all eight adapters:
+  budget/cache/rendering/accounting controls activate provider-free, uncertain
+  depth retains full execution, and marginal-value stopping stays shadow-only
 - dry-run-first install, upgrade, rollback, and managed uninstall
 - identical clean-room payload and ZIP bytes on Windows, Linux/WSL, and Docker
 - v1 protocol negotiation and a pinned rollback point

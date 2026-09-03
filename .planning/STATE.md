@@ -1,7 +1,7 @@
 # v2 State
 
 - Branch: `main` (local release integration; publication still held)
-- Current phase: complete — Phase 81 release readiness and Phase 82 activation boundary
+- Current phase: token-compute feature activation extension qualified after Phase 82
 - Phase 69 status: committed and merged with published v1 history
 - Phase 70 status: committed
 - Phase 71 status: committed
@@ -20,14 +20,15 @@
 - Phase 82 status: portable scope complete at READY_FOR_SEPARATE_ACTIVATION_AUTHORIZATION;
   live deployment remains an optional operational action
 - Cursor extension status: source-qualified with 31/31 operation paths, provider-free
-  plugin hooks, MemoryWeaver MCP configuration, and portable lifecycle coverage
+  plugin hooks, MemoryWeaver MCP configuration, portable lifecycle coverage, and
+  fail-closed token-compute request admission
 - Status: universal v2 SDK release candidate complete; eight thin adapters plus
   install/connect/doctor/verify/upgrade/rollback/uninstall are reproducible;
   live harnesses unchanged
 - Provider calls: 2 subscription-backed coding-router readiness requests; SDK tests 0
 - Service restarts: 0
-- Activation changes: 0
+- SDK default activation changes: 0; recipient-local feature activation is separately supported
 - Tags or pushes: 0
-- Next gate: commit the two allowlisted Cursor extension changesets after
-  confirmation. Publication, tagging, pushing, repository visibility, and live
-  activation remain separately authorized operations. No Phase 83.
+- Next gate: commit the allowlisted token-compute and Cursor extension changesets
+  after confirmation. Publication, tagging, pushing, repository visibility, and
+  provider/production activation remain separately authorized operations. No Phase 83.

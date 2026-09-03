@@ -13,6 +13,8 @@
   and deterministic offline-bundle lifecycle.
 - Native Windows and Linux/WSL clean-room qualification with identical payload
   and archive bytes.
+- A provider-free, rollback-backed token-compute activation module shared by all
+  eight adapters, plus fail-closed Cursor prompt admission.
 
 ### Compatibility and safety
 

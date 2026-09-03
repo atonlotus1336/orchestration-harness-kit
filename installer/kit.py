@@ -246,6 +246,7 @@ def copy_payload(source: Path, destination: Path) -> list[str]:
 def _payload_verification_errors(payload: Path) -> list[str]:
     commands = (
         "modules/orchestration-core/verify-core.py",
+        "modules/token-compute-optimization/verify-token-compute.py",
         "modules/adapters/hermes/verify-hermes-adapter.py",
         "modules/adapters/verify-adapters.py",
         "installer/verify-lifecycle.py",

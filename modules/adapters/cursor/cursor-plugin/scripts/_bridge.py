@@ -12,7 +12,8 @@ KIT_ROOT = PLUGIN_ROOT.parents[3]
 SDK = KIT_ROOT / "modules/adapter-sdk"
 CORE = KIT_ROOT / "modules/orchestration-core"
 PROTOCOL = KIT_ROOT / "modules/orchestration-protocol"
-sys.path[:0] = [str(KIT_ROOT), str(SDK), str(CORE)]
+TOKEN_COMPUTE = KIT_ROOT / "modules/token-compute-optimization"
+sys.path[:0] = [str(KIT_ROOT), str(SDK), str(CORE), str(TOKEN_COMPUTE)]
 
 from lapart_adapter import HarnessManifest, UniversalHarnessBridge
 from lapart_core import OrchestrationCore

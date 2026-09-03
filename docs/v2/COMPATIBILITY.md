@@ -1,8 +1,10 @@
 # Compatibility matrix
 
 All entries below are source-qualified against the shared protocol and core.
-“Not activated” means the repository proves translation and lifecycle behavior
-without claiming a change to a recipient's live harness.
+"Not activated" means the SDK's default install/connect flow proves translation
+and lifecycle behavior without changing a recipient's live harness. Every row can
+consume the shared provider-free token-compute profile after explicit local
+activation. That feature state does not imply provider or production activation.
 
 | Harness | Tested contract/version | Protocol | Qualification | Live state |
 |---|---|---|---|---|
@@ -14,6 +16,12 @@ without claiming a change to a recipient's live harness.
 | Claude Code | 2.1.211 | 1, 2 | source-qualified | not activated |
 | MOA | 0.18.0 source contract | 1, 2 | source-qualified | not activated |
 | Cursor | 2026-09-03 hook/plugin source contract | 1, 2 | source-qualified | not activated |
+
+The required `token-compute-optimization` module covers all eight adapter IDs.
+Its local registry activates deterministic budget admission, context cache and
+rendering, usage accounting, and evidence-gated depth with full fallback.
+Marginal-value stopping remains shadow-only until the measured promotion gates
+pass independently for a recipient deployment.
 
 The machine-readable authority is
 `modules/adapters/compatibility-matrix.json`. A newer harness version is not

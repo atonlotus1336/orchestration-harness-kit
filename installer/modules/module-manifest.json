@@ -1,10 +1,11 @@
 {
-  "version": "modules-v14-cursor-reference-adapter",
+  "version": "modules-v15-token-compute-activation",
   "default_path": [
     "orchestration-protocol",
     "orchestration-core",
     "adapter-sdk",
     "conformance-kit",
+    "token-compute-optimization",
     "memory",
     "harness",
     "topology"
@@ -23,6 +24,13 @@
       "required": true,
       "source": "modules/orchestration-core",
       "description": "Install the provider-free shared processor for routing, authority, context, provider policy, accounting, activation, rollback, and all protocol operations."
+    },
+    {
+      "id": "token-compute-optimization",
+      "stage": 3,
+      "required": true,
+      "source": "modules/token-compute-optimization",
+      "description": "Install provider-free task budgets, evidence-gated full-depth fallback, context reuse, bounded rendering, usage accounting, shadow stopping, and rollback-backed per-harness activation."
     },
     {
       "id": "adapter-sdk",

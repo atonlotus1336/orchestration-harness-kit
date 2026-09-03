@@ -33,3 +33,7 @@ when `request_text` and `available_tools` are supplied together. Explicit
 read-only requests keep safe read tools plus every discovery-prefixed tool;
 mutating, empty, or ambiguous requests retain the full tool set. Authority and
 capability catalogs are never removed to reduce context size.
+
+The required `modules/token-compute-optimization` module supplies the portable
+activation registry and the complete safe control profile. Marginal-value
+stopping stays shadow-only, and insufficient evidence always selects full depth.

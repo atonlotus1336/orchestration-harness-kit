@@ -4,6 +4,13 @@
     "sessionStart": [
       {"command": "\"${LAPART_PYTHON}\" \"scripts/session_start.py\"", "timeout": 10}
     ],
+    "beforeSubmitPrompt": [
+      {
+        "command": "\"${LAPART_PYTHON}\" \"scripts/before_submit_prompt.py\"",
+        "timeout": 10,
+        "failClosed": true
+      }
+    ],
     "beforeShellExecution": [
       {
         "command": "\"${LAPART_PYTHON}\" \"scripts/before_shell.py\"",

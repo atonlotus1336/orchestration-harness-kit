@@ -164,6 +164,7 @@ def test_payload_verification_does_not_generate_python_bytecode(tmp_path):
     destination = tmp_path / "public-payload"
     for relative in (
         "modules/orchestration-core/verify-core.py",
+        "modules/token-compute-optimization/verify-token-compute.py",
         "modules/adapters/hermes/verify-hermes-adapter.py",
         "modules/adapters/verify-adapters.py",
         "installer/verify-lifecycle.py",

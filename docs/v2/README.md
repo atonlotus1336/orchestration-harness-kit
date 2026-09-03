@@ -20,6 +20,7 @@ No v2 runtime activation is implied by files in this directory.
 - [Activation boundary](ACTIVATION.md)
 - [Universal orchestration protocol](../../modules/orchestration-protocol/SPEC.md)
 - [Shared orchestration core](../../modules/orchestration-core/README.md)
+- [Token-compute feature activation](../../modules/token-compute-optimization/README.md)
 - [Universal harness adapter SDK](../../modules/adapter-sdk/README.md)
 - [Provider-free conformance kit](../../modules/conformance-kit/README.md)
 - [Hermes OS reference adapter](../../modules/adapters/hermes/README.md)

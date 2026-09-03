@@ -19,8 +19,10 @@ First install the SDK, then create its reference-only connection descriptor:
 python installer/kit.py connect --target <install-root> --harness cursor --apply --yes
 ```
 
-Review `<install-root>/modules/adapters/cursor/cursor-plugin` and set its three
-non-secret variables to the installed Python, SDK root, and recipient data root.
+Review `<install-root>/modules/adapters/cursor/cursor-plugin` and set its four
+non-secret variables to the installed Python, SDK root, recipient data root, and
+the token-compute activation registry created by the required optimization
+module.
 For a local rehearsal, link that directory into Cursor's local plugin directory,
 reload the Cursor window, and keep the plugin disabled until the provider-free
 checks below pass. Do not copy a credential into the plugin or repository.

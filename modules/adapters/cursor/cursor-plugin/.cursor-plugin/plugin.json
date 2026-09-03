@@ -12,8 +12,9 @@
     "properties": {
       "LAPART_PYTHON": {"type": "string", "title": "Python executable"},
       "LAPART_KIT_ROOT": {"type": "string", "title": "Installed SDK root"},
-      "LAPART_DATA_ROOT": {"type": "string", "title": "Recipient data root"}
+      "LAPART_DATA_ROOT": {"type": "string", "title": "Recipient data root"},
+      "LAPART_TOKEN_COMPUTE_ACTIVATION": {"type": "string", "title": "Token-compute activation registry"}
     },
-    "required": ["LAPART_PYTHON", "LAPART_KIT_ROOT", "LAPART_DATA_ROOT"]
+    "required": ["LAPART_PYTHON", "LAPART_KIT_ROOT", "LAPART_DATA_ROOT", "LAPART_TOKEN_COMPUTE_ACTIVATION"]
   }
 }
