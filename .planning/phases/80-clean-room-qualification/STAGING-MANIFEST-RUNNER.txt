@@ -1,0 +1,6 @@
+.planning/STATE.md
+.planning/phases/80-clean-room-qualification/PLAN.md
+.planning/phases/80-clean-room-qualification/STAGING-MANIFEST-RUNNER.txt
+.planning/phases/80-clean-room-qualification/VERIFY.md
+tools/qualify-clean-room.py
+tools/tests/test_clean_room_qualification.py
