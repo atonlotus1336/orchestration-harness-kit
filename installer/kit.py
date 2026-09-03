@@ -281,7 +281,9 @@ def command_build(args) -> int:
     for rel in files:
         data = (destination / rel).read_bytes()
         manifest["files"].append({"path": rel, "sha256": hashlib.sha256(data).hexdigest(), "size": len(data)})
-    (destination / "RELEASE-MANIFEST.json").write_text(json.dumps(manifest, indent=2) + "\n", encoding="utf-8")
+    (destination / "RELEASE-MANIFEST.json").write_bytes(
+        (json.dumps(manifest, indent=2) + "\n").encode("utf-8")
+    )
     return emit("PASS", "build", [{"name": "privacy-scan", "status": "PASS"}, {"name": "payload", "status": "PASS", "files": len(files)}])
 
 
@@ -697,6 +699,7 @@ def command_bundle(args) -> int:
         with zipfile.ZipFile(output, "w", compression=zipfile.ZIP_DEFLATED, compresslevel=9) as archive:
             for rel in files:
                 info = zipfile.ZipInfo(f"orchestration-harness-kit/{rel}", (1980, 1, 1, 0, 0, 0))
+                info.create_system = 3
                 info.external_attr = 0o644 << 16
                 archive.writestr(info, (stage / rel).read_bytes())
     checksum = hashlib.sha256(output.read_bytes()).hexdigest()

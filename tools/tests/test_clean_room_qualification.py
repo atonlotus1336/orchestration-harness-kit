@@ -3,6 +3,7 @@ from __future__ import annotations
 import importlib.util
 import subprocess
 import sys
+import zipfile
 from pathlib import Path
 
 import pytest
@@ -60,6 +61,29 @@ def test_repository_declares_cross_platform_checkout_eol_contract():
     assert "*.ps1 text eol=crlf" in attributes
     assert "*.bat text eol=crlf" in attributes
     assert "*.cmd text eol=crlf" in attributes
+
+
+def test_generated_release_manifest_uses_lf_bytes(tmp_path):
+    payload = tmp_path / "payload"
+    result = subprocess.run(
+        [sys.executable, str(ROOT / "installer/kit.py"), "build", "--output", str(payload), "--apply", "--yes"],
+        cwd=ROOT, text=True, capture_output=True, check=False,
+    )
+    assert result.returncode == 0, result.stdout + result.stderr
+    manifest = (payload / "RELEASE-MANIFEST.json").read_bytes()
+    assert b"\r\n" not in manifest
+    assert manifest.endswith(b"}\n")
+
+
+def test_bundle_uses_canonical_creator_system(tmp_path):
+    bundle = tmp_path / "bundle.zip"
+    result = subprocess.run(
+        [sys.executable, str(ROOT / "installer/kit.py"), "bundle", "--output", str(bundle), "--apply", "--yes"],
+        cwd=ROOT, text=True, capture_output=True, check=False,
+    )
+    assert result.returncode == 0, result.stdout + result.stderr
+    with zipfile.ZipFile(bundle) as archive:
+        assert {entry.create_system for entry in archive.infolist()} == {3}
 
 
 def test_installed_controller_can_doctor_its_own_root(tmp_path):

@@ -22,6 +22,6 @@
 - Service restarts: 0
 - Activation changes: 0
 - Tags or pushes: 0
-- Next gate: commit the clean-checkout receipt-hash correction after
-  confirmation, rerun Windows and Linux/WSL from that exact commit, compare
-  payload and bundle hashes, then bind the platform receipts
+- Next gate: commit the generated-manifest and ZIP-metadata canonicalization
+  after confirmation, rerun Windows and Linux/WSL from that exact commit,
+  compare artifact hashes, then bind the platform receipts

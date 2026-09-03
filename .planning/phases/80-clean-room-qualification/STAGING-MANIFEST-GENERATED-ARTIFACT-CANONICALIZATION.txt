@@ -1,0 +1,7 @@
+.planning/STATE.md
+.planning/phases/80-clean-room-qualification/STAGING-MANIFEST-GENERATED-ARTIFACT-CANONICALIZATION.txt
+.planning/phases/80-clean-room-qualification/VERIFY.md
+installer/kit.py
+installer/lifecycle-qualification-phase80-r2.json
+installer/verify-lifecycle.py
+tools/tests/test_clean_room_qualification.py

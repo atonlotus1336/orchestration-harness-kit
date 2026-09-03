@@ -70,7 +70,7 @@ def verify() -> list[str]:
         failures.append("lifecycle command receipt is incomplete")
     if set(receipt.get("harnesses", [])) != REQUIRED_HARNESSES:
         failures.append("harness receipt is incomplete")
-    if receipt.get("tests_passed") != 204 or receipt.get("clean_build_files") != 293:
+    if receipt.get("tests_passed") != 206 or receipt.get("clean_build_files") != 293:
         failures.append("lifecycle qualification measurements are invalid")
     if not REQUIRED_COMMANDS.issubset(_commands()):
         failures.append("portable lifecycle commands are not registered")
