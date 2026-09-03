@@ -1,0 +1,32 @@
+{
+  "schema": "lapart.clean-room-platform.v1",
+  "phase": 80,
+  "decision": "CLEAN_ROOM_PASS",
+  "platform": "windows-native",
+  "runtime": {"system": "Windows", "python": "3.14.6"},
+  "source_commit": "cd88f0a829cb62a9e8647b0b40baeabf512a4ea2",
+  "v1_commit": "04b7630937557c2dd4e6b429fc033873d5edf127",
+  "checks": [
+    {"name": "clean-local-clone", "status": "PASS"},
+    {"name": "v1-ancestry", "status": "PASS"},
+    {"name": "source-verifiers", "status": "PASS", "count": 6},
+    {"name": "reproducible-payload", "status": "PASS", "files": 293},
+    {"name": "reproducible-bundle", "status": "PASS"},
+    {"name": "install-doctor-verify", "status": "PASS"},
+    {"name": "seven-harness-connect", "status": "PASS", "count": 7},
+    {"name": "v1-upgrade-rollback", "status": "PASS"},
+    {"name": "managed-uninstall", "status": "PASS"}
+  ],
+  "artifacts": {
+    "payload_files": 293,
+    "payload_tree_sha256": "ab537a2965f23338052bd4ecec1dcdbbc9eee6fbfd18508a733f0827896af414",
+    "bundle_sha256": "60b67a78ac9a50a3cb837846d7b9a91bcf88c444fd624dc78f18f1934b57c76e",
+    "release_manifest_sha256": "9dae6a58195eb82c4e2855abf6db57f26e6b0d5698005dbd26651ab57aa3526d",
+    "qualifier_sha256": "7864d451a62b437d980f719a6cbb5dfa6d10d93310fc931f4787fd3a6ae53c81"
+  },
+  "provider_calls": 0,
+  "provider_tokens": 0,
+  "pay_per_token": false,
+  "service_restarts": 0,
+  "live_activation": "unchanged"
+}

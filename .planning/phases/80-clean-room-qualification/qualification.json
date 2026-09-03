@@ -1,0 +1,26 @@
+{
+  "schema": "lapart.clean-room-aggregate.v1",
+  "phase": 80,
+  "decision": "CROSS_PLATFORM_CLEAN_ROOM_QUALIFIED",
+  "source_commit": "cd88f0a829cb62a9e8647b0b40baeabf512a4ea2",
+  "platforms": ["windows-native", "linux-wsl-ubuntu-restored"],
+  "checks_per_platform": 9,
+  "falsification_cases": 5,
+  "artifacts": {
+    "payload_files": 293,
+    "payload_tree_sha256": "ab537a2965f23338052bd4ecec1dcdbbc9eee6fbfd18508a733f0827896af414",
+    "bundle_sha256": "60b67a78ac9a50a3cb837846d7b9a91bcf88c444fd624dc78f18f1934b57c76e",
+    "release_manifest_sha256": "9dae6a58195eb82c4e2855abf6db57f26e6b0d5698005dbd26651ab57aa3526d",
+    "qualifier_sha256": "7864d451a62b437d980f719a6cbb5dfa6d10d93310fc931f4787fd3a6ae53c81"
+  },
+  "receipt_sha256": {
+    "windows-native": "74a41dc057d279391f8b7978cf5261ee267f26b28b4cbffa5d3ec28e8c754b5e",
+    "linux-wsl-ubuntu-restored": "e4a310fb1a0132bb8b1edb3d59b6d359be518d8f0842368eabc9b5c2011507c9"
+  },
+  "verifier_sha256": "a2474c43807ed74a4b82a26e20f1f9a2457b2b3cd1fe7a38c3dfbaf3343c80cd",
+  "provider_calls": 0,
+  "provider_tokens": 0,
+  "pay_per_token": false,
+  "service_restarts": 0,
+  "live_activation": "unchanged"
+}
