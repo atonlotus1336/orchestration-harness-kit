@@ -126,9 +126,34 @@ def test_maintainer_policy_initializer_selftest():
     assert json.loads(proc.stdout) == {"cases": 3, "failures": 0}
 
 
-def test_orchestration_layer_never_instructs_live_vault_lightrag_indexing():
-    document = (ROOT / "docs" / "ORCHESTRATION-LAYER.md").read_text(encoding="utf-8-sig")
-    assert "index-vault.bat" not in document
-    assert "/documents/scan" not in document
-    assert "Never point LightRAG's input directory at the vault" in document
-    assert "do not use `DELETE /documents`" in document
+def test_release_has_no_active_retired_document_backend():
+    forbidden = (
+        "light" + "rag",
+        "96" + "21",
+        "start-" + "light" + "rag",
+        "documents" + "/scan",
+        "index-" + "vault.bat",
+    )
+    text_suffixes = {".bat", ".cmd", ".json", ".md", ".ps1", ".py", ".sh", ".toml", ".yaml", ".yml"}
+    hits = []
+    ignored_parts = {".git", ".shareable-preview"}
+    for path in ROOT.rglob("*"):
+        if (
+            not path.is_file()
+            or ignored_parts.intersection(path.parts)
+            or path.suffix.lower() not in text_suffixes
+        ):
+            continue
+        content = path.read_text(encoding="utf-8-sig", errors="ignore").lower()
+        for token in forbidden:
+            if token in content:
+                hits.append(f"{path.relative_to(ROOT)}: {token}")
+    assert hits == []
+
+
+def test_rag_server_has_no_machine_specific_user_fallback():
+    server = (ROOT / "system" / "rag-orchestrator" / "server.py").read_text(
+        encoding="utf-8-sig"
+    )
+    assert 'os.environ.get("USERNAME") or "' not in server
+    assert 'else "python.exe"' in server

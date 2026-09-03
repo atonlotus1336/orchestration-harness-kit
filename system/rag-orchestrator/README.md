@@ -1,6 +1,6 @@
 # RAG Orchestrator
 
-Single MCP server unifying LightRAG, GraphRAG, and Memoryweaver.
+Single MCP server unifying GraphRAG and Memoryweaver.
 Wired into Hermes, WSL Claude Code, WSL Codex, Windows Claude Code, and Windows Codex.
 
 ## Tools exposed
@@ -32,7 +32,6 @@ Those wrappers pin `MyVault_HARNESS` and workspace defaults so the request conte
 | Backend | Source | Requires |
 |---|---|---|
 | memoryweaver | `D:\MyVault\.claude\memory\memoryweaver` | imports healthy; FTS lag is degraded, not down |
-| lightrag | `D:\MyVault\.rag\lightrag` | Windows service on port `9621`; auto-recovery may attempt a bounded restart |
 | graphrag | `D:\MyVault\.rag\graphrag\output` | complete parquet outputs |
 
 ## Runtime policy

@@ -2,7 +2,7 @@
 """
 RAG Orchestrator MCP Server
 ===========================
-Single unified MCP server over LightRAG + GraphRAG + Memoryweaver.
+Single unified MCP server over GraphRAG + Memoryweaver.
 Add new backends by subclassing RAGBackend and calling registry.register().
 Runs as stdio MCP server and also exposes a small CLI status probe for audits.
 """
@@ -41,7 +41,6 @@ if IS_WINDOWS:
     DEFAULT_MEMORYWEAVER_FTS_DB_PATH = r"D:\MyVault\.claude\memory\memoryweaver\fts.db"
     MEMORYWEAVER_SOURCE_DIR = r"D:\MyVault\.claude\memoryweaver"
     GRAPHRAG_ROOT = r"D:\MyVault\.rag\graphrag"
-    LIGHTRAG_START_SCRIPT = r"D:\MyVault\.rag\start-lightrag.bat"
     MANUAL_REMEDIATION_SCRIPT = r"D:\MyVault\.mcp-servers\remediation\Invoke-MyVaultBackendRemediation.ps1"
     MANUAL_REMEDIATION_SCRIPT_COMMAND_PATH = MANUAL_REMEDIATION_SCRIPT
     PROJECT_VAULT_ROOT = r"D:\MyVault"
@@ -50,17 +49,23 @@ else:
     DEFAULT_MEMORYWEAVER_FTS_DB_PATH = "/home/alice/.local/share/memoryweaver-runtime/fts.db"
     MEMORYWEAVER_SOURCE_DIR = "/mnt/d/MyVault/.claude/memoryweaver"
     GRAPHRAG_ROOT = "/mnt/d/MyVault/.rag/graphrag"
-    LIGHTRAG_START_SCRIPT = r"D:\MyVault\.rag\start-lightrag.bat"
     MANUAL_REMEDIATION_SCRIPT = "/mnt/d/MyVault/.mcp-servers/remediation/Invoke-MyVaultBackendRemediation.ps1"
     MANUAL_REMEDIATION_SCRIPT_COMMAND_PATH = r"D:\MyVault\.mcp-servers\remediation\Invoke-MyVaultBackendRemediation.ps1"
     PROJECT_VAULT_ROOT = "/mnt/d/MyVault"
 
 GRAPHRAG_OUTPUT_DIR = f"{GRAPHRAG_ROOT}/output"
-WINDOWS_USER = os.environ.get("WINDOWS_USER") or os.environ.get("USERNAME") or "AtonLotus"
-GRAPHRAG_WINDOWS_PYTHON = os.environ.get("GRAPHRAG_WINDOWS_PYTHON") or (
+WINDOWS_USER = os.environ.get("WINDOWS_USER") or os.environ.get("USERNAME")
+DEFAULT_GRAPHRAG_WINDOWS_PYTHON = (
     rf"C:\Users\{WINDOWS_USER}\AppData\Roaming\uv\python\cpython-3.12.13-windows-x86_64-none\python.exe"
-    if IS_WINDOWS
-    else f"/mnt/c/Users/{WINDOWS_USER}/AppData/Roaming/uv/python/cpython-3.12.13-windows-x86_64-none/python.exe"
+    if IS_WINDOWS and WINDOWS_USER
+    else (
+        f"/mnt/c/Users/{WINDOWS_USER}/AppData/Roaming/uv/python/cpython-3.12.13-windows-x86_64-none/python.exe"
+        if WINDOWS_USER
+        else "python.exe"
+    )
+)
+GRAPHRAG_WINDOWS_PYTHON = os.environ.get("GRAPHRAG_WINDOWS_PYTHON") or (
+    DEFAULT_GRAPHRAG_WINDOWS_PYTHON
 )
 GRAPHRAG_WINDOWS_SITE_PACKAGES = r"D:\MyVault\.rag\systems\.venv\Lib\site-packages"
 GRAPHRAG_WINDOWS_ROOT = r"D:\MyVault\.rag\graphrag"
@@ -101,26 +106,6 @@ if MEMORYWEAVER_SOURCE_DIR not in sys.path:
     sys.path.insert(0, MEMORYWEAVER_SOURCE_DIR)
 
 
-def _default_lightrag_base_url() -> str:
-    override = os.environ.get("LIGHTRAG_BASE_URL")
-    if override:
-        return override
-
-    resolv_conf = Path("/etc/resolv.conf")
-    try:
-        if resolv_conf.exists():
-            for line in resolv_conf.read_text().splitlines():
-                if line.startswith("nameserver "):
-                    host_ip = line.split(None, 1)[1].strip()
-                    if host_ip:
-                        return f"http://{host_ip}:9621"
-    except Exception:
-        pass
-
-    return "http://localhost:9621"
-
-
-DEFAULT_LIGHTRAG_BASE_URL = _default_lightrag_base_url()
 BACKEND_RETRY_ATTEMPTS = int(os.environ.get("RAG_BACKEND_RETRY_ATTEMPTS", "2"))
 BACKEND_RETRY_DELAY_SECONDS = float(os.environ.get("RAG_BACKEND_RETRY_DELAY_SECONDS", "0.75"))
 
@@ -497,38 +482,7 @@ def _build_status_envelope(
     return envelope
 
 
-def _powershell_executable() -> str:
-    return "powershell" if IS_WINDOWS else "powershell.exe"
-
-
-def _start_hidden_process(file_path: str) -> None:
-    command = [
-        _powershell_executable(),
-        "-NoProfile",
-        "-ExecutionPolicy",
-        "Bypass",
-        "-Command",
-        (
-            f"Start-Process -FilePath '{file_path}' "
-            f"-WorkingDirectory '{Path(file_path).parent}' -WindowStyle Hidden"
-        ),
-    ]
-    result = subprocess.run(command, capture_output=True, text=True, timeout=30)
-    if result.returncode != 0:
-        stderr = (result.stderr or result.stdout or "").strip()
-        raise RuntimeError(stderr or f"Start-Process failed with exit code {result.returncode}")
-
-
 def _execute_auto_recovery_action(backend_name: str, action_name: str) -> dict[str, Any]:
-    if backend_name == "lightrag" and action_name == "start_lightrag_service":
-        _start_hidden_process(LIGHTRAG_START_SCRIPT)
-        return {
-            "kind": "auto_recovery",
-            "action": action_name,
-            "command": f"Start-Process {LIGHTRAG_START_SCRIPT}",
-            "triggered_at": _isoformat(),
-            "status": "started",
-        }
     raise RuntimeError(f"Unsupported auto recovery action for {backend_name}: {action_name}")
 
 
@@ -934,245 +888,6 @@ class MemoryweaverBackend(RAGBackend):
             return {"available": False, "error": str(exc)}
 
 
-class LightRAGBackend(RAGBackend):
-    name = "lightrag"
-    description = (
-        "Hybrid graph+vector search over the MyVault vault "
-        "(requires start-lightrag.bat running on Windows on port 9621)"
-    )
-
-    def __init__(self, base_url: str | None = None):
-        self.base_url = base_url or os.environ.get("LIGHTRAG_BASE_URL") or "http://127.0.0.1:9621"
-
-    def _candidate_base_urls(self) -> list[str]:
-        candidates: list[str] = []
-        env_url = os.environ.get("LIGHTRAG_BASE_URL")
-        if env_url:
-            candidates.append(env_url)
-        candidates.extend([self.base_url, "http://localhost:9621", "http://127.0.0.1:9621"])
-        if IS_WINDOWS:
-            return ["http://127.0.0.1:9621", "http://localhost:9621"]
-
-        try:
-            route_lines = Path("/proc/net/route").read_text().splitlines()[1:]
-            for line in route_lines:
-                fields = line.split()
-                if len(fields) > 2 and fields[1] == "00000000":
-                    gateway_hex = fields[2]
-                    octets = [str(int(gateway_hex[i : i + 2], 16)) for i in range(0, 8, 2)]
-                    gateway_ip = ".".join(reversed(octets))
-                    candidates.append(f"http://{gateway_ip}:9621")
-                    break
-        except Exception:
-            pass
-        try:
-            for line in Path("/etc/resolv.conf").read_text().splitlines():
-                if line.startswith("nameserver "):
-                    candidates.append(f"http://{line.split()[1]}:9621")
-                    break
-        except Exception:
-            pass
-        deduped: list[str] = []
-        seen = set()
-        for url in candidates:
-            if url and url not in seen:
-                seen.add(url)
-                deduped.append(url)
-        return deduped
-
-    def _keyword_hints(self, query: str) -> tuple[list[str], list[str]]:
-        stopwords = {
-            "the",
-            "and",
-            "for",
-            "with",
-            "from",
-            "that",
-            "this",
-            "what",
-            "when",
-            "where",
-            "how",
-            "why",
-            "who",
-            "are",
-            "was",
-            "were",
-            "into",
-            "onto",
-            "about",
-            "your",
-            "have",
-            "has",
-            "had",
-            "using",
-            "used",
-            "use",
-            "does",
-            "did",
-            "done",
-            "agent",
-        }
-        tokens: list[str] = []
-        seen = set()
-        for token in re.findall(r"[A-Za-z0-9][A-Za-z0-9._:-]{2,}", query):
-            lowered = token.lower()
-            if lowered in stopwords or lowered in seen:
-                continue
-            seen.add(lowered)
-            tokens.append(token)
-        if not tokens:
-            tokens = [query.strip()[:80] or "query"]
-        return tokens[:3], tokens[:6]
-
-    async def _post_query(self, base_url: str, payload: dict, timeout_seconds: float | None = None) -> dict:
-        timeout = timeout_seconds or float(_policy_for(self.name).get("query_timeout_seconds", 20.0))
-        async with httpx.AsyncClient(timeout=timeout) as client:
-            response = await client.post(f"{base_url}/query", json=payload)
-            response.raise_for_status()
-            return response.json()
-
-    def _format_query_results(self, data: dict, base_url: str, *, fallback_context: bool = False) -> list[dict]:
-        if isinstance(data, dict) and "response" in data:
-            metadata = {"references": data.get("references", []), "base_url": base_url}
-            if fallback_context:
-                metadata["fallback_context"] = True
-            return [
-                {
-                    "score": 0.8 if fallback_context else 1.0,
-                    "text": data.get("response", ""),
-                    "source": "lightrag",
-                    "metadata": metadata,
-                }
-            ]
-        results = data.get("results", data.get("data", [])) if isinstance(data, dict) else []
-        out = []
-        for item in results:
-            out.append(
-                {
-                    "score": item.get("score", item.get("similarity", 0)),
-                    "text": item.get("content", item.get("text", str(item))),
-                    "source": "lightrag",
-                    "metadata": {**item.get("metadata", {}), "base_url": base_url},
-                }
-            )
-        return out
-
-    async def _context_fallback(
-        self,
-        base_url: str,
-        query: str,
-        mode: str,
-        limit: int,
-        primary_error: Exception,
-    ) -> list[dict]:
-        hl_keywords, ll_keywords = self._keyword_hints(query)
-        fallback_mode = "mix" if mode == "hybrid" else mode
-        try:
-            data = await self._post_query(
-                base_url,
-                {
-                    "query": query,
-                    "mode": fallback_mode,
-                    "top_k": limit,
-                    "only_need_context": True,
-                    "include_references": True,
-                    "enable_rerank": False,
-                    "hl_keywords": hl_keywords,
-                    "ll_keywords": ll_keywords,
-                },
-                timeout_seconds=12.0,
-            )
-            return self._format_query_results(data, base_url, fallback_context=True)
-        except Exception as fallback_exc:
-            return [
-                {
-                    "score": 0,
-                    "text": (
-                        f"Error: primary query failed ({type(primary_error).__name__}: {primary_error}); "
-                        f"context fallback also failed ({type(fallback_exc).__name__}: {fallback_exc})"
-                    ),
-                    "source": "lightrag",
-                    "metadata": {
-                        "base_url": base_url,
-                        "hl_keywords": hl_keywords,
-                        "ll_keywords": ll_keywords,
-                    },
-                }
-            ]
-
-    async def _first_live_base_url(self, timeout_seconds: float | None = None) -> str | None:
-        timeout = timeout_seconds or float(_policy_for(self.name).get("status_timeout_seconds", 2.0))
-        for url in self._candidate_base_urls():
-            try:
-                async with httpx.AsyncClient(timeout=timeout) as client:
-                    response = await client.get(f"{url}/health")
-                    if response.status_code == 200:
-                        return url
-            except Exception:
-                continue
-        return None
-
-    async def is_available(self) -> bool:
-        return await self._first_live_base_url() is not None
-
-    async def query(self, query: str, mode: str = "hybrid", limit: int = 5) -> list[dict]:
-        base_url = await self._first_live_base_url()
-        if not base_url:
-            return [
-                {
-                    "score": 0,
-                    "text": (
-                        "Error: LightRAG service is not reachable from WSL. "
-                        "Start start-lightrag.bat and ensure it binds to 0.0.0.0:9621, "
-                        "or set LIGHTRAG_BASE_URL."
-                    ),
-                    "source": "lightrag",
-                    "metadata": {"candidates": self._candidate_base_urls()},
-                }
-            ]
-        try:
-            data = await self._post_query(
-                base_url,
-                {
-                    "query": query,
-                    "mode": mode,
-                    "top_k": limit,
-                    "include_references": True,
-                    "enable_rerank": False,
-                },
-            )
-            return self._format_query_results(data, base_url)
-        except Exception as exc:
-            return await self._context_fallback(base_url, query, mode, limit, exc)
-
-    async def status(self) -> dict:
-        base_url = await self._first_live_base_url()
-        if not base_url:
-            return {
-                "available": False,
-                "error": "All connection attempts failed",
-                "candidates": self._candidate_base_urls(),
-            }
-        try:
-            timeout = float(_policy_for(self.name).get("status_timeout_seconds", 2.0))
-            async with httpx.AsyncClient(timeout=timeout) as client:
-                response = await client.get(f"{base_url}/health")
-                return {
-                    "available": True,
-                    "base_url": base_url,
-                    "data": response.json(),
-                    "candidates": self._candidate_base_urls(),
-                }
-        except Exception as exc:
-            return {
-                "available": False,
-                "base_url": base_url,
-                "error": str(exc),
-                "candidates": self._candidate_base_urls(),
-            }
-
-
 class GraphRAGBackend(RAGBackend):
     name = "graphrag"
     description = (
@@ -1293,7 +1008,6 @@ class GraphRAGBackend(RAGBackend):
 
 
 registry.register(MemoryweaverBackend())
-registry.register(LightRAGBackend())
 registry.register(GraphRAGBackend())
 
 
@@ -1308,7 +1022,7 @@ def _tool_input_schema(include_backend: bool = False) -> dict[str, Any]:
     if include_backend:
         properties["backend"] = {
             "type": "string",
-            "enum": ["memoryweaver", "lightrag", "graphrag"],
+            "enum": ["memoryweaver", "graphrag"],
         }
     return {"type": "object", "properties": properties, "required": ["query"]}
 
@@ -1602,7 +1316,7 @@ if app is not None:
                         "query": {"type": "string", "description": "The query to run across RAG backends"},
                         "preferred_backend": {
                             "type": "string",
-                            "enum": ["auto", "memoryweaver", "lightrag", "graphrag"],
+                            "enum": ["auto", "memoryweaver", "graphrag"],
                             "default": "auto",
                         },
                         "mode": {"type": "string", "enum": ["hybrid", "local", "global"], "default": "hybrid"},
@@ -1644,7 +1358,7 @@ if app is not None:
                 inputSchema={
                     "type": "object",
                     "properties": {
-                        "backend": {"type": "string", "enum": ["memoryweaver", "lightrag", "graphrag"]},
+                        "backend": {"type": "string", "enum": ["memoryweaver", "graphrag"]},
                         "query": {"type": "string"},
                         "mode": {"type": "string", "default": "hybrid"},
                         "limit": {"type": "integer", "default": 5},

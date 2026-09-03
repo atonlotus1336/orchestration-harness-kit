@@ -10,16 +10,11 @@ LOG_FILE="${LOG_DIR}/rag-stack.log"
 PYTHON_BIN="${RAG_ORCHESTRATOR_PYTHON:-/home/__LINUX_USER__/.local/share/rag-orchestrator/venv/bin/python3.11}"
 SERVER_PATH="${RAG_ORCHESTRATOR_SERVER:-__WSL_WORKSPACE__/.mcp-servers/rag-orchestrator/server.py}"
 MEMORY_DIR="${MEMORYWEAVER_DATA_DIR:-__WSL_WORKSPACE__/.claude/memory/memoryweaver}"
-# WSL2 mirrored networking exposes the Windows LightRAG service on localhost.
-# The former 10.0.0.1 address is stale on this machine and causes a false
-# degraded result even while LightRAG is healthy on 127.0.0.1:9621.
-LIGHTRAG_URL="${LIGHTRAG_BASE_URL:-http://localhost:9621}"
 GRAPH_INDEX_BAT='__WINDOWS_WORKSPACE__\.rag\index-graphrag.bat'
 GRAPH_INDEX_STAMP="${USER_HOME}/.hermes/graphrag-index.last-started"
 GRAPH_INDEX_COOLDOWN_SECONDS="${GRAPH_INDEX_COOLDOWN_SECONDS:-21600}"
-# LightRAG is a Windows service and can take longer than the initial WSL
-# process probe after reboot or disk repair. Keep retries bounded, but allow
-# the service enough time to come up before reporting a degraded baseline.
+# Keep retries bounded while allowing Memoryweaver enough time to recover
+# after reboot or disk repair.
 STACK_READY_ATTEMPTS="${RAG_STACK_READY_ATTEMPTS:-8}"
 STACK_READY_DELAY_SECONDS="${RAG_STACK_READY_DELAY_SECONDS:-4}"
 AUTO_INDEX_GRAPHRAG="${AUTO_INDEX_GRAPHRAG:-0}"
@@ -38,7 +33,6 @@ say() {
 
 probe_status() {
   MEMORYWEAVER_DATA_DIR="$MEMORY_DIR" \
-  LIGHTRAG_BASE_URL="$LIGHTRAG_URL" \
   RAG_BACKEND_RETRY_ATTEMPTS="${RAG_BACKEND_RETRY_ATTEMPTS:-3}" \
   RAG_BACKEND_RETRY_DELAY_SECONDS="${RAG_BACKEND_RETRY_DELAY_SECONDS:-1}" \
   "$PYTHON_BIN" - "$SERVER_PATH" <<'PY'
@@ -97,18 +91,6 @@ print("true" if missing else "false")
 PY
 }
 
-start_lightrag() {
-  if ! command -v powershell.exe >/dev/null 2>&1; then
-    log "LightRAG unavailable and powershell.exe is not available from WSL; cannot auto-start Windows service"
-    return 0
-  fi
-
-  log "LightRAG unavailable; attempting Windows auto-start"
-  powershell.exe -NoProfile -ExecutionPolicy Bypass -Command \
-    "Start-Process -WindowStyle Hidden -FilePath '__WINDOWS_WORKSPACE__\.rag\start-lightrag.bat'" \
-    >/dev/null 2>&1 || log "LightRAG auto-start command failed"
-}
-
 start_graphrag_index() {
   if ! command -v powershell.exe >/dev/null 2>&1; then
     log "GraphRAG incomplete and powershell.exe is not available from WSL; cannot auto-start indexing"
@@ -136,18 +118,11 @@ start_graphrag_index() {
 status="$(probe_status 2>&1 || true)"
 log "initial rag_status: $status"
 
-lightrag_started=0
 for attempt in $(seq 1 "$STACK_READY_ATTEMPTS"); do
   memory_ok="$(backend_available "$status" memoryweaver 2>/dev/null || echo false)"
-  lightrag_ok="$(backend_available "$status" lightrag 2>/dev/null || echo false)"
 
-  if [ "$memory_ok" = "true" ] && [ "$lightrag_ok" = "true" ]; then
+  if [ "$memory_ok" = "true" ]; then
     break
-  fi
-
-  if [ "$lightrag_ok" != "true" ] && [ "$lightrag_started" -eq 0 ]; then
-    start_lightrag
-    lightrag_started=1
   fi
 
   if [ "$attempt" -lt "$STACK_READY_ATTEMPTS" ]; then
@@ -162,17 +137,9 @@ if [ "$AUTO_INDEX_GRAPHRAG" = "1" ] && [ "$(graphrag_missing_outputs "$status" 2
 fi
 
 memory_ok="$(backend_available "$status" memoryweaver 2>/dev/null || echo false)"
-lightrag_ok="$(backend_available "$status" lightrag 2>/dev/null || echo false)"
 
-# The orchestrator status snapshot can lag one probe behind a Windows service
-# restart. Confirm the actual LightRAG health endpoint before declaring the
-# baseline degraded; this does not bypass the health requirement.
-if [ "$lightrag_ok" != "true" ] && curl -fsS --max-time 5 "$LIGHTRAG_URL/health" >/dev/null 2>&1; then
-  lightrag_ok="true"
-fi
-
-if [ "$memory_ok" = "true" ] && [ "$lightrag_ok" = "true" ]; then
-  say "RAG baseline ready: Memoryweaver and LightRAG are available"
+if [ "$memory_ok" = "true" ]; then
+  say "RAG baseline ready: Memoryweaver is available"
 else
   say "RAG baseline degraded after retries. See $LOG_FILE for details."
   if [ "$REQUIRE_RAG_READY" = "1" ]; then
