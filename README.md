@@ -74,10 +74,11 @@ worked. The safety gate is the best first pick: two files, no dependencies,
 python modules/guards/test-dry-run-gate.py   # see it pass its own 32 tests first
 ```
 
-**Path B — the client core.** Follow [`docs/QUICK-START.md`](docs/QUICK-START.md):
-dry-run → confirmed install → doctor. It installs an empty memory engine, safety
-modules, solo topology, and local harness template. RAG, remote access, messaging,
-Hermes, and GPU features remain explicit add-ons.
+**Path B — the portable SDK.** Follow [`docs/QUICK-START.md`](docs/QUICK-START.md):
+dry-run → confirmed install → reference-only harness connect → doctor →
+provider-free verify. The same controller performs content-addressed upgrade and
+rollback while preserving recipient-local state. Harness activation remains a
+separate, explicit deployment decision.
 
 Maintainers may verify the owner snapshot separately using
 [`docs/PRIVATE-SYSTEM-SNAPSHOT.md`](docs/PRIVATE-SYSTEM-SNAPSHOT.md). It is not
@@ -116,9 +117,10 @@ for your own tokens.
 
 ## Keeping it current
 
-```bash
-git pull        # that's it — updates arrive as commits
-```
+Use the new release's `python installer/kit.py upgrade --target <install-root>`
+flow. It previews by default, snapshots managed state before applying, preserves
+local data and harness references, and automatically rolls back a failed update.
+See [`docs/UPDATE-AND-REMOVE.md`](docs/UPDATE-AND-REMOVE.md).
 
 No Git on the target? `make-bundle.sh --output orchestration-harness-kit.zip
 --apply --yes` produces a scrubbed offline ZIP without Git history or the owner

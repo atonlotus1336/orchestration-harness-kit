@@ -16,7 +16,8 @@
       "installer/tests/**", "installer/clone-eval/install-guidance-*.txt",
       "installer/clone-eval/install-guidance-reference.json",
       "installer/clone-eval/validate-install-guidance.py",
-      "installer/README.md", "installer/kit.py", "installer/gate.ps1", "installer/gate.sh",
+      "installer/README.md", "installer/kit.py", "installer/verify-lifecycle.py",
+      "installer/lifecycle-qualification.json", "installer/gate.ps1", "installer/gate.sh",
       "installer/configure.ps1", "installer/configure.sh", "installer/doctor.ps1",
       "installer/doctor.sh", "install.ps1", "install.sh", "make-bundle.ps1", "make-bundle.sh"
     ]

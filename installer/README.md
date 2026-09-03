@@ -39,6 +39,12 @@ commands and hope." Every stage leaves evidence; a failed stage names itself.
 ## Use
 
 Follow `../docs/QUICK-START.md`. The portable implementation is `kit.py`; the
-PowerShell and shell files are thin entrypoints. Use `doctor` after installation.
-Optional modules remain independent and must be enabled deliberately after core
-health passes.
+PowerShell and shell files are thin entrypoints. Its lifecycle is:
+
+`install` → `connect` → `doctor` → `verify` → `upgrade` / `rollback` → `uninstall`
+
+Every mutating command is dry-run unless both `--apply` and `--yes` are present.
+`connect` writes reference-only local descriptors and never activates a harness.
+`verify` is provider-free. Upgrade snapshots the exact managed state and rolls it
+back automatically on failure. Uninstall preserves the separate data root and
+unmanaged recipient files.

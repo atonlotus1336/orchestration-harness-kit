@@ -1,0 +1,17 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://lapart.example/schemas/rollback-snapshot.schema.json",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "snapshot_id", "kit_version", "manifest_sha256", "files"],
+  "properties": {
+    "schema": {"const": "lapart.rollback-snapshot.v1"},
+    "snapshot_id": {"type": "string", "pattern": "^[0-9a-f]{16}$"},
+    "kit_version": {"type": "string"},
+    "manifest_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "files": {
+      "type": "object",
+      "additionalProperties": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+    }
+  }
+}

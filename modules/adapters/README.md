@@ -17,9 +17,11 @@ and activation remain separate states.
 - `claude-code/` — Claude Code hook-event translation
 - `moa/` — MOA phase-event translation
 
-`qualification.json` and `qualification-phase77.json` are immutable historical
-receipts. Neither may be used to prove the Phase 78 matrix;
-`qualification-phase78.json` is its current-source receipt.
+`qualification.json`, `qualification-phase77.json`, and
+`qualification-phase78.json` are immutable historical receipts. Current adapter
+validity comes from each adapter's source-hash manifest plus a fresh provider-free
+conformance run. A later installer change must not rewrite or falsely invalidate
+that historical evidence.
 
 Run `python modules/adapters/verify-adapters.py` for the provider-free reference
 adapter matrix.

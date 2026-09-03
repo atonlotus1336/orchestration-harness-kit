@@ -1,0 +1,26 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://lapart.example/schemas/harness-connection.schema.json",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "harness",
+    "adapter_manifest",
+    "protocol_version",
+    "config_reference",
+    "data_reference",
+    "activation",
+    "provider_calls"
+  ],
+  "properties": {
+    "schema": {"const": "lapart.harness-connection.v2"},
+    "harness": {"enum": ["hermes", "opencode", "pi", "antigravity", "codex", "claude-code", "moa"]},
+    "adapter_manifest": {"type": "string", "pattern": "^modules/adapters/[a-z-]+/harness-manifest\\.json$"},
+    "protocol_version": {"const": 2},
+    "config_reference": {"type": "string", "pattern": "^(env|file|secret|recipient)://\\S+$"},
+    "data_reference": {"type": "string", "pattern": "^(env|file|secret|recipient)://\\S+$"},
+    "activation": {"const": "installed-not-activated"},
+    "provider_calls": {"const": 0}
+  }
+}

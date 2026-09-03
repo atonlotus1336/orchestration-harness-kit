@@ -3,9 +3,19 @@
   "type": "object",
   "required": ["kit_version", "install_root", "data_root", "files"],
   "properties": {
+    "schema_version": {"type": "integer", "minimum": 1, "maximum": 2},
     "kit_version": {"type": "string"},
     "install_root": {"type": "string"},
     "data_root": {"type": "string"},
-    "files": {"type": "array", "items": {"type": "string"}, "uniqueItems": true}
+    "harness": {"type": "string"},
+    "files": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+    "payload_files": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+    "local_files": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+    "connections": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+    "sha256": {
+      "type": "object",
+      "additionalProperties": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+    },
+    "previous_snapshot": {"type": "string", "pattern": "^[0-9a-f]{16}$"}
   }
 }
