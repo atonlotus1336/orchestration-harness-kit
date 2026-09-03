@@ -20,6 +20,9 @@ sanitize → scrub into one command.
 v1 HOLD truthfulness, mandatory public exclusions, and no-activation boundaries.
 Run it with `--selftest` to exercise its fail-closed negative cases.
 
+`verify-v1-compatibility.py` pins the immutable v1 rollback commit and proves that
+v2 retains the v1 CLI, config schema, migration boundaries, and protocol fallback.
+
 ## The philosophy (why this isn't just "being careful")
 
 - **Allowlist-in, never scrub-out**: only explicitly named files can enter the

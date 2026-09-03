@@ -1,0 +1,26 @@
+{
+  "schema": "ohk.v1-privacy-classification.v1",
+  "historical_repository_gate": "BLOCKED",
+  "historical_finding_count": 20,
+  "public_payload_gate": "PASS",
+  "buckets": [
+    {
+      "classification": "EXCLUDE",
+      "count": 1,
+      "boundary": "synthetic_test_fixture_outside_payload"
+    },
+    {
+      "classification": "EXCLUDE",
+      "count": 17,
+      "boundary": "forbidden_private_snapshot_root"
+    },
+    {
+      "classification": "EXCLUDE",
+      "count": 2,
+      "boundary": "non_distributed_rag_source"
+    }
+  ],
+  "selected_file_exemptions": 0,
+  "scanner_rule_removals": 0,
+  "machine_identity_fallback": "REMOVED_IN_V2_TREE"
+}

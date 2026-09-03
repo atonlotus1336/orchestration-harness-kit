@@ -22,7 +22,7 @@ from pathlib import Path, PurePosixPath
 
 ROOT = Path(__file__).resolve().parents[1]
 CONTRACT = ROOT / "installer" / "contracts" / "public-payload.json"
-VERSION = "1.0.0"
+VERSION = "2.0.0-dev"
 sys.path.insert(0, str(ROOT))
 from installer.lib.redaction import redact
 
@@ -78,10 +78,10 @@ def selected_files(source: Path, contract: dict) -> list[Path]:
     return sorted(selected, key=lambda p: p.as_posix())
 
 
-def scan_tree(root: Path) -> list[dict]:
+def scan_paths(root: Path, paths) -> list[dict]:
     hits = []
     approved_emails = {"alice" + "@" + "example.com"}
-    for path in sorted(root.rglob("*")):
+    for path in sorted(paths):
         if not path.is_file() or path.is_symlink() or ".git" in path.parts:
             continue
         rel = path.relative_to(root).as_posix()
@@ -101,6 +101,16 @@ def scan_tree(root: Path) -> list[dict]:
                 line = text.count("\n", 0, match.start()) + 1
                 hits.append({"file": rel, "line": line, "kind": kind, "token": redact(token)})
     return hits
+
+
+def scan_tree(root: Path) -> list[dict]:
+    return scan_paths(root, root.rglob("*"))
+
+
+def scan_public_payload(root: Path) -> list[dict]:
+    contract = load_contract(root / "installer" / "contracts" / "public-payload.json")
+    paths = (root / rel for rel in selected_files(root, contract))
+    return scan_paths(root, paths)
 
 
 def copy_payload(source: Path, destination: Path) -> list[str]:
@@ -245,8 +255,13 @@ def command_uninstall(args) -> int:
 
 def command_privacy(args) -> int:
     root = args.root.resolve()
-    hits = scan_tree(root)
-    return emit("PASS" if not hits else "BLOCKED", "privacy-gate", [{"name": "payload-scan", "status": "PASS" if not hits else "BLOCKED", "hits": hits[:20]}])
+    hits = scan_public_payload(root) if args.scope == "public-payload" else scan_tree(root)
+    check_name = "public-payload-scan" if args.scope == "public-payload" else "repository-scan"
+    return emit(
+        "PASS" if not hits else "BLOCKED",
+        "privacy-gate",
+        [{"name": check_name, "status": "PASS" if not hits else "BLOCKED", "hits": hits[:20]}],
+    )
 
 
 def command_bundle(args) -> int:
@@ -288,7 +303,9 @@ def parser() -> argparse.ArgumentParser:
     doctor.add_argument("--omp-runtime-path")
     doctor.set_defaults(func=command_doctor)
     uninstall = mut("uninstall", command_uninstall); uninstall.add_argument("--target", type=Path, required=True)
-    privacy = sub.add_parser("privacy-gate"); privacy.add_argument("--root", type=Path, default=ROOT); privacy.set_defaults(func=command_privacy)
+    privacy = sub.add_parser("privacy-gate"); privacy.add_argument("--root", type=Path, default=ROOT)
+    privacy.add_argument("--scope", choices=["repository", "public-payload"], default="repository")
+    privacy.set_defaults(func=command_privacy)
     bundle = mut("bundle", command_bundle); bundle.add_argument("--output", type=Path, required=True)
     return root
 

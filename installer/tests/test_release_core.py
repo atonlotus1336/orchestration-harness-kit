@@ -10,7 +10,7 @@ import pytest
 
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT))
-from installer.kit import load_contract, scan_tree, selected_files
+from installer.kit import load_contract, scan_public_payload, scan_tree, selected_files
 from installer.lib.redaction import redact
 
 
@@ -57,6 +57,33 @@ def test_payload_excludes_snapshot_runtime_and_symlink(tmp_path):
 def test_privacy_canaries_block(tmp_path, content, kind):
     (tmp_path / "canary.txt").write_text(content)
     assert any(hit["kind"] == kind for hit in scan_tree(tmp_path))
+
+
+def test_public_payload_privacy_scope_uses_allowlist(tmp_path):
+    source = tmp_path / "source"
+    (source / "installer" / "contracts").mkdir(parents=True)
+    (source / "modules").mkdir()
+    (source / "system-snapshot").mkdir()
+    contract = {
+        "version": 1,
+        "default_groups": ["core"],
+        "groups": {"core": ["modules/**"]},
+        "forbidden_roots": ["system-snapshot"],
+        "forbidden_names": [".env"],
+    }
+    (source / "installer" / "contracts" / "public-payload.json").write_text(
+        json.dumps(contract)
+    )
+    (source / "modules" / "safe.txt").write_text("safe")
+    (source / "system-snapshot" / "private.txt").write_text(
+        "api_" + "key=abcdefghijklmnop1234"
+    )
+    assert scan_tree(source)
+    assert scan_public_payload(source) == []
+    (source / "modules" / "unsafe.txt").write_text(
+        "api_" + "key=abcdefghijklmnop1234"
+    )
+    assert scan_public_payload(source)
 
 
 def test_redaction_removes_credentials_and_email():

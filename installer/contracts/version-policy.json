@@ -1,0 +1,33 @@
+{
+  "schema": "ohk.version-policy.v1",
+  "sdk_release": "2.0.0-dev",
+  "v1": {
+    "baseline_commit": "04b7630937557c2dd4e6b429fc033873d5edf127",
+    "proposed_tag": "v1.0.0",
+    "tag_status": "BLOCKED_HISTORICAL_SOURCE_IDENTITY",
+    "rollback_commit": "04b7630937557c2dd4e6b429fc033873d5edf127",
+    "commands": [
+      "build",
+      "configure",
+      "install",
+      "doctor",
+      "uninstall",
+      "privacy-gate",
+      "bundle"
+    ],
+    "config_schemas": [1]
+  },
+  "protocol": {
+    "preferred": 2,
+    "supported": [1, 2],
+    "negotiation": "highest_mutual",
+    "no_mutual_version": "structured_incompatibility_error"
+  },
+  "migration": {
+    "mode": "additive",
+    "managed_files_only": true,
+    "preserve_recipient_data": true,
+    "preserve_credentials": true,
+    "automatic_major_upgrade": false
+  }
+}
