@@ -12,3 +12,4 @@ implied by files in this directory.
 - [Universal orchestration protocol](../../modules/orchestration-protocol/SPEC.md)
 - [Shared orchestration core](../../modules/orchestration-core/README.md)
 - [Universal harness adapter SDK](../../modules/adapter-sdk/README.md)
+- [Provider-free conformance kit](../../modules/conformance-kit/README.md)

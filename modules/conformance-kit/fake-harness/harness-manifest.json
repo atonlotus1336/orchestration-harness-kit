@@ -1,0 +1,37 @@
+{
+  "schema": "lapart.harness-manifest.v2",
+  "name": "provider-free-fake",
+  "display_name": "Provider-Free Fake Harness",
+  "harness_version": "1.0.0",
+  "adapter": {
+    "language": "python",
+    "entrypoint": "fake_adapter.py",
+    "class": "FakeHarnessAdapter",
+    "sdk_version": 2
+  },
+  "protocol_versions": [1, 2],
+  "operations": {
+    "mode": "all",
+    "include": [],
+    "exclude": []
+  },
+  "capabilities": {
+    "streaming": true,
+    "tools": true,
+    "skills": true,
+    "mcp": true,
+    "memory": true,
+    "retrieval": true
+  },
+  "configuration": {
+    "config_reference": "provider-free-fixture",
+    "data_reference": "in-memory-fixture",
+    "authentication": null
+  },
+  "lifecycle": {
+    "initialize": "initialize",
+    "shutdown": "shutdown",
+    "readiness": "readiness_signal",
+    "rollback": "rollback_signal"
+  }
+}

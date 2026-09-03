@@ -1,0 +1,16 @@
+.planning/STATE.md
+.planning/phases/74-provider-free-conformance/PLAN.md
+.planning/phases/74-provider-free-conformance/STAGING-MANIFEST.txt
+.planning/phases/74-provider-free-conformance/VERIFY.md
+docs/v2/README.md
+installer/modules/module-manifest.json
+installer/tests/test_conformance_kit.py
+modules/conformance-kit/README.md
+modules/conformance-kit/conformance-suite.json
+modules/conformance-kit/fake-harness/README.md
+modules/conformance-kit/fake-harness/conformance_driver.py
+modules/conformance-kit/fake-harness/fake_adapter.py
+modules/conformance-kit/fake-harness/harness-manifest.json
+modules/conformance-kit/run-conformance.py
+modules/conformance-kit/source-hashes.json
+modules/orchestration-protocol/source-hashes.json
