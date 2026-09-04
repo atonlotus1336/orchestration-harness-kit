@@ -3,9 +3,9 @@
 Prerequisite: Python 3.11 or newer. The core does not require an LLM, GPU, cloud
 account, or API key.
 
-Expected elapsed time on a normal development machine is under ten minutes. At
-the end, the SDK is installed, one thin adapter is connected by reference, and
-all deterministic checks pass. Nothing is activated and no provider is called.
+Allow about ten minutes, depending on the machine. At the end, installation and
+deterministic checks pass. One adapter has a reference-only descriptor.
+No runtime activation or provider calls occur.
 
 A small local model should receive only `SMALL-MODEL-INSTALL.md` while guiding
 these commands.
@@ -36,8 +36,8 @@ python3 installer/kit.py verify --target "$HOME/agent-kit" --harness hermes
 ```
 
 The supported harness names are `hermes`, `opencode`, `pi`, `antigravity`,
-`codex`, `claude-code`, and `moa`. `connect` writes only a local descriptor and
-keeps it `installed-not-activated`; it does not edit the harness, call a provider,
+`codex`, `claude-code`, `moa`, and `cursor`. `connect` writes only a local descriptor and
+keeps it `installed-not-activated`. It does not edit the harness, call a provider,
 or start a service. Defaults are recipient-local references. If you supply
 references, use only `env://`, `file://`, `secret://`, or `recipient://` values.
 
