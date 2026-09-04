@@ -65,6 +65,33 @@ def test_payload_excludes_generated_artifacts(tmp_path):
     assert files == {"modules/safe.py"}
 
 
+def test_payload_excludes_optional_provider_balance_companion(tmp_path):
+    source = tmp_path / "source"
+    excluded = [
+        "hermes-provider-usage-extension/dashboard/provider_usage_dashboard.py",
+        "hermes-provider-usage-extension/dashboard/dashboard-credentials.json",
+        "hermes-provider-usage-extension/dashboard/monthly-budget-state.json",
+    ]
+    retained = "modules/safety/provider_call_accounting.py"
+    for relative in excluded + [retained]:
+        path = source / relative
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_text("fixture", encoding="utf-8")
+    contract = load_contract()
+    files = {p.as_posix() for p in selected_files(source, contract)}
+    assert files == {retained}
+    # Negative control: an unsafe allowlist expansion admits the companion.
+    contract["groups"]["core"].append("hermes-provider-usage-extension/**")
+    assert set(excluded) <= {p.as_posix() for p in selected_files(source, contract)}
+
+
+def test_real_sdk_payload_has_no_provider_balance_companion():
+    forbidden_names = {"provider_usage_dashboard.py", "dashboard-credentials.json", "monthly-budget-state.json"}
+    files = selected_files(ROOT, load_contract())
+    assert files
+    assert not any("hermes-provider-usage-extension" in p.parts or p.name in forbidden_names for p in files)
+
+
 @pytest.mark.parametrize("content,kind", [
     ("-----BEGIN " + "PRIVATE KEY-----", "private_key"),
     ("api_" + "key=" + "abcdefghijklmnop1234", "credential_assignment"),
