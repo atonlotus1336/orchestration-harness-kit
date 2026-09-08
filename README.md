@@ -18,15 +18,16 @@ The default topology is **one agentic system on one PC**. That PC owns the
 home disk, memory, approvals, and backups. VPS and second-PC connections are
 optional modules you enable later; neither becomes a second storage writer.
 
-## Harness hierarchy
+## Shared authority and work routing
 
-![Architecture diagram: Hermes OS contains Prime Agent, which contains Oh My Pi. Codex, Hermes OS, and Claude each independently connect only to the shared memory system.](assets/harness-fusion-hierarchy.png)
+![Eight peer harnesses connect to a shared orchestration core. The diagram shows authority precedence, T0-T4 execution routing through native tools or Prime Agent and OMP, S0-S4 review, goalpost evaluation, bounded improvement loops, an escape hatch, and human verification.](assets/harness-fusion-hierarchy.png)
 
-Hermes OS is the orchestration layer: it hosts Prime Agent, and Prime Agent
-governs the Oh My Pi coding lane. Codex, Claude, and Hermes OS remain separate
-harnesses. Each connects independently to the shared memory system—there are no
-direct harness-to-harness links—so decisions and durable context can move with
-the work rather than being trapped in one tool.
+All eight harnesses connect as peers to the shared orchestration core. The left
+side shows authority precedence, with evidence supporting factual claims.
+The right side shows execution routing, Prime Agent coordinating OMP workers,
+and evidence and review checks feeding goalpost evaluation. Work continues
+until the endpoint passes or a loop limit triggers the escape hatch. Human
+verification provides a separate review path.
 
 ## What's in the box (plain-language tour)
 
