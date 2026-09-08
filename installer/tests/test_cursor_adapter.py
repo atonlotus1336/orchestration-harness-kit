@@ -66,7 +66,7 @@ def test_cursor_adapter_is_translation_only_and_closed():
 def test_cursor_inherits_routing_optimization_and_accounting():
     _, _, driver, bridge = components()
     routing = bridge.dispatch(driver.make_event(
-        "routing.prime.select", {"task": {"requires_omp": True}, "task_tier": "standard"},
+        "routing.prime.select", {"task": {"requires_omp": True, "text": "Implement the bounded change", "declared_paths": ["src/a.py", "src/b.py"], "risk_tier": "low"}, "task_tier": "standard"},
         "conversation.1", "active",
     )).envelope["payload"]
     assert routing["recommended_lane"] == "T2"

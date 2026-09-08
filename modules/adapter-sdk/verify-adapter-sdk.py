@@ -54,7 +54,7 @@ def verify_bridge() -> list[str]:
     )
     cases = [
         event("session.create", {"client_session_id": "adapter-session"}, state="new"),
-        event("routing.prime.select", {"task": {"requires_omp": True}, "task_tier": "atomic"}),
+        event("routing.prime.select", {"task": {"requires_omp": True, "text": "Implement the bounded change", "declared_paths": ["src/a.py", "src/b.py"], "risk_tier": "low"}, "task_tier": "atomic"}),
         event("health.readiness", {"components": ["policy", "protocol", "accounting"]}),
     ]
     results = [bridge.initialize(session_id="adapter-lifecycle")]

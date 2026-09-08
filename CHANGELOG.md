@@ -1,8 +1,13 @@
 # Changelog
 
-## 2.0.0 release candidate — not published
+## 2.0.0
 
 ### Added
+
+- Shared finite-goal evaluator and CLI with evidence-bound boolean checks,
+  mandatory human usability, timed goalposts, and regression protection.
+- Explicit T4 autonomy intent, evidence-gated lower execution lanes, and
+  independent S0-S4 review classification with guarded reviewer admission.
 
 - A versioned universal orchestration protocol and one deterministic shared core.
 - A thin-adapter SDK plus reference adapters for Hermes OS, OpenCode, Pi,
@@ -27,8 +32,8 @@
 
 ### Publication state
 
-- The runtime version remains `2.0.0-dev` until a separately authorized release
-  stamp, tag, and publication action.
+- The installer and adapter matrix use `2.0.0`. Tagging and publication require
+  a verified source commit and release approval.
 - The GitHub repository is currently private. The public client bundle remains
   the supported disclosure boundary because historical Git objects are not a
   public-release surface.

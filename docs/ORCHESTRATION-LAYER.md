@@ -606,16 +606,16 @@ hermes --profile telegram gateway run --replace 2>&1 | head -50
 # Check if MCP process is running
 ps aux | grep mcp-obsidian
 
-# Check if path in the active config exists (canonical npm global root is G:\AIStorage\npm\global per C:\Users\alice\.npmrc)
-ls /mnt/g/AIStorage/npm/global/node_modules/mcp-obsidian
+# Check if path in the active config exists (canonical npm global root is D:\MyVault\tools\npm\global per C:\Users\alice\.npmrc)
+ls /mnt/d/MyVault/tools/npm/global/node_modules/mcp-obsidian
 
 # Try running MCP directly to see errors
-node /mnt/g/AIStorage/npm/global/node_modules/mcp-obsidian/dist/index.js /mnt/d/MyVault
+node /mnt/d/MyVault/tools/npm/global/node_modules/mcp-obsidian/dist/index.js /mnt/d/MyVault
 ```
 
 **Fix:**
-1. âœ“ Reinstall MCP: `npm install -g mcp-obsidian` (lands in G:\AIStorage\npm\global per C:\Users\alice\.npmrc prefix)
-2. âœ“ The active config is `D:\MyVault\.mcp.json` and it already points at `G:\AIStorage\npm\global\node_modules\mcp-obsidian\dist\index.js` â€” do NOT edit a stale AppData path; verify .mcp.json matches the canonical G:\AIStorage root
+1. âœ“ Reinstall MCP: `npm install -g mcp-obsidian` (lands in D:\MyVault\tools\npm\global per C:\Users\alice\.npmrc prefix)
+2. âœ“ The active config is `D:\MyVault\.mcp.json` and it already points at `D:\MyVault\tools\npm\global\node_modules\mcp-obsidian\dist\index.js` â€” do NOT edit a stale AppData path; verify .mcp.json matches the canonical D:\MyVault\tools root
 3. âœ“ Restart Claude Code
 
 ---

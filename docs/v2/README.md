@@ -4,9 +4,10 @@ This directory records the public design and release guidance for the v2 SDK.
 The SDK keeps policy and orchestration in a shared core while harness-specific
 adapters translate local capabilities into one versioned protocol.
 
-Current status: local release candidate. The shared core, eight thin adapters,
-portable lifecycle, and native Windows/Linux clean-room paths are qualified.
-The GitHub repository is private and no release has been tagged or published.
+Version: 2.0.0. The shared core and eight thin adapters include the portable
+lifecycle. Each release requires fresh Windows/Linux qualification bound to
+its source. Check GitHub for publication status; source files are not proof
+that a release exists.
 No v2 runtime activation is implied by files in this directory.
 
 - [Provenance audit](PROVENANCE-AUDIT.md)
@@ -15,6 +16,7 @@ No v2 runtime activation is implied by files in this directory.
 - [Migration guide](MIGRATION-GUIDE.md)
 - [Adapter authoring guide](ADAPTER-AUTHORING.md)
 - [Compatibility matrix](COMPATIBILITY.md)
+- [Provider lease and backend admission](PROVIDER-BACKEND-ADMISSION.md)
 - [Release notes](RELEASE-NOTES-2.0.0.md)
 - [Release checklist](RELEASE-CHECKLIST.md)
 - [Activation boundary](ACTIVATION.md)
@@ -32,3 +34,5 @@ No v2 runtime activation is implied by files in this directory.
 - [Claude Code adapter](../../modules/adapters/claude-code/README.md)
 - [MOA adapter](../../modules/adapters/moa/README.md)
 - [Cursor adapter](../../modules/adapters/cursor/README.md)
+
+- [Shared goalposts and execution/review boundaries](GOALS-AND-ROUTING.md)

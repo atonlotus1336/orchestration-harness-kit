@@ -52,7 +52,7 @@ contents.
 ```bash
 python verify-key-only-transport.py \
   --identity-file /path/to/key \
-  --destination alice@example.com \
+  --destination <recipient-email> \
   --expected-host 'example-host' \
   --expected-user alice
 ```
@@ -62,7 +62,7 @@ For a Windows host that owns a Linux runtime, add the runtime identity:
 ```bash
 python verify-key-only-transport.py \
   --identity-file /path/to/key \
-  --destination alice@example.com \
+  --destination <recipient-email> \
   --expected-host 'example-host' \
   --expected-user alice \
   --wsl-distribution example-distro \

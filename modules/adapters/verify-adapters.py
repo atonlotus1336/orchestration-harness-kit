@@ -112,10 +112,41 @@ def verify() -> list[str]:
 
     matrix = json.loads((ADAPTERS / "compatibility-matrix.json").read_text(encoding="utf-8"))
     expected_adapters = {"hermes-os-reference", "opencode", "pi-coding-agent", "antigravity", "codex", "claude-code", "moa", "cursor"}
+    expected_requalification = {"backend_version_change", "source_hash_change", "terms_status_change"}
+    if matrix.get("schema") != "lapart.adapter-compatibility-matrix.v2":
+        failures.append("compatibility matrix schema is invalid")
+    if set(matrix.get("requalification_triggers", [])) != expected_requalification:
+        failures.append("compatibility matrix requalification triggers are incomplete")
     if {row.get("id") for row in matrix.get("adapters", [])} != expected_adapters:
         failures.append("compatibility matrix is incomplete")
     if any(row.get("qualification") != "source-qualified" or row.get("runtime_activation") != "unchanged" for row in matrix.get("adapters", [])):
         failures.append("compatibility matrix overstates runtime activation")
+    for row in matrix.get("adapters", []):
+        version_range = row.get("compatible_version_range")
+        if not isinstance(version_range, dict) or set(version_range) != {"mode", "minimum", "maximum_exclusive"}:
+            failures.append(f"{row.get('id')}: compatibility range is not closed")
+            continue
+        mode = version_range.get("mode")
+        minimum = version_range.get("minimum")
+        maximum = version_range.get("maximum_exclusive")
+        if mode == "source-contract":
+            if minimum is not None or maximum is not None:
+                failures.append(f"{row.get('id')}: source contract cannot claim a version range")
+        elif mode == "semver":
+            version_pattern = r"[0-9]+(?:\.[0-9]+){1,3}"
+            tested = row.get("tested_harness_version")
+            if not all(isinstance(value, str) and re.fullmatch(version_pattern, value) for value in (minimum, maximum, tested)):
+                failures.append(f"{row.get('id')}: semantic version range is invalid")
+            else:
+                lower = tuple(map(int, minimum.split(".")))
+                upper = tuple(map(int, maximum.split(".")))
+                observed = tuple(map(int, tested.split(".")))
+                if lower >= upper:
+                    failures.append(f"{row.get('id')}: semantic version range is empty")
+                elif not lower <= observed < upper:
+                    failures.append(f"{row.get('id')}: tested version is outside its qualified range")
+        else:
+            failures.append(f"{row.get('id')}: compatibility range mode is invalid")
 
     receipt_path = ADAPTERS / "qualification-phase78.json"
     receipt = json.loads(receipt_path.read_text(encoding="utf-8"))

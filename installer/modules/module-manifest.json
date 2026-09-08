@@ -1,5 +1,5 @@
 {
-  "version": "modules-v15-token-compute-activation",
+  "version": "modules-v16-goalposts-review-boundaries",
   "default_path": [
     "orchestration-protocol",
     "orchestration-core",
@@ -23,7 +23,7 @@
       "stage": 1,
       "required": true,
       "source": "modules/orchestration-core",
-      "description": "Install the provider-free shared processor for routing, authority, context, provider policy, accounting, activation, rollback, and all protocol operations."
+      "description": "Install the shared processor, finite goalpost evaluator, independent execution/review routing, provider policy, accounting, activation, rollback, and protocol operations."
     },
     {
       "id": "token-compute-optimization",

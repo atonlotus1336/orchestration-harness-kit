@@ -92,7 +92,7 @@ mcp_servers:
   obsidian:
     command: /mnt/c/Program Files/nodejs/node.exe
     args:
-      - G:\AIStorage\npm\global\node_modules\mcp-obsidian\dist\index.js
+      - D:\MyVault\tools\npm\global\node_modules\mcp-obsidian\dist\index.js
       - D:\MyVault
 
   rag-orchestrator:
@@ -395,7 +395,7 @@ No app configs need changing. No new MCP connections needed.
 | WordPress docs/smoke    | /mnt/d/MyVault/.mcp-servers/wordpress/README.md and smoke_mcp.py |
 | Memoryweaver source     | /mnt/d/MyVault/.claude/memoryweaver/                         |
 | Memoryweaver data/DB    | /mnt/d/MyVault/.claude/Memory/memoryweaver/                  |
-| Obsidian MCP JS entry   | G:\AIStorage\npm\global\node_modules\mcp-obsidian\dist\index.js |
+| Obsidian MCP JS entry   | D:\MyVault\tools\npm\global\node_modules\mcp-obsidian\dist\index.js |
 | Obsidian vault arg      | D:\MyVault                                                   |
 | GraphRAG index          | /mnt/d/MyVault/.rag/graphrag/                                |
 | GraphRAG batch indexer  | D:\MyVault\.rag\index-graphrag.bat                         |
@@ -572,7 +572,7 @@ telegram `SOUL.md` and in `D:\MyVault\AGENTS.md` nudge the model to use the tool
 ### Install locations / reinstall
 
 - Package: `context-mode`; entry: `cli.bundle.mjs`.
-- Windows (Claude Code + Codex): `G:\AIStorage\npm\global\node_modules\context-mode\cli.bundle.mjs` (npm prefix per `.npmrc`). Reinstall: `[PowerShell] npm install -g context-mode`.
+- Windows (Claude Code + Codex): `D:\MyVault\tools\npm\global\node_modules\context-mode\cli.bundle.mjs` (npm prefix per `.npmrc`). Reinstall: `[PowerShell] npm install -g context-mode`.
 - WSL (Hermes): `/home/alice/.local/lib/node_modules/context-mode/cli.bundle.mjs` (stable, profile-independent prefix). Reinstall: `[WSL/bash] npm install -g --prefix /home/alice/.local context-mode`.
 
 ### Exact MCP commands used
@@ -581,7 +581,7 @@ Codex (`config.toml`):
 ```toml
 [mcp_servers.context-mode]
 command = "node"
-args = ['G:\AIStorage\npm\global\node_modules\context-mode\cli.bundle.mjs']
+args = ['D:\MyVault\tools\npm\global\node_modules\context-mode\cli.bundle.mjs']
 startup_timeout_sec = 120
 ```
 
@@ -617,7 +617,7 @@ bash/python3. Same tool NAMES everywhere, different execution environment — a
 
 ### Health check / troubleshooting
 
-- Health: `[PowerShell] node G:\AIStorage\npm\global\node_modules\context-mode\cli.bundle.mjs doctor`; `[WSL/bash] /home/alice/.local/bin/context-mode doctor`; in-session `ctx_doctor`; Claude Code plugin `/context-mode:ctx-doctor`.
+- Health: `[PowerShell] node D:\MyVault\tools\npm\global\node_modules\context-mode\cli.bundle.mjs doctor`; `[WSL/bash] /home/alice/.local/bin/context-mode doctor`; in-session `ctx_doctor`; Claude Code plugin `/context-mode:ctx-doctor`.
 - Hermes registration: `[WSL/bash] HERMES_HOME=~/.hermes/profiles/<active> hermes mcp test context-mode` → expect Connected + 11 tools.
 - `node <22.5` → server won't start; check `node --version` in the launching runtime.
 - Tools missing in a session after wiring → reload MCP / restart the harness (same session-registration-gap rule as the rest of the stack).

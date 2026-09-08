@@ -21,7 +21,7 @@ sys.path.insert(0, str(KIT_ROOT))
 
 from lapart_core import CorePolicy, OrchestrationCore
 from lapart_core.capabilities import Capability, CapabilityRegistry
-from lapart_core.providers import ProviderRegistry, ProviderRoute
+from lapart_core.providers import BackendContract, ProviderLease, ProviderRegistry, ProviderRoute
 
 
 def load_protocol_verifier():
@@ -43,8 +43,45 @@ def build_core() -> OrchestrationCore:
     )
     providers = ProviderRegistry(
         [
-            ProviderRoute("subscription-ref", "model-ref", "subscription", frozenset({"test"})),
-            ProviderRoute("paid-ref", "paid-model-ref", "pay_per_token", frozenset({"test"})),
+            ProviderRoute(
+                "subscription-ref", "model-ref", "subscription", frozenset({"test"}),
+                lease=ProviderLease(
+                    auth_modes=frozenset({"subscription"}),
+                    usage_contexts=frozenset({"internal"}),
+                    retention_classes=frozenset({"standard"}),
+                    compliance_classes=frozenset({"general"}),
+                    terms_status="current",
+                    terms_reference="urn:terms:test-subscription",
+                ),
+                backend=BackendContract(
+                    backend_reference="test-native",
+                    task_shapes=frozenset({"coding"}),
+                    durable_resume=True,
+                    estimated_overhead_ms=5,
+                    backend_version="1.2.3",
+                    minimum_version="1.2.0",
+                    maximum_version_exclusive="2.0.0",
+                ),
+            ),
+            ProviderRoute(
+                "paid-ref", "paid-model-ref", "pay_per_token", frozenset({"test"}),
+                lease=ProviderLease(
+                    auth_modes=frozenset({"api_key"}),
+                    usage_contexts=frozenset({"internal", "distributable_product"}),
+                    retention_classes=frozenset({"standard"}),
+                    compliance_classes=frozenset({"general"}),
+                    terms_status="current",
+                    terms_reference="urn:terms:test-api",
+                ),
+                backend=BackendContract(
+                    backend_reference="test-sdk",
+                    task_shapes=frozenset({"general"}),
+                    estimated_overhead_ms=10,
+                    backend_version="0.9.0",
+                    minimum_version="0.9.0",
+                    maximum_version_exclusive="1.0.0",
+                ),
+            ),
         ]
     )
     content = "Portable orchestration evidence."
@@ -97,15 +134,27 @@ def operation_requests(context_items: list[dict]) -> list[dict]:
         request("memory.write", {"scope": "session", "records": [{"note": "portable memory"}], "purpose": "test"}),
         request("memory.read", {"scope": "session", "query": "portable", "purpose": "test"}),
         request("retrieval.query", {"query": "orchestration", "purpose": "test"}),
-        request("routing.prime.select", {"task": {"requires_omp": True}, "task_tier": "standard"}),
+        request("routing.prime.select", {"task": {"requires_omp": True, "text": "Implement the bounded change", "declared_paths": ["src/a.py", "src/b.py"], "risk_tier": "low"}, "task_tier": "standard"}),
         request("execution.omp.request", {"job_reference": "job-1", "task": "test", "context_reference": "context-1", "capability_limits": {"apply_changes": False}}),
         request("execution.omp.patch", {"worker_reference": "worker-job-1"}),
         request("authority.decide", {"action": "provider_call", "resource": "subscription", "risk": "high", "approval_reference": "approval-test"}),
         request("optimization.plan", {"request_reference": "selection-1", "constraints": {"task_tier": "atomic", "items": context_items}}),
         request("context.attribute", {"selection_reference": "selection-1"}),
-        request("provider.resolve", {"profile": "test", "constraints": {"allowed_route_classes": ["subscription", "pay_per_token"]}}),
+        request("provider.resolve", {"profile": "test", "constraints": {
+            "allowed_route_classes": ["subscription", "pay_per_token"],
+            "requirements": {
+                "task_shape": "coding", "durability_required": True,
+                "latency_budget_ms": 20, "usage_context": "internal",
+                "auth_mode": "subscription", "retention_class": "standard",
+                "compliance_class": "general", "backend_version": "1.2.4",
+                "require_current_terms": True,
+            },
+        }}),
         request("provider.account", {"operation_reference": "provider-free-run"}),
-        request("telemetry.report", {"operation_reference": "test-run", "metrics": {"latency_ms": 1}}),
+        request("telemetry.report", {"operation_reference": "test-run", "metrics": {
+            "latency_ms": 3,
+            "stage_timings_ms": {"routing": 1, "handoff": 2},
+        }}),
         request("health.readiness", {"components": ["policy", "protocol", "accounting", "tool", "skill", "mcp"]}),
         request("activation.transition", {"profile": "isolated-test", "previous_state": "inactive", "requested_state": "shadow", "approval_reference": "approval-test", "gates": gates, "rollback_reference": "rollback-1"}),
         request("rollback.execute", {"rollback_reference": "rollback-1", "target_state": "inactive", "reason": "selftest"}),
@@ -136,6 +185,14 @@ def verify_operations() -> list[str]:
         accounting = response.get("provider_accounting", {})
         if accounting.get("provider_calls") != 0 or accounting.get("pay_per_token") is not False:
             failures.append(f"{envelope['operation']} was not explicitly provider-free")
+        if envelope["operation"] == "provider.resolve":
+            provider = response.get("payload", {})
+            if (
+                provider.get("backend_fit", {}).get("status") != "FIT"
+                or provider.get("lease", {}).get("terms_status") != "current"
+                or provider.get("qualification", {}).get("status") != "qualified"
+            ):
+                failures.append("provider admission extensions were not returned")
     if covered != set(core.handlers):
         failures.append("not every core handler was exercised")
     return failures
@@ -149,6 +206,8 @@ def verify_negative_cases() -> list[str]:
         ("credential value", request("tool.invoke", {"tool_id": "example.tool", "arguments": {"api_key": "forbidden"}, "approval_reference": "approval"}), "CREDENTIAL_VALUE_DENIED"),
         ("production activation", request("activation.transition", {"profile": "isolated-test", "previous_state": "inactive", "requested_state": "production", "approval_reference": "approval", "gates": ["quality", "calls", "latency", "rollback", "tokens"], "rollback_reference": "rollback-production"}), "PRODUCTION_ACTIVATION_DISABLED"),
         ("required context missing", request("optimization.plan", {"request_reference": "bad", "constraints": {"task_tier": "atomic", "items": context["items"][1:]}}), "REQUIRED_CONTEXT_MISSING"),
+        ("content-bearing telemetry", request("telemetry.report", {"operation_reference": "bad", "metrics": {"prompt": "forbidden"}}), "TELEMETRY_INVALID"),
+        ("open provider requirements", request("provider.resolve", {"profile": "test", "constraints": {"requirements": {"unknown": True}}}), "PROVIDER_CONSTRAINT_INVALID"),
     ]
     for name, envelope, expected in cases:
         response = build_core().handle(envelope)
@@ -185,6 +244,26 @@ def verify_negative_cases() -> list[str]:
     measured["rendered_total_bytes"] = int(budget["baseline"]["rendered_total_bytes"] * 1.06) + 1
     if not envelope_module.evaluate(measured, budget):
         failures.append("envelope-growth mutation passed")
+
+    constraint_cases = [
+        ("subscription redistribution", {
+            "task_shape": "coding", "usage_context": "distributable_product",
+            "auth_mode": "subscription",
+        }),
+        ("stale backend version", {
+            "task_shape": "coding", "backend_version": "2.0.0",
+        }),
+        ("unmet latency budget", {
+            "task_shape": "coding", "latency_budget_ms": 1,
+        }),
+    ]
+    for name, requirements in constraint_cases:
+        response = build_core().handle(request("provider.resolve", {
+            "profile": "test",
+            "constraints": {"allowed_route_classes": ["subscription"], "requirements": requirements},
+        }))
+        if response.get("error", {}).get("code") != "PROVIDER_CONSTRAINT_UNSATISFIED":
+            failures.append(f"{name} was not refused by provider admission")
     return failures
 
 
@@ -224,6 +303,10 @@ def main() -> int:
     failures.extend(envelope.evaluate(measured, budget))
     if args.selftest:
         failures.extend(verify_negative_cases())
+        spec = importlib.util.spec_from_file_location("governance_verifier", MODULE_ROOT / "verify-governance.py")
+        governance = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(governance)
+        failures.extend(governance.verify())
     if failures:
         print("BLOCKED")
         for failure in failures:
@@ -233,7 +316,7 @@ def main() -> int:
     print("PASS: 31/31 protocol operations exercised with explicit provider_calls=0")
     print(f"PASS: fixed envelope {measured['rendered_total_bytes']} bytes within 5% ceiling")
     if args.selftest:
-        print("PASS: 7 fail-closed policy and regression mutations")
+        print("PASS: fail-closed policy, lease, compatibility, and latency mutations")
     return 0
 
 

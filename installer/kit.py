@@ -22,7 +22,7 @@ from pathlib import Path, PurePosixPath
 
 ROOT = Path(__file__).resolve().parents[1]
 CONTRACT = ROOT / "installer" / "contracts" / "public-payload.json"
-VERSION = "2.0.0-dev"
+VERSION = "2.0.0"
 sys.path.insert(0, str(ROOT))
 from installer.lib.redaction import redact
 
@@ -441,7 +441,7 @@ def command_verify(args) -> int:
     harness = _normalized_harness(args.harness)
     if harness == "generic":
         commands = [
-            [sys.executable, "modules/orchestration-core/verify-core.py"],
+            [sys.executable, "modules/orchestration-core/verify-core.py", "--selftest"],
             [sys.executable, "modules/adapters/hermes/verify-hermes-adapter.py"],
             [sys.executable, "modules/adapters/verify-adapters.py"],
             [sys.executable, "installer/verify-lifecycle.py"],

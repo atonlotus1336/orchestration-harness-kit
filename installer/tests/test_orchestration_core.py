@@ -53,7 +53,7 @@ def test_every_catalog_operation_has_exactly_one_handler():
 
 def test_t2_is_deterministically_mapped_to_actual_t3():
     response = make_core().handle(
-        request("routing.prime.select", {"task": {"requires_omp": True}, "task_tier": "atomic"})
+        request("routing.prime.select", {"task": {"requires_omp": True, "text": "Implement the bounded change", "declared_paths": ["src/a.py", "src/b.py"], "risk_tier": "low"}, "task_tier": "atomic"})
     )
     assert response["payload"]["recommended_lane"] == "T2"
     assert response["payload"]["actual_lane"] == "T3"

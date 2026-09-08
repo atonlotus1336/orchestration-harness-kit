@@ -85,3 +85,21 @@ Real credentials/keys/tokens; real hostnames, tailnet or LAN IPs; personal
 memory stores or their contents; project/vault content from any source
 system; consent-governed community data (structural exclusion, not policy).
 If you find any of the above already present: stop, do not push, surface it.
+
+## Shared goals and routing
+
+When the user requests a goal, load docs/v2/GOALS-AND-ROUTING.md and define a
+finite endpoint before work starts. Initialize the shared goalpost contract.
+Keep human usability at or above 80/100 with independent judgment. Use
+deterministic evidence for objective checks. Reevaluate at work boundaries,
+milestones, failures, and completion. Stop at the endpoint or a checkpoint limit.
+
+Across harnesses, preserve the same state path, goal ID, contract hash, rubric,
+evidence, work accounting, score floors, and limits. One parent owns writes.
+Do not start a fresh goal to reset the limits. Existing sessions must load the
+updated contract; installation does not patch native goal timers.
+
+Route execution through the shared core and read actual_lane and
+actual_lane_reason. T4 requires explicit autonomous intent. T2 remains gated
+to T3. Review depth S0-S4 is independent of execution depth T0-T4.
+Classification is not completed review and must never be reported as such.

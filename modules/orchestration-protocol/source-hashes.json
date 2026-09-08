@@ -2,11 +2,11 @@
   "schema": "lapart.protocol-source-hashes.v1",
   "algorithm": "sha256",
   "files": {
+    "installer/modules/module-manifest.json": "7f8e593f6259fc0a1d132618dd8876b2b0db88eab5f7be1f258cd1517732f9e8",
     "modules/orchestration-protocol/SPEC.md": "662c324290f1441cfaf6eb3e71bc693cf1d92c851c4ba60cbf0968a0646e05df",
     "modules/orchestration-protocol/envelope.schema.json": "5bb07299b47ef3ad2ff23f89c740ecad1e0285e953f2e81d97f667ef17d7928d",
     "modules/orchestration-protocol/fixtures.json": "231b4a6d02d821b44847a05fad0fe931ac3ac7d3bd314bfaf63c53cd525a4b37",
     "modules/orchestration-protocol/operation-catalog.json": "1e61841dd906cddcddecb64bd526514c118f56bf13c936de8f4fc88be41db24c",
-    "modules/orchestration-protocol/verify-protocol.py": "c8446c05785d274e418c1f9c8997d8767d37716a00182b8c5e158d4774408553",
-    "installer/modules/module-manifest.json": "93f186b0db9ce77dcf7cede07187df5c35965533423b7fd0330c0f5bcdc23b97"
+    "modules/orchestration-protocol/verify-protocol.py": "b8525aac5ffdc91b350372a3eb01829c7136904a87bee196ca7ca76434cf3fa6"
   }
 }

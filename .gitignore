@@ -40,3 +40,6 @@ Thumbs.db
 # offline bundles produced by make-bundle.sh (rebuild on demand, don't track)
 /orchestration-layer-bundle.*
 generated/
+
+# Recipient goal state and evidence
+.goalposts/

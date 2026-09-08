@@ -62,7 +62,7 @@ def test_antigravity_inherits_core_routing_and_projection():
     _, _, _, driver, bridge = components()
     routing = bridge.dispatch(driver.make_event(
         "routing.prime.select",
-        {"task": {"requires_omp": True}, "task_tier": "standard"},
+        {"task": {"requires_omp": True, "text": "Implement the bounded change", "declared_paths": ["src/a.py", "src/b.py"], "risk_tier": "low"}, "task_tier": "standard"},
         "antigravity-session",
         "active",
     )).envelope["payload"]

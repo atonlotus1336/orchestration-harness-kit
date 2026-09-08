@@ -1,53 +1,66 @@
 {
-  "schema": "lapart.adapter-compatibility-matrix.v1",
-  "sdk_version": "2.0.0-dev",
+  "schema": "lapart.adapter-compatibility-matrix.v2",
+  "sdk_version": "2.0.0",
   "protocol_versions": [1, 2],
+  "requalification_triggers": [
+    "backend_version_change",
+    "source_hash_change",
+    "terms_status_change"
+  ],
   "adapters": [
     {
       "id": "hermes-os-reference",
       "tested_harness_version": "source-contract",
+      "compatible_version_range": {"mode": "source-contract", "minimum": null, "maximum_exclusive": null},
       "qualification": "source-qualified",
       "runtime_activation": "unchanged"
     },
     {
       "id": "opencode",
       "tested_harness_version": "1.17.14",
+      "compatible_version_range": {"mode": "semver", "minimum": "1.17.14", "maximum_exclusive": "1.17.15"},
       "qualification": "source-qualified",
       "runtime_activation": "unchanged"
     },
     {
       "id": "pi-coding-agent",
       "tested_harness_version": "0.84.4",
+      "compatible_version_range": {"mode": "semver", "minimum": "0.84.4", "maximum_exclusive": "0.84.5"},
       "qualification": "source-qualified",
       "runtime_activation": "unchanged"
     },
     {
       "id": "antigravity",
       "tested_harness_version": "unreported-cli-build",
+      "compatible_version_range": {"mode": "source-contract", "minimum": null, "maximum_exclusive": null},
       "qualification": "source-qualified",
       "runtime_activation": "unchanged"
     },
     {
       "id": "codex",
       "tested_harness_version": "0.147.0",
+      "compatible_version_range": {"mode": "semver", "minimum": "0.147.0", "maximum_exclusive": "0.147.1"},
       "qualification": "source-qualified",
       "runtime_activation": "unchanged"
     },
     {
       "id": "claude-code",
       "tested_harness_version": "2.1.211",
+      "compatible_version_range": {"mode": "semver", "minimum": "2.1.211", "maximum_exclusive": "2.1.212"},
       "qualification": "source-qualified",
       "runtime_activation": "unchanged"
     },
     {
       "id": "moa",
       "tested_harness_version": "0.18.0-source-contract",
+      "compatible_version_range": {"mode": "source-contract", "minimum": null, "maximum_exclusive": null},
       "qualification": "source-qualified",
       "runtime_activation": "unchanged"
     },
     {
       "id": "cursor",
       "tested_harness_version": "source-contract-2026-09-03",
+      "compatible_version_range": {"mode": "source-contract", "minimum": null, "maximum_exclusive": null},
       "qualification": "source-qualified",
       "runtime_activation": "unchanged"
     }

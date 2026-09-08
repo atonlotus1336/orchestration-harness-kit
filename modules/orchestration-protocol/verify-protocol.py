@@ -85,6 +85,11 @@ ADAPTER_OWNED = {
     "configuration_location_translation",
     "health_rollback_signal_translation",
 }
+TELEMETRY_METRIC_KEYS = {"latency_ms", "stage_timings_ms"}
+TELEMETRY_STAGES = {
+    "adapter", "routing", "provider_wait", "tool_execution", "handoff",
+    "evidence_collection", "persistence",
+}
 TOP_LEVEL_REQUIRED = {
     "protocol_version",
     "message_id",
@@ -320,11 +325,38 @@ def validate_envelope(envelope: dict[str, Any], catalog: dict[str, Any], schema:
     if operation == "provider.resolve" and kind == "response" and isinstance(payload, dict):
         if payload.get("route_class") not in {"provider_free", "subscription", "pay_per_token"}:
             errors.append("provider resolution has an invalid route class")
+        backend_fit = payload.get("backend_fit")
+        lease = payload.get("lease")
+        qualification = payload.get("qualification")
+        if backend_fit is not None and (
+            not isinstance(backend_fit, dict) or backend_fit.get("status") != "FIT"
+        ):
+            errors.append("provider backend-fit extension is invalid")
+        if lease is not None and (
+            not isinstance(lease, dict) or lease.get("terms_status") not in {"current", "stale", "unverified"}
+        ):
+            errors.append("provider lease extension is invalid")
+        if qualification is not None and (
+            not isinstance(qualification, dict) or qualification.get("status") not in {"qualified", "stale", "unqualified"}
+        ):
+            errors.append("provider qualification extension is invalid")
 
     if operation == "telemetry.report" and isinstance(payload, dict):
         metrics = payload.get("metrics") if kind == "request" else None
-        if kind == "request" and not isinstance(metrics, dict):
-            errors.append("telemetry metrics must be an object")
+        if kind == "request":
+            if not isinstance(metrics, dict) or set(metrics) - TELEMETRY_METRIC_KEYS:
+                errors.append("telemetry metrics must be a closed content-free object")
+            else:
+                latency = metrics.get("latency_ms")
+                if latency is not None and (type(latency) is not int or latency < 0):
+                    errors.append("telemetry latency is invalid")
+                stages = metrics.get("stage_timings_ms", {})
+                if (
+                    not isinstance(stages, dict)
+                    or set(stages) - TELEMETRY_STAGES
+                    or any(type(value) is not int or value < 0 for value in stages.values())
+                ):
+                    errors.append("telemetry stage timings are invalid")
 
     if kind == "error":
         error = envelope.get("error")

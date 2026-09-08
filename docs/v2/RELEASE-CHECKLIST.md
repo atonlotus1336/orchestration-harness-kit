@@ -1,15 +1,15 @@
 # v2 release checklist
 
-The candidate is releasable only when every applicable item is evidenced. A HOLD
-must remain visible; it cannot be converted to PASS by editing an old receipt.
+Release requires evidence for every applicable item. Keep each HOLD visible.
+Never edit an old receipt to convert HOLD to PASS.
 
 ## Candidate qualification
 
-- [ ] Worktree is clean and the source commit is recorded.
+- [ ] The worktree is clean and the receipt identifies the source commit.
 - [ ] Full provider-free test and verifier matrix passes.
 - [ ] Windows and Linux/WSL clean clones produce identical payload and ZIP bytes.
 - [ ] Public-payload privacy scan has zero findings.
-- [ ] Git-history privacy and commit metadata have been reviewed separately.
+- [ ] A separate review covers Git-history privacy and commit metadata.
 - [ ] Release notes, migration, compatibility, adapter-authoring, and rollback
       documentation match the shipped bytes.
 - [ ] Runtime version, compatibility matrix, and intended tag agree.
@@ -18,17 +18,35 @@ must remain visible; it cannot be converted to PASS by editing an old receipt.
 ## Publication gate
 
 - [ ] Repository visibility is an intentional decision.
-- [ ] If publishing source history, every historical privacy hold is resolved or
-      the history is replaced by an approved clean public lineage.
-- [ ] If publishing the client artifact, it was rebuilt from the qualified commit
-      and its SHA-256 matches the release receipt.
+- [ ] Before making source history public, resolve every historical privacy hold
+      or use an approved clean public lineage.
+- [ ] Build the client artifact from the qualified commit and confirm that its
+      SHA-256 matches the release receipt.
 - [ ] Tag, push, release creation, and visibility change have separate approval.
 
 ## Activation gate
 
-- [ ] One isolated profile is named; no cross-profile mutation is implied.
+- [ ] Approval names one isolated profile and permits no cross-profile mutation.
 - [ ] Approval names provider class, call/token caps, and restart boundary.
 - [ ] Quality, call count, latency, token, and rollback gates all pass.
-- [ ] Pay-per-token use and default-model changes are explicitly authorized or
-      remain forbidden.
+- [ ] Explicit authorization permits any pay-per-token use or default-model
+      change. Otherwise, both remain forbidden.
 - [ ] Production follows shadow/review evidence and has its own authorization.
+
+## Current release qualification commands
+
+Use `tools/qualify-clean-room.py --working-tree` to test a source snapshot before
+commit approval. Run it on Windows and Linux/WSL with the same full HEAD value,
+`--repository`, `--platform-label`, and an external `--output` receipt path.
+This covers all eight adapters, including Cursor, and makes no provider calls.
+
+After the approved commit, rerun without `--working-tree` on both platforms.
+Run `tools/verify-release-readiness.py --receipt <windows-receipt>
+--receipt <linux-receipt> --require-committed --visibility private`.
+The gate rejects stale sources, missing adapters, mismatched artifacts, dirty
+checkouts, and working-tree receipts used for publication. Run
+`python tools/test-release-readiness.py` to replay synthetic failing evidence.
+
+The existing Phase 80 receipts remain historical evidence. They do not qualify
+the current release. Keeping the repository private does not clear the separate
+public-history hold. A public repository change requires history review.

@@ -130,7 +130,7 @@
       "effect": "change firewall or network share exposure",
       "irreversibility": "MED",
       "verdict": "ask",
-      "failing_input": "New-SmbShare -Name Share2 -Path D:\\MyVault\\share -FullAccess Everyone"
+      "failing_input": "New-SmbShare -Name Share2 -Path D:/MyVault/share -FullAccess Everyone"
     },
     {
       "id": "truncating-config-overwrite",

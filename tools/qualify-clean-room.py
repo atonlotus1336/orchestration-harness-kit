@@ -9,6 +9,7 @@ import json
 import os
 import platform
 import re
+import shutil
 import subprocess
 import sys
 import tempfile
@@ -16,7 +17,7 @@ from pathlib import Path
 
 
 V1_COMMIT = "04b7630937557c2dd4e6b429fc033873d5edf127"
-HARNESSES = ("hermes", "opencode", "pi", "antigravity", "codex", "claude-code", "moa")
+HARNESSES = ("hermes", "opencode", "pi", "antigravity", "codex", "claude-code", "moa", "cursor")
 SOURCE_VERIFIERS = (
     "tools/verify-v1-compatibility.py",
     "tools/verify-v2-provenance.py",
@@ -52,6 +53,45 @@ def tree_digest(root: Path) -> tuple[str, int]:
         digest.update(hashlib.sha256(path.read_bytes()).digest())
         count += 1
     return digest.hexdigest(), count
+
+
+def source_files(repository: Path) -> list[str]:
+    result = subprocess.run(["git", "ls-files", "--cached", "--others", "--exclude-standard", "-z"], cwd=repository, capture_output=True, check=True)
+    names = sorted(set(result.stdout.decode("utf-8").split("\0")) - {""})
+    for name in names:
+        path = repository / name
+        if path.is_symlink() or not inside(path, repository):
+            raise QualificationError("source contains an unsafe path")
+    return [name for name in names if (repository / name).is_file()]
+
+
+def source_digest(repository: Path) -> str:
+    # Use Git's canonical bytes so CRLF checkout conventions do not look like
+    # source changes. hash-object without -w reads only; it creates no objects.
+    names = source_files(repository)
+    result = subprocess.run(
+        ["git", "hash-object", "--stdin-paths"], cwd=repository,
+        input="".join(json.dumps(name, ensure_ascii=False) + "\n" for name in names),
+        text=True, encoding="utf-8", capture_output=True, check=True,
+    )
+    hashes = result.stdout.splitlines()
+    if not names or len(hashes) != len(names):
+        raise QualificationError("empty or incomplete source fingerprint")
+    digest = hashlib.sha256()
+    for name, content_hash in zip(names, hashes):
+        digest.update(name.encode("utf-8") + b"\0" + content_hash.encode("ascii") + b"\0")
+    return digest.hexdigest()
+
+
+def overlay_working_tree(repository: Path, clone: Path) -> None:
+    names = source_files(repository)
+    for name in source_files(clone):
+        if name not in names:
+            (clone / name).unlink()
+    for name in names:
+        target = clone / name
+        target.parent.mkdir(parents=True, exist_ok=True)
+        shutil.copyfile(repository / name, target)
 
 
 def _safe_detail(value: str, roots: tuple[Path, ...]) -> str:
@@ -115,7 +155,7 @@ def _write_json(path: Path, value: dict) -> None:
     temporary.replace(path)
 
 
-def qualify(repository: Path, commit: str, python: str, platform_label: str, work_root: Path | None = None) -> dict:
+def qualify(repository: Path, commit: str, python: str, platform_label: str, work_root: Path | None = None, working_tree: bool = False) -> dict:
     repository = repository.resolve()
     if work_root is not None:
         work_root = work_root.resolve()
@@ -129,7 +169,7 @@ def qualify(repository: Path, commit: str, python: str, platform_label: str, wor
         ["git", "status", "--porcelain"], cwd=repository,
         text=True, capture_output=True, check=False,
     )
-    if status.returncode or status.stdout.strip():
+    if status.returncode or (status.stdout.strip() and not working_tree):
         raise QualificationError("source repository must be clean")
     head = subprocess.run(
         ["git", "rev-parse", "HEAD"], cwd=repository,
@@ -138,6 +178,7 @@ def qualify(repository: Path, commit: str, python: str, platform_label: str, wor
     if head.returncode or head.stdout.strip() != commit:
         raise QualificationError("requested commit must equal the source checkout HEAD")
 
+    source_hash = source_digest(repository)
     checks: list[dict] = []
     with tempfile.TemporaryDirectory(prefix="lapart-clean-room-", dir=work_root) as temporary:
         root = Path(temporary).resolve()
@@ -145,7 +186,11 @@ def qualify(repository: Path, commit: str, python: str, platform_label: str, wor
         clone = root / "v2-source"
         v1_source = root / "v1-source"
         clone_at(repository, clone, commit, roots)
-        checks.append({"name": "clean-local-clone", "status": "PASS"})
+        if working_tree:
+            overlay_working_tree(repository, clone)
+        if source_digest(clone) != source_hash:
+            raise QualificationError("source changed during snapshot or checkout")
+        checks.append({"name": "source-snapshot" if working_tree else "clean-local-clone", "status": "PASS"})
 
         run(["git", "merge-base", "--is-ancestor", V1_COMMIT, commit], clone, "v1 ancestry", roots)
         checks.append({"name": "v1-ancestry", "status": "PASS"})
@@ -192,7 +237,7 @@ def qualify(repository: Path, commit: str, python: str, platform_label: str, wor
             adapter = next(check for check in verified["checks"] if check.get("name") == f"adapter:{harness}")
             if adapter.get("provider_calls") != 0:
                 raise QualificationError(f"{harness} verification used a provider")
-        checks.append({"name": "seven-harness-connect", "status": "PASS", "count": len(HARNESSES)})
+        checks.append({"name": "all-harness-connect", "status": "PASS", "count": len(HARNESSES), "harnesses": list(HARNESSES)})
 
         clone_at(repository, v1_source, V1_COMMIT, roots)
         migration_root, migration_data = root / "migration-install", root / "migration-data"
@@ -221,9 +266,12 @@ def qualify(repository: Path, commit: str, python: str, platform_label: str, wor
             raise QualificationError("uninstall removed recipient-owned data")
         checks.append({"name": "managed-uninstall", "status": "PASS"})
 
+        if source_digest(repository) != source_hash:
+            raise QualificationError("source changed during qualification")
         return {
-            "schema": "lapart.clean-room-platform.v1",
-            "phase": 80,
+            "schema": "lapart.clean-room-platform.v2",
+            "source_mode": "working-tree" if working_tree else "committed",
+            "source_tree_sha256": source_hash,
             "decision": "CLEAN_ROOM_PASS",
             "platform": platform_label,
             "runtime": {"system": platform.system(), "python": platform.python_version()},
@@ -272,6 +320,7 @@ def parser() -> argparse.ArgumentParser:
     value.add_argument("--work-root", type=Path)
     value.add_argument("--output", type=Path)
     value.add_argument("--selftest", action="store_true")
+    value.add_argument("--working-tree", action="store_true", help="Qualify an uncommitted snapshot for commit approval, never publication")
     return value
 
 
@@ -286,7 +335,7 @@ def main() -> int:
     if args.output and inside(args.output, args.repository):
         parser().error("--output must be outside the source repository")
     try:
-        receipt = qualify(args.repository, args.commit, args.python, args.platform_label, args.work_root)
+        receipt = qualify(args.repository, args.commit, args.python, args.platform_label, args.work_root, args.working_tree)
     except (QualificationError, OSError, subprocess.SubprocessError) as exc:
         receipt = {
             "schema": "lapart.clean-room-platform.v1",

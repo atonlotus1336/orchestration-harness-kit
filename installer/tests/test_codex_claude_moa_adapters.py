@@ -75,7 +75,7 @@ def test_local_event_contract_is_closed(name, expected_keys):
 def test_adapter_inherits_core_routing_and_projection(name, _):
     _, _, _, driver, bridge = components(name)
     routing = bridge.dispatch(driver.make_event(
-        "routing.prime.select", {"task": {"requires_omp": True}, "task_tier": "standard"}, "session.1", "active",
+        "routing.prime.select", {"task": {"requires_omp": True, "text": "Implement the bounded change", "declared_paths": ["src/a.py", "src/b.py"], "risk_tier": "low"}, "task_tier": "standard"}, "session.1", "active",
     )).envelope["payload"]
     assert routing["recommended_lane"] == "T2"
     assert routing["actual_lane"] == "T3"

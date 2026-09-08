@@ -1,0 +1,55 @@
+{
+  "goal_id": "example-goal",
+  "objective": "Deliver the agreed working feature",
+  "builder_id": "builder",
+  "inputs": [
+    "src/app.py"
+  ],
+  "endpoint": [
+    {
+      "id": "acceptance",
+      "description": "The agreed task succeeds"
+    }
+  ],
+  "categories": [
+    {
+      "id": "usability",
+      "label": "Human usability",
+      "threshold": 80,
+      "checks": [
+        {
+          "id": "clear",
+          "label": "A person can understand and complete the task",
+          "kind": "judgment",
+          "critical": true
+        },
+        {
+          "id": "accessible",
+          "label": "The task works with keyboard controls",
+          "kind": "deterministic"
+        }
+      ]
+    },
+    {
+      "id": "correctness",
+      "label": "Correctness",
+      "threshold": 80,
+      "checks": [
+        {
+          "id": "behavior",
+          "label": "The acceptance test passes",
+          "kind": "deterministic"
+        },
+        {
+          "id": "regression",
+          "label": "Existing behavior still works",
+          "kind": "deterministic"
+        }
+      ]
+    }
+  ],
+  "cadence_seconds": 1800,
+  "max_goalposts": 6,
+  "no_progress_limit": 2,
+  "max_wall_seconds": 14400
+}

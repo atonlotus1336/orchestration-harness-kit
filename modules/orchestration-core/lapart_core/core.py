@@ -42,6 +42,11 @@ REQUEST_KEYS = {
     "extensions",
 }
 SESSION_STATES = {"new", "active", "detached", "closed", "failed"}
+TELEMETRY_METRIC_KEYS = {"latency_ms", "stage_timings_ms"}
+TELEMETRY_STAGES = {
+    "adapter", "routing", "provider_wait", "tool_execution", "handoff",
+    "evidence_collection", "persistence",
+}
 
 
 class OrchestrationCore:
@@ -374,7 +379,12 @@ class OrchestrationCore:
         return {"sources": attributed, "answer_context": [row.get("content", "") for row in sources]}
 
     def _routing_select(self, payload: dict[str, Any]) -> dict[str, Any]:
-        return select_prime_lane(payload["task"], payload["task_tier"], self.policy)
+        from .review.interface import classify_review
+        result = select_prime_lane(payload["task"], payload["task_tier"], self.policy)
+        result["review"] = classify_review(
+            payload.get("review"), declared_paths=payload["task"].get("declared_paths", [])
+        )
+        return result
 
     def _omp_request(self, payload: dict[str, Any]) -> dict[str, Any]:
         limits = payload["capability_limits"]
@@ -427,15 +437,35 @@ class OrchestrationCore:
         constraints = payload["constraints"]
         if not isinstance(constraints, dict):
             raise CoreError("PROVIDER_CONSTRAINT_INVALID", "Provider constraints must be an object.")
-        return self.providers.resolve(profile=payload["profile"], policy=self.policy, allowed_route_classes=constraints.get("allowed_route_classes"), approval_reference=constraints.get("approval_reference"))
+        return self.providers.resolve(
+            profile=payload["profile"],
+            policy=self.policy,
+            allowed_route_classes=constraints.get("allowed_route_classes"),
+            approval_reference=constraints.get("approval_reference"),
+            requirements=constraints.get("requirements"),
+        )
 
     def _provider_account(self, payload: dict[str, Any]) -> dict[str, Any]:
         return {"accounting": str(payload["operation_reference"])}
 
     def _telemetry_report(self, payload: dict[str, Any]) -> dict[str, Any]:
-        if not isinstance(payload["metrics"], dict):
-            raise CoreError("TELEMETRY_INVALID", "Telemetry metrics must be an object.")
-        row = {"operation_reference": payload["operation_reference"], "metrics": dict(payload["metrics"])}
+        metrics = payload["metrics"]
+        if not isinstance(metrics, dict) or set(metrics) - TELEMETRY_METRIC_KEYS:
+            raise CoreError("TELEMETRY_INVALID", "Telemetry metrics are not a closed content-free record.")
+        latency = metrics.get("latency_ms")
+        if latency is not None and (type(latency) is not int or latency < 0):
+            raise CoreError("TELEMETRY_INVALID", "Telemetry latency must be a non-negative integer.")
+        stages = metrics.get("stage_timings_ms", {})
+        if (
+            not isinstance(stages, dict)
+            or set(stages) - TELEMETRY_STAGES
+            or any(type(value) is not int or value < 0 for value in stages.values())
+        ):
+            raise CoreError("TELEMETRY_INVALID", "Telemetry stage timings are invalid.")
+        normalized = dict(metrics)
+        if stages:
+            normalized["stage_timings_ms"] = dict(sorted(stages.items()))
+        row = {"operation_reference": payload["operation_reference"], "metrics": normalized}
         self.state.telemetry.append(row)
         return {"accepted": True, "receipt": self.state.receipt(row)}
 

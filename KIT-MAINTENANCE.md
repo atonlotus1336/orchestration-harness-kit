@@ -29,7 +29,7 @@ kit files). The author-side loop:
 5. Fix REDs at the SOURCE when possible (reword to avoid the token class);
    use sanitizer substitution rules only when the replacement lands on an
    APPROVED token — scanners match literal bytes, so an escaped variant
-   (`D:\\MyVault` in JSON) needs its own approved form.
+   (a JSON-escaped Windows path) needs its own approved form.
 6. `git add -A && git commit` — the pre-commit tripwire re-scans the staged
    payload against the private denylist. It has caught tokens the preview
    scan structurally cannot see (untracked-at-sync files, case variants).

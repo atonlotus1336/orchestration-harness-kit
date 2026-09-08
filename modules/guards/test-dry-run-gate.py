@@ -28,7 +28,7 @@ NEGATIVE_CONTROLS = [
     ("Bash", {"command": "git status"}),
     ("Bash", {"command": "ls -la /data/example-vault"}),
     ("Bash", {"command": "mkdir -p /data/other-project/.planning"}),
-    ("PowerShell", {"command": "Get-ChildItem C:\\Users\\alice\\other"}),
+    ("PowerShell", {"command": r"Get-ChildItem C:\Users\alice\other"}),
     ("Bash", {"command": "rm -rf node_modules"}),  # disposable-only target
     ("Write", {"file_path": "/data/other-project/.planning/STATE.md"}),
     ("Edit", {"file_path": "/data/other-project/notes/index.md"}),
