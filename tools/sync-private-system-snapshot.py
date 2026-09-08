@@ -196,6 +196,31 @@ def scan_secrets(path: Path) -> list[str]:
     return [label for label, pattern in SECRET_PATTERNS.items() if pattern.search(text)]
 
 
+def replace_identity_literals(text: str, rules: list[tuple[str, str]]) -> str:
+    """Replace configured host spellings, including case and separator variants."""
+    import itertools
+    for source, replacement in sorted(rules, key=lambda pair: len(pair[0]), reverse=True):
+        variants = {source}
+        if re.fullmatch(r"[A-Za-z0-9]+(?:[-_][A-Za-z0-9]+){1,5}", source):
+            parts = re.split(r"[-_]", source)
+            for separators in itertools.product(("-", "_"), repeat=len(parts)-1):
+                variants.add(parts[0] + "".join(sep+part for sep,part in zip(separators,parts[1:])))
+            variants.add("[-_]".join(parts))
+            variants.add("[_-]".join(parts))
+        for variant in sorted(variants, key=len, reverse=True):
+            text = re.sub(re.escape(variant), lambda match: replacement, text, flags=re.IGNORECASE)
+    return text
+
+
+def redact_enrollment(text: str) -> str:
+    """Export enrollment slots without retaining an author's signing identity."""
+    value = json.loads(text)
+    for client in value.get("clients", {}).values():
+        client["public_key"] = None
+        client["fingerprint"] = None
+    return json.dumps(value, indent=2) + "\n"
+
+
 def sanitized_bytes(
     path: Path,
     workspace_rules: list[tuple[str, str]],
@@ -205,12 +230,11 @@ def sanitized_bytes(
     text = path.read_text(encoding="utf-8")
     for source, replacement in workspace_rules:
         text = re.sub(re.escape(source), replacement, text, flags=re.IGNORECASE)
-    for source, replacement in rules:
-        text = text.replace(source, replacement)
+    text = replace_identity_literals(text, rules)
     for source, replacement in STANDARD_WORKSPACE_RULES:
         text = re.sub(re.escape(source), replacement, text, flags=re.IGNORECASE)
     for source, replacement in identity_rules:
-        text = re.sub(re.escape(source), replacement, text, flags=re.IGNORECASE)
+        text = re.sub(source, lambda match: replacement, text, flags=re.IGNORECASE)
     # The local privacy rules intentionally replace the maintainer's WSL distro
     # name with a neutral marker.  That marker is not executable on a recipient
     # machine, so turn it into an explicit restore-time value instead of
@@ -234,12 +258,17 @@ def sanitized_bytes(
     )
     if path.name.lower() == "surface-graph.yaml":
         text = scrub_personal_surface_blocks(text)
+    if path.name == "prime-desktop-attesters.json":
+        text = redact_enrollment(text)
+    text = text.replace("\r\n", "\n")
+    if path.suffix.lower() in {".ps1", ".cmd", ".bat"}:
+        text = text.replace("\n", "\r\n")
     return text.encode("utf-8")
 
 
 def sanitized_identity_text(text: str, identity_rules: list[tuple[str, str]]) -> str:
     for source, replacement in identity_rules:
-        text = re.sub(re.escape(source), replacement, text, flags=re.IGNORECASE)
+        text = re.sub(source, lambda match: replacement, text, flags=re.IGNORECASE)
     return text
 
 

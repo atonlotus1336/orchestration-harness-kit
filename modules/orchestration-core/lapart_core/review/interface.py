@@ -3,7 +3,7 @@ from dataclasses import asdict
 from .context import ReviewFact
 from .models import Scope
 from .policy import load_policy
-from .router import select_review, scope_review_facts
+from .router import select_review, scope_review_facts, structured_review_facts
 from ..errors import CoreError
 from ..routing import safe_paths
 
@@ -12,7 +12,7 @@ def classify_review(raw, *, declared_paths):
     if raw is None:
         raw = {}
     allowed = {"scope", "required_level", "changed_lines", "subsystem_count",
-               "s4_confirmed", "facts"}
+               "s4_confirmed", "facts", "routing_facts"}
     try:
         if not isinstance(raw, dict) or set(raw) - allowed:
             raise ValueError("review accepts scope facts, never an execution lane")
@@ -33,8 +33,7 @@ def classify_review(raw, *, declared_paths):
                     or type(item["known"]) is not bool or type(item["load_bearing"]) is not bool):
                 raise ValueError("invalid review fact types")
             facts.append(ReviewFact(**item, provenance="caller_reported"))
-        if not supplied:
-            facts.append(ReviewFact("behavioral_risk_unobserved", "S0", load_bearing=True, known=False))
+        facts.extend(structured_review_facts(raw.get("routing_facts"), changed_lines=raw.get("changed_lines"), subsystem_count=raw.get("subsystem_count")))
         if not paths:
             facts.append(ReviewFact("changed_scope_unobserved", "S0", load_bearing=True, known=False))
         facts.extend(scope_review_facts(

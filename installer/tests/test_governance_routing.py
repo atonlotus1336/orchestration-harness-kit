@@ -54,7 +54,7 @@ def test_explicit_autonomous_intent_selects_t4(task):
 @pytest.mark.parametrize("task,lane", [
     (dict(text="Update typo", declared_paths=["a.txt"], risk_tier="low", semantic_assertions=["Spelling is correct"]), "T0"),
     (bounded(), "T1"),
-    (dict(text="Implement bounded work", declared_paths=["a.py", "b.py"], risk_tier="low"), "T2"),
+    (dict(text="Implement bounded work", declared_paths=["a.py", "b.py"], risk_tier="low", verification_command_id="pytest"), "T2"),
 ])
 def test_lower_lanes_require_bounded_facts_and_explain_policy(task, lane):
     result = route(task)["payload"]
@@ -74,7 +74,7 @@ def test_invalid_execution_facts_fail_closed(task):
 
 @pytest.mark.parametrize("count,level", [(2,"S0"), (3,"S1"), (7,"S2"), (16,"S3")])
 def test_review_scope_cannot_be_downgraded(count, level):
-    result = classify_review({"facts":[{"key":"mechanical_verified","required_level":"S0","known":True,"load_bearing":True}]},
+    result = classify_review({"routing_facts":{key:True for key in ("mechanical_or_exact","independent_deterministic_validation","no_unknown_load_bearing_fact","no_risk_trigger")},"changed_lines":1,"subsystem_count":1},
         declared_paths=[f"src/file{n}.py" for n in range(count)])
     assert result["pipeline"] == level
     assert result["review_completed"] is False
@@ -167,11 +167,40 @@ def test_empty_catalog_cannot_report_completed_review(tmp_path):
     assert not calls and result.verdict is Verdict.INCONCLUSIVE
 
 
-def test_required_reviewers_run_even_without_optional_trigger(tmp_path):
+def test_required_reviewers_refuse_unmetered_provider_even_without_trigger(tmp_path):
     result, calls = runner_case(tmp_path, ["ponytail-review"], pipeline=Pipeline.S1, triggers=())
-    assert calls == [True] and result.invoked_reviewers == ("ponytail-review",)
+    assert calls == [] and result.verdict is Verdict.INCONCLUSIVE
 
 
 def test_model_call_budget_is_checked_before_any_provider(tmp_path):
     result, calls = runner_case(tmp_path, ["ponytail-review", "evidence-integrity-audit", "specialist-a", "specialist-b"], pipeline=Pipeline.S2)
     assert not calls and "model-call budget" in result.controls[0]
+
+
+def test_t2_missing_verification_keeps_prime():
+    result = route(dict(text="Implement bounded work", declared_paths=["a.py", "b.py"], risk_tier="low"))["payload"]
+    assert result["recommended_lane"] == "T3"
+    assert result["actual_lane"] == "T3"
+
+def test_shared_contract_can_select_t2_without_changing_other_lanes():
+    import json
+    from dataclasses import replace
+    from lapart_core.policy import CorePolicy
+    from lapart_core.routing import select_prime_lane
+    policy = CorePolicy.load(ROOT / "modules/orchestration-core/core-policy.json")
+    value = json.loads(json.dumps(dict(policy.execution_value)))
+    value["promoted_lanes"].append("T2_OMP_LITE")
+    candidate = replace(policy, t2_actual_lane="T2", execution_value=value)
+    task = dict(text="Implement bounded work", declared_paths=["a.py", "b.py"], risk_tier="low",
+                verification_command_id="pytest")
+    assert select_prime_lane(task, "atomic", candidate)["actual_lane"] == "T2"
+    assert select_prime_lane({**task, "risk_tier": "high"}, "atomic", candidate)["actual_lane"] == "T3"
+    assert select_prime_lane({**task, "autonomous": True}, "atomic", candidate)["actual_lane"] == "T4"
+    assert select_prime_lane(bounded(), "atomic", candidate)["actual_lane"] == "T1"
+
+
+def test_irrelevant_fact_cannot_remove_missing_s0_evidence():
+    before = classify_review({}, declared_paths=["example.py"])
+    after = classify_review({"facts":[{"key":"irrelevant","required_level":"S0","known":True,"load_bearing":False}]}, declared_paths=["example.py"])
+    assert before["pipeline"] == after["pipeline"] == "S1"
+    assert after["review_completed"] is False

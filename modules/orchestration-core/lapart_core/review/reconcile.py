@@ -23,6 +23,7 @@ def reconcile_outputs(
     outputs: Iterable[object],
     finding_schema: Mapping[str, object],
     allowed_blocking_proofs: Iterable[str],
+    *, expected_reviewer_id=None, proof_verifier=None, budget=None,
 ) -> Reconciliation:
     validator = Draft7Validator(finding_schema)
     allowed = set(allowed_blocking_proofs)
@@ -36,12 +37,23 @@ def reconcile_outputs(
             continue
         validation = sorted(validator.iter_errors(raw), key=lambda item: list(item.path))
         proof = raw.get("blocking_proof")
+        if expected_reviewer_id is not None and raw.get("reviewer_id") != expected_reviewer_id:
+            validation.append(ValueError("reviewer identity mismatch"))
         if proof is not None and proof not in allowed:
             validation.append(ValueError("unrecognized blocking proof"))
         if validation:
             rejected.append(raw)
             errors.extend(getattr(item, "message", str(item)) for item in validation)
             continue
-        accepted.append(dict(raw))
+        item = dict(raw)
+        from .proofs import HostTestVerifier
+        verified = (expected_reviewer_id is not None and type(proof_verifier) is HostTestVerifier
+                    and budget is not None and proof_verifier.verify(item, budget))
+        if not verified:
+            item["blocking_proof"] = None
+            item["advisory"] = True
+        else:
+            item["advisory"] = False
+        accepted.append(item)
     accepted.sort(key=lambda item: (item["reviewer_id"], item["finding_id"]))
     return Reconciliation(tuple(accepted), tuple(rejected), tuple(errors))

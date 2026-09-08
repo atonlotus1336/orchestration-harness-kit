@@ -12,7 +12,7 @@ __WSL_WORKSPACE__/hermes-agent-self-evolution/scripts/sync-ollama-models-to-herm
 
 if ! curl -sf http://127.0.0.1:9119/api/status >/dev/null 2>&1; then
   # 2026-07-30: pin the dashboard session token when a token file exists, so remote
-  # clients (the desktop app on DESKTOP-2S7VQDO over the SSH tunnel) can authenticate.
+  # clients (the desktop app on thin-client over the SSH tunnel) can authenticate.
   # Without this the dashboard mints a random token per start and no client can pair.
   # The file lives in WSL-only home — never on G: (key-never-on-G invariant).
   if [ -f "$USER_HOME/.hermes/dashboard-session-token" ]; then

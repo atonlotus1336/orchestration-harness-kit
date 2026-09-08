@@ -3,10 +3,11 @@
 from __future__ import annotations
 
 from dataclasses import dataclass, field
-from pathlib import PurePosixPath
+from pathlib import PurePosixPath, PureWindowsPath
 from typing import Callable, Mapping
 
 from .models import Verdict
+from .transport import JsonReviewTransport, ReviewBudgetTracker
 
 
 class CapabilityViolation(RuntimeError):
@@ -15,7 +16,7 @@ class CapabilityViolation(RuntimeError):
 
 def _safe_path(value: str) -> str:
     path = PurePosixPath(value)
-    if not value or path.is_absolute() or ".." in path.parts:
+    if not value or "\\" in value or PureWindowsPath(value).drive or path.is_absolute() or ".." in path.parts:
         raise CapabilityViolation(f"unsafe path: {value!r}")
     return str(path)
 
@@ -101,8 +102,9 @@ class ProviderAttestation:
 class ReportOnlyProvider:
     """Owned transport callback plus a no-tools/no-source attestation."""
 
-    invoke: Callable[[ReportOnlyContext], object]
+    invoke: Callable[[ReportOnlyContext], object] | None = None
     attestation: ProviderAttestation = ProviderAttestation()
+    transport: JsonReviewTransport | None = None
 
 
 class ReviewerAdapter:
@@ -121,28 +123,25 @@ class ReviewerAdapter:
         self.source_hashes = dict(source_hashes)
         self.hash_provider = hash_provider
 
-    def run(self, provider: ReportOnlyProvider) -> ReviewOutcome:
+    def run(self, provider: ReportOnlyProvider, *, budget: ReviewBudgetTracker | None = None,
+            skill: str = "") -> ReviewOutcome:
         if not self.capability.readable_files:
             return ReviewOutcome(Verdict.INCONCLUSIVE, violations=("empty scope",))
         if set(self.source_hashes) != set(self.capability.readable_files):
             return ReviewOutcome(Verdict.INCONCLUSIVE, violations=("incomplete pre-review hashes",))
         if not provider.attestation.report_only:
             return ReviewOutcome(Verdict.INCONCLUSIVE, violations=("provider is not report-only",))
-        context = ReportOnlyContext(self.capability, self.contents)
-        violations: list[str] = []
+        if type(provider.transport) is not JsonReviewTransport or provider.invoke is not None or budget is None:
+            return ReviewOutcome(Verdict.INCONCLUSIVE, violations=("unmetered reviewer callback is forbidden",))
+        import hashlib
+        expected = {p: hashlib.sha256(self.contents[p].encode()).hexdigest() for p in self.capability.readable_files if p in self.contents}
         try:
-            returned = provider.invoke(context)
-            if returned not in (None, context.findings):
-                raise CapabilityViolation("provider returned an unsupported payload")
-        except CapabilityViolation as exc:
-            violations.append(str(exc))
+            if expected != self.source_hashes or dict(self.hash_provider(self.capability.readable_files)) != expected:
+                return ReviewOutcome(Verdict.INCONCLUSIVE, violations=("source content or pre-review hash mismatch",))
+            findings = provider.transport.run(skill, self.contents, budget)
+            if dict(self.hash_provider(self.capability.readable_files)) != expected:
+                raise CapabilityViolation("source hash mismatch after review")
         except Exception as exc:
-            violations.append(f"reviewer error: {type(exc).__name__}")
-        current = dict(self.hash_provider(self.capability.readable_files))
-        for path in self.capability.readable_files:
-            if current.get(path) != self.source_hashes[path]:
-                violations.append(f"source hash mismatch: {path}")
-        if violations:
-            return ReviewOutcome(Verdict.INCONCLUSIVE, violations=tuple(violations))
-        verdict = Verdict.FINDINGS if context.findings else Verdict.PASS
-        return ReviewOutcome(verdict, findings=tuple(context.findings))
+            budget.failed = True
+            return ReviewOutcome(Verdict.INCONCLUSIVE, violations=(f"review refused: {type(exc).__name__}",))
+        return ReviewOutcome(Verdict.FINDINGS if findings else Verdict.PASS, findings=findings)

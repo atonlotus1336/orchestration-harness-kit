@@ -67,8 +67,8 @@
     },
     {
       "path": "hermes-agent-self-evolution/config/connectivity-authority.json",
-      "sha256": "2cd7ec66e8b2d4a5c4eba4d27d8ebefd4f3e3f25862546ba6912cd439bd39a20",
-      "bytes": 3107
+      "sha256": "63b9678564d1d0240fce208322f1e12e20373cba42fe5db4be7695c3e2b90984",
+      "bytes": 3090
     },
     {
       "path": "hermes-agent-self-evolution/config/omp-coding-policy.json",
@@ -227,8 +227,8 @@
     },
     {
       "path": "hermes-agent-self-evolution/contracts/prime-desktop-attesters.json",
-      "sha256": "5a5ab2d3e58ed11a29a56b66736379ddd922052350d5c4e277d4dd8dda355420",
-      "bytes": 634
+      "sha256": "9461c4301b7866bb2cfe04aac28362e502b4845f68b032ce518401aa9d7dacd1",
+      "bytes": 457
     },
     {
       "path": "hermes-agent-self-evolution/contracts/prime-feasibility-report.schema.json",
@@ -377,8 +377,8 @@
     },
     {
       "path": "hermes-agent-self-evolution/install-autolearn-cron.cmd",
-      "sha256": "d1d09a78658149a485e6bf8dc45527fce8fc1f9c1a2f96cd0dead78b13ec9d6f",
-      "bytes": 197
+      "sha256": "bc6d70e9a7e0ea98b805c3616ccee872b1e80333ef95eb188c1e3b2155724209",
+      "bytes": 204
     },
     {
       "path": "hermes-agent-self-evolution/local-env.cmd.example",
@@ -657,13 +657,13 @@
     },
     {
       "path": "hermes-agent-self-evolution/run-autolearn.cmd",
-      "sha256": "8f9fa9911f8b2fa44e847e516a4a981d78199f70969e7c5fcfa38503b0547917",
-      "bytes": 1783
+      "sha256": "737ffe61ebcf43dc19b46ac13de5388b287cf499f1ac64cbf4f118ed183cb0be",
+      "bytes": 1824
     },
     {
       "path": "hermes-agent-self-evolution/run-evolve-skill.cmd",
-      "sha256": "53a04bba8775e72207a554588064a24b65bfed7ed49dfb909e3c3ab10eb9b49a",
-      "bytes": 1225
+      "sha256": "443d702ff0e4e2da2c6c66239c3637acffaee684db5ce6f5b316415601e49efa",
+      "bytes": 1256
     },
     {
       "path": "hermes-agent-self-evolution/scripts/acquire-prime-agent-source.sh",
@@ -687,8 +687,8 @@
     },
     {
       "path": "hermes-agent-self-evolution/scripts/capture-prime-desktop-attestation.ps1",
-      "sha256": "ae5d021a19a26d7457d4fec424ac50266ae975b318974ac3e3e41a1324a0ea68",
-      "bytes": 3735
+      "sha256": "2c4b48b823f652657e76a5d586cf34574a66a290454a7136f3a5f446f33bb92b",
+      "bytes": 3736
     },
     {
       "path": "hermes-agent-self-evolution/scripts/capture-prime-integration-baseline.sh",
@@ -737,8 +737,8 @@
     },
     {
       "path": "hermes-agent-self-evolution/scripts/ensure-hermes-workspace-backend.sh",
-      "sha256": "606071fa560259def81c91ed300453f380653db03f0294b170ccfa6158970c81",
-      "bytes": 1186
+      "sha256": "ec7dd0f79dc1b8ad56ac772d41f4392fdd5345b588cc000506bcf5ecc23d8ed2",
+      "bytes": 1182
     },
     {
       "path": "hermes-agent-self-evolution/scripts/ensure-orchestration-layer.sh",
@@ -767,8 +767,8 @@
     },
     {
       "path": "hermes-agent-self-evolution/scripts/maintenance/register-weekly-maintenance.ps1",
-      "sha256": "0297c189951387aaeba324d22b0512f3cc6fa82c2a758820e44dea7427a0a33f",
-      "bytes": 1232
+      "sha256": "6ca0a6c2c420201ca48877bd328ab995d9fbccc982227a8ed29b38af2b922694",
+      "bytes": 1233
     },
     {
       "path": "hermes-agent-self-evolution/scripts/maintenance/run-weekly-maintenance.py",
@@ -827,8 +827,8 @@
     },
     {
       "path": "hermes-agent-self-evolution/scripts/restart-hermes-gateway-binding.sh",
-      "sha256": "76617cbfa7db0cff9124d83d498f72a00a0bacc3cefcc670fd83788e567caed7",
-      "bytes": 2317
+      "sha256": "4c797f3b033e6094e71af1529eb7c0d4e79c02eb069a7bc5a29428b1aee77dfe",
+      "bytes": 2310
     },
     {
       "path": "hermes-agent-self-evolution/scripts/send-telegram-test-message.py",
@@ -892,8 +892,8 @@
     },
     {
       "path": "hermes-agent-self-evolution/scripts/validate-prime-feasibility.sh",
-      "sha256": "7234ce37262aabbb7176638053c3697d61e1619c8242419f5d243f2cf232bd89",
-      "bytes": 21339
+      "sha256": "89fa1c7da7f195bc66371612497b56099c7b8d06c06acb68817deb72ee0f679a",
+      "bytes": 21328
     },
     {
       "path": "hermes-agent-self-evolution/scripts/validate-telegram-default-model.sh",
@@ -992,8 +992,8 @@
     },
     {
       "path": "hermes-agent-self-evolution/tests/integration/test_prime_attestation_contract.py",
-      "sha256": "e318429234811250d58ab9aad29bc7460c05be9622f3943e23b5ff0af1080d37",
-      "bytes": 11073
+      "sha256": "cd9a7e557ed7d9d530a4406a2b70f9874e43b61ab05a7d074cee5bd716e855dd",
+      "bytes": 10939
     },
     {
       "path": "hermes-agent-self-evolution/tests/integration/test_prime_auto_handoff.py",
@@ -1042,8 +1042,8 @@
     },
     {
       "path": "hermes-agent-self-evolution/tests/integration/test_prime_feasibility.py",
-      "sha256": "c9d24606ebb713b7153684cf026e6e900f8665fbab250a4fdeec4222bd9e9421",
-      "bytes": 12762
+      "sha256": "4e88dde986d27648390d2eaed9bcf6fc07241fdf25619977df03b83bd8e06fa3",
+      "bytes": 12755
     },
     {
       "path": "hermes-agent-self-evolution/tests/integration/test_prime_install_contract.py",
@@ -1192,148 +1192,148 @@
     },
     {
       "path": "autoexperiment/ablation.ps1",
-      "sha256": "bc290b4f3a064ce1336d79b352d1c6109e61a814d99a71e9e89963a14087435a",
-      "bytes": 3981
+      "sha256": "df06995d0738696eab61b2adee01120301beaf24e3f9b0f2a76d712582208be3",
+      "bytes": 4023
     },
     {
       "path": "autoexperiment/after-backup.ps1",
-      "sha256": "977a2aae0fa07bc28a471c018c46086f7960116c9cff5217c59d809bf69f1846",
-      "bytes": 4083
+      "sha256": "e2b500df7b3067ce8529d4df16dbe539cb35777490d89363b22c17a774346d15",
+      "bytes": 4140
     },
     {
       "path": "autoexperiment/campaign.ps1",
-      "sha256": "31d554d204e3d003fe7b2ff6ed8aa238e6ea8c7744ce006c08baa6ceb5d956b2",
-      "bytes": 5168
+      "sha256": "f5e4832917e43b8ba19507e89c59480c7fdc3e0b8f452930b495d9c1b6fc3ccc",
+      "bytes": 5228
     },
     {
       "path": "autoexperiment/checkpoint.ps1",
-      "sha256": "a01e523e5fa4bb523ceae666a04a6d8f00cde35219efb797f098286632823044",
-      "bytes": 3323
+      "sha256": "517a260c7deac634c6a6f3d712fbf5c5f691bdc2324f22a9e4198a7c3dd10f55",
+      "bytes": 3358
     },
     {
       "path": "autoexperiment/control-plane.ps1",
-      "sha256": "cc26d94bbcaaa3085a3e0c6c77c8cb00c50a3276f5611b95e45aaad2dbdc7889",
-      "bytes": 1577
+      "sha256": "7a1df51d9ba77a8d4b699edd0c47d95b3730d7e61c57b81178aff5e58d2f658d",
+      "bytes": 1597
     },
     {
       "path": "autoexperiment/converge.ps1",
-      "sha256": "c44b86507e5d1a813d2b6ea6c9587a18d07625a668bbff84d96c04265ec4b6e4",
-      "bytes": 1573
+      "sha256": "44a8113f362116033f7c81bc31fa5305712b69b8c54e1a7fdc85c63082340b5f",
+      "bytes": 1591
     },
     {
       "path": "autoexperiment/ingest.ps1",
-      "sha256": "84f468544171ce4f7fc06dabed5cb01ab4ad4ab35981d8a077b6a6f64f7e76b9",
-      "bytes": 3873
+      "sha256": "795ac916780e4ff4679054637937c2fa0d4975a8da393c301441889f3a402f61",
+      "bytes": 3918
     },
     {
       "path": "autoexperiment/judge.ps1",
-      "sha256": "5f9a0e6ddac1af13325fd5ed915052d41cf7be7296d9982de7636d34674f4ffd",
-      "bytes": 4598
+      "sha256": "37d72318fc6d3a30aecc7681bc4f42b3fb140119f1d9303711f8b194572b98f4",
+      "bytes": 4650
     },
     {
       "path": "autoexperiment/kernel.ps1",
-      "sha256": "021678d2fd867f3953cc752264b6de8456b9c17a76a106baee2183c1f9bfb214",
-      "bytes": 10943
+      "sha256": "1bf0d62fb9db8aad58abadd649cec3e3dd0d7c650a6b7898cccc6b9183063965",
+      "bytes": 11105
     },
     {
       "path": "autoexperiment/ledger.ps1",
-      "sha256": "8d2b658126f5be4e145bd5c5ab5af600b7ed272dd2dee25e7acdf1e23045f7c4",
-      "bytes": 1270
+      "sha256": "58a9fab1d8e1bb32e079834949268e6133cb845caf132aad2cf7d649fad513f2",
+      "bytes": 1285
     },
     {
       "path": "autoexperiment/markdown-optimizer.ps1",
-      "sha256": "7e8c8f678e642883d16a27b819d661b8885abc25b5b54693ca0610a93e011cd4",
-      "bytes": 3507
+      "sha256": "1b031e1961d346a7edaaa038a622a61920d378acf7b3a68ca44de8f453188a3b",
+      "bytes": 3547
     },
     {
       "path": "autoexperiment/observe.ps1",
-      "sha256": "ff93b2b9ae136603dcd111343138519d15ee8e9b1c50092b624999a6dc56bb1b",
-      "bytes": 9891
+      "sha256": "8e783d34dafd53478866eb16b84996cb1e4305616c293b051950c54e8bddadf7",
+      "bytes": 10010
     },
     {
       "path": "autoexperiment/preflight.ps1",
-      "sha256": "93f48e29d47b2b8224fa016392b4277cd97d8de42170ade92d62dcc9cb8f36aa",
-      "bytes": 18565
+      "sha256": "b438c7968611f54c8a0c613c58e7dca54b3fcb8d70e79d2f577a26eecb9235a1",
+      "bytes": 18946
     },
     {
       "path": "autoexperiment/promotion.ps1",
-      "sha256": "be9b27c6ea73fdc6e25dbd13a0156971b91857bc53e70f566af1b9d98e753cb4",
-      "bytes": 2236
+      "sha256": "ba8a1a7c7e4cce5e7ef0e5938add9842e331e6f2afac8d4a03e1c94ac924a5af",
+      "bytes": 2251
     },
     {
       "path": "autoexperiment/rank.ps1",
-      "sha256": "c57fa7cf6f0a958bbb2d822d4f841be692347dc9bfa7173cda07482b0346aeb3",
-      "bytes": 3636
+      "sha256": "a96e5045536b3bcf4c8ef0d4dcd44dfe27ac1ac2b5f9868927c7b55e94420ce5",
+      "bytes": 3690
     },
     {
       "path": "autoexperiment/register-scheduled-scans.ps1",
-      "sha256": "8ad3b136ad8f3f8b6dabd54d4a1615c4e41719548bc8afdd92abf6d90bded352",
-      "bytes": 2584
+      "sha256": "8064f16482d91215e0873a6229f82cf26547e2af720ed97dc993ad748339eb4c",
+      "bytes": 2610
     },
     {
       "path": "autoexperiment/report.ps1",
-      "sha256": "4ce6523068a45f7dca96baea0014d2123fbc538ead59dbb02cd753a8d948e1b3",
-      "bytes": 2257
+      "sha256": "d67d9cb3c35381a3106b8a593aba50ede0e96f1f617255137d1f2fe771a8348e",
+      "bytes": 2281
     },
     {
       "path": "autoexperiment/run-backup-chain.ps1",
-      "sha256": "f33a58af83fdd6949dc250f825c1af8c9ff509c76ec1191239fb062a56747f00",
-      "bytes": 2331
+      "sha256": "f085a06786776edf5f4a56c54283ca047e79994dceeb7403464c6a42b754d90c",
+      "bytes": 2380
     },
     {
       "path": "autoexperiment/sandbox.ps1",
-      "sha256": "c7d935a3a2cfe6a26fa5e37dada2d991c3f818380dad035599dba390cb614dea",
-      "bytes": 3016
+      "sha256": "aac736a13a324dfeea1cfafdfca3e15470a6bad74fc3f58420bf6aa58b5b2a88",
+      "bytes": 3068
     },
     {
       "path": "autoexperiment/scheduler.ps1",
-      "sha256": "f30b2084b6b7780df1887d5c19c865126ab266c6de6b7b60940d4ae7bb1d9100",
-      "bytes": 2384
+      "sha256": "1886b64becc9771e97b34bb0a44229b8114ed9295a932e58968cd1d52ff05769",
+      "bytes": 2408
     },
     {
       "path": "autoexperiment/scout.ps1",
-      "sha256": "c05630e6e008050cd51c9c340ad88562f49e795ef2f7c120e38cd23783853d60",
-      "bytes": 1557
+      "sha256": "265700b771d6215c75ef147702fad58913f0c5803866bcdfda22d6615318ae16",
+      "bytes": 1581
     },
     {
       "path": "autoexperiment/tests/checkpoint.tests.ps1",
-      "sha256": "88355d30eebf40469cecbbc9105b4c1402f4cafda3bceb3a5165062f6efcaf71",
-      "bytes": 6525
+      "sha256": "542ee16bb5c535c60f251be5ddb6f935d16bbfe206a50d9299b51aeff15da686",
+      "bytes": 6614
     },
     {
       "path": "autoexperiment/tests/e2e.tests.ps1",
-      "sha256": "5bdd5cb01c79ddf711842aa036980735a307ee86baad9a9077fd9ffdb1fc93e8",
-      "bytes": 3556
+      "sha256": "9dc3c252770abc9e4065d711dfa4fdcade1f7ed888fd3b925eef484c157057c1",
+      "bytes": 3576
     },
     {
       "path": "autoexperiment/tests/ingest.tests.ps1",
-      "sha256": "ee30874b7eb600d5f7ce4010f2c6b264824c372392175e8b57b6a4e36b2f1952",
-      "bytes": 4058
+      "sha256": "76f9095a5ea20f7bd2cbd103ab3f550c7e16c9a771c6bfd06df2c4c460920a0e",
+      "bytes": 4091
     },
     {
       "path": "autoexperiment/tests/judge.tests.ps1",
-      "sha256": "969a70e48f38db6478b8432d336c445893b169b3be689c0d6e4ef9ef789b85c8",
-      "bytes": 9261
+      "sha256": "0cf7fb92b135fd05b35265b0b6441ba97cf60d02316132781d978c1f0fbaf1d7",
+      "bytes": 9405
     },
     {
       "path": "autoexperiment/tests/kernel.tests.ps1",
-      "sha256": "ea58c7974eec4f260241a6d540f8bce30709e54e09b0b7671a22f6e118ac5907",
-      "bytes": 10057
+      "sha256": "c7507438c76b61421e7d60caae24bd656b96df451cb389e7403bd824209ebd74",
+      "bytes": 10241
     },
     {
       "path": "autoexperiment/tests/markdown.tests.ps1",
-      "sha256": "7e17144f8149a4e6c5b57d5bb7bfed2f584af58c2066d8525bbaf3674604d364",
-      "bytes": 4458
+      "sha256": "6adcb2b7a77a692a140960a2d66d83bcdea45fde414086377e86533c7f4c2942",
+      "bytes": 4498
     },
     {
       "path": "autoexperiment/tests/preflight.tests.ps1",
-      "sha256": "3e8a0c8ec3df289f0d232709147880f09acbd6ce21e0057acb227bd0067c9aff",
-      "bytes": 8837
+      "sha256": "050bd199bd43a54b1190b4c24a4b95494caff08718f5a3b5e1760d47c9621c8d",
+      "bytes": 8997
     },
     {
       "path": "autoexperiment/tests/scheduler.tests.ps1",
-      "sha256": "e2f5ddac86414a7141f7d5d40e2f9578278f9dc7b406a33226d7516ca228581d",
-      "bytes": 11323
+      "sha256": "f3baf427f460014bc1961d2d857cf765fe88d4b67de5cb8f2537e2243bbd3d0b",
+      "bytes": 11511
     },
     {
       "path": "ops/backup-projects-chunked-core.sh",
@@ -1342,8 +1342,8 @@
     },
     {
       "path": "ops/backup-projects-chunked.ps1",
-      "sha256": "a5fd67f939b5d43846cdead463d5885418e60219283d603536e25872f0f46827",
-      "bytes": 5857
+      "sha256": "f1ec905def1c11a737e632acdd3dc46a4e94f044faa38367b07062d44725c2ba",
+      "bytes": 5977
     },
     {
       "path": "ops/backup-projects-core.sh",
@@ -1352,8 +1352,8 @@
     },
     {
       "path": "ops/backup-projects.ps1",
-      "sha256": "2364fb15873f49f1c6901d51c369da50c86f37bef695985061be019f10bd1de7",
-      "bytes": 7853
+      "sha256": "67c4119c2ce961b8f1057cbd3b588c25ef2bad8b3279460a865efda60df2e30c",
+      "bytes": 7976
     },
     {
       "path": "ops/backup-vault-core.sh",
@@ -1362,8 +1362,8 @@
     },
     {
       "path": "ops/backup-vault.ps1",
-      "sha256": "cb1b30584160ec725845440aa2a6ad6b2e681e3d7eb86dc43dc9f9ce898a9cfa",
-      "bytes": 8259
+      "sha256": "6ca21ad11f2d95309f2d921867756a7985c53d5b9670f4606988eeb5c08cdeeb",
+      "bytes": 8396
     },
     {
       "path": "ops/backup-weekly-recovery-core.sh",
@@ -1372,13 +1372,13 @@
     },
     {
       "path": "ops/gpu-arbiter.ps1",
-      "sha256": "55e2b6e44f00115d77299c0ab064d7f20a32214de1e01871f8f9a86bb9617c89",
-      "bytes": 1783
+      "sha256": "9b759565008939d641de6d6d499c3a2c947d17c191d32fa373b8d98d9dd2aeb4",
+      "bytes": 1825
     },
     {
       "path": "ops/mcp-fleet-reaper.ps1",
-      "sha256": "7b4eaac7fa2ca53028f5527e34b7e800c8d596549021f5099185b89e6fb150e1",
-      "bytes": 2564
+      "sha256": "bcbeea13f909022b73bb114bbbfadf09ce06bd57a067dd290f7b282622931024",
+      "bytes": 2623
     },
     {
       "path": "ops/probes/backup-age-core.sh",
@@ -1387,18 +1387,18 @@
     },
     {
       "path": "ops/probes/probe-backup-freshness.ps1",
-      "sha256": "2d74a10d030452b0e49c55c747a205f0b9d7655cddc8acde8acd42ae3b08eea8",
-      "bytes": 1695
+      "sha256": "b73e817cf1d7652136689d072ee0d97348db6719b485efc484a9813b257c7aa1",
+      "bytes": 1713
     },
     {
       "path": "ops/probes/probe-__PRIVATE_TOKEN_08__.ps1",
-      "sha256": "177d34e78ab65f6d15ae1ed28c3fb14a59b2ba6b2aadf36b34792e149148f9b8",
-      "bytes": 2620
+      "sha256": "f823a3f4612556304402b61ed397dea31c11a08534d8a33168d7717383995ee4",
+      "bytes": 2658
     },
     {
       "path": "ops/probes/probe-model-catalog.ps1",
-      "sha256": "941d0d90188c1082ca25c192614a6c81215e3959520e38b250e732a4da13aa1e",
-      "bytes": 3396
+      "sha256": "d95c8f9185046ddfcd66a50922246e4f1e471bef8afcba05be41ced0b1f623e8",
+      "bytes": 3449
     },
     {
       "path": "ops/projects-backup-excludes.txt",
@@ -1407,13 +1407,13 @@
     },
     {
       "path": "ops/reenable-daily-backup-tasks.ps1",
-      "sha256": "3401b785f138ec991c2372ee1f6b7e79929c931342859307c3ef2d2a5e4d9c00",
-      "bytes": 309
+      "sha256": "0d760bc58c8e2f0b35a69fcf53bbd2736e615c03dc3d5540b60dbb5b7b4e14ac",
+      "bytes": 315
     },
     {
       "path": "ops/register-vps-backup-tasks.ps1",
-      "sha256": "7bf1eaca40c6830e92f0ae776626a12bcca3c6ed729b3f36e6187ea448c60fb2",
-      "bytes": 5517
+      "sha256": "846d3ea3bc3ab1d5a9e2981ad515f9ce5aad2bcc456eda0a629e6080e1b6ac35",
+      "bytes": 5632
     },
     {
       "path": "ops/restore-verify-projects-core.sh",
@@ -1422,28 +1422,28 @@
     },
     {
       "path": "ops/restore-verify-projects.ps1",
-      "sha256": "1a200c6abac58a4e343e31b57793bffafb237b277f95d8d9b3d1db4661378aeb",
-      "bytes": 807
+      "sha256": "87ae1416e77c6b5fc38fa3ca2c02572f96965ee42fc10f761cb55bab3d089964",
+      "bytes": 822
     },
     {
       "path": "ops/restore-verify.ps1",
-      "sha256": "2edd25f2f484ce3781cedd2eaa99932bea1d24ba3d43164ec2021b45c8cfd1a8",
-      "bytes": 4836
+      "sha256": "728d59fcc792ab242ab754395c2fe3a9c6cf5106fdda4e0e1ee196110fab73d1",
+      "bytes": 4909
     },
     {
       "path": "ops/tests/backup-projects-core.tests.ps1",
-      "sha256": "76d15d4a0c5fdcf2b5722a193033f6fd41df3c8756943ca0d168ce10dcd5c3fc",
-      "bytes": 1602
+      "sha256": "893209dc3a476728bdb8900a4c3a0aa3326f213d3e39a7eae9c58f4aef1f3e86",
+      "bytes": 1640
     },
     {
       "path": "ops/upgrade.ps1",
-      "sha256": "db80fde694a7c533adfd2bfbe8daf460b8da28b97e07c0dbb174c53bf161f481",
-      "bytes": 1984
+      "sha256": "5feb673aa3cb952a4c702f145952815c9674942d7b51fe4a4c12fc1e98c24404",
+      "bytes": 2022
     },
     {
       "path": "ops/write-daily-recovery-manifest.ps1",
-      "sha256": "568dee09fee2a610288dfc1cc35daa26c8e60b5ab79e160b3ed35a2775d930f3",
-      "bytes": 3052
+      "sha256": "7032c5ca5622bf5301c1b9a22b24490b67b839711c8024b40507839ddfd59fca",
+      "bytes": 3119
     },
     {
       "path": "workspace-support/.claude/AUTHORITY-CONSTITUTION.md",

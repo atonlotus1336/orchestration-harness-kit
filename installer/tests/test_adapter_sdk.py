@@ -53,7 +53,7 @@ def test_reference_bridge_preserves_core_accounting_and_lane():
     result = bridge.dispatch(
         {
             "operation": "routing.prime.select",
-            "payload": {"task": {"requires_omp": True, "text": "Implement the bounded change", "declared_paths": ["src/a.py", "src/b.py"], "risk_tier": "low"}, "task_tier": "atomic"},
+            "payload": {"task": {"requires_omp": True, "text": "Implement the bounded change", "declared_paths": ["src/a.py", "src/b.py"], "risk_tier": "low", "verification_command_id": "pytest"}, "task_tier": "atomic"},
             "session_id": "test-session",
             "session_state": "active",
         }

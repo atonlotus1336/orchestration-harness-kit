@@ -134,7 +134,7 @@ def operation_requests(context_items: list[dict]) -> list[dict]:
         request("memory.write", {"scope": "session", "records": [{"note": "portable memory"}], "purpose": "test"}),
         request("memory.read", {"scope": "session", "query": "portable", "purpose": "test"}),
         request("retrieval.query", {"query": "orchestration", "purpose": "test"}),
-        request("routing.prime.select", {"task": {"requires_omp": True, "text": "Implement the bounded change", "declared_paths": ["src/a.py", "src/b.py"], "risk_tier": "low"}, "task_tier": "standard"}),
+        request("routing.prime.select", {"task": {"requires_omp": True, "text": "Implement the bounded change", "declared_paths": ["src/a.py", "src/b.py"], "risk_tier": "low", "verification_command_id": "pytest"}, "task_tier": "standard"}),
         request("execution.omp.request", {"job_reference": "job-1", "task": "test", "context_reference": "context-1", "capability_limits": {"apply_changes": False}}),
         request("execution.omp.patch", {"worker_reference": "worker-job-1"}),
         request("authority.decide", {"action": "provider_call", "resource": "subscription", "risk": "high", "approval_reference": "approval-test"}),

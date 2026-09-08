@@ -12,6 +12,8 @@ class ReviewBudget:
     max_tool_calls: int
     max_elapsed_seconds: int
     max_lens_excerpts: int = 0
+    max_output_tokens: int = 0
+    max_total_tokens: int = 0
 
     @classmethod
     def from_mapping(cls, value: Mapping[str, int]) -> "ReviewBudget":

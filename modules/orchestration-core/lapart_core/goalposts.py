@@ -214,7 +214,7 @@ def evaluate(state: dict, observations: dict, root: Path, *, now: float | None =
         except (OSError, GoalpostError, AttributeError):
             artifacts[ident] = None
     evidence_id = digest({"inputs": current, "artifacts": artifacts, "observations": observations,
-                          "active_seconds": state["active_seconds"], "completion": completion})
+                          "active_seconds": state["active_seconds"], "completion": completion, "milestone": milestone})
     if (now - state["created_at"] < contract["max_wall_seconds"]
             and state["history"] and state["history"][-1]["evidence_id"] == evidence_id):
         return state["history"][-1]
@@ -270,6 +270,8 @@ def evaluate(state: dict, observations: dict, root: Path, *, now: float | None =
         stop_reason = "no measurable progress; endpoint may be infeasible"
     decision = "complete" if all_pass else "checkpoint" if stop_reason else "iterate"
     report = {"goal_id": contract["goal_id"], "round": round_count, "decision": decision,
+        "trigger": "pre_completion" if completion else "milestone" if milestone else
+            "active_work_goalpost" if state["active_seconds"] - state["evaluated_seconds"] >= contract["cadence_seconds"] else "checkpoint",
         "reason": "fixed endpoint and every category passed" if all_pass else stop_reason or "address the weakest evidence-backed categories",
         "input_fingerprint": current, "evidence_id": evidence_id,
         "active_seconds": state["active_seconds"], "endpoint": endpoint,

@@ -1,6 +1,6 @@
 [CmdletBinding()]
 param(
-    [string]$ClientId = "DESKTOP-2S7VQDO",
+    [string]$ClientId = "thin-client",
     [string]$Endpoint = "http://__TAILSCALE_IPV4__:8642",
     [Parameter(Mandatory)][string]$ReportId,
     [string]$PublicKeyPath,

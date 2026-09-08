@@ -1,27 +1,33 @@
 #!/usr/bin/env bash
-# Full-repo leak scan — the companion the pre-commit hook cannot be.
-#
-# WHY THIS EXISTS: .githooks/pre-commit scans only STAGED files
-# (git diff --cached). That catches new leaks, but anything committed
-# BEFORE a token was added to .private-denylist stays invisible forever —
-# the scanner never re-reads untouched files. Proven 2026-08-01: two
-# project-name leaks survived four scrub passes this way.
-#
-# Run after ANY denylist addition, and periodically. Read-only.
-set -uo pipefail
+# Scan raw tracked and non-ignored untracked bytes before publication.
+set -euo pipefail
 cd "$(dirname "$0")/.."
-[ -f .private-denylist ] || { echo "no .private-denylist (recipients: add your own tokens)"; exit 0; }
+if [ ! -f .private-denylist ]; then
+  echo "BLOCKED: missing local privacy policy"; exit 1
+fi
+patterns=$(mktemp)
+files=$(mktemp)
+trap 'rm -f -- "$patterns" "$files"' EXIT
+sed 's/\r$//' .private-denylist | grep -vE '^[[:space:]]*(#|$)' > "$patterns" || true
+if [ ! -s "$patterns" ]; then
+  echo "BLOCKED: empty local privacy policy"; exit 1
+fi
+# These ignored maintainer inputs are never publishable, even in a test repository.
+git ls-files --cached --others --exclude-standard -z -- . ':!/.private-denylist' ':!/.sanitize-rules.local.json' > "$files"
 fail=0
-while IFS= read -r tok; do
-  [ -z "$tok" ] && continue
-  case "$tok" in \#*) continue ;; esac
-  while IFS= read -r f; do
+count=0
+while IFS= read -r tok || [ -n "$tok" ]; do
+  count=$((count+1))
+  code=0; grep -Eqs -e "$tok" /dev/null || code=$?
+  if [ "$code" -gt 1 ]; then echo "BLOCKED: invalid privacy rule $count"; exit 1; fi
+  while IFS= read -r -d '' f; do
     [ -f "$f" ] || continue
-    if grep -Iiqs -e "$tok" -- "$f"; then
-      echo "LEAK  $f  <- token: $tok"
-      fail=1
+    code=0; grep -IiqEs -e "$tok" -- "$f" || code=$?
+    if [ "$code" -gt 1 ]; then echo "BLOCKED: cannot scan $f"; exit 1; fi
+    if [ "$code" -eq 0 ]; then
+      echo "LEAK  $f (privacy rule $count)"; fail=1
     fi
-  done < <(git ls-files)
-done < .private-denylist
-[ "$fail" -eq 0 ] && echo "full-repo scan clean ($(git ls-files | wc -l) tracked files)"
-exit $fail
+  done < "$files"
+done < "$patterns"
+[ "$fail" -ne 0 ] || echo "full-repo scan clean"
+exit "$fail"

@@ -256,7 +256,7 @@ async def aggregate_live(route_path: Path, live: bool, timeout: float, requested
             operator_ok = (
                 operator["status"] == "READY" and operator["go_eligible"] is True
                 and operator_report_id == report_id
-                and operator["client_id"] == "NUCBOX-MINI-ULTRA"
+                and operator["client_id"] == "stack-host"
                 and operator["endpoint"] == "http://127.0.0.1:8642"
                 and consumed_evidence_matches(DESKTOP_STORE, operator)
             )
@@ -274,7 +274,7 @@ async def aggregate_live(route_path: Path, live: bool, timeout: float, requested
             desktop_ok = (
                 desktop["status"] == "READY" and desktop["go_eligible"] is True
                 and desktop_report_id == report_id
-                and desktop["client_id"] == "DESKTOP-2S7VQDO"
+                and desktop["client_id"] == "thin-client"
                 and desktop["endpoint"] == "http://__TAILSCALE_IPV4__:8642"
                 and consumed_evidence_matches(DESKTOP_STORE, desktop)
             )

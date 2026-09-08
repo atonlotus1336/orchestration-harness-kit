@@ -6,7 +6,7 @@ set -euo pipefail
 profile="${1:-}"
 machine="$(hostname)"
 shopt -s nocasematch
-if [[ ! "$machine" =~ ^NUCBOX[-_]M6ULTRA$ ]]; then
+if [[ ! "$machine" =~ ^stack-host$ ]]; then
     echo "refusing gateway restart outside NUCBOX authority" >&2
     exit 1
 fi

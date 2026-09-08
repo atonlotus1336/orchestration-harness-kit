@@ -4,7 +4,7 @@
   "authority_machine": "stack-host",
   "machines": {
     "stack-host": {
-      "aliases": ["NUCBOX_M6ULTRA", "nucbox-m6ultra"],
+      "aliases": ["alice", "stack-host"],
       "role": "repair-authority",
       "windows_user": "__OWNER_HANDLE__",
       "wsl_distro": "__WSL_DISTRO__",
@@ -12,7 +12,7 @@
       "allowed_sources": ["nucbox-local", "repair-verifier"]
     },
     "thin-client": {
-      "aliases": ["DESKTOP-2S7VQDO"],
+      "aliases": ["thin-client"],
       "role": "independent-verifier",
       "windows_user": "__OWNER_HANDLE__",
       "allowed_sources": ["desktop-probe", "repair-verifier"]

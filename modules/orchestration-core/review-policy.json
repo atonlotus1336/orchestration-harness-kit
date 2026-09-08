@@ -3,55 +3,298 @@
   "schema_version": "1.0",
   "rollout_mode": "shadow",
   "scopes": {
-    "checkpoint": {"allowed": ["S0", "S1"], "minimum": "S0"},
-    "plan": {"allowed": ["S1", "S2", "S3", "S4"], "minimum": "S1", "s4_confirmation_required": true},
-    "phase": {"allowed": ["S0", "S1", "S2", "S3"], "minimum": "S0", "incremental": true},
-    "system": {"allowed": ["S4"], "minimum": "S4", "manual_only": true}
+    "checkpoint": {
+      "allowed": [
+        "S0",
+        "S1"
+      ],
+      "minimum": "S0"
+    },
+    "plan": {
+      "allowed": [
+        "S1",
+        "S2",
+        "S3",
+        "S4"
+      ],
+      "minimum": "S1",
+      "s4_confirmation_required": true
+    },
+    "phase": {
+      "allowed": [
+        "S0",
+        "S1",
+        "S2",
+        "S3"
+      ],
+      "minimum": "S0",
+      "incremental": true
+    },
+    "system": {
+      "allowed": [
+        "S4"
+      ],
+      "minimum": "S4",
+      "manual_only": true
+    }
   },
   "selection": {
     "unknown_rule": "promote_or_inconclusive",
     "thresholds": {
-      "S0": {"max_files": 2, "max_changed_lines": 80, "max_subsystems": 1, "requires": ["mechanical_or_exact", "independent_deterministic_validation", "no_unknown_load_bearing_fact", "no_risk_trigger"]},
-      "S1": {"max_files": 6, "max_changed_lines": 400, "max_subsystems": 1, "requires": ["localized_nontrivial", "no_S2_or_S3_trigger"]},
-      "S2": {"max_files": 15, "max_changed_lines": 1200, "max_subsystems": 2, "any_trigger": ["behavior_changed_with_incomplete_evidence", "tests_or_gates_changed", "maintenance_hotspot", "one_specialist_trigger"]},
-      "S3": {"hard_scope_ceiling_files": 40, "any_trigger": ["multiple_subsystems", "public_interface", "architecture", "security", "migration", "persistence", "concurrency", "data_loss"]},
-      "S4": {"automatic_start": false, "any_trigger": ["explicit_system_request", "plan_completion_system_review_recommendation"]}
+      "S0": {
+        "max_files": 2,
+        "max_changed_lines": 80,
+        "max_subsystems": 1,
+        "requires": [
+          "mechanical_or_exact",
+          "independent_deterministic_validation",
+          "no_unknown_load_bearing_fact",
+          "no_risk_trigger"
+        ]
+      },
+      "S1": {
+        "max_files": 6,
+        "max_changed_lines": 400,
+        "max_subsystems": 1,
+        "requires": [
+          "localized_nontrivial",
+          "no_S2_or_S3_trigger"
+        ]
+      },
+      "S2": {
+        "max_files": 15,
+        "max_changed_lines": 1200,
+        "max_subsystems": 2,
+        "any_trigger": [
+          "behavior_changed_with_incomplete_evidence",
+          "tests_or_gates_changed",
+          "maintenance_hotspot",
+          "one_specialist_trigger"
+        ]
+      },
+      "S3": {
+        "hard_scope_ceiling_files": 40,
+        "any_trigger": [
+          "multiple_subsystems",
+          "public_interface",
+          "architecture",
+          "security",
+          "migration",
+          "persistence",
+          "concurrency",
+          "data_loss"
+        ]
+      },
+      "S4": {
+        "automatic_start": false,
+        "any_trigger": [
+          "explicit_system_request",
+          "plan_completion_system_review_recommendation"
+        ]
+      }
     }
   },
   "pipelines": {
-    "S0": ["facts", "deterministic_checks", "receipt"],
-    "S1": ["facts", "deterministic_checks", "ponytail-review", "receipt"],
-    "S2": ["facts", "deterministic_checks", "ponytail-review", "evidence-integrity-audit", "triggered_specialist", "receipt"],
-    "S3": ["facts", "improve-codebase-architecture", "ponytail-review", "evidence-integrity-audit", "triggered_specialist", "receipt"],
-    "S4": ["ponytail-audit", "ponytail-debt", "improve", "triggered_specialist", "receipt"]
+    "S0": [
+      "facts",
+      "deterministic_checks",
+      "receipt"
+    ],
+    "S1": [
+      "facts",
+      "deterministic_checks",
+      "ponytail-review",
+      "receipt"
+    ],
+    "S2": [
+      "facts",
+      "deterministic_checks",
+      "ponytail-review",
+      "evidence-integrity-audit",
+      "triggered_specialist",
+      "receipt"
+    ],
+    "S3": [
+      "facts",
+      "improve-codebase-architecture",
+      "ponytail-review",
+      "evidence-integrity-audit",
+      "triggered_specialist",
+      "receipt"
+    ],
+    "S4": [
+      "ponytail-audit",
+      "ponytail-debt",
+      "improve",
+      "triggered_specialist",
+      "receipt"
+    ]
   },
   "budgets": {
-    "S0": {"max_files": 4, "max_context_bytes": 16384, "max_model_calls": 0, "max_estimated_input_tokens": 0, "max_tool_calls": 12, "max_elapsed_seconds": 120, "max_lens_excerpts": 0},
-    "S1": {"max_files": 6, "max_context_bytes": 32768, "max_model_calls": 1, "max_estimated_input_tokens": 8192, "max_tool_calls": 20, "max_elapsed_seconds": 300, "max_lens_excerpts": 1},
-    "S2": {"max_files": 15, "max_context_bytes": 65536, "max_model_calls": 3, "max_estimated_input_tokens": 16384, "max_tool_calls": 40, "max_elapsed_seconds": 600, "max_lens_excerpts": 1},
-    "S3": {"max_files": 40, "max_context_bytes": 131072, "max_model_calls": 5, "max_estimated_input_tokens": 32768, "max_tool_calls": 80, "max_elapsed_seconds": 1200, "max_lens_excerpts": 1},
-    "S4": {"max_files": 80, "max_context_bytes": 262144, "max_model_calls": 7, "max_estimated_input_tokens": 65536, "max_tool_calls": 120, "max_elapsed_seconds": 1800, "max_lens_excerpts": 1}
+    "S0": {
+      "max_files": 4,
+      "max_context_bytes": 16384,
+      "max_model_calls": 0,
+      "max_estimated_input_tokens": 0,
+      "max_tool_calls": 12,
+      "max_elapsed_seconds": 120,
+      "max_lens_excerpts": 0,
+      "max_output_tokens": 0,
+      "max_total_tokens": 0
+    },
+    "S1": {
+      "max_files": 6,
+      "max_context_bytes": 32768,
+      "max_model_calls": 1,
+      "max_estimated_input_tokens": 8192,
+      "max_tool_calls": 20,
+      "max_elapsed_seconds": 300,
+      "max_lens_excerpts": 1,
+      "max_output_tokens": 2048,
+      "max_total_tokens": 10240
+    },
+    "S2": {
+      "max_files": 15,
+      "max_context_bytes": 65536,
+      "max_model_calls": 3,
+      "max_estimated_input_tokens": 16384,
+      "max_tool_calls": 40,
+      "max_elapsed_seconds": 600,
+      "max_lens_excerpts": 1,
+      "max_output_tokens": 6144,
+      "max_total_tokens": 22528
+    },
+    "S3": {
+      "max_files": 40,
+      "max_context_bytes": 131072,
+      "max_model_calls": 5,
+      "max_estimated_input_tokens": 32768,
+      "max_tool_calls": 80,
+      "max_elapsed_seconds": 1200,
+      "max_lens_excerpts": 1,
+      "max_output_tokens": 10240,
+      "max_total_tokens": 43008
+    },
+    "S4": {
+      "max_files": 80,
+      "max_context_bytes": 262144,
+      "max_model_calls": 7,
+      "max_estimated_input_tokens": 65536,
+      "max_tool_calls": 120,
+      "max_elapsed_seconds": 1800,
+      "max_lens_excerpts": 1,
+      "max_output_tokens": 14336,
+      "max_total_tokens": 79872
+    }
   },
   "overlap_groups": {
-    "changed_scope_simplicity": ["ponytail-review", "pragmatic-review"],
-    "same_identity_exclusion": ["ponytail-review", "ponytail-audit"]
+    "changed_scope_simplicity": [
+      "ponytail-review",
+      "pragmatic-review"
+    ],
+    "same_identity_exclusion": [
+      "ponytail-review",
+      "ponytail-audit"
+    ]
   },
-  "blocking_proof_forms": ["reproducible_failed_test_tied_to_acceptance", "concrete_security_exploit_or_violated_assertion", "demonstrated_data_loss_state", "broken_declared_interface_or_contract", "load_bearing_verification_gate_proven_VOID"],
-  "advisory_only_without_blocking_proof": ["simplicity", "maintainability", "architecture", "performance", "style", "documentation"],
-  "content_identity_fields": ["repository_fingerprint", "scope", "base_identity", "head_or_snapshot_identity", "declared_path_set_sha256", "policy_fingerprint"],
+  "blocking_proof_forms": [
+    "reproducible_failed_test_tied_to_acceptance",
+    "concrete_security_exploit_or_violated_assertion",
+    "demonstrated_data_loss_state",
+    "broken_declared_interface_or_contract",
+    "load_bearing_verification_gate_proven_VOID"
+  ],
+  "advisory_only_without_blocking_proof": [
+    "simplicity",
+    "maintainability",
+    "architecture",
+    "performance",
+    "style",
+    "documentation"
+  ],
+  "content_identity_fields": [
+    "repository_fingerprint",
+    "scope",
+    "base_identity",
+    "head_or_snapshot_identity",
+    "declared_path_set_sha256",
+    "policy_fingerprint"
+  ],
   "notification": {
-    "states": ["review_ready", "S4_confirmation_required", "user_confirmed", "deferred", "waived", "remediation_selected"],
-    "required_fields": ["execution_status", "review_pipeline", "review_verdict", "finding_counts", "git_status", "receipt_path", "commit_status"],
-    "s4_actions": ["Run now", "Later", "Skip"]
+    "states": [
+      "review_ready",
+      "S4_confirmation_required",
+      "user_confirmed",
+      "deferred",
+      "waived",
+      "remediation_selected"
+    ],
+    "required_fields": [
+      "execution_status",
+      "review_pipeline",
+      "review_verdict",
+      "finding_counts",
+      "git_status",
+      "receipt_path",
+      "commit_status"
+    ],
+    "s4_actions": [
+      "Run now",
+      "Later",
+      "Skip"
+    ]
   },
-  "execution_review_separation": {"execution_lanes": ["T0", "T1", "T2", "T3", "T4"], "review_pipelines": ["S0", "S1", "S2", "S3", "S4"], "mapping": "none"},
+  "execution_review_separation": {
+    "execution_lanes": [
+      "T0",
+      "T1",
+      "T2",
+      "T3",
+      "T4"
+    ],
+    "review_pipelines": [
+      "S0",
+      "S1",
+      "S2",
+      "S3",
+      "S4"
+    ],
+    "mapping": "none"
+  },
   "evaluation_hooks": {
     "automatic": true,
     "model_calls": 0,
     "architecture_delta": {
-      "always_for": ["S3", "S4"],
+      "always_for": [
+        "S3",
+        "S4"
+      ],
       "cross_subsystem_minimum": 2,
-      "structural_path_tokens": ["adapter", "adapters", "api", "architecture", "config", "contracts", "database", "db", "integration", "integrations", "migration", "migrations", "package.json", "policies", "policy", "protocol", "pyproject.toml", "router", "routing", "schema", "schemas", "workflow", "workflows"]
+      "structural_path_tokens": [
+        "adapter",
+        "adapters",
+        "api",
+        "architecture",
+        "config",
+        "contracts",
+        "database",
+        "db",
+        "integration",
+        "integrations",
+        "migration",
+        "migrations",
+        "package.json",
+        "policies",
+        "policy",
+        "protocol",
+        "pyproject.toml",
+        "router",
+        "routing",
+        "schema",
+        "schemas",
+        "workflow",
+        "workflows"
+      ]
     },
     "learning_candidate": {
       "automatic": true,
@@ -65,12 +308,25 @@
     "s0": {
       "model_calls": 0,
       "semantic_hunk_analysis": false,
-      "collect": ["actual_changed_paths", "outside_declared_paths", "deterministic_test_results", "regression_evidence_status", "exemption_and_alternative_status", "available_static_analysis_results"]
+      "collect": [
+        "actual_changed_paths",
+        "outside_declared_paths",
+        "deterministic_test_results",
+        "regression_evidence_status",
+        "exemption_and_alternative_status",
+        "available_static_analysis_results"
+      ]
     },
     "s1_plus": {
       "additional_model_calls": 0,
       "reuse_existing_reviewer_call": true,
-      "checks": ["semantic_hunk_traceability", "unrelated_change", "cleanup_boundary", "current_change_orphan", "regression_exemption_credibility"]
+      "checks": [
+        "semantic_hunk_traceability",
+        "unrelated_change",
+        "cleanup_boundary",
+        "current_change_orphan",
+        "regression_exemption_credibility"
+      ]
     }
   }
 }

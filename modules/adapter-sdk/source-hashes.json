@@ -13,6 +13,6 @@
     "modules/adapter-sdk/templates/README.md": "b03059e2cc12b729f641835cd7405393b15f0ee1814e18aae54d05f82d242887",
     "modules/adapter-sdk/templates/adapter.py": "2c342a07a833f663d11447a2d85e6b0daedac38b054a2967e89752e7135ff4b7",
     "modules/adapter-sdk/templates/harness-manifest.json": "02728ee9e863250577fb2594ae0b981f45dab5a6ca015fe37c1f55600406e398",
-    "modules/adapter-sdk/verify-adapter-sdk.py": "ee33e6870eca7d2b45fbf435f8509db1bd3cfdb108c413d8670ba8b8e436e07d"
+    "modules/adapter-sdk/verify-adapter-sdk.py": "c6113326ab7327fcba95529d1cc0cec7942fc2bf5d57b6f8a91f0239f198fd24"
   }
 }

@@ -106,7 +106,7 @@ def make_key_and_enrollment(tmp_path: Path) -> tuple[Path, Path, str]:
         "ttl_seconds": 300,
         "clock_skew_seconds": 30,
         "clients": {
-            "DESKTOP-2S7VQDO": {
+            "thin-client": {
                 "endpoint": "http://__TAILSCALE_IPV4__:8642",
                 "public_key": public.read_text(encoding="utf-8").strip(),
                 "fingerprint": fingerprint,
@@ -134,7 +134,7 @@ def enrolled_begin(tmp_path: Path, now: int = 1_000_000) -> tuple[Path, Path, di
     private, enrollment, fingerprint = make_key_and_enrollment(tmp_path)
     store = tmp_path / "nonces.sqlite3"
     result = begin_run(
-        enrollment, store, "DESKTOP-2S7VQDO", "http://__TAILSCALE_IPV4__:8642",
+        enrollment, store, "thin-client", "http://__TAILSCALE_IPV4__:8642",
         uuid.uuid4().hex, True, fingerprint, now,
     )
     assert result["unsigned"]["key_status"] == "ENROLLED"
@@ -160,7 +160,7 @@ def test_missing_or_unavailable_signer_closes_without_challenge(tmp_path: Path) 
     validator = Draft202012Validator(schema)
     missing = begin_run(
         ROOT / "contracts" / "prime-desktop-attesters.json", tmp_path / "missing.sqlite3",
-        "DESKTOP-2S7VQDO", "http://__TAILSCALE_IPV4__:8642", uuid.uuid4().hex, True,
+        "thin-client", "http://__TAILSCALE_IPV4__:8642", uuid.uuid4().hex, True,
     )
     assert missing["challenge"] is None
     assert missing["unsigned"]["key_status"] == "MISSING"
@@ -170,7 +170,7 @@ def test_missing_or_unavailable_signer_closes_without_challenge(tmp_path: Path) 
 
     _, enrolled, fingerprint = make_key_and_enrollment(tmp_path)
     unavailable = begin_run(
-        enrolled, tmp_path / "unavailable.sqlite3", "DESKTOP-2S7VQDO",
+        enrolled, tmp_path / "unavailable.sqlite3", "thin-client",
         "http://__TAILSCALE_IPV4__:8642", uuid.uuid4().hex, False, fingerprint,
     )
     assert unavailable["challenge"] is None
@@ -179,15 +179,14 @@ def test_missing_or_unavailable_signer_closes_without_challenge(tmp_path: Path) 
     validator.validate(unavailable["unsigned"])
 
 
-def test_repository_enrolls_nucbox_operator_without_enrolling_deferred_desktop() -> None:
+def test_repository_requires_recipient_enrollment() -> None:
     enrollment = json.loads((ROOT / "contracts" / "prime-desktop-attesters.json").read_text(encoding="utf-8"))
-    operator = enrollment["clients"]["NUCBOX-MINI-ULTRA"]
-    desktop = enrollment["clients"]["DESKTOP-2S7VQDO"]
+    operator = enrollment["clients"]["stack-host"]
+    desktop = enrollment["clients"]["thin-client"]
     assert enrollment["namespace"] == "hermes-prime-attester-v1"
     assert enrollment["principal"] == "hermes-prime-attester@__PRIVATE_TOKEN_02__"
     assert operator["endpoint"] == "http://127.0.0.1:8642"
-    assert operator["public_key"].startswith("ssh-ed25519 ")
-    assert operator["fingerprint"] == "SHA256:gDHP9I9jTVRHtITnBSX5v4UfR68HO7CO6ZbpXtjRkDM"
+    assert operator["public_key"] is None and operator["fingerprint"] is None
     assert desktop["public_key"] is None and desktop["fingerprint"] is None
 
 
@@ -197,7 +196,7 @@ def test_mismatched_fingerprint_or_endpoint_issues_no_challenge(tmp_path: Path) 
         ("http://__TAILSCALE_IPV4__:8642", "SHA256:" + "A" * 43),
         ("http://127.0.0.1:8642", fingerprint),
     ]:
-        result = begin_run(enrollment, tmp_path / "mismatch.sqlite3", "DESKTOP-2S7VQDO", endpoint, uuid.uuid4().hex, True, presented)
+        result = begin_run(enrollment, tmp_path / "mismatch.sqlite3", "thin-client", endpoint, uuid.uuid4().hex, True, presented)
         assert result["challenge"] is None
         assert result["unsigned"]["key_status"] == "MISMATCH"
 

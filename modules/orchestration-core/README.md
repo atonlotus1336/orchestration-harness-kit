@@ -69,10 +69,19 @@ judgment, active-time checkpoints, and regression protection. Start with
 goal-contract.example.json. Run verify-core.py --selftest to test this part.
 
 routing.prime.select returns separate execution and review classifications.
-T4 needs explicit autonomous intent. T2 remains gated to T3. Missing evidence
+T4 needs explicit autonomous intent. The recipient default keeps T2 gated to T3 until that runtime passes its paired
+qualification; qualified local runtimes can promote T2 independently. Missing evidence
 cannot qualify a lower execution lane. S0-S4 review floors are independent.
 Classification makes no reviewer calls and never reports review completion.
 
 See ../../docs/v2/GOALS-AND-ROUTING.md for setup, evidence, exit codes, and
 cross-harness continuation. Hosts must call the goalpost command at work
 boundaries; native sessions do not acquire background timers from installation.
+
+### Bounded T2 readiness
+
+T2 can now be enabled through the shared execution contract after qualification;
+it is no longer permanently hardcoded to T3. The recipient default remains
+unpromoted until that recipient qualifies its own runtime. Eligible work needs one or two low-risk files and
+a behavioral test or semantic assertions. See docs/v2/GOALS-AND-ROUTING.md for
+the evidence, retry rules, and promotion procedure. Routing checks use no model.

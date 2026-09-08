@@ -17,6 +17,7 @@ POLICY_KEYS = {
     "protocol_versions",
     "routing_policy",
     "t2_actual_lane",
+    "execution_value",
     "subscription_first",
     "pay_per_token_allowed",
     "external_effects_require_approval",
@@ -48,6 +49,7 @@ class CorePolicy:
     protocol_versions: tuple[int, ...]
     routing_policy: str
     t2_actual_lane: str
+    execution_value: Mapping
     subscription_first: bool
     pay_per_token_allowed: bool
     external_effects_require_approval: bool
@@ -73,8 +75,18 @@ class CorePolicy:
             raise CoreError("POLICY_INVALID", "Core policy schema is unsupported.")
         if value.get("protocol_versions") != [1, 2]:
             raise CoreError("POLICY_INVALID", "Protocol versions must preserve v1 and v2.")
-        if value.get("routing_policy") != "gated" or value.get("t2_actual_lane") != "T3":
-            raise CoreError("POLICY_INVALID", "Gated routing must map T2 to T3.")
+        if value.get("routing_policy") != "gated" or value.get("t2_actual_lane") not in {"T2", "T3"}:
+            raise CoreError("POLICY_INVALID", "Gated routing requires a supported T2 destination.")
+        from .execution_value_router import ExecutionValuePolicy, ExecutionValuePolicyError
+        try:
+            execution = ExecutionValuePolicy(value["execution_value"])
+        except (ExecutionValuePolicyError, TypeError, KeyError) as exc:
+            raise CoreError("POLICY_INVALID", "Execution routing contract is invalid.") from exc
+        promoted = "T2_OMP_LITE" in execution.value["promoted_lanes"]
+        if (execution.value["mode"] != "gated"
+                or execution.value["omp_lite"].get("require_verification") is not True
+                or value["t2_actual_lane"] != ("T2" if promoted else "T3")):
+            raise CoreError("POLICY_INVALID", "T2 destination and verified eligibility must match the shared contract.")
         boolean_fields = {
             "subscription_first": True,
             "pay_per_token_allowed": False,
@@ -127,7 +139,8 @@ class CorePolicy:
         return cls(
             protocol_versions=(1, 2),
             routing_policy="gated",
-            t2_actual_lane="T3",
+            t2_actual_lane=value["t2_actual_lane"],
+            execution_value=MappingProxyType(execution.value),
             subscription_first=True,
             pay_per_token_allowed=False,
             external_effects_require_approval=True,

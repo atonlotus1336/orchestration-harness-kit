@@ -33,7 +33,7 @@ def select_prime_lane(task: Any, task_tier: str, policy: CorePolicy) -> dict[str
     if not isinstance(task_tier, str) or task_tier not in TIERS:
         raise CoreError("INVALID_TASK_TIER", "Task tier is not supported.")
     if not isinstance(task, dict) or set(task) - (BOOL_FACTS | {
-        "text", "declared_paths", "semantic_assertions", "risk_tier"
+        "text", "declared_paths", "semantic_assertions", "risk_tier", "verification_command_id"
     }):
         raise CoreError("ROUTING_FACTS_INVALID", "Task must contain supported routing facts.")
     if any(type(task[key]) is not bool for key in BOOL_FACTS & task.keys()):
@@ -57,14 +57,14 @@ def select_prime_lane(task: Any, task_tier: str, policy: CorePolicy) -> dict[str
     elif not text.strip() or not paths:
         recommended, reason = "T3", "INSUFFICIENT_EVIDENCE_FOR_LOWER_LANE"
     else:
-        execution = ExecutionValuePolicy({
-            "schema_version": "1.0", "mode": "gated",
-            "promoted_lanes": ["T0_DETERMINISTIC", "T1_NATIVE"],
-            "maximum_escalations": 1,
-            "omp_lite": {"maximum_files": 2, "allowed_risk_tiers": ["low"],
-                         "require_semantic_assertion": False},
-        }).decide(task=text, declared_paths=paths, risk_tier=risk,
-                  semantic_assertions=assertions)
+        try:
+            execution = ExecutionValuePolicy(policy.execution_value).decide(
+                task=text, declared_paths=paths, risk_tier=risk,
+                semantic_assertions=assertions,
+                verification_command_id=task.get("verification_command_id"),
+            )
+        except ValueError as exc:
+            raise CoreError("ROUTING_FACTS_INVALID", str(exc)) from exc
         recommended = execution.recommended_lane.split("_")[0]
         reason = execution.reason
         if task.get("requires_omp") and recommended in {"T0", "T1"}:

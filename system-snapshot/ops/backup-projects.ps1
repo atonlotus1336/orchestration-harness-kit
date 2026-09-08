@@ -1,4 +1,4 @@
-﻿param(
+param(
   [ValidateSet('Weekly', 'Monthly', 'MonthlyDue')]
   [string]$Kind,
   # How old the last good VPS snapshot may be before a "not due" skip is treated
@@ -14,12 +14,12 @@
 $ErrorActionPreference = 'Stop'
 
 # 2026-07-25 MACHINE GUARD: nucbox-only (Ubuntu-restored distro + WSL backup key + physical G:).
-# The task gets registered on both PCs by the drive-watchdog; on DESKTOP-2S7VQDO every run can only
+# The task gets registered on both PCs by the drive-watchdog; on thin-client every run can only
 # fail. Exit 0 = wrong machine, not success-of-a-backup. See MACHINE-IDENTITY.md.
-# NOTE: the REAL computer name is NUCBOX_M6ULTRA (underscore); Tailscale shows it as
-# nucbox-m6ultra (hyphen) because Tailscale rewrites underscores. Accept both.
-if ($env:COMPUTERNAME -notmatch '^NUCBOX[-_]M6ULTRA$') {
-  Write-Output "SKIP: Projects backup runs only on NUCBOX-M6ULTRA; this is $env:COMPUTERNAME."
+# NOTE: the REAL computer name is alice (underscore); Tailscale shows it as
+# stack-host (hyphen) because Tailscale rewrites underscores. Accept both.
+if ($env:COMPUTERNAME -notmatch '^stack-host$') {
+  Write-Output "SKIP: Projects backup runs only on stack-host; this is $env:COMPUTERNAME."
   exit 0
 }
 

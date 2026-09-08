@@ -212,3 +212,12 @@ def test_cli_records_work_and_refuses_duplicate_side_effects(tmp_path):
 def test_ui_test_counts_alone_are_not_readability_judgment():
     c=contract();c["categories"][0]["checks"][0]["kind"]="deterministic"
     with pytest.raises(GoalpostError,match="independent"):create(c)
+
+
+def test_milestone_has_distinct_evidence_but_repeat_is_idempotent(tmp_path):
+    state=create(contract(),now=0);obs=proof(tmp_path,state,failed=("acceptance",))
+    first=evaluate(state,obs,tmp_path,now=1)
+    milestone=evaluate(state,obs,tmp_path,now=2,milestone=True)
+    assert milestone["trigger"]=="milestone" and milestone["evidence_id"]!=first["evidence_id"]
+    repeat=evaluate(state,obs,tmp_path,now=3,milestone=True)
+    assert repeat==milestone and len(state["history"])==2

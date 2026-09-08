@@ -1,28 +1,134 @@
 {
   "schema": "lapart.core-policy.v2",
-  "protocol_versions": [1, 2],
+  "protocol_versions": [
+    1,
+    2
+  ],
   "routing_policy": "gated",
   "t2_actual_lane": "T3",
   "subscription_first": true,
   "pay_per_token_allowed": false,
   "external_effects_require_approval": true,
   "production_activation_allowed": false,
-  "required_promotion_gates": ["quality", "calls", "latency", "rollback", "tokens"],
+  "required_promotion_gates": [
+    "quality",
+    "calls",
+    "latency",
+    "rollback",
+    "tokens"
+  ],
   "context": {
     "maximum_growth_percent": 5.0,
     "tiers": {
-      "atomic": {"maximum_bytes": 32768, "maximum_provider_calls": 3},
-      "standard": {"maximum_bytes": 131072, "maximum_provider_calls": 4},
-      "complex": {"maximum_bytes": 262144, "maximum_provider_calls": 5},
-      "high_risk": {"maximum_bytes": 524288, "maximum_provider_calls": 6}
+      "atomic": {
+        "maximum_bytes": 32768,
+        "maximum_provider_calls": 3
+      },
+      "standard": {
+        "maximum_bytes": 131072,
+        "maximum_provider_calls": 4
+      },
+      "complex": {
+        "maximum_bytes": 262144,
+        "maximum_provider_calls": 5
+      },
+      "high_risk": {
+        "maximum_bytes": 524288,
+        "maximum_provider_calls": 6
+      }
     },
-    "required_components": ["system_prompt", "authority_context"]
+    "required_components": [
+      "system_prompt",
+      "authority_context"
+    ]
   },
   "tool_projection": {
-    "read_only_signals": ["analyze", "analyse", "audit", "check", "compare", "diagnose", "explain", "inspect", "review", "summarize", "summarise", "verify", "how", "what", "when", "where", "which", "why"],
-    "mutation_signals": ["add", "apply", "build", "change", "commit", "create", "delete", "deploy", "edit", "execute", "fix", "implement", "install", "merge", "modify", "patch", "push", "remove", "restart", "run", "ship", "update", "write"],
-    "safe_tools": ["read", "grep", "find", "glob", "ls"],
-    "discovery_prefixes": ["mcp", "skill", "search", "tool_search"]
+    "read_only_signals": [
+      "analyze",
+      "analyse",
+      "audit",
+      "check",
+      "compare",
+      "diagnose",
+      "explain",
+      "inspect",
+      "review",
+      "summarize",
+      "summarise",
+      "verify",
+      "how",
+      "what",
+      "when",
+      "where",
+      "which",
+      "why"
+    ],
+    "mutation_signals": [
+      "add",
+      "apply",
+      "build",
+      "change",
+      "commit",
+      "create",
+      "delete",
+      "deploy",
+      "edit",
+      "execute",
+      "fix",
+      "implement",
+      "install",
+      "merge",
+      "modify",
+      "patch",
+      "push",
+      "remove",
+      "restart",
+      "run",
+      "ship",
+      "update",
+      "write"
+    ],
+    "safe_tools": [
+      "read",
+      "grep",
+      "find",
+      "glob",
+      "ls"
+    ],
+    "discovery_prefixes": [
+      "mcp",
+      "skill",
+      "search",
+      "tool_search"
+    ]
   },
-  "activation_states": ["inactive", "shadow", "review", "production"]
+  "activation_states": [
+    "inactive",
+    "shadow",
+    "review",
+    "production"
+  ],
+  "execution_value": {
+    "schema_version": "1.0",
+    "mode": "gated",
+    "promoted_lanes": [
+      "T0_DETERMINISTIC",
+      "T1_NATIVE"
+    ],
+    "maximum_escalations": 1,
+    "omp_lite": {
+      "maximum_files": 2,
+      "allowed_risk_tiers": [
+        "low"
+      ],
+      "require_semantic_assertion": false,
+      "require_verification": true
+    },
+    "promotion": {
+      "minimum_trials": 5,
+      "minimum_success_rate": 1.0,
+      "minimum_latency_reduction": 0.25,
+      "minimum_provider_usage_reduction": 0.3
+    }
+  }
 }

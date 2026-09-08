@@ -197,7 +197,7 @@ def test_validator_requires_consumed_ledger_not_schema_valid_desktop_json(_revie
     assert "consumed_evidence_matches(DESKTOP_STORE, desktop)" in source
     assert "desktop_report_id == report_id" in source
     assert "consumed_evidence_matches(DESKTOP_STORE, operator)" in source
-    assert 'operator["client_id"] == "NUCBOX-MINI-ULTRA"' in source
+    assert 'operator["client_id"] == "stack-host"' in source
 
 
 def test_live_without_both_opt_ins_closes_after_independent_native_captures(tmp_path: Path) -> None:

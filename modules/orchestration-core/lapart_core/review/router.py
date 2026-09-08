@@ -143,3 +143,32 @@ def scope_review_facts(
         elif "tests" in tokens or "test" in tokens or "gates" in tokens:
             facts.append(ReviewFact("tests_or_gates_changed", "S2", provenance=path))
     return tuple(facts)
+
+
+S0_FACTS = ("mechanical_or_exact", "independent_deterministic_validation",
+            "no_unknown_load_bearing_fact", "no_risk_trigger")
+RISK_FACTS = {
+    "behavior_changed_with_incomplete_evidence": "S2", "tests_or_gates_changed": "S2",
+    "maintenance_hotspot": "S2", "one_specialist_trigger": "S2",
+    "multiple_subsystems": "S3", "public_interface": "S3", "architecture": "S3",
+    "security": "S3", "migration": "S3", "persistence": "S3", "concurrency": "S3", "data_loss": "S3",
+}
+
+def structured_review_facts(observed=None, *, changed_lines=None, subsystem_count=None):
+    """Typed classification facts; these never constitute a completed review."""
+    observed = {} if observed is None else observed
+    if not isinstance(observed, dict) or set(observed) - (set(S0_FACTS) | set(RISK_FACTS)):
+        raise ValueError("unknown structured review fact")
+    if any(type(value) is not bool for value in observed.values()):
+        raise ValueError("structured review facts must be boolean")
+    facts = []
+    for key in S0_FACTS:
+        if observed.get(key) is not True:
+            facts.append(ReviewFact("s0_eligibility:" + key, "S0", provenance="missing_or_false", load_bearing=True, known=False))
+    for key, value in (("changed_lines", changed_lines), ("subsystem_count", subsystem_count)):
+        if value is None:
+            facts.append(ReviewFact("s0_scope_unmeasured:" + key, "S0", load_bearing=True, known=False))
+    for key, level in RISK_FACTS.items():
+        if observed.get(key) is True:
+            facts.append(ReviewFact(key, level, provenance="structured_observation", load_bearing=True))
+    return tuple(facts)
