@@ -14,6 +14,7 @@ from .transport import JsonReviewTransport, ReviewBudgetTracker, BudgetViolation
 from .policy import load_policy
 from .prompts import review_prompt, finding_schema as canonical_schema
 from .proofs import HostTestVerifier
+from .packets import admit_packets, finalize_packets, PacketRefused
 from .reconcile import Reconciliation, reconcile_outputs
 
 
@@ -26,6 +27,7 @@ class RunResult:
     invoked_reviewers: tuple[str, ...]
     budget: Mapping[str, object] | None = None
     proof_receipts: tuple[dict, ...] = ()
+    packet_plan: Mapping[str, object] | None = None
 
 
 class Runner:
@@ -45,10 +47,13 @@ class Runner:
         hash_provider: Callable[[tuple[str, ...]], Mapping[str, str]],
         providers: Mapping[str, ReportOnlyProvider],
         s4_confirmed: bool = False,
+        s4_grant=None,
         proof_verifier: HostTestVerifier | None = None,
         legacy_authoritative: bool = True,
         adaptive_authoritative: bool = False,
         budget_limits: Mapping[str, int] | None = None,
+        budget_grant=None,
+        review_context=None,
     ) -> RunResult:
         if not self.schema_compatible:
             return self._blocked("finding schema does not match the owned response contract")
@@ -82,11 +87,26 @@ class Runner:
             return self._blocked("no reviewers selected; review has not run")
         if len(selected) > policy["budgets"][pipeline.value]["max_model_calls"]:
             return self._blocked("selected reviewers exceed pipeline model-call budget")
-        if any(reviewer.requires_confirmation for reviewer in selected) and not s4_confirmed:
+        automatic = False
+        if s4_grant is not None:
+            from .policy import validate_s4_grant
+            try:
+                automatic = pipeline is Pipeline.S4 and validate_s4_grant(
+                    s4_grant, source_hashes=source_hashes)
+            except (ValueError, OSError):
+                return self._blocked("invalid S4 policy authorization")
+        if any(reviewer.requires_confirmation for reviewer in selected) and not (s4_confirmed or automatic):
             return self._blocked("selected reviewer requires confirmation")
-        if pipeline is Pipeline.S4 and not s4_confirmed:
+        if pipeline is Pipeline.S4 and not (s4_confirmed or automatic):
             return self._blocked("S4 confirmation required")
         limits = dict(policy["budgets"][pipeline.value])
+        approved_packets = None
+        if budget_grant is not None:
+            from .budget_exception import take_grant
+            try:
+                limits, approved_packets = take_grant(budget_grant, pipeline.value, source_hashes)
+            except ValueError:
+                return self._blocked("unowned or stale budget exception grant")
         if budget_limits is not None:
             if set(budget_limits) != set(limits) or any(
                 type(value) is not int or not 0 <= value <= limits[key]
@@ -114,7 +134,7 @@ class Runner:
                 if type(proof_verifier) is not HostTestVerifier:
                     return self._blocked("unowned proof verifier")
                 proof_verifier.begin(expected)
-            total_estimate = 0
+            serialized_packets = {}
             for reviewer in selected:
                 tracker.remaining()
                 if Path(reviewer.skill_path).stat().st_size > limits["max_context_bytes"]:
@@ -137,14 +157,24 @@ class Runner:
                     return self._blocked("reviewer skill changed during preflight")
                 skill = review_prompt(reviewer.reviewer_id, reviewer.lens, self.finding_schema,
                                       proof_verifier.descriptions() if proof_verifier else ())
-                size = len(provider.transport.payload(skill, contents, limits["max_output_tokens"]))
-                if size > limits["max_context_bytes"]:
-                    return self._blocked("complete reviewer packet exceeds byte budget")
-                total_estimate += size
+                from .context import bind_review_context
+                skill = bind_review_context(skill, review_context)
+                serialized_packets[reviewer.reviewer_id] = provider.transport.payload(
+                    skill, contents, limits["max_output_tokens"])
                 prepared[reviewer.reviewer_id] = (provider, capability, skill)
-            if total_estimate > limits["max_estimated_input_tokens"]:
-                return self._blocked("complete reviewer set exceeds aggregate estimated input budget")
+            serialized_packets = finalize_packets(serialized_packets, limits)
+            packet_plan = admit_packets(serialized_packets,
+                max_request_bytes=limits["max_context_bytes"],
+                max_input_units=limits["max_estimated_input_tokens"], max_calls=limits["max_model_calls"])
+            if approved_packets is not None and packet_plan["packet_sha256"] != approved_packets:
+                return self._blocked("approved exception packet changed before dispatch")
+            tracker.admitted_packets = tuple(serialized_packets.values())
             tracker.remaining()
+        except PacketRefused as exc:
+            detail = (f"packet admission: requests={exc.report['request_count']} "
+                      f"input_units={exc.report['estimated_input_units']} "
+                      f"input_limit={exc.report['limits']['aggregate_input_units']}")
+            return RunResult(Verdict.INCONCLUSIVE, (), None, (str(exc), detail), (), packet_plan=exc.report)
         except (OSError, ValueError, TypeError, KeyError):
             return self._blocked("reviewer preflight failed")
         outcomes: list[ReviewOutcome] = []
@@ -159,7 +189,7 @@ class Runner:
                 break
         if any(outcome.verdict is Verdict.INCONCLUSIVE for outcome in outcomes):
             return RunResult(Verdict.INCONCLUSIVE, tuple(outcomes), None,
-                ("reviewer execution incomplete",), tuple(invoked), tracker.public())
+                ("reviewer execution incomplete",), tuple(invoked), tracker.public(), packet_plan=packet_plan)
         parts = []
         try:
             for reviewer_id, outcome in zip(invoked, outcomes):
@@ -173,7 +203,7 @@ class Runner:
             tracker.failed = True
             return RunResult(Verdict.INCONCLUSIVE, tuple(outcomes), None,
                 ("host proof verification failed",), tuple(invoked), tracker.public(),
-                tuple(proof_verifier.receipts) if proof_verifier else ())
+                tuple(proof_verifier.receipts) if proof_verifier else (), packet_plan)
         reconciliation = Reconciliation(
             tuple(f for part in parts for f in part.findings),
             tuple(f for part in parts for f in part.rejected),
@@ -187,7 +217,7 @@ class Runner:
         else:
             verdict = Verdict.PASS
         return RunResult(verdict, tuple(outcomes), reconciliation, (), tuple(invoked), tracker.public(),
-                         tuple(proof_verifier.receipts) if proof_verifier else ())
+                         tuple(proof_verifier.receipts) if proof_verifier else (), packet_plan)
 
     @staticmethod
     def _blocked(reason: str) -> RunResult:

@@ -31,8 +31,10 @@ owns model invocation and proof verification.
    evidence and still fits the remaining task review budget.
 
 The required evidence fields are stage=finished, execution_evidence_status=VERIFIED,
-harness, run_id, after.identity, binding.packet_hash, binding.session_binding_sha256,
-and packet.objective plus packet.allowed_paths. S0 additionally requires the
+harness, run_id, before.contents, before.index, after.identity, after.contents,
+binding.packet_hash, binding.session_binding_sha256, and packet.objective plus
+packet.allowed_paths. S1-S4 also require packet.change_contract with the same
+objective and at least one acceptance criterion. S0 additionally requires the
 host's review_pipeline=S0 and review_verdict=PASS. These are a trusted in-process
 interface, not an authentication protocol for user JSON.
 
@@ -51,6 +53,23 @@ or elapsed-time budgets. The first selected pipeline's limits bound the lineage.
 A later tier cannot silently enlarge them. Unknown usage closes automatic reuse.
 The controller admits at most two deliveries. Exhaustion returns
 Loop Limit Reached - Escape Hatch.
+
+For S1-S4, the portable controller reconstructs the declared baseline from the
+receipt and guarded read-only Git blob observations. It refuses configured Git
+clean, smudge, or process filters before every content observation. Each existing
+review request receives the objective, invariants, acceptance contract, current
+contents, before evidence, change state, and unified diff. Deleted files remain
+in scope with explicit `deleted` state and before bytes. A deleted file is not
+treated as a present empty file. This adds no model request.
+Recipient evidence adapters preserve bounded exact bytes at admission only for
+declared dirty or untracked baselines that Git cannot reconstruct. The signed
+hash must match before portable review accepts those bytes.
+
+Automatic S4 remains disabled in the general selector. A qualified host may use
+`s4_dispatch`. It records the source-bound atomic claim first, then receives a
+sealed grant from the existing policy owner. The Controller and Runner reject a
+plain confirmation flag as automatic authorization. Interrupted or indeterminate
+usage leaves the claim and lineage on hold and cannot replay automatically.
 
 HostCheck.test_path is relative to the workspace. Its SHA-256 and description
 come from the trusted host registry. Checks must independently exercise the
@@ -121,3 +140,18 @@ must verify evidence, signatures and current source through Controller first.
 
 These portable functions select no provider, install no native CLI and grant no
 recipient trust. Qualify each recipient's supervised launcher before activation.
+
+## Block resolution
+
+The existing Controller seals blocking results with a block ID. A trusted host
+may use `recover_refusal` only for known zero-usage workspace-admission or
+provider-configuration refusals. `resolve_block` accepts freshly host-validated
+execution evidence, reads signed reviews itself, and binds resolution to the
+original task, packet, session, workspace, finding IDs and review depth. It also
+requires current policy, configuration, catalog and implementation fingerprints.
+Neither API accepts a caller-supplied PASS or clears unrelated blocks.
+
+Both receipts and cumulative usage remain intact. Unknown usage, budget holds
+and unsigned legacy blocks require owner intervention. Deleting their state is
+not recovery. These APIs do not activate a harness or replace its completion
+owner. Review transport accepts only the successful terminal `stop` reason.

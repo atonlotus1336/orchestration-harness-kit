@@ -284,6 +284,11 @@ def verify_source_hashes() -> list[str]:
     if manifest.get("schema") != "lapart.core-source-hashes.v1" or manifest.get("algorithm") != "sha256":
         return ["shared-core source-hash manifest is invalid"]
     failures = []
+    runtime_files = list(MODULE_ROOT.glob("*.py")) + list((MODULE_ROOT / "lapart_core").rglob("*.py"))
+    for target in runtime_files:
+        relative = target.relative_to(KIT_ROOT).as_posix()
+        if relative not in manifest.get("files", {}):
+            failures.append(f"source hash missing: {relative}")
     for relative, expected in manifest.get("files", {}).items():
         target = KIT_ROOT / relative
         if not target.is_file() or hashlib.sha256(target.read_bytes()).hexdigest() != expected:

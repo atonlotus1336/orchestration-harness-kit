@@ -74,6 +74,23 @@ qualification; qualified local runtimes can promote T2 independently. Missing ev
 cannot qualify a lower execution lane. S0-S4 review floors are independent.
 Classification makes no reviewer calls and never reports review completion.
 
+Review packet admission is deterministic and all-or-nothing. The complete
+serialized request for every required reviewer must fit the current per-request,
+aggregate-input and model-call budgets. The shared runner reports packet hashes
+and byte counts without copying source text into diagnostics. A refusal includes
+the required input units and current limit in completion controls. It never
+truncates files, removes reviewers, resets a budget, or changes S0-S4 selection.
+An oversized delivery remains INCONCLUSIVE. Run the packet regressions with
+`python -m pytest installer/tests/test_review_packets.py -q` from the kit root.
+
+The completion controller binds each semantic review to the task objective,
+invariants, acceptance criteria, and exact before/current/diff evidence. Deleted
+paths retain their before bytes and explicit deletion state. Read-only Git blob
+access refuses repository content filters first. Qualified automatic S4 receives
+a sealed grant from the existing policy owner after its atomic claim; unresolved
+or indeterminate usage stays on hold and cannot replay. These controls reuse the
+selected review calls and add no evidence-only model invocation.
+
 See ../../docs/v2/GOALS-AND-ROUTING.md for setup, evidence, exit codes, and
 cross-harness continuation. Hosts must call the goalpost command at work
 boundaries; native sessions do not acquire background timers from installation.
@@ -85,3 +102,33 @@ it is no longer permanently hardcoded to T3. The recipient default remains
 unpromoted until that recipient qualifies its own runtime. Eligible work needs one or two low-risk files and
 a behavioral test or semantic assertions. See docs/v2/GOALS-AND-ROUTING.md for
 the evidence, retry rules, and promotion procedure. Routing checks use no model.
+
+### Host acceptance execution boundary
+
+Pinned host acceptance tests require the host-owned evidence executor and its
+enforced network, environment, output and process-tree restrictions. The portable
+review package refuses execution when that owner is unavailable; it never falls
+back to an unrestricted local pytest process. Recipients must supply their
+compatible `lapart_core.evidence_adapter.run_host_acceptance` integration before
+claiming host-test qualification. Installing this kit does not activate it.
+
+### Review and goal integrity repairs
+
+Review admission now reserves the complete reviewer set and fingerprints the
+exact requests sent. A pre-dispatch file failure does not spend or poison the
+model budget. Missing declared files remain INCONCLUSIVE, not a completed
+deletion review. The bundled approval broker forwards its existing request ID
+to the approval bridge; the bridge still validates the existing operator decision.
+
+Goal checks require an authenticated `goal-assessment.v1` artifact from the
+existing host review receipt owner. It binds `contract_hash`, `input_fingerprint`
+and each check's `passed`, `method` and `assessor_id`. Pass the existing review
+`Controller` as `evidence_owner` to `evaluate`. The trusted host must issue this
+assessment from actual verification, never blindly sign caller labels. There
+is no new signing service or public signer. Missing owners and unsigned claims
+remain unknown; installing the port does not activate or wire a native issuer.
+
+Run the installer goal/review tests and the worker module's `verify.py` to check
+these contracts. Synthetic fixtures validate the code boundaries, not live
+harness activation. Host-test refusal is tested separately from actual isolated
+host-test execution, which requires the recipient's compatible evidence owner.

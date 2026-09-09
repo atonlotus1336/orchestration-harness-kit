@@ -20,12 +20,14 @@ optional modules you enable later; neither becomes a second storage writer.
 
 ## Shared authority and work routing
 
-![Eight peer harnesses connect to a shared orchestration core. The diagram shows authority precedence, T0-T4 execution routing through native tools or Prime Agent and OMP, S0-S4 review, goalpost evaluation, bounded improvement loops, an escape hatch, and human verification.](assets/harness-fusion-hierarchy.png)
+![Nine peer harnesses, including DeepSeek (DSH), share one authority core. T2 executes through governed OMP independently. Deterministic execution evidence feeds one S0-S4 evaluator whose internal controls route, admit budgets, run any required reviewers, and validate results before due goalposts govern completion. Each installation qualifies its own native paths.](assets/harness-fusion-hierarchy.png)
 
-All eight harnesses connect as peers to the shared orchestration core. The left
+All nine harnesses connect as peers to the shared orchestration core. The left
 side shows authority precedence, with evidence supporting factual claims.
 The right side shows execution routing, Prime Agent coordinating OMP workers,
-and evidence and review checks feeding goalpost evaluation. Work continues
+and deterministic execution evidence feeding one S0-S4 review evaluator. Its
+preflight, budget, invocation, and result-validation controls are internal to
+that evaluator. Work continues
 until the endpoint passes or a loop limit triggers the escape hatch. Human
 verification provides a separate review path.
 

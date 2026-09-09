@@ -63,3 +63,66 @@ def load_policy(path: Path = DEFAULT_POLICY, schema_path: Path = DEFAULT_SCHEMA)
         raise PolicyError(rendered)
     validate_cross_fields(data)
     return LoadedPolicy(data=data, fingerprint=policy_fingerprint(data))
+
+
+# The general selector still cannot automatically start S4. Its separate,
+# host-configured conditional route is authorized only by this policy owner.
+_S4_SEAL = object()
+
+
+class _S4Grant:
+    def __init__(self, seal, owner, workspace, evidence, admission):
+        if seal is not _S4_SEAL:
+            raise PolicyError("unowned S4 grant")
+        self.seal, self.owner = seal, owner
+        self.workspace = str(Path(workspace).resolve())
+        self.evidence = hashlib.sha256(json.dumps(evidence, sort_keys=True).encode()).hexdigest()
+        self.source = evidence["after"]["identity"]
+        self.sources = {
+            path: evidence["after"]["contents"][path]
+            for path in evidence["packet"]["allowed_paths"]
+        }
+        self.authority = owner._authority_fingerprint()
+        self.admission = json.loads(json.dumps(admission))
+
+
+def issue_s4_grant(owner, *, workspace, evidence, admission):
+    """Issue a sealed grant after the existing dispatch owner records its claim."""
+    harness = evidence["harness"]
+    if (owner.mode(harness) != "enforced"
+            or harness not in owner.config.get("automatic_s4", {}).get("enabled_harnesses", [])
+            or evidence.get("stage") != "finished"
+            or evidence.get("execution_evidence_status") != "VERIFIED"
+            or admission.get("status") != "CANDIDATE"
+            or not admission.get("scenarios")):
+        raise PolicyError("conditional S4 owner admission missing")
+    from .controller import digest
+    key = digest({"workspace": str(Path(workspace).resolve()),
+                  "candidate": admission["deduplication_key"]})
+    claim = owner._read(owner.state / "automatic-s4" / (key + ".json"))
+    if claim.get("status") != "pending" or claim.get("admission") != admission:
+        raise PolicyError("S4 atomic claim missing or changed")
+    return _S4Grant(_S4_SEAL, owner, workspace, evidence, admission)
+
+
+def validate_s4_grant(grant, *, owner=None, workspace=None, evidence=None,
+                      scope="phase", source_identity=None, source_hashes=None):
+    if (type(grant) is not _S4Grant or grant.seal is not _S4_SEAL or scope != "phase"
+            or owner is not None and grant.owner is not owner
+            or workspace is not None and grant.workspace != str(Path(workspace).resolve())
+            or source_identity is not None and grant.source != source_identity
+            or evidence is not None and grant.evidence != hashlib.sha256(
+                json.dumps(evidence, sort_keys=True).encode()).hexdigest()
+            or grant.authority != grant.owner._authority_fingerprint()):
+        raise PolicyError("unowned, stale or mismatched S4 grant")
+    if source_hashes is not None:
+        expected = {
+            path: hashlib.sha256(b"").hexdigest() if value == "ABSENT" else value
+            for path, value in grant.sources.items()
+        }
+        if dict(source_hashes) != expected:
+            raise PolicyError("S4 review sources changed")
+    goal = grant.admission.get("goal_binding")
+    if goal and hashlib.sha256(Path(goal["path"]).read_bytes()).hexdigest() != goal["sha256"]:
+        raise PolicyError("S4 goal changed")
+    return True

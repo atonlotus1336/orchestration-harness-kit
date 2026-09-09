@@ -7,10 +7,19 @@ import sys
 
 import pytest
 
-sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
-sys.path.insert(0, str(Path(__file__).resolve().parents[2] / "modules/orchestration-core"))
+sys.path[:0]=[str(Path(__file__).resolve().parents[2]), str(Path(__file__).resolve().parents[2]/'modules/orchestration-core')]
 from lapart_core.goalposts import (GoalpostError, create, evaluate, fingerprint,
     local_file, locked_state, markdown, record_work, status)
+
+
+@pytest.fixture(autouse=True)
+def goal_owner(tmp_path, monkeypatch):
+    from lapart_core.review.controller import Controller
+    import lapart_core.goalposts as goals
+    owner = Controller(state_root=tmp_path/'owner', vault_root=tmp_path,
+        catalog_path=tmp_path/'unused.json', config={"schema_version":"1.0", "max_deliveries":2})
+    monkeypatch.setattr(goals, '_evidence_owner', lambda: owner)
+    return owner
 
 
 def contract():
@@ -37,6 +46,14 @@ def proof(root, state, failed=(), unknown=()):
             "sha256":hashlib.sha256(artifact.read_bytes()).hexdigest(),
             "input_fingerprint":fingerprint(root,state["contract"]["inputs"]),
             "method":"independent_review" if ident=="clear" else "deterministic", "assessor_id":"reviewer"}
+    from lapart_core.goalposts import _evidence_owner
+    owner = _evidence_owner()
+    assessment = {"schema_version":"goal-assessment.v1", "contract_hash":state["contract_hash"],
+        "input_fingerprint":fingerprint(root,state["contract"]["inputs"]),
+        "checks":{key:{field:value[field] for field in ("passed", "method", "assessor_id")}
+                  for key,value in result.items()}}
+    artifact.write_text(json.dumps(owner._signed(assessment)))
+    for value in result.values(): value['sha256'] = hashlib.sha256(artifact.read_bytes()).hexdigest()
     return result
 
 
@@ -157,7 +174,7 @@ def test_invalid_work_durations_rejected(value):
 
 
 def test_path_escape_and_concurrent_state_writer_rejected(tmp_path):
-    for value in ("../outside", r"D:\MyVault", "/outside"):
+    for value in ("../outside", "D:/MyVault/outside", "/outside"):
         with pytest.raises(GoalpostError):local_file(tmp_path,value)
     with locked_state(tmp_path/"state.json"):
         with pytest.raises(GoalpostError):
@@ -221,3 +238,62 @@ def test_milestone_has_distinct_evidence_but_repeat_is_idempotent(tmp_path):
     assert milestone["trigger"]=="milestone" and milestone["evidence_id"]!=first["evidence_id"]
     repeat=evaluate(state,obs,tmp_path,now=3,milestone=True)
     assert repeat==milestone and len(state["history"])==2
+
+
+@pytest.mark.parametrize("error", [KeyboardInterrupt, SystemExit])
+def test_interrupted_work_requires_evaluation(tmp_path, monkeypatch, error):
+    main = cli()
+    contract_path = tmp_path / "contract.json"
+    contract_path.write_text(json.dumps(contract()))
+    base = ["--workspace", str(tmp_path)]
+    main(base + ["init", "--contract", str(contract_path)])
+    path = tmp_path / ".goalposts/state.json"
+    state = json.loads(path.read_text())
+    obs = tmp_path / "observations.json"
+    obs.write_text(json.dumps(proof(tmp_path, state, failed=("acceptance",))))
+    assert main(base + ["evaluate", "--observations", str(obs)]) == 20
+    calls = []
+    def interrupt(*args, **kwargs):
+        calls.append(args)
+        raise error()
+    monkeypatch.setattr(main.__globals__["subprocess"], "run", interrupt)
+    with pytest.raises(error):
+        main(base + ["run-work", "--event-id", "interrupted", "--", "fixture"])
+    state = json.loads(path.read_text())
+    assert state["pending_evaluation"]
+    assert state["work_events"]["interrupted"] >= 0
+    assert main(base + ["run-work", "--event-id", "new", "--", "fixture"]) == 10
+    assert len(calls) == 1
+
+
+def test_category_gains_survive_other_category_regression(tmp_path):
+    spec = contract()
+    spec["categories"][1]["checks"][1]["weight"] = 4
+    state = create(spec, now=0)
+    evaluate(state, proof(tmp_path, state, failed=("acceptance", "behavior")), tmp_path, now=1)
+    record_work(state, "second", 1)
+    evaluate(state, proof(tmp_path, state, failed=("clear",)), tmp_path, now=2)
+    assert "behavior" in state["passed_checks"]
+    assert state["floors"]["correctness"] == 100
+    assert "acceptance" in state["passed_endpoint"]
+    record_work(state, "third", 1)
+    report = evaluate(state, proof(tmp_path, state, failed=("behavior",)), tmp_path, now=3)
+    assert report["decision"] != "complete"
+    assert report["categories"]["correctness"]["regression"]
+    assert report["categories"]["correctness"]["score"] == 80
+
+
+@pytest.mark.parametrize('error', [FileNotFoundError, PermissionError])
+def test_launch_error_requires_evaluation(tmp_path, monkeypatch, error):
+    main=cli();p=tmp_path/'contract.json';p.write_text(json.dumps(contract()))
+    base=['--workspace',str(tmp_path)];main(base+['init','--contract',str(p)])
+    state_path=tmp_path/'.goalposts/state.json';state=json.loads(state_path.read_text())
+    obs=tmp_path/'observations.json';obs.write_text(json.dumps(proof(tmp_path,state,failed=('acceptance',))))
+    assert main(base+['evaluate','--observations',str(obs)])==20
+    def fail(*a,**k):raise error('fixture launch refusal')
+    import subprocess
+    monkeypatch.setattr(subprocess,'run',fail)
+    assert main(base+['run-work','--event-id','launch','--','fixture'])==10
+    after=json.loads(state_path.read_text())
+    assert after['pending_evaluation'] and after['work_events']['launch'] is not None
+    assert main(base+['run-work','--event-id','next','--','fixture'])==10

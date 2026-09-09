@@ -8,12 +8,15 @@ param(
 )
 
 $ErrorActionPreference = "Stop"
+if ($NoScrub) {
+  throw "NoScrub is not permitted for publishable exports"
+}
 $kitRoot = $PSScriptRoot
 if (-not $Allowlist) { $Allowlist = Join-Path $kitRoot "generated\SYNC-ALLOWLIST.json" }
 if (-not $Destination) { $Destination = Join-Path $kitRoot ".shareable-preview" }
 if (-not $SanitizerRules) { $SanitizerRules = Join-Path $kitRoot ".sanitize-rules.local.json" }
 if (-not (Test-Path -LiteralPath $Graph) -and $Graph -eq "SURFACE-GRAPH.yaml") {
-  $candidateGraph = Join-Path $kitRoot "..\..\SURFACE-GRAPH.yaml"
+  $candidateGraph = Join-Path $kitRoot "..\SURFACE-GRAPH.yaml"
   if (Test-Path -LiteralPath $candidateGraph) { $Graph = $candidateGraph }
 }
 if (-not (Test-Path -LiteralPath $Allowlist)) {
@@ -33,7 +36,7 @@ if (Test-Path -LiteralPath $SanitizerRules) {
     }
   }
 }
-if ($RequireSanitizerRules -and $rules.Count -eq 0) {
+if ($rules.Count -eq 0) {
   throw "Sanitizer rules required but none loaded from $SanitizerRules"
 }
 function Resolve-SafeChildPath {
@@ -102,11 +105,9 @@ foreach ($row in @($data.shareable)) {
   }
 }
 
-if (-not $NoScrub) {
-  & powershell.exe -NoProfile -ExecutionPolicy Bypass -File (Join-Path $kitRoot "tools\m10-scrub-v2.ps1") -Root $Destination -Json
-  if ($LASTEXITCODE -ne 0) {
-    throw "M10 scrub-v2 failed for shareable preview"
-  }
+& powershell.exe -NoProfile -ExecutionPolicy Bypass -File (Join-Path $kitRoot "tools\m10-scrub-v2.ps1") -Root $Destination -Json
+if ($LASTEXITCODE -ne 0) {
+  throw "M10 scrub-v2 failed for shareable preview"
 }
 
 [ordered]@{

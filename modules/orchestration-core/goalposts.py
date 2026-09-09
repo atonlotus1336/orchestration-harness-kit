@@ -77,8 +77,13 @@ def main(argv=None):
                     try:
                         done = subprocess.run(command, cwd=root, timeout=max(0.001, remaining))
                         work_exit = done.returncode
+                    except OSError:
+                        work_exit = 126
                     except subprocess.TimeoutExpired:
                         work_exit = 124
+                    except BaseException:
+                        state["pending_evaluation"] = "work command interrupted"
+                        raise
                     finally:
                         duration = time.monotonic() - started
                         state["work_events"][args.event_id] = duration

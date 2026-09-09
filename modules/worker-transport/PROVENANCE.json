@@ -1,0 +1,27 @@
+{
+  "schema_version": "worker-export.v1",
+  "source_sections_sha256": {
+    "worker_transport": "6ce99264e6c5f8fbac85ee62b710ccd9e2e4f2ccea8c9d87bc684ca002140ac6",
+    "git_snapshot": "5c2ee0e1ab658ca9e454c2a5881c0e29ff3b71926cd0b4624e412dc87b75e34c",
+    "metadata_validation": "be5889cd49c6052b6f4dece2b249ba290d78cda8e7f58567e1ff4ab898b4730c"
+  },
+  "adaptations": [
+    "recipient-owned target and external source",
+    "existing owner ledger port",
+    "no host-specific SSH helper",
+    "deterministic snapshot dependency only",
+    "post-review capture integrity and reserved-path repairs"
+  ],
+  "generated_sha256": {
+    "worker_port/__init__.py": "b12a94a4a909e804d22e880cb2c5b9dff26797f0dddb99f236469ae7bc85fe95",
+    "worker_port/worker_transport.py": "77472aa708bd3c309d144fe52879844c5596a22681e82073639e0972480e70ca",
+    "worker_port/git_snapshot.py": "9f56ac16a871cf4d2bf1e956010dacf57b56cdd8696e0f1f23a0197078d7cf77",
+    "worker_port/contracts.py": "ebc285a2870e23f3e8c27a1701995d012d22ef3f328c2be182a1b8b39b8a8f50",
+    "worker_port/schemas/remote-worktree-receipt.schema.json": "045a3b65f30fb91e99b09181e0828dc7d52c3b7c759987008dc78d5ed2f049cc",
+    "worker_port/schemas/external-status-event.schema.json": "985cc4e18be63aa0a03b2ee44f5255817cc510edb3236914a6608a9ee4b3d7e0"
+  },
+  "repair_source_sha256": {
+    "prime_bridge/worker_transport.py": "c6527a6ed91c2159263e6e7f8bd7554b571d7f9bd3ad6173b454efe459b6d518",
+    "prime_bridge/evidence_adapter.py": "c53ae734bc95a567c548f485e35955d6d2161fb643710954efa195070a64949d"
+  }
+}

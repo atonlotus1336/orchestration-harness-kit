@@ -11,6 +11,7 @@ MODULE = Path(__file__).resolve().parent
 sys.path.insert(0, str(MODULE.parents[1]))
 sys.path.insert(0, str(MODULE))
 from lapart_core.goalposts import create, evaluate, fingerprint, GoalpostError, record_work, status
+from lapart_core.review.controller import Controller
 from lapart_core.policy import CorePolicy
 from lapart_core.routing import select_prime_lane
 from lapart_core.review.interface import classify_review
@@ -48,7 +49,16 @@ def verify():
         (root/"src").mkdir()
         (root/"src/app.py").write_text("pass")
         (root/"proof.txt").write_text("Independent test fixture")
+        owner = Controller(state_root=root/'fixture-owner', vault_root=root,
+            catalog_path=root/'unused.json', config={"schema_version":"1.0", "max_deliveries":2})
         state = create(raw, now=0)
+        def signed_fixture(observations):
+            # Synthetic fixture only; not real assessment issuance.
+            assessment={"schema_version":"goal-assessment.v1", "contract_hash":state["contract_hash"],
+                "input_fingerprint":fingerprint(root,raw["inputs"]),
+                "checks":{k:{f:v[f] for f in ("passed","method","assessor_id")} for k,v in observations.items()}}
+            (root/'proof.txt').write_text(json.dumps(owner._signed(assessment)))
+            for v in observations.values():v['sha256']=hashlib.sha256((root/'proof.txt').read_bytes()).hexdigest()
         observations = {key: {
             "passed":True, "artifact":"proof.txt",
             "sha256":hashlib.sha256((root/"proof.txt").read_bytes()).hexdigest(),
@@ -56,21 +66,31 @@ def verify():
             "method":"independent_review" if key=="clear" else "deterministic",
             "assessor_id":"reviewer",
         } for key in ["acceptance", "clear", "accessible", "behavior", "regression"]}
+        check(evaluate(create(raw,now=0),observations,root,now=1,evidence_owner=owner)["decision"] != "complete", "unsigned proof accepted")
         observations["clear"]["assessor_id"] = "builder"
-        check(evaluate(state, observations, root, now=1)["decision"] != "complete", "builder self-grading accepted")
+        signed_fixture(observations)
+        check(evaluate(state, observations, root, now=1, evidence_owner=owner)["decision"] != "complete", "builder self-grading accepted")
         observations["clear"]["assessor_id"] = "reviewer"
-        report = evaluate(create(raw, now=0), observations, root, now=1)
+        signed_fixture(observations)
+        report = evaluate(create(raw, now=0), observations, root, now=1, evidence_owner=owner)
         check(report["decision"] == "complete" and report["model_calls"] == 0, "verified finite endpoint failed")
         state = create(raw, now=0)
         observations["acceptance"]["passed"] = False
-        evaluate(state, observations, root, now=1)
+        signed_fixture(observations)
+        evaluate(state, observations, root, now=1, evidence_owner=owner)
         record_work(state,"work",1800)
         check(status(state, now=2)["due"], "active-time checkpoint absent")
         observations["regression"]["passed"] = False
-        report = evaluate(state, observations, root, now=2)
+        signed_fixture(observations)
+        report = evaluate(state, observations, root, now=2, evidence_owner=owner)
         check(report["categories"]["correctness"]["regression"], "regression hidden")
+        tampered=json.loads((root/'proof.txt').read_text());tampered['data']['checks']['acceptance']['passed']=True
+        (root/'proof.txt').write_text(json.dumps(tampered))
+        for v in observations.values():v['sha256']=hashlib.sha256((root/'proof.txt').read_bytes()).hexdigest()
+        check(evaluate(create(raw,now=0),observations,root,now=1,evidence_owner=owner)['categories']['correctness']['score']==0, 'tampered signature accepted')
+        signed_fixture(observations)
         (root/"src/app.py").write_text("changed")
-        check(evaluate(create(raw, now=0), observations, root, now=1)["decision"] != "complete", "stale proof accepted")
+        check(evaluate(create(raw, now=0), observations, root, now=1, evidence_owner=owner)["decision"] != "complete", "stale proof accepted")
     return failures
 
 

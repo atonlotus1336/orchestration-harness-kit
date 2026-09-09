@@ -15,7 +15,7 @@ t=importlib.import_module(PACKAGE+'.transport'); router=importlib.import_module(
 
 @pytest.fixture
 def server():
-    state={'requests':[],'delay':0,'status':200,'response':{'choices':[{'message':{'content':'[]'}}],'usage':{'prompt_tokens':10,'completion_tokens':2,'total_tokens':12}}}
+    state={'requests':[],'delay':0,'status':200,'response':{'choices':[{'finish_reason':'stop','message':{'content':'[]'}}],'usage':{'prompt_tokens':10,'completion_tokens':2,'total_tokens':12}}}
     class Handler(BaseHTTPRequestHandler):
         def log_message(self,*args):pass
         def do_POST(self):
@@ -179,7 +179,7 @@ def test_model_cannot_spoof_reviewer_identity(tmp_path,server):
 def test_blocking_requires_real_pinned_host_assertion(tmp_path,server,monkeypatch,fault):
     proofs=importlib.import_module(PACKAGE+".proofs")
     runner,args=fixture(tmp_path,server)
-    (tmp_path/"example.py").write_text(args["contents"]["example.py"])
+    (tmp_path/"example.py").write_bytes(args["contents"]["example.py"].encode())
     test=tmp_path/"test_acceptance.py"
     body='import runpy\nfrom pathlib import Path\ndef test_acceptance():\n    source = runpy.run_path(str(Path(__file__).with_name("example.py")))\n    assert source["value"] == 2\n'
     if fault=="passing":body=body.replace('== 2','== 1')
@@ -204,9 +204,10 @@ def test_blocking_requires_real_pinned_host_assertion(tmp_path,server,monkeypatc
     runner.blocking_proofs=(proofs.PROOF,)
     result=runner.run(**args)
     if fault=="none":
-        assert result.reconciliation.blocking
-        assert result.proof_receipts[0]["failures"]==1
-        assert result.budget["tool_calls"]==1
+        # Shipped port has no host evidence executor: refusal is not a proof.
+        assert result.verdict is m.Verdict.INCONCLUSIVE
+        assert not result.reconciliation or not result.reconciliation.blocking
+        assert 'CAPABILITY_REFUSED' in result.proof_receipts[0]['reason']
     else:
         assert not result.reconciliation or not result.reconciliation.blocking
     if fault in ("tampered","stale_source"):
@@ -225,12 +226,15 @@ def test_reasoning_setting_is_explicit_and_budgeted(server):
     with pytest.raises(t.BudgetViolation):
         t.JsonReviewTransport(server["endpoint"],"synthetic",reasoning_effort="unbounded").validate()
 
-def test_truncated_response_cannot_pass_even_with_valid_empty_array(tmp_path,server):
+@pytest.mark.parametrize("reason", ["error", None, "tool_calls", "length", "content_filter"])
+def test_truncated_response_cannot_pass_even_with_valid_empty_array(tmp_path,server,reason):
     runner,args=fixture(tmp_path,server)
-    server["response"]["choices"][0]["finish_reason"]="length"
+    server["response"]["choices"][0]["finish_reason"]=reason
     result=runner.run(**args)
     assert result.verdict is m.Verdict.INCONCLUSIVE
-    assert result.budget["last_finish_reason"]=="length"
+    assert result.budget["total_units"] == 12
+    assert result.budget["usage_complete"] and result.budget["automatic_retries"] == 0
+    assert len(server["requests"]) == 1
 
 def test_caller_cannot_weaken_owned_finding_schema(tmp_path,server):
     runner,args=fixture(tmp_path,server)
@@ -238,3 +242,45 @@ def test_caller_cannot_weaken_owned_finding_schema(tmp_path,server):
     result=unsafe.run(**args)
     assert result.verdict is m.Verdict.INCONCLUSIVE
     assert not server["requests"]
+
+
+from test_review_controller import setup_controller
+
+def test_fingerprints_match_the_final_dispatched_packets(tmp_path, server):
+    runner, args = fixture(tmp_path, server, 'S2')
+    result = runner.run(**args)
+    assert result.verdict is m.Verdict.PASS
+    sent = [hashlib.sha256(json.dumps(p, sort_keys=True, separators=(',', ':')).encode()).hexdigest()
+            for p in server['requests']]
+    assert sent == [result.packet_plan['packet_sha256'][key] for key in result.invoked_reviewers]
+
+
+@pytest.mark.parametrize('kind', ['output', 'total'])
+def test_entire_batch_is_affordable_before_first_send(tmp_path, server, kind):
+    runner, args = fixture(tmp_path, server, 'S2')
+    limits = dict(rt.load_policy().data['budgets']['S2'])
+    limits['max_output_tokens' if kind == 'output' else 'max_total_tokens'] = 1
+    result = runner.run(**args, budget_limits=limits)
+    assert result.verdict is m.Verdict.INCONCLUSIVE
+    assert server['requests'] == []
+
+
+def test_deleted_source_does_not_poison_usage(tmp_path, server):
+    owner, args = setup_controller(tmp_path, server)
+    (args['workspace'] / 'example.py').unlink()
+    result = owner.run(**args)
+    ledgers = list((owner.state / 'lineages').glob('*.json'))
+    assert all(not owner._read(path).get('unknown_usage') for path in ledgers)
+    assert not any(owner._read(path).get('status') == 'pending'
+                   for path in (owner.state / 'receipts').glob('*.json'))
+    assert result['model_calls'] == len(server['requests'])
+
+
+def test_pre_dispatch_invalid_utf8_does_not_poison_usage(tmp_path, server):
+    owner, args = setup_controller(tmp_path, server)
+    (args['workspace'] / 'example.py').write_bytes(b'\xff')
+    result = owner.run(**args)
+    assert result['review_verdict'] == 'INCONCLUSIVE'
+    assert not server['requests']
+    assert not list((owner.state / 'lineages').glob('*.json'))
+    assert not list((owner.state / 'receipts').glob('*.json'))

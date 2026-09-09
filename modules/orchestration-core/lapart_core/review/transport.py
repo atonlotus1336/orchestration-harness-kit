@@ -30,6 +30,7 @@ class ReviewBudgetTracker:
         self.failed = False
         self.tool_calls = 0
         self.last_finish_reason = None
+        self.admitted_packets = None
 
     def remaining(self):
         value = self.limits['max_elapsed_seconds'] - (time.monotonic() - self.started)
@@ -54,6 +55,13 @@ class ReviewBudgetTracker:
                          self.limits['max_total_tokens'] - self.total_units - estimate)
         if output_cap < 1:
             raise BudgetViolation('aggregate output or total budget exhausted')
+        if self.admitted_packets is not None:
+            if self.requests >= len(self.admitted_packets) or payload != self.admitted_packets[self.requests]:
+                raise BudgetViolation('dispatched packet differs from admission')
+            admitted_cap = json.loads(payload)['max_tokens']
+            if type(admitted_cap) is not int or not 1 <= admitted_cap <= output_cap:
+                raise BudgetViolation('admitted output reservation is no longer available')
+            output_cap = admitted_cap
         self.request_output_cap = output_cap
         self.requests += 1
         self.estimated_input += estimate
@@ -119,7 +127,12 @@ class JsonReviewTransport:
     def run(self, skill: str, contents: Mapping[str,str], budget: ReviewBudgetTracker):
         self.validate()
         # Reserve using the widest output field, then send no larger payload.
-        provisional=self.payload(skill,contents,budget.limits['max_output_tokens'])
+        cap = budget.limits['max_output_tokens']
+        if budget.admitted_packets is not None:
+            if budget.requests >= len(budget.admitted_packets):
+                raise BudgetViolation('complete reviewer set already dispatched')
+            cap = json.loads(budget.admitted_packets[budget.requests])['max_tokens']
+        provisional=self.payload(skill,contents,cap)
         output_cap=budget.reserve(provisional)
         payload=self.payload(skill,contents,output_cap)
         envelope={'endpoint':self.endpoint,'payload':payload.decode(),'timeout':budget.remaining(),
@@ -141,8 +154,8 @@ class JsonReviewTransport:
             choice=result['choices'][0]
             reason=choice.get("finish_reason")
             budget.last_finish_reason = reason if reason in {None,"stop","length","content_filter","tool_calls"} else "other"
-            if choice.get('finish_reason') in {'length','content_filter'}:
-                raise BudgetViolation('review response did not finish within its limits')
+            if reason != 'stop':
+                raise BudgetViolation('review response has no supported successful terminal stop')
             message=choice['message']
             if message.get('tool_calls') or message.get('function_call'):
                 raise BudgetViolation('model tool calls are forbidden')

@@ -175,7 +175,15 @@ def record_work(state: dict, event_id: str, active_seconds: float) -> dict:
     return state
 
 
-def _proof(root: Path, evidence: dict | None, current: str, *, judgment: bool, builder: str) -> str:
+def _evidence_owner():
+    """Resolve the existing host receipt owner; never create a signing identity."""
+    from .review.host import controller
+    owner = controller()
+    return owner if (owner.state / "receipt-signing.key").is_file() else None
+
+
+def _proof(root: Path, evidence: dict | None, current: str, *, judgment: bool,
+           builder: str, contract_hash: str, check_id: str, owner) -> str:
     if not isinstance(evidence, dict) or evidence.get("input_fingerprint") != current:
         return "unknown"
     if type(evidence.get("passed")) is not bool:
@@ -189,13 +197,29 @@ def _proof(root: Path, evidence: dict | None, current: str, *, judgment: bool, b
         path = local_file(root, evidence.get("artifact", ""))
         if not path.is_file() or hashlib.sha256(path.read_bytes()).hexdigest() != evidence.get("sha256"):
             return "unknown"
-    except (OSError, GoalpostError):
+        # The artifact hash protects bytes, not the claims inside them. Only
+        # the existing host owner may attest a verdict and assessor identity.
+        from .review.controller import Controller
+        if type(owner) is not Controller or not (owner.state / "receipt-signing.key").is_file():
+            return "unknown"
+        receipt = owner._read(path)
+        if (receipt.get("schema_version") != "goal-assessment.v1"
+                or receipt.get("contract_hash") != contract_hash
+                or receipt.get("input_fingerprint") != current):
+            return "unknown"
+        claim = receipt.get("checks", {}).get(check_id)
+        if not isinstance(claim, dict) or any(claim.get(k) != evidence.get(k)
+                for k in ("passed", "method", "assessor_id")):
+            return "unknown"
+        if type(claim.get("passed")) is not bool or not claim.get("assessor_id"):
+            return "unknown"
+    except (OSError, ValueError, KeyError, TypeError, AttributeError):
         return "unknown"
-    return "pass" if evidence["passed"] else "fail"
+    return "pass" if claim["passed"] else "fail"
 
 
 def evaluate(state: dict, observations: dict, root: Path, *, now: float | None = None,
-             milestone: bool = False, completion: bool = False) -> dict:
+             milestone: bool = False, completion: bool = False, evidence_owner=None) -> dict:
     _validate_state(state)
     now = time.time() if now is None else now
     if state["status"] != "active":
@@ -206,6 +230,11 @@ def evaluate(state: dict, observations: dict, root: Path, *, now: float | None =
         check["id"] for c in contract["categories"] for check in c["checks"]}
     if not isinstance(observations, dict) or set(observations) - valid_ids:
         raise GoalpostError("unknown check ids; rubric cannot grow during a run")
+    if evidence_owner is None:
+        try:
+            evidence_owner = _evidence_owner()
+        except (ImportError, OSError, ValueError, KeyError, TypeError):
+            evidence_owner = None
     artifacts = {}
     for ident, observation in observations.items():
         try:
@@ -215,11 +244,16 @@ def evaluate(state: dict, observations: dict, root: Path, *, now: float | None =
             artifacts[ident] = None
     evidence_id = digest({"inputs": current, "artifacts": artifacts, "observations": observations,
                           "active_seconds": state["active_seconds"], "completion": completion, "milestone": milestone})
+    proof = lambda ident, judgment=False: _proof(root, observations.get(ident), current,
+                         judgment=judgment, builder=contract["builder_id"],
+                         contract_hash=state["contract_hash"], check_id=ident, owner=evidence_owner)
+    authenticated = {ident: proof(ident, any(c["id"] == ident and c["kind"] == "judgment"
+        for category in contract["categories"] for c in category["checks"])) for ident in valid_ids}
+    evidence_id = digest({"evidence": evidence_id, "authenticated": authenticated})
     if (now - state["created_at"] < contract["max_wall_seconds"]
             and state["history"] and state["history"][-1]["evidence_id"] == evidence_id):
         return state["history"][-1]
-    proof = lambda ident, judgment=False: _proof(root, observations.get(ident), current,
-                         judgment=judgment, builder=contract["builder_id"])
+    proof = lambda ident, judgment=False: authenticated[ident]
     endpoint = {item["id"]: proof(item["id"]) for item in contract["endpoint"]}
     categories, weaknesses, passed_checks = {}, [], set()
     regression = False
@@ -282,11 +316,12 @@ def evaluate(state: dict, observations: dict, root: Path, *, now: float | None =
     state["history"].append(report)
     state["evaluated_seconds"] = state["active_seconds"]
     state["stagnant_rounds"] = stagnant
-    if not regression:
-        state["passed_checks"] = sorted(set(state["passed_checks"]) | passed_checks)
-        state["passed_endpoint"] = sorted(set(state["passed_endpoint"]) | passed_endpoint)
-        for ident, category in categories.items():
-            state["floors"][ident] = max(state["floors"].get(ident, 0), category["score"])
+    # Preserve each authenticated gain even when another category regresses.
+    # This does not count a mixed regression round as overall progress.
+    state["passed_checks"] = sorted(set(state["passed_checks"]) | passed_checks)
+    state["passed_endpoint"] = sorted(set(state["passed_endpoint"]) | passed_endpoint)
+    for ident, category in categories.items():
+        state["floors"][ident] = max(state["floors"].get(ident, 0), category["score"])
     if decision in ("complete", "checkpoint"):
         state["status"] = decision
     return report

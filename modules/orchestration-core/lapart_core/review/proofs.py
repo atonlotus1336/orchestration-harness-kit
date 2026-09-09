@@ -13,10 +13,19 @@ class HostCheck:
     description: str
 
 class HostTestVerifier:
-    def __init__(self, workspace, checks, source_hashes):
+    def __init__(self, workspace, checks, source_hashes, *, required_capabilities=(), source_presence=None):
         self.workspace = Path(workspace).resolve()
         self.checks = dict(checks)
         self.source_hashes = dict(source_hashes)
+        if (not isinstance(required_capabilities, (list, tuple))
+                or any(not isinstance(value, str) for value in required_capabilities)):
+            raise ValueError("invalid required capabilities")
+        self.required_capabilities = tuple(required_capabilities)
+        self.source_presence = (dict(source_presence) if source_presence is not None
+                                else {path: True for path in source_hashes})
+        if (set(self.source_presence) != set(source_hashes)
+                or any(type(value) is not bool for value in self.source_presence.values())):
+            raise ValueError("invalid source presence")
         self.receipts = []
         self._cache = {}
 
@@ -32,7 +41,14 @@ class HostTestVerifier:
         return path
 
     def _identity(self):
-        return {p: hashlib.sha256(self._path(p).read_bytes()).hexdigest() for p in self.source_hashes}
+        output = {}
+        for path in self.source_hashes:
+            target = self._path(path)
+            if target.exists() != self.source_presence[path]:
+                raise ValueError("verification source presence changed")
+            output[path] = hashlib.sha256(
+                target.read_bytes() if self.source_presence[path] else b"").hexdigest()
+        return output
 
     def preflight(self, expected):
         if dict(expected) != self.source_hashes or self._identity() != self.source_hashes:
@@ -73,21 +89,22 @@ class HostTestVerifier:
             xml = Path(folder)/"result.xml"
             config = Path(folder)/"pytest.ini"
             config.write_text("[pytest]\n")
-            env = dict(os.environ, PYTEST_DISABLE_PLUGIN_AUTOLOAD="1", PYTHONDONTWRITEBYTECODE="1")
-            process = subprocess.Popen([sys.executable,"-I","-B","-m","pytest","--noconftest",
-                "-p","no:cacheprovider","-c",str(config),"-q",str(path),"--junitxml",str(xml)],
-                cwd=self.workspace, env=env, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
             try:
-                code = process.wait(timeout=min(30,budget.remaining()))
-            except subprocess.TimeoutExpired:
-                process.kill(); process.wait()
-                receipt["reason"]="verification deadline"
+                from ..evidence_adapter import run_host_acceptance
+            except ImportError as exc:
+                receipt["reason"] = "CAPABILITY_REFUSED: host evidence executor unavailable"
                 self.receipts.append(receipt)
-                raise ValueError("host verification deadline")
-            finally:
-                if process.poll() is None:
-                    process.kill()
-                    process.wait()
+                raise ValueError(receipt["reason"]) from exc
+            requirements = ({"required_capabilities": self.required_capabilities}
+                            if self.required_capabilities else {})
+            execution = run_host_acceptance(
+                self.workspace, path, xml, config, budget.remaining(), **requirements)
+            receipt["execution"] = execution
+            if execution.get("status") != "ok":
+                receipt["reason"] = "host verification " + str(execution.get("status", "CAPABILITY_REFUSED"))
+                self.receipts.append(receipt)
+                raise ValueError(receipt["reason"])
+            code = execution["exit_code"]
             self.preflight(self.source_hashes)
             budget.remaining()
             if xml.exists() and xml.stat().st_size <= 2_000_000:
@@ -100,7 +117,9 @@ class HostTestVerifier:
                 errors=list(tree.iter("error"))
                 # Exceptions, collection errors and empty suites are not acceptance proof.
                 assertions=all(f.get("message","").startswith(("assert ","AssertionError")) for f in failures)
-                receipt.update(tests=len(tests),failures=len(failures),errors=len(errors),exit_code=code)
+                skipped=list(tree.iter("skipped"))
+                receipt.update(tests=len(tests),failures=len(failures),errors=len(errors),skipped=len(skipped),exit_code=code)
+                receipt['passed']=bool(code==0 and tests and not failures and not errors and not skipped)
                 receipt["verified"]=bool(code==1 and tests and failures and not errors and assertions)
             self.receipts.append(receipt)
             self._cache[key]=receipt["verified"]

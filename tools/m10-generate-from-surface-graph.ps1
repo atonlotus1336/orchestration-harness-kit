@@ -9,7 +9,7 @@ if (-not $OutputDir) {
   $OutputDir = Join-Path (Split-Path -Parent $PSScriptRoot) "generated"
 }
 if (-not (Test-Path -LiteralPath $Graph) -and $Graph -eq "SURFACE-GRAPH.yaml") {
-  $candidateGraph = Join-Path (Split-Path -Parent $PSScriptRoot) "..\..\SURFACE-GRAPH.yaml"
+  $candidateGraph = Join-Path (Split-Path -Parent $PSScriptRoot) "..\SURFACE-GRAPH.yaml"
   if (Test-Path -LiteralPath $candidateGraph) { $Graph = $candidateGraph }
 }
 if (-not (Test-Path -LiteralPath $Graph)) {

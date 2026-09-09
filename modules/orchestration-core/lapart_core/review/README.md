@@ -65,13 +65,22 @@ Unverified execution is UNKNOWN, and finding totals reflect observed findings.
 
 S1–S4 execution is the `Runner` library interface; the CLI has no reviewer-provider
 configuration interface and returns INCONCLUSIVE for those levels. The portable
-core exposes classification and the same bounded runner, not the runtime's host
-evidence collector. Recipient hosts must supply their own trusted evidence path.
+core exposes classification, guarded read-only change-material collection, and
+the same bounded runner. It does not ship a test executor or runtime receipt
+authenticator. Recipient hosts must supply those trusted evidence paths through
+their existing owners.
 
 Keep rollout in shadow mode until a real configured review provider is separately
 qualified for review quality. Passing local fake-provider tests certifies the
 transport controls, not the model's ability to find defects. Fixed phase review
 retains authority; S4 requires explicit confirmation or qualified host policy admission.
+
+Semantic review packets include the accepted task contract and exact before,
+after, change-state, and unified-diff evidence for every declared path. Deletions
+are first-class reviewed changes. Git content observations fail closed when a
+clean, smudge, or process filter is configured, so a filter command cannot run as
+a side effect of review. The contract is appended to the already-budgeted reviewer
+prompt and does not add a model call.
 
 
 ## Correctness and independent proof

@@ -134,7 +134,9 @@ def dispatch(owner, *, admission, workspace, evidence, run, current_identity):
             # Existing Controller/Runner own all model, tool, token and deadline
             # ceilings. This claim never creates a second allowance or retry.
             started = True
-            result = run()
+            from .policy import issue_s4_grant
+            grant = issue_s4_grant(owner, workspace=workspace, evidence=evidence, admission=admission)
+            result = run(grant)
             fresh()
             result["s4_authorization"] = "automatic-policy"
             result["s4_scenarios"] = admission["scenarios"]
