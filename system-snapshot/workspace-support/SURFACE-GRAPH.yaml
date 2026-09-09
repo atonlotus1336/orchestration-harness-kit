@@ -75,7 +75,7 @@ surfaces:
     expected_red: "PROFILE_MISSING:home"
     state: active
     install_stage: "harness"
-    verify_cmd: "wsl -- bash -lc 'test -f ~/.hermes/profiles/home/render-manifest.json && grep -q __PRIVATE_TOKEN_02__-control-plane ~/.hermes/profiles/home/config.yaml'"
+    verify_cmd: "wsl -- bash -lc 'test -f ~/.hermes/profiles/home/render-manifest.json && grep -q lapart-control-plane ~/.hermes/profiles/home/config.yaml'"
 
   - id: profile-telegram
     class: profile
@@ -90,19 +90,19 @@ surfaces:
     expected_red: "PROFILE_MISSING:telegram"
     state: active
     install_stage: "harness"
-    verify_cmd: "wsl -- bash -lc 'test -f ~/.hermes/profiles/telegram/render-manifest.json && grep -q __PRIVATE_TOKEN_02__-control-plane ~/.hermes/profiles/telegram/config.yaml'"
+    verify_cmd: "wsl -- bash -lc 'test -f ~/.hermes/profiles/telegram/render-manifest.json && grep -q lapart-control-plane ~/.hermes/profiles/telegram/config.yaml'"
 
-  - id: profile-home-__PRIVATE_TOKEN_02__-parity-enabled
+  - id: profile-home-lapart-parity-enabled
     class: profile
     config_path: "__WINDOWS_WORKSPACE__/hermes-agent-self-evolution/profiles/home/config.yaml"
     owner: "Jonathan"
-    probe_cmd: "[bool](Select-String -LiteralPath '__WINDOWS_WORKSPACE__\\hermes-agent-self-evolution\\profiles\\home\\config.yaml' -Pattern '__PRIVATE_TOKEN_02__-parity' -SimpleMatch -ErrorAction SilentlyContinue)"
+    probe_cmd: "[bool](Select-String -LiteralPath '__WINDOWS_WORKSPACE__\\hermes-agent-self-evolution\\profiles\\home\\config.yaml' -Pattern 'lapart-parity' -SimpleMatch -ErrorAction SilentlyContinue)"
     cadence: "P30D"
     slack: "P7D"
     secret_fields: []
     privacy_class: local-only
-    break_recipe: "dry-run: remove __PRIVATE_TOKEN_02__-parity from home profile in a sandbox copy"
-    expected_red: "PLUGIN_NOT_ENABLED:home:__PRIVATE_TOKEN_02__-parity"
+    break_recipe: "dry-run: remove lapart-parity from home profile in a sandbox copy"
+    expected_red: "PLUGIN_NOT_ENABLED:home:lapart-parity"
     state: active
 
   - id: profile-home-m7-routing-policy
@@ -118,17 +118,17 @@ surfaces:
     expected_red: "M7_ROUTING_PROFILE_MISSING:home"
     state: active
 
-  - id: profile-telegram-__PRIVATE_TOKEN_02__-parity-enabled
+  - id: profile-telegram-lapart-parity-enabled
     class: profile
     config_path: "__WINDOWS_WORKSPACE__/hermes-agent-self-evolution/profiles/telegram/config.yaml"
     owner: "Jonathan"
-    probe_cmd: "[bool](Select-String -LiteralPath '__WINDOWS_WORKSPACE__\\hermes-agent-self-evolution\\profiles\\telegram\\config.yaml' -Pattern '__PRIVATE_TOKEN_02__-parity' -SimpleMatch -ErrorAction SilentlyContinue)"
+    probe_cmd: "[bool](Select-String -LiteralPath '__WINDOWS_WORKSPACE__\\hermes-agent-self-evolution\\profiles\\telegram\\config.yaml' -Pattern 'lapart-parity' -SimpleMatch -ErrorAction SilentlyContinue)"
     cadence: "P30D"
     slack: "P7D"
     secret_fields: []
     privacy_class: local-only
-    break_recipe: "dry-run: remove __PRIVATE_TOKEN_02__-parity from telegram profile in a sandbox copy"
-    expected_red: "PLUGIN_NOT_ENABLED:telegram:__PRIVATE_TOKEN_02__-parity"
+    break_recipe: "dry-run: remove lapart-parity from telegram profile in a sandbox copy"
+    expected_red: "PLUGIN_NOT_ENABLED:telegram:lapart-parity"
     state: active
 
   - id: profile-telegram-m7-routing-policy
@@ -248,17 +248,17 @@ surfaces:
     expected_red: "MCP_MISSING:codex-comfy-video-orchestrator"
     state: active
 
-  - id: mcp-codex-__PRIVATE_TOKEN_02__-control-plane
+  - id: mcp-codex-lapart-control-plane
     class: mcp
-    config_path: "__WINDOWS_WORKSPACE__/.codex/mcp-servers/__PRIVATE_TOKEN_02__-control-plane/server.py"
+    config_path: "__WINDOWS_WORKSPACE__/.codex/mcp-servers/lapart-control-plane/server.py"
     owner: "Jonathan"
-    probe_cmd: "Test-Path -LiteralPath '__WINDOWS_WORKSPACE__\\.codex\\mcp-servers\\__PRIVATE_TOKEN_02__-control-plane\\server.py'"
+    probe_cmd: "Test-Path -LiteralPath '__WINDOWS_WORKSPACE__\\.codex\\mcp-servers\\lapart-control-plane\\server.py'"
     cadence: "P3650D"
     slack: "P1D"
     secret_fields: []
     privacy_class: slot
-    break_recipe: "dry-run: remove __PRIVATE_TOKEN_02__-control-plane server.py from a sandbox copy"
-    expected_red: "MCP_MISSING:codex-__PRIVATE_TOKEN_02__-control-plane"
+    break_recipe: "dry-run: remove lapart-control-plane server.py from a sandbox copy"
+    expected_red: "MCP_MISSING:codex-lapart-control-plane"
     state: active
 
   - id: mcp-codex-rag-suite
@@ -466,17 +466,17 @@ surfaces:
     expected_red: "ARTIFACT_MISSING:m3"
     state: active
 
-  - id: plugin-__PRIVATE_TOKEN_02__-parity-source
+  - id: plugin-lapart-parity-source
     class: doc
-    config_path: "__WINDOWS_WORKSPACE__/hermes-custom-plugins/__PRIVATE_TOKEN_02__-parity/plugin.yaml"
+    config_path: "__WINDOWS_WORKSPACE__/hermes-custom-plugins/lapart-parity/plugin.yaml"
     owner: "Jonathan"
-    probe_cmd: "$y=(Get-Content -Raw -LiteralPath '__WINDOWS_WORKSPACE__\\hermes-custom-plugins\\__PRIVATE_TOKEN_02__-parity\\plugin.yaml' -EA SilentlyContinue); $i=(Get-Content -Raw -LiteralPath '__WINDOWS_WORKSPACE__\\hermes-custom-plugins\\__PRIVATE_TOKEN_02__-parity\\__init__.py' -EA SilentlyContinue); [bool]$y -and [bool]$i -and (@('pre_llm_call','on_session_end','on_session_finalize','kanban_task_completed') | Where-Object { ($y -match $_) -and ($i -match ('def ' + $_)) }).Count -eq 4"
+    probe_cmd: "$y=(Get-Content -Raw -LiteralPath '__WINDOWS_WORKSPACE__\\hermes-custom-plugins\\lapart-parity\\plugin.yaml' -EA SilentlyContinue); $i=(Get-Content -Raw -LiteralPath '__WINDOWS_WORKSPACE__\\hermes-custom-plugins\\lapart-parity\\__init__.py' -EA SilentlyContinue); [bool]$y -and [bool]$i -and (@('pre_llm_call','on_session_end','on_session_finalize','kanban_task_completed') | Where-Object { ($y -match $_) -and ($i -match ('def ' + $_)) }).Count -eq 4"
     cadence: "P30D"
     slack: "P7D"
     secret_fields: []
     privacy_class: local-only
-    break_recipe: "dry-run: hide __PRIVATE_TOKEN_02__-parity plugin.yaml from a sandbox copy"
-    expected_red: "PLUGIN_MISSING:__PRIVATE_TOKEN_02__-parity"
+    break_recipe: "dry-run: hide lapart-parity plugin.yaml from a sandbox copy"
+    expected_red: "PLUGIN_MISSING:lapart-parity"
     state: active
 
   - id: kit-rebuild
@@ -1416,9 +1416,9 @@ surfaces:
     # kit generator's target-safety check (local-only rows are never exported, but
     # the generator resolves every row's target before filtering by privacy_class).
     export_target_path: "local/review-claude-cli"
-    config_path: "C:/Users/__WINDOWS_USER__/AppData/Local/Packages/Claude_pzs8sxrjxfjjc/LocalCache/Roaming/Claude/claude-code"
+    config_path: "C:/Users/devbox/AppData/Local/Packages/Claude_pzs8sxrjxfjjc/LocalCache/Roaming/Claude/claude-code"
     owner: "Jonathan"
-    probe_cmd: "@(Get-ChildItem 'C:\\Users\\__OWNER_HANDLE__\\AppData\\Local\\Packages\\Claude_pzs8sxrjxfjjc\\LocalCache\\Roaming\\Claude\\claude-code\\*\\claude.exe' -ErrorAction SilentlyContinue).Count -ge 1"
+    probe_cmd: "@(Get-ChildItem 'C:\\Users\\devbox\\AppData\\Local\\Packages\\Claude_pzs8sxrjxfjjc\\LocalCache\\Roaming\\Claude\\claude-code\\*\\claude.exe' -ErrorAction SilentlyContinue).Count -ge 1"
     cadence: "P3650D"
     slack: "P1D"
     secret_fields: []
@@ -1431,9 +1431,9 @@ surfaces:
     class: eval
     # export_target_path added 2026-07-31: same rationale as review-claude-cli above.
     export_target_path: "local/review-codex-companion"
-    config_path: "C:/Users/__WINDOWS_USER__/.claude/plugins/cache/openai-codex/codex/1.0.4/scripts/codex-companion.mjs"
+    config_path: "C:/Users/devbox/.claude/plugins/cache/openai-codex/codex/1.0.4/scripts/codex-companion.mjs"
     owner: "Jonathan"
-    probe_cmd: "Test-Path -LiteralPath 'C:\\Users\\__OWNER_HANDLE__\\.claude\\plugins\\cache\\openai-codex\\codex\\1.0.4\\scripts\\codex-companion.mjs'"
+    probe_cmd: "Test-Path -LiteralPath 'C:\\Users\\devbox\\.claude\\plugins\\cache\\openai-codex\\codex\\1.0.4\\scripts\\codex-companion.mjs'"
     cadence: "P3650D"
     slack: "P1D"
     secret_fields: []
@@ -1441,7 +1441,7 @@ surfaces:
     break_recipe: "rename codex-companion.mjs in a sandbox copy; probe must go RED"
     expected_red: "PROBE_FAIL (Codex Companion missing - codex-adversarial-parallels blocked at skill step 0)"
     state: active
-    verify_cmd: "$o = & node 'C:\\Users\\__OWNER_HANDLE__\\.claude\\plugins\\cache\\openai-codex\\codex\\1.0.4\\scripts\\codex-companion.mjs' setup --json 2>$null; [bool]([string]$o -match 'ready.\\s*:\\s*true')"
+    verify_cmd: "$o = & node 'C:\\Users\\devbox\\.claude\\plugins\\cache\\openai-codex\\codex\\1.0.4\\scripts\\codex-companion.mjs' setup --json 2>$null; [bool]([string]$o -match 'ready.\\s*:\\s*true')"
     notes: "Repaired 2026-07-06 (evidence/codex-companion-link-repair-20260706-210000.json). probe_cmd = file presence (fast, daily); verify_cmd = full setup --json ready=true check incl. auth (runs in verify mode)."
 
   # M13 (2026-07-08): VPS/n8n reliability surface (merged from M13-GRAPH-ROWS-DRAFT.yaml after live GREEN)
@@ -1462,6 +1462,20 @@ surfaces:
     expected_red: "PROBE_FAIL (VPS_UNREACHABLE=ackable outage / N8N_SERVICE_DOWN / N8N_API_UNHEALTHY / WORKFLOW_STALE)"
     state: active
     notes: "M13 staged 2026-07-08. Three-stage failure-class probe reads endpoint/key/critical_workflows from bindings.local.yaml (Q10, local-only). external: true => H5 ack_until applies for planned VPS downtime. Kit ships export/orchestration-layer/n8n-integration (template + verify scripts; renamed from m13 2026-07-31), never the binding."
+
+  - id: mcp-n8n
+    class: mcp
+    config_path: "__WINDOWS_WORKSPACE__/.mcp-servers/n8n"
+    owner: "Jonathan"
+    probe_cmd: "Test-Path -LiteralPath '__WINDOWS_WORKSPACE__\\.mcp-servers\\n8n\\server.py' -PathType Leaf"
+    cadence: "P3650D"
+    slack: "P1D"
+    secret_fields: []
+    privacy_class: local-only
+    break_recipe: "rename .mcp-servers/n8n/server.py in a sandbox copy"
+    expected_red: "N8N_MCP_SERVER_MISSING"
+    state: active
+    notes: "Registered 2026-08-21 after discovery correctly identified the global n8n MCP implementation as an untracked surface; credentials remain external references."
 
   # Plan 01 Phase 1 (2026-07-08): existential ops P0 - backup/DR + MCP-fleet backstop.
   - id: backup-freshness
@@ -1509,9 +1523,9 @@ surfaces:
     expected_red: "no monthly mission review within 75 days for applications"
     state: active
     notes: "Task 8.1 heartbeat. Latest monthly review is the liveness artifact."
-  - id: mission-heartbeat-__PRIVATE_TOKEN_14__
+  - id: mission-heartbeat-education-platform
     class: eval
-    config_path: "__WINDOWS_WORKSPACE__/.planning/missions/__PRIVATE_TOKEN_14__/MISSION.md"
+    config_path: "__WINDOWS_WORKSPACE__/.planning/missions/education-platform/MISSION.md"
     owner: "Jonathan"
     probe_cmd: "[bool](Get-ChildItem '__WINDOWS_WORKSPACE__\\.planning\\missions\\_digests\\mission-review-*.md' -EA SilentlyContinue | Where-Object { $_.LastWriteTime -gt (Get-Date).AddDays(-75) })"
     cadence: "P30D"
@@ -1519,12 +1533,12 @@ surfaces:
     secret_fields: []
     privacy_class: local-only
     break_recipe: "dry-run: age all mission-review-*.md past 75 days => RED"
-    expected_red: "no monthly mission review within 75 days for __PRIVATE_TOKEN_14__"
+    expected_red: "no monthly mission review within 75 days for education-platform"
     state: active
     notes: "Task 8.1 heartbeat."
-  - id: mission-heartbeat-__PRIVATE_TOKEN_13__
+  - id: mission-heartbeat-vr-projects
     class: eval
-    config_path: "__WINDOWS_WORKSPACE__/.planning/missions/__PRIVATE_TOKEN_13__/MISSION.md"
+    config_path: "__WINDOWS_WORKSPACE__/.planning/missions/vr-projects/MISSION.md"
     owner: "Jonathan"
     probe_cmd: "[bool](Get-ChildItem '__WINDOWS_WORKSPACE__\\.planning\\missions\\_digests\\mission-review-*.md' -EA SilentlyContinue | Where-Object { $_.LastWriteTime -gt (Get-Date).AddDays(-75) })"
     cadence: "P30D"
@@ -1532,12 +1546,12 @@ surfaces:
     secret_fields: []
     privacy_class: local-only
     break_recipe: "dry-run: age all mission-review-*.md past 75 days => RED"
-    expected_red: "no monthly mission review within 75 days for __PRIVATE_TOKEN_13__"
+    expected_red: "no monthly mission review within 75 days for vr-projects"
     state: active
     notes: "Task 8.1 heartbeat."
-  - id: mission-heartbeat-__PRIVATE_TOKEN_12__
+  - id: mission-heartbeat-vrchat
     class: eval
-    config_path: "__WINDOWS_WORKSPACE__/.planning/missions/__PRIVATE_TOKEN_12__/MISSION.md"
+    config_path: "__WINDOWS_WORKSPACE__/.planning/missions/vrchat/MISSION.md"
     owner: "Jonathan"
     probe_cmd: "[bool](Get-ChildItem '__WINDOWS_WORKSPACE__\\.planning\\missions\\_digests\\mission-review-*.md' -EA SilentlyContinue | Where-Object { $_.LastWriteTime -gt (Get-Date).AddDays(-75) })"
     cadence: "P30D"
@@ -1545,12 +1559,12 @@ surfaces:
     secret_fields: []
     privacy_class: local-only
     break_recipe: "dry-run: age all mission-review-*.md past 75 days => RED"
-    expected_red: "no monthly mission review within 75 days for __PRIVATE_TOKEN_12__"
+    expected_red: "no monthly mission review within 75 days for vrchat"
     state: active
     notes: "Task 8.1 heartbeat."
-  - id: mission-heartbeat-community-mission
+  - id: mission-heartbeat-indigenous-charity
     class: eval
-    config_path: "__WINDOWS_WORKSPACE__/.planning/missions/community-mission/MISSION.md"
+    config_path: "__WINDOWS_WORKSPACE__/.planning/missions/indigenous-charity/MISSION.md"
     owner: "Jonathan"
     probe_cmd: "[bool](Get-ChildItem '__WINDOWS_WORKSPACE__\\.planning\\missions\\_digests\\mission-review-*.md' -EA SilentlyContinue | Where-Object { $_.LastWriteTime -gt (Get-Date).AddDays(-75) })"
     cadence: "P30D"
@@ -1558,7 +1572,7 @@ surfaces:
     secret_fields: []
     privacy_class: local-only
     break_recipe: "dry-run: age all mission-review-*.md past 75 days => RED"
-    expected_red: "no monthly mission review within 75 days for community-mission"
+    expected_red: "no monthly mission review within 75 days for indigenous-charity"
     state: active
     notes: "Task 8.1 heartbeat. CARE domain - the monthly review carries the consent standing check."
   - id: portfolio-heartbeat
@@ -1664,12 +1678,12 @@ surfaces:
     notes: "Task 7.3. Arbiter subordinates local Ollama keep-alive to a ComfyUI job when free VRAM < threshold, then restores. GPU-ABSENT on this host is a graceful skip."
 
   # Plan 01 Task 2C.2 (2026-07-08): CARE fail-closed enforcement for the
-  # community-mission domain - built BEFORE any community data exists (D8).
-  - id: practice-loop
+  # indigenous-charity domain - built BEFORE any community data exists (D8).
+  - id: learning-loop
     class: eval
-    config_path: "__WINDOWS_WORKSPACE__/output/practice-loop/active-hashes.json"
+    config_path: "__WINDOWS_WORKSPACE__/output/learning-loop/active-hashes.json"
     owner: "Jonathan"
-    probe_cmd: "$global:LASTEXITCODE=0; & powershell.exe -NoProfile -ExecutionPolicy Bypass -File '__WINDOWS_WORKSPACE__\\scripts\\ops\\probes\\probe-practice-loop.ps1' | Out-Null; $LASTEXITCODE -eq 0"
+    probe_cmd: "$global:LASTEXITCODE=0; & powershell.exe -NoProfile -ExecutionPolicy Bypass -File '__WINDOWS_WORKSPACE__\\scripts\\ops\\probes\\probe-learning-loop.ps1' | Out-Null; $LASTEXITCODE -eq 0"
     cadence: "P7D"
     slack: "P2D"
     secret_fields: []
@@ -1677,7 +1691,7 @@ surfaces:
     break_recipe: "strip the is_injection gate in learning_loop.py (canary-result missed>0 => RED); OR edit filter-prompt-v1.txt/a seed pack in place (hash drift => RED); OR skip a weekly run (digest ages past P7D+P2D => RED)"
     expected_red: "RED (missed canary / filter-prompt or seed-pack hash drift / stale digest)"
     state: active
-    notes: "Plan 01 Phase 5. Probe = scripts/ops/probes/probe-practice-loop.ps1 (digest<8d + all 10 canaries CAUGHT + active-hashes.json pins match). Weekly runner scripts/practice-loop/run_weekly.py; swap-filter.ps1 gates any filter change (corpus replay + canary revalidation, replay judge != filter model). Kit twin export/orchestration-layer/practice-loop (renamed from m15-practice-loop 2026-07-31, export token policy) ships the canary pool + the GATE, digest-only default, adopt-write path physically excluded. 'practice-loop' is on the I2 denylist (root + export) - verified tripwire-biting 2026-07-08."
+    notes: "Plan 01 Phase 5. Probe = scripts/ops/probes/probe-learning-loop.ps1 (digest<8d + all 10 canaries CAUGHT + active-hashes.json pins match). Weekly runner scripts/learning-loop/run_weekly.py; swap-filter.ps1 gates any filter change (corpus replay + canary revalidation, replay judge != filter model). Kit twin export/orchestration-layer/practice-loop (renamed from m15-learning-loop 2026-07-31, export token policy) ships the canary pool + the GATE, digest-only default, adopt-write path physically excluded. 'learning-loop' is on the I2 denylist (root + export) - verified tripwire-biting 2026-07-08."
 
   # M12 (2026-07-07): remaining nav-chain docs under freshness control + the standing
   # quarterly cold-start probe (PLAN.md M12 steps 12.2-12.3).
@@ -1744,9 +1758,9 @@ surfaces:
     notes: "Standing quarterly cold-start probe (M12.3): a fresh weaker-LLM session follows the START HERE nav index and completes the scripted task via tests/m12-cold-start-probe.ps1. Expiry (P90D+P7D) forces a quarterly rerun; probe fails if the last run did not PASS."
   - id: blueprint-registry
     class: eval
-    config_path: "__WINDOWS_WORKSPACE__/.planning/missions/community-mission/blueprints/CATALOG.md"
+    config_path: "__WINDOWS_WORKSPACE__/.planning/missions/indigenous-charity/blueprints/CATALOG.md"
     owner: "Jonathan"
-    probe_cmd: "[bool]((Test-Path '__WINDOWS_WORKSPACE__\\.planning\\missions\\community-mission\\blueprints\\CATALOG.md') -and ((Get-Item '__WINDOWS_WORKSPACE__\\.planning\\missions\\community-mission\\blueprints\\CATALOG.md').LastWriteTime -gt (Get-Date).AddDays(-100)) -and ((Get-ChildItem '__WINDOWS_WORKSPACE__\\.planning\\missions\\community-mission\\blueprints\\BRIEF-*.md' -EA SilentlyContinue).Count -eq 5))"
+    probe_cmd: "[bool]((Test-Path '__WINDOWS_WORKSPACE__\\.planning\\missions\\indigenous-charity\\blueprints\\CATALOG.md') -and ((Get-Item '__WINDOWS_WORKSPACE__\\.planning\\missions\\indigenous-charity\\blueprints\\CATALOG.md').LastWriteTime -gt (Get-Date).AddDays(-100)) -and ((Get-ChildItem '__WINDOWS_WORKSPACE__\\.planning\\missions\\indigenous-charity\\blueprints\\BRIEF-*.md' -EA SilentlyContinue).Count -eq 5))"
     cadence: "P30D"
     slack: "P45D"
     secret_fields: []
@@ -1759,7 +1773,7 @@ surfaces:
     class: eval
     config_path: "__WINDOWS_WORKSPACE__/scripts/autoexperiment/control-plane.ps1"
     owner: "Jonathan"
-    probe_cmd: "$o=& powershell.exe -NoProfile -ExecutionPolicy Bypass -File '__WINDOWS_WORKSPACE__\\scripts\\autoexperiment\\control-plane.ps1' -Command status; $j=($o -join ' ')|ConvertFrom-Json; [bool]$j -and $j.dispatch_activation -eq 'manual_report_only'"
+    probe_cmd: "$o=& powershell.exe -NoProfile -ExecutionPolicy Bypass -File '__WINDOWS_WORKSPACE__\\scripts\\autoexperiment\\control-plane.ps1' -Command status; $j=($o -join ' ')|ConvertFrom-Json; [bool]$j -and $j.dispatch_activation -eq 'automatic_sandbox_audit' -and $j.kill_switch -eq $false"
     cadence: "P3650D"
     slack: "P1D"
     secret_fields: []
@@ -1771,7 +1785,7 @@ surfaces:
     class: eval
     config_path: "__WINDOWS_WORKSPACE__/.planning/autoexperiment-control-plane/contracts/schedules.yaml"
     owner: "Jonathan"
-    probe_cmd: "$j=Get-Content -Raw -LiteralPath '__WINDOWS_WORKSPACE__\\.planning\\autoexperiment-control-plane\\contracts\\schedules.yaml'|ConvertFrom-Json; $j.activation -eq 'manual_report_only' -and @($j.chains).Count -eq 3"
+    probe_cmd: "$j=Get-Content -Raw -LiteralPath '__WINDOWS_WORKSPACE__\\.planning\\autoexperiment-control-plane\\contracts\\schedules.yaml'|ConvertFrom-Json; $j.activation -eq 'automatic_sandbox_audit' -and $j.dispatch_trigger -eq 'verified_checkpoint_event_only' -and @($j.chains).Count -eq 3 -and @($j.chains | Where-Object { $_.production_implementation_approval -ne 'manual-confirmation-required' }).Count -eq 0"
     cadence: "P3650D"
     slack: "P1D"
     secret_fields: []
@@ -1804,3 +1818,2338 @@ surfaces:
     expected_red: "AUTOEXPERIMENT_SKILL_INVALID"
     state: active
     notes: "Dormant canonical source through Plan 07; Plan 08 owns any targeted active-tier promotion."
+
+  - id: kit-client-01-gitattributes
+    class: kit-component
+    config_path: "__WINDOWS_WORKSPACE__/export/orchestration-layer/.gitattributes"
+    owner: "Jonathan"
+    probe_cmd: "Test-Path -LiteralPath '__WINDOWS_WORKSPACE__\\export\\orchestration-layer\\.gitattributes'"
+    cadence: "P3650D"
+    slack: "P1D"
+    secret_fields: []
+    privacy_class: shareable
+    break_recipe: "dry-run: hide this client-release component from a sandbox copy"
+    expected_red: "KIT_COMPONENT_MISSING:kit-client-01-gitattributes"
+    state: active
+    install_stage: "kit"
+
+  - id: kit-client-02-docs-client-threat-model-md
+    class: kit-component
+    config_path: "__WINDOWS_WORKSPACE__/export/orchestration-layer/docs/CLIENT-THREAT-MODEL.md"
+    owner: "Jonathan"
+    probe_cmd: "Test-Path -LiteralPath '__WINDOWS_WORKSPACE__\\export\\orchestration-layer\\docs\\CLIENT-THREAT-MODEL.md'"
+    cadence: "P3650D"
+    slack: "P1D"
+    secret_fields: []
+    privacy_class: shareable
+    break_recipe: "dry-run: hide this client-release component from a sandbox copy"
+    expected_red: "KIT_COMPONENT_MISSING:kit-client-02-docs-client-threat-model-md"
+    state: active
+    install_stage: "kit"
+
+  - id: kit-client-03-docs-privacy-md
+    class: kit-component
+    config_path: "__WINDOWS_WORKSPACE__/export/orchestration-layer/docs/PRIVACY.md"
+    owner: "Jonathan"
+    probe_cmd: "Test-Path -LiteralPath '__WINDOWS_WORKSPACE__\\export\\orchestration-layer\\docs\\PRIVACY.md'"
+    cadence: "P3650D"
+    slack: "P1D"
+    secret_fields: []
+    privacy_class: shareable
+    break_recipe: "dry-run: hide this client-release component from a sandbox copy"
+    expected_red: "KIT_COMPONENT_MISSING:kit-client-03-docs-privacy-md"
+    state: active
+    install_stage: "kit"
+
+  - id: kit-client-04-docs-quick-start-md
+    class: kit-component
+    config_path: "__WINDOWS_WORKSPACE__/export/orchestration-layer/docs/QUICK-START.md"
+    owner: "Jonathan"
+    probe_cmd: "Test-Path -LiteralPath '__WINDOWS_WORKSPACE__\\export\\orchestration-layer\\docs\\QUICK-START.md'"
+    cadence: "P3650D"
+    slack: "P1D"
+    secret_fields: []
+    privacy_class: shareable
+    break_recipe: "dry-run: hide this client-release component from a sandbox copy"
+    expected_red: "KIT_COMPONENT_MISSING:kit-client-04-docs-quick-start-md"
+    state: active
+    install_stage: "kit"
+
+  - id: kit-client-05-docs-security-boundary-md
+    class: kit-component
+    config_path: "__WINDOWS_WORKSPACE__/export/orchestration-layer/docs/SECURITY-BOUNDARY.md"
+    owner: "Jonathan"
+    probe_cmd: "Test-Path -LiteralPath '__WINDOWS_WORKSPACE__\\export\\orchestration-layer\\docs\\SECURITY-BOUNDARY.md'"
+    cadence: "P3650D"
+    slack: "P1D"
+    secret_fields: []
+    privacy_class: shareable
+    break_recipe: "dry-run: hide this client-release component from a sandbox copy"
+    expected_red: "KIT_COMPONENT_MISSING:kit-client-05-docs-security-boundary-md"
+    state: active
+    install_stage: "kit"
+
+  - id: kit-client-06-docs-small-model-install-md
+    class: kit-component
+    config_path: "__WINDOWS_WORKSPACE__/export/orchestration-layer/docs/SMALL-MODEL-INSTALL.md"
+    owner: "Jonathan"
+    probe_cmd: "Test-Path -LiteralPath '__WINDOWS_WORKSPACE__\\export\\orchestration-layer\\docs\\SMALL-MODEL-INSTALL.md'"
+    cadence: "P3650D"
+    slack: "P1D"
+    secret_fields: []
+    privacy_class: shareable
+    break_recipe: "dry-run: hide this client-release component from a sandbox copy"
+    expected_red: "KIT_COMPONENT_MISSING:kit-client-06-docs-small-model-install-md"
+    state: active
+    install_stage: "kit"
+
+  - id: kit-client-07-docs-troubleshooting-md
+    class: kit-component
+    config_path: "__WINDOWS_WORKSPACE__/export/orchestration-layer/docs/TROUBLESHOOTING.md"
+    owner: "Jonathan"
+    probe_cmd: "Test-Path -LiteralPath '__WINDOWS_WORKSPACE__\\export\\orchestration-layer\\docs\\TROUBLESHOOTING.md'"
+    cadence: "P3650D"
+    slack: "P1D"
+    secret_fields: []
+    privacy_class: shareable
+    break_recipe: "dry-run: hide this client-release component from a sandbox copy"
+    expected_red: "KIT_COMPONENT_MISSING:kit-client-07-docs-troubleshooting-md"
+    state: active
+    install_stage: "kit"
+
+  - id: kit-client-08-docs-update-and-remove-md
+    class: kit-component
+    config_path: "__WINDOWS_WORKSPACE__/export/orchestration-layer/docs/UPDATE-AND-REMOVE.md"
+    owner: "Jonathan"
+    probe_cmd: "Test-Path -LiteralPath '__WINDOWS_WORKSPACE__\\export\\orchestration-layer\\docs\\UPDATE-AND-REMOVE.md'"
+    cadence: "P3650D"
+    slack: "P1D"
+    secret_fields: []
+    privacy_class: shareable
+    break_recipe: "dry-run: hide this client-release component from a sandbox copy"
+    expected_red: "KIT_COMPONENT_MISSING:kit-client-08-docs-update-and-remove-md"
+    state: active
+    install_stage: "kit"
+
+  - id: kit-client-09-install-ps1
+    class: kit-component
+    config_path: "__WINDOWS_WORKSPACE__/export/orchestration-layer/install.ps1"
+    owner: "Jonathan"
+    probe_cmd: "Test-Path -LiteralPath '__WINDOWS_WORKSPACE__\\export\\orchestration-layer\\install.ps1'"
+    cadence: "P3650D"
+    slack: "P1D"
+    secret_fields: []
+    privacy_class: shareable
+    break_recipe: "dry-run: hide this client-release component from a sandbox copy"
+    expected_red: "KIT_COMPONENT_MISSING:kit-client-09-install-ps1"
+    state: active
+    install_stage: "kit"
+
+  - id: kit-client-10-install-sh
+    class: kit-component
+    config_path: "__WINDOWS_WORKSPACE__/export/orchestration-layer/install.sh"
+    owner: "Jonathan"
+    probe_cmd: "Test-Path -LiteralPath '__WINDOWS_WORKSPACE__\\export\\orchestration-layer\\install.sh'"
+    cadence: "P3650D"
+    slack: "P1D"
+    secret_fields: []
+    privacy_class: shareable
+    break_recipe: "dry-run: hide this client-release component from a sandbox copy"
+    expected_red: "KIT_COMPONENT_MISSING:kit-client-10-install-sh"
+    state: active
+    install_stage: "kit"
+
+  - id: kit-client-11--clone-eval-install-guidance-after-doctor-pass-txt
+    class: kit-component
+    config_path: "__WINDOWS_WORKSPACE__/export/orchestration-layer/installer/clone-eval/install-guidance-after-doctor-pass.txt"
+    owner: "Jonathan"
+    probe_cmd: "Test-Path -LiteralPath '__WINDOWS_WORKSPACE__\\export\\orchestration-layer\\installer\\clone-eval\\install-guidance-after-doctor-pass.txt'"
+    cadence: "P3650D"
+    slack: "P1D"
+    secret_fields: []
+    privacy_class: shareable
+    break_recipe: "dry-run: hide this client-release component from a sandbox copy"
+    expected_red: "KIT_COMPONENT_MISSING:kit-client-11--clone-eval-install-guidance-after-doctor-pass-txt"
+    state: active
+    install_stage: "kit"
+
+  - id: kit-client-12-ller-clone-eval-install-guidance-after-dry-run-txt
+    class: kit-component
+    config_path: "__WINDOWS_WORKSPACE__/export/orchestration-layer/installer/clone-eval/install-guidance-after-dry-run.txt"
+    owner: "Jonathan"
+    probe_cmd: "Test-Path -LiteralPath '__WINDOWS_WORKSPACE__\\export\\orchestration-layer\\installer\\clone-eval\\install-guidance-after-dry-run.txt'"
+    cadence: "P3650D"
+    slack: "P1D"
+    secret_fields: []
+    privacy_class: shareable
+    break_recipe: "dry-run: hide this client-release component from a sandbox copy"
+    expected_red: "KIT_COMPONENT_MISSING:kit-client-12-ller-clone-eval-install-guidance-after-dry-run-txt"
+    state: active
+    install_stage: "kit"
+
+  - id: kit-client-13-clone-eval-install-guidance-after-install-pass-txt
+    class: kit-component
+    config_path: "__WINDOWS_WORKSPACE__/export/orchestration-layer/installer/clone-eval/install-guidance-after-install-pass.txt"
+    owner: "Jonathan"
+    probe_cmd: "Test-Path -LiteralPath '__WINDOWS_WORKSPACE__\\export\\orchestration-layer\\installer\\clone-eval\\install-guidance-after-install-pass.txt'"
+    cadence: "P3650D"
+    slack: "P1D"
+    secret_fields: []
+    privacy_class: shareable
+    break_recipe: "dry-run: hide this client-release component from a sandbox copy"
+    expected_red: "KIT_COMPONENT_MISSING:kit-client-13-clone-eval-install-guidance-after-install-pass-txt"
+    state: active
+    install_stage: "kit"
+
+  - id: kit-client-14-staller-clone-eval-install-guidance-reference-json
+    class: kit-component
+    config_path: "__WINDOWS_WORKSPACE__/export/orchestration-layer/installer/clone-eval/install-guidance-reference.json"
+    owner: "Jonathan"
+    probe_cmd: "Test-Path -LiteralPath '__WINDOWS_WORKSPACE__\\export\\orchestration-layer\\installer\\clone-eval\\install-guidance-reference.json'"
+    cadence: "P3650D"
+    slack: "P1D"
+    secret_fields: []
+    privacy_class: shareable
+    break_recipe: "dry-run: hide this client-release component from a sandbox copy"
+    expected_red: "KIT_COMPONENT_MISSING:kit-client-14-staller-clone-eval-install-guidance-reference-json"
+    state: active
+    install_stage: "kit"
+
+  - id: kit-client-15-installer-clone-eval-install-guidance-start-txt
+    class: kit-component
+    config_path: "__WINDOWS_WORKSPACE__/export/orchestration-layer/installer/clone-eval/install-guidance-start.txt"
+    owner: "Jonathan"
+    probe_cmd: "Test-Path -LiteralPath '__WINDOWS_WORKSPACE__\\export\\orchestration-layer\\installer\\clone-eval\\install-guidance-start.txt'"
+    cadence: "P3650D"
+    slack: "P1D"
+    secret_fields: []
+    privacy_class: shareable
+    break_recipe: "dry-run: hide this client-release component from a sandbox copy"
+    expected_red: "KIT_COMPONENT_MISSING:kit-client-15-installer-clone-eval-install-guidance-start-txt"
+    state: active
+    install_stage: "kit"
+
+  - id: kit-client-16-installer-clone-eval-validate-install-guidance-py
+    class: kit-component
+    config_path: "__WINDOWS_WORKSPACE__/export/orchestration-layer/installer/clone-eval/validate-install-guidance.py"
+    owner: "Jonathan"
+    probe_cmd: "Test-Path -LiteralPath '__WINDOWS_WORKSPACE__\\export\\orchestration-layer\\installer\\clone-eval\\validate-install-guidance.py'"
+    cadence: "P3650D"
+    slack: "P1D"
+    secret_fields: []
+    privacy_class: shareable
+    break_recipe: "dry-run: hide this client-release component from a sandbox copy"
+    expected_red: "KIT_COMPONENT_MISSING:kit-client-16-installer-clone-eval-validate-install-guidance-py"
+    state: active
+    install_stage: "kit"
+
+  - id: kit-client-17-installer-configure-ps1
+    class: kit-component
+    config_path: "__WINDOWS_WORKSPACE__/export/orchestration-layer/installer/configure.ps1"
+    owner: "Jonathan"
+    probe_cmd: "Test-Path -LiteralPath '__WINDOWS_WORKSPACE__\\export\\orchestration-layer\\installer\\configure.ps1'"
+    cadence: "P3650D"
+    slack: "P1D"
+    secret_fields: []
+    privacy_class: shareable
+    break_recipe: "dry-run: hide this client-release component from a sandbox copy"
+    expected_red: "KIT_COMPONENT_MISSING:kit-client-17-installer-configure-ps1"
+    state: active
+    install_stage: "kit"
+
+  - id: kit-client-18-installer-configure-sh
+    class: kit-component
+    config_path: "__WINDOWS_WORKSPACE__/export/orchestration-layer/installer/configure.sh"
+    owner: "Jonathan"
+    probe_cmd: "Test-Path -LiteralPath '__WINDOWS_WORKSPACE__\\export\\orchestration-layer\\installer\\configure.sh'"
+    cadence: "P3650D"
+    slack: "P1D"
+    secret_fields: []
+    privacy_class: shareable
+    break_recipe: "dry-run: hide this client-release component from a sandbox copy"
+    expected_red: "KIT_COMPONENT_MISSING:kit-client-18-installer-configure-sh"
+    state: active
+    install_stage: "kit"
+
+  - id: kit-client-19-installer-contracts-install-result-schema-json
+    class: kit-component
+    config_path: "__WINDOWS_WORKSPACE__/export/orchestration-layer/installer/contracts/install-result.schema.json"
+    owner: "Jonathan"
+    probe_cmd: "Test-Path -LiteralPath '__WINDOWS_WORKSPACE__\\export\\orchestration-layer\\installer\\contracts\\install-result.schema.json'"
+    cadence: "P3650D"
+    slack: "P1D"
+    secret_fields: []
+    privacy_class: shareable
+    break_recipe: "dry-run: hide this client-release component from a sandbox copy"
+    expected_red: "KIT_COMPONENT_MISSING:kit-client-19-installer-contracts-install-result-schema-json"
+    state: active
+    install_stage: "kit"
+
+  - id: kit-client-20-installer-contracts-managed-files-schema-json
+    class: kit-component
+    config_path: "__WINDOWS_WORKSPACE__/export/orchestration-layer/installer/contracts/managed-files.schema.json"
+    owner: "Jonathan"
+    probe_cmd: "Test-Path -LiteralPath '__WINDOWS_WORKSPACE__\\export\\orchestration-layer\\installer\\contracts\\managed-files.schema.json'"
+    cadence: "P3650D"
+    slack: "P1D"
+    secret_fields: []
+    privacy_class: shareable
+    break_recipe: "dry-run: hide this client-release component from a sandbox copy"
+    expected_red: "KIT_COMPONENT_MISSING:kit-client-20-installer-contracts-managed-files-schema-json"
+    state: active
+    install_stage: "kit"
+
+  - id: kit-client-21-installer-contracts-public-payload-json
+    class: kit-component
+    config_path: "__WINDOWS_WORKSPACE__/export/orchestration-layer/installer/contracts/public-payload.json"
+    owner: "Jonathan"
+    probe_cmd: "Test-Path -LiteralPath '__WINDOWS_WORKSPACE__\\export\\orchestration-layer\\installer\\contracts\\public-payload.json'"
+    cadence: "P3650D"
+    slack: "P1D"
+    secret_fields: []
+    privacy_class: shareable
+    break_recipe: "dry-run: hide this client-release component from a sandbox copy"
+    expected_red: "KIT_COMPONENT_MISSING:kit-client-21-installer-contracts-public-payload-json"
+    state: active
+    install_stage: "kit"
+
+  - id: kit-client-22-installer-contracts-public-payload-schema-json
+    class: kit-component
+    config_path: "__WINDOWS_WORKSPACE__/export/orchestration-layer/installer/contracts/public-payload.schema.json"
+    owner: "Jonathan"
+    probe_cmd: "Test-Path -LiteralPath '__WINDOWS_WORKSPACE__\\export\\orchestration-layer\\installer\\contracts\\public-payload.schema.json'"
+    cadence: "P3650D"
+    slack: "P1D"
+    secret_fields: []
+    privacy_class: shareable
+    break_recipe: "dry-run: hide this client-release component from a sandbox copy"
+    expected_red: "KIT_COMPONENT_MISSING:kit-client-22-installer-contracts-public-payload-schema-json"
+    state: active
+    install_stage: "kit"
+
+  - id: kit-client-23-installer-coverage-clean-room-results-json
+    class: kit-component
+    config_path: "__WINDOWS_WORKSPACE__/export/orchestration-layer/installer/coverage/CLEAN-ROOM-RESULTS.json"
+    owner: "Jonathan"
+    probe_cmd: "Test-Path -LiteralPath '__WINDOWS_WORKSPACE__\\export\\orchestration-layer\\installer\\coverage\\CLEAN-ROOM-RESULTS.json'"
+    cadence: "P3650D"
+    slack: "P1D"
+    secret_fields: []
+    privacy_class: shareable
+    break_recipe: "dry-run: hide this client-release component from a sandbox copy"
+    expected_red: "KIT_COMPONENT_MISSING:kit-client-23-installer-coverage-clean-room-results-json"
+    state: active
+    install_stage: "kit"
+
+  - id: kit-client-24-installer-coverage-supported-platforms-md
+    class: kit-component
+    config_path: "__WINDOWS_WORKSPACE__/export/orchestration-layer/installer/coverage/SUPPORTED-PLATFORMS.md"
+    owner: "Jonathan"
+    probe_cmd: "Test-Path -LiteralPath '__WINDOWS_WORKSPACE__\\export\\orchestration-layer\\installer\\coverage\\SUPPORTED-PLATFORMS.md'"
+    cadence: "P3650D"
+    slack: "P1D"
+    secret_fields: []
+    privacy_class: shareable
+    break_recipe: "dry-run: hide this client-release component from a sandbox copy"
+    expected_red: "KIT_COMPONENT_MISSING:kit-client-24-installer-coverage-supported-platforms-md"
+    state: active
+    install_stage: "kit"
+
+  - id: kit-client-25-installer-doctor-ps1
+    class: kit-component
+    config_path: "__WINDOWS_WORKSPACE__/export/orchestration-layer/installer/doctor.ps1"
+    owner: "Jonathan"
+    probe_cmd: "Test-Path -LiteralPath '__WINDOWS_WORKSPACE__\\export\\orchestration-layer\\installer\\doctor.ps1'"
+    cadence: "P3650D"
+    slack: "P1D"
+    secret_fields: []
+    privacy_class: shareable
+    break_recipe: "dry-run: hide this client-release component from a sandbox copy"
+    expected_red: "KIT_COMPONENT_MISSING:kit-client-25-installer-doctor-ps1"
+    state: active
+    install_stage: "kit"
+
+  - id: kit-client-26-installer-doctor-sh
+    class: kit-component
+    config_path: "__WINDOWS_WORKSPACE__/export/orchestration-layer/installer/doctor.sh"
+    owner: "Jonathan"
+    probe_cmd: "Test-Path -LiteralPath '__WINDOWS_WORKSPACE__\\export\\orchestration-layer\\installer\\doctor.sh'"
+    cadence: "P3650D"
+    slack: "P1D"
+    secret_fields: []
+    privacy_class: shareable
+    break_recipe: "dry-run: hide this client-release component from a sandbox copy"
+    expected_red: "KIT_COMPONENT_MISSING:kit-client-26-installer-doctor-sh"
+    state: active
+    install_stage: "kit"
+
+  - id: kit-client-27-installer-gate-sh
+    class: kit-component
+    config_path: "__WINDOWS_WORKSPACE__/export/orchestration-layer/installer/gate.sh"
+    owner: "Jonathan"
+    probe_cmd: "Test-Path -LiteralPath '__WINDOWS_WORKSPACE__\\export\\orchestration-layer\\installer\\gate.sh'"
+    cadence: "P3650D"
+    slack: "P1D"
+    secret_fields: []
+    privacy_class: shareable
+    break_recipe: "dry-run: hide this client-release component from a sandbox copy"
+    expected_red: "KIT_COMPONENT_MISSING:kit-client-27-installer-gate-sh"
+    state: active
+    install_stage: "kit"
+
+  - id: kit-client-28-installer-kit-py
+    class: kit-component
+    config_path: "__WINDOWS_WORKSPACE__/export/orchestration-layer/installer/kit.py"
+    owner: "Jonathan"
+    probe_cmd: "Test-Path -LiteralPath '__WINDOWS_WORKSPACE__\\export\\orchestration-layer\\installer\\kit.py'"
+    cadence: "P3650D"
+    slack: "P1D"
+    secret_fields: []
+    privacy_class: shareable
+    break_recipe: "dry-run: hide this client-release component from a sandbox copy"
+    expected_red: "KIT_COMPONENT_MISSING:kit-client-28-installer-kit-py"
+    state: active
+    install_stage: "kit"
+
+  - id: kit-client-29-installer-lib-init-py
+    class: kit-component
+    config_path: "__WINDOWS_WORKSPACE__/export/orchestration-layer/installer/lib/__init__.py"
+    owner: "Jonathan"
+    probe_cmd: "Test-Path -LiteralPath '__WINDOWS_WORKSPACE__\\export\\orchestration-layer\\installer\\lib\\__init__.py'"
+    cadence: "P3650D"
+    slack: "P1D"
+    secret_fields: []
+    privacy_class: shareable
+    break_recipe: "dry-run: hide this client-release component from a sandbox copy"
+    expected_red: "KIT_COMPONENT_MISSING:kit-client-29-installer-lib-init-py"
+    state: active
+    install_stage: "kit"
+
+  - id: kit-client-30-installer-lib-redaction-py
+    class: kit-component
+    config_path: "__WINDOWS_WORKSPACE__/export/orchestration-layer/installer/lib/redaction.py"
+    owner: "Jonathan"
+    probe_cmd: "Test-Path -LiteralPath '__WINDOWS_WORKSPACE__\\export\\orchestration-layer\\installer\\lib\\redaction.py'"
+    cadence: "P3650D"
+    slack: "P1D"
+    secret_fields: []
+    privacy_class: shareable
+    break_recipe: "dry-run: hide this client-release component from a sandbox copy"
+    expected_red: "KIT_COMPONENT_MISSING:kit-client-30-installer-lib-redaction-py"
+    state: active
+    install_stage: "kit"
+
+  - id: kit-client-31-aller-modules-harness-bindings-local-template-yaml
+    class: kit-component
+    config_path: "__WINDOWS_WORKSPACE__/export/orchestration-layer/installer/modules/harness/bindings.local.template.yaml"
+    owner: "Jonathan"
+    probe_cmd: "Test-Path -LiteralPath '__WINDOWS_WORKSPACE__\\export\\orchestration-layer\\installer\\modules\\harness\\bindings.local.template.yaml'"
+    cadence: "P3650D"
+    slack: "P1D"
+    secret_fields: []
+    privacy_class: shareable
+    break_recipe: "dry-run: hide this client-release component from a sandbox copy"
+    expected_red: "KIT_COMPONENT_MISSING:kit-client-31-aller-modules-harness-bindings-local-template-yaml"
+    state: active
+    install_stage: "kit"
+
+  - id: kit-client-32-installer-modules-memory-bootstrap-py
+    class: kit-component
+    config_path: "__WINDOWS_WORKSPACE__/export/orchestration-layer/installer/modules/memory/bootstrap.py"
+    owner: "Jonathan"
+    probe_cmd: "Test-Path -LiteralPath '__WINDOWS_WORKSPACE__\\export\\orchestration-layer\\installer\\modules\\memory\\bootstrap.py'"
+    cadence: "P3650D"
+    slack: "P1D"
+    secret_fields: []
+    privacy_class: shareable
+    break_recipe: "dry-run: hide this client-release component from a sandbox copy"
+    expected_red: "KIT_COMPONENT_MISSING:kit-client-32-installer-modules-memory-bootstrap-py"
+    state: active
+    install_stage: "kit"
+
+  - id: kit-client-33-installer-templates-config-local-example-yaml
+    class: kit-component
+    config_path: "__WINDOWS_WORKSPACE__/export/orchestration-layer/installer/templates/config.local.example.yaml"
+    owner: "Jonathan"
+    probe_cmd: "Test-Path -LiteralPath '__WINDOWS_WORKSPACE__\\export\\orchestration-layer\\installer\\templates\\config.local.example.yaml'"
+    cadence: "P3650D"
+    slack: "P1D"
+    secret_fields: []
+    privacy_class: shareable
+    break_recipe: "dry-run: hide this client-release component from a sandbox copy"
+    expected_red: "KIT_COMPONENT_MISSING:kit-client-33-installer-templates-config-local-example-yaml"
+    state: active
+    install_stage: "kit"
+
+  - id: kit-client-34-installer-tests-test-memory-roundtrip-py
+    class: kit-component
+    config_path: "__WINDOWS_WORKSPACE__/export/orchestration-layer/installer/tests/test_memory_roundtrip.py"
+    owner: "Jonathan"
+    probe_cmd: "Test-Path -LiteralPath '__WINDOWS_WORKSPACE__\\export\\orchestration-layer\\installer\\tests\\test_memory_roundtrip.py'"
+    cadence: "P3650D"
+    slack: "P1D"
+    secret_fields: []
+    privacy_class: shareable
+    break_recipe: "dry-run: hide this client-release component from a sandbox copy"
+    expected_red: "KIT_COMPONENT_MISSING:kit-client-34-installer-tests-test-memory-roundtrip-py"
+    state: active
+    install_stage: "kit"
+
+  - id: kit-client-35-installer-tests-test-release-core-py
+    class: kit-component
+    config_path: "__WINDOWS_WORKSPACE__/export/orchestration-layer/installer/tests/test_release_core.py"
+    owner: "Jonathan"
+    probe_cmd: "Test-Path -LiteralPath '__WINDOWS_WORKSPACE__\\export\\orchestration-layer\\installer\\tests\\test_release_core.py'"
+    cadence: "P3650D"
+    slack: "P1D"
+    secret_fields: []
+    privacy_class: shareable
+    break_recipe: "dry-run: hide this client-release component from a sandbox copy"
+    expected_red: "KIT_COMPONENT_MISSING:kit-client-35-installer-tests-test-release-core-py"
+    state: active
+    install_stage: "kit"
+
+  - id: kit-client-36-make-bundle-ps1
+    class: kit-component
+    config_path: "__WINDOWS_WORKSPACE__/export/orchestration-layer/make-bundle.ps1"
+    owner: "Jonathan"
+    probe_cmd: "Test-Path -LiteralPath '__WINDOWS_WORKSPACE__\\export\\orchestration-layer\\make-bundle.ps1'"
+    cadence: "P3650D"
+    slack: "P1D"
+    secret_fields: []
+    privacy_class: shareable
+    break_recipe: "dry-run: hide this client-release component from a sandbox copy"
+    expected_red: "KIT_COMPONENT_MISSING:kit-client-36-make-bundle-ps1"
+    state: active
+    install_stage: "kit"
+
+  - id: kit-client-37-system-memoryweaver-store-init-py
+    class: kit-component
+    config_path: "__WINDOWS_WORKSPACE__/export/orchestration-layer/system/memoryweaver/store/__init__.py"
+    owner: "Jonathan"
+    probe_cmd: "Test-Path -LiteralPath '__WINDOWS_WORKSPACE__\\export\\orchestration-layer\\system\\memoryweaver\\store\\__init__.py'"
+    cadence: "P3650D"
+    slack: "P1D"
+    secret_fields: []
+    privacy_class: shareable
+    break_recipe: "dry-run: hide this client-release component from a sandbox copy"
+    expected_red: "KIT_COMPONENT_MISSING:kit-client-37-system-memoryweaver-store-init-py"
+    state: active
+    install_stage: "kit"
+
+  - id: kit-client-38-system-memoryweaver-store-chroma-py
+    class: kit-component
+    config_path: "__WINDOWS_WORKSPACE__/export/orchestration-layer/system/memoryweaver/store/chroma.py"
+    owner: "Jonathan"
+    probe_cmd: "Test-Path -LiteralPath '__WINDOWS_WORKSPACE__\\export\\orchestration-layer\\system\\memoryweaver\\store\\chroma.py'"
+    cadence: "P3650D"
+    slack: "P1D"
+    secret_fields: []
+    privacy_class: shareable
+    break_recipe: "dry-run: hide this client-release component from a sandbox copy"
+    expected_red: "KIT_COMPONENT_MISSING:kit-client-38-system-memoryweaver-store-chroma-py"
+    state: active
+    install_stage: "kit"
+
+  - id: kit-client-39-system-memoryweaver-store-fts-py
+    class: kit-component
+    config_path: "__WINDOWS_WORKSPACE__/export/orchestration-layer/system/memoryweaver/store/fts.py"
+    owner: "Jonathan"
+    probe_cmd: "Test-Path -LiteralPath '__WINDOWS_WORKSPACE__\\export\\orchestration-layer\\system\\memoryweaver\\store\\fts.py'"
+    cadence: "P3650D"
+    slack: "P1D"
+    secret_fields: []
+    privacy_class: shareable
+    break_recipe: "dry-run: hide this client-release component from a sandbox copy"
+    expected_red: "KIT_COMPONENT_MISSING:kit-client-39-system-memoryweaver-store-fts-py"
+    state: active
+    install_stage: "kit"
+
+  - id: kit-client-40-system-memoryweaver-store-hybrid-py
+    class: kit-component
+    config_path: "__WINDOWS_WORKSPACE__/export/orchestration-layer/system/memoryweaver/store/hybrid.py"
+    owner: "Jonathan"
+    probe_cmd: "Test-Path -LiteralPath '__WINDOWS_WORKSPACE__\\export\\orchestration-layer\\system\\memoryweaver\\store\\hybrid.py'"
+    cadence: "P3650D"
+    slack: "P1D"
+    secret_fields: []
+    privacy_class: shareable
+    break_recipe: "dry-run: hide this client-release component from a sandbox copy"
+    expected_red: "KIT_COMPONENT_MISSING:kit-client-40-system-memoryweaver-store-hybrid-py"
+    state: active
+    install_stage: "kit"
+
+  - id: kit-client-41-system-memoryweaver-store-interface-py
+    class: kit-component
+    config_path: "__WINDOWS_WORKSPACE__/export/orchestration-layer/system/memoryweaver/store/interface.py"
+    owner: "Jonathan"
+    probe_cmd: "Test-Path -LiteralPath '__WINDOWS_WORKSPACE__\\export\\orchestration-layer\\system\\memoryweaver\\store\\interface.py'"
+    cadence: "P3650D"
+    slack: "P1D"
+    secret_fields: []
+    privacy_class: shareable
+    break_recipe: "dry-run: hide this client-release component from a sandbox copy"
+    expected_red: "KIT_COMPONENT_MISSING:kit-client-41-system-memoryweaver-store-interface-py"
+    state: active
+    install_stage: "kit"
+
+  - id: kit-client-42-system-pyproject-toml
+    class: kit-component
+    config_path: "__WINDOWS_WORKSPACE__/export/orchestration-layer/system/pyproject.toml"
+    owner: "Jonathan"
+    probe_cmd: "Test-Path -LiteralPath '__WINDOWS_WORKSPACE__\\export\\orchestration-layer\\system\\pyproject.toml'"
+    cadence: "P3650D"
+    slack: "P1D"
+    secret_fields: []
+    privacy_class: shareable
+    break_recipe: "dry-run: hide this client-release component from a sandbox copy"
+    expected_red: "KIT_COMPONENT_MISSING:kit-client-42-system-pyproject-toml"
+    state: active
+    install_stage: "kit"
+
+  - id: kit-v2-governance-bc37d034bad5
+    class: kit-component
+    config_path: __WINDOWS_WORKSPACE__/orchestration-harness-kit/.gitignore
+    export_target_path: .gitignore
+    owner: kit-maintainer
+    probe_cmd: Test-Path -LiteralPath '__WINDOWS_WORKSPACE__\orchestration-harness-kit\.gitignore'
+    cadence: P3650D
+    slack: P1D
+    secret_fields: []
+    privacy_class: shareable
+    break_recipe: 'dry-run: remove this file from a sandbox copy'
+    expected_red: KIT_COMPONENT_MISSING:kit-v2-governance-bc37d034bad5
+    state: active
+    install_stage: kit
+  - id: kit-v2-governance-06572a96a58d
+    class: kit-component
+    config_path: __WINDOWS_WORKSPACE__/orchestration-harness-kit/CHANGELOG.md
+    export_target_path: CHANGELOG.md
+    owner: kit-maintainer
+    probe_cmd: Test-Path -LiteralPath '__WINDOWS_WORKSPACE__\orchestration-harness-kit\CHANGELOG.md'
+    cadence: P3650D
+    slack: P1D
+    secret_fields: []
+    privacy_class: shareable
+    break_recipe: 'dry-run: remove this file from a sandbox copy'
+    expected_red: KIT_COMPONENT_MISSING:kit-v2-governance-06572a96a58d
+    state: active
+    install_stage: kit
+  - id: kit-v2-governance-9f2c2eabcb39
+    class: kit-component
+    config_path: __WINDOWS_WORKSPACE__/orchestration-harness-kit/docs/v2/COMPATIBILITY.md
+    export_target_path: docs/v2/COMPATIBILITY.md
+    owner: kit-maintainer
+    probe_cmd: Test-Path -LiteralPath '__WINDOWS_WORKSPACE__\orchestration-harness-kit\docs\v2\COMPATIBILITY.md'
+    cadence: P3650D
+    slack: P1D
+    secret_fields: []
+    privacy_class: shareable
+    break_recipe: 'dry-run: remove this file from a sandbox copy'
+    expected_red: KIT_COMPONENT_MISSING:kit-v2-governance-9f2c2eabcb39
+    state: active
+    install_stage: kit
+  - id: kit-v2-governance-9461c5e2f18b
+    class: kit-component
+    config_path: __WINDOWS_WORKSPACE__/orchestration-harness-kit/docs/v2/GOALS-AND-ROUTING.md
+    export_target_path: docs/v2/GOALS-AND-ROUTING.md
+    owner: kit-maintainer
+    probe_cmd: Test-Path -LiteralPath '__WINDOWS_WORKSPACE__\orchestration-harness-kit\docs\v2\GOALS-AND-ROUTING.md'
+    cadence: P3650D
+    slack: P1D
+    secret_fields: []
+    privacy_class: shareable
+    break_recipe: 'dry-run: remove this file from a sandbox copy'
+    expected_red: KIT_COMPONENT_MISSING:kit-v2-governance-9461c5e2f18b
+    state: active
+    install_stage: kit
+  - id: kit-v2-governance-f88d1777ea17
+    class: kit-component
+    config_path: __WINDOWS_WORKSPACE__/orchestration-harness-kit/docs/v2/PROVIDER-BACKEND-ADMISSION.md
+    export_target_path: docs/v2/PROVIDER-BACKEND-ADMISSION.md
+    owner: kit-maintainer
+    probe_cmd: Test-Path -LiteralPath '__WINDOWS_WORKSPACE__\orchestration-harness-kit\docs\v2\PROVIDER-BACKEND-ADMISSION.md'
+    cadence: P3650D
+    slack: P1D
+    secret_fields: []
+    privacy_class: shareable
+    break_recipe: 'dry-run: remove this file from a sandbox copy'
+    expected_red: KIT_COMPONENT_MISSING:kit-v2-governance-f88d1777ea17
+    state: active
+    install_stage: kit
+  - id: kit-v2-governance-4d18a28c7175
+    class: kit-component
+    config_path: __WINDOWS_WORKSPACE__/orchestration-harness-kit/docs/v2/README.md
+    export_target_path: docs/v2/README.md
+    owner: kit-maintainer
+    probe_cmd: Test-Path -LiteralPath '__WINDOWS_WORKSPACE__\orchestration-harness-kit\docs\v2\README.md'
+    cadence: P3650D
+    slack: P1D
+    secret_fields: []
+    privacy_class: shareable
+    break_recipe: 'dry-run: remove this file from a sandbox copy'
+    expected_red: KIT_COMPONENT_MISSING:kit-v2-governance-4d18a28c7175
+    state: active
+    install_stage: kit
+  - id: kit-v2-governance-cbdad52cc649
+    class: kit-component
+    config_path: __WINDOWS_WORKSPACE__/orchestration-harness-kit/docs/v2/RELEASE-NOTES-2.0.0.md
+    export_target_path: docs/v2/RELEASE-NOTES-2.0.0.md
+    owner: kit-maintainer
+    probe_cmd: Test-Path -LiteralPath '__WINDOWS_WORKSPACE__\orchestration-harness-kit\docs\v2\RELEASE-NOTES-2.0.0.md'
+    cadence: P3650D
+    slack: P1D
+    secret_fields: []
+    privacy_class: shareable
+    break_recipe: 'dry-run: remove this file from a sandbox copy'
+    expected_red: KIT_COMPONENT_MISSING:kit-v2-governance-cbdad52cc649
+    state: active
+    install_stage: kit
+  - id: kit-v2-governance-3d3175b30bb0
+    class: kit-component
+    config_path: __WINDOWS_WORKSPACE__/orchestration-harness-kit/installer/kit.py
+    export_target_path: installer/kit.py
+    owner: kit-maintainer
+    probe_cmd: Test-Path -LiteralPath '__WINDOWS_WORKSPACE__\orchestration-harness-kit\installer\kit.py'
+    cadence: P3650D
+    slack: P1D
+    secret_fields: []
+    privacy_class: shareable
+    break_recipe: 'dry-run: remove this file from a sandbox copy'
+    expected_red: KIT_COMPONENT_MISSING:kit-v2-governance-3d3175b30bb0
+    state: active
+    install_stage: kit
+  - id: kit-v2-governance-564738e050b5
+    class: kit-component
+    config_path: __WINDOWS_WORKSPACE__/orchestration-harness-kit/installer/modules/module-manifest.json
+    export_target_path: installer/modules/module-manifest.json
+    owner: kit-maintainer
+    probe_cmd: Test-Path -LiteralPath '__WINDOWS_WORKSPACE__\orchestration-harness-kit\installer\modules\module-manifest.json'
+    cadence: P3650D
+    slack: P1D
+    secret_fields: []
+    privacy_class: shareable
+    break_recipe: 'dry-run: remove this file from a sandbox copy'
+    expected_red: KIT_COMPONENT_MISSING:kit-v2-governance-564738e050b5
+    state: active
+    install_stage: kit
+  - id: kit-v2-governance-c96e4ed458fc
+    class: kit-component
+    config_path: __WINDOWS_WORKSPACE__/orchestration-harness-kit/installer/tests/test_adapter_sdk.py
+    export_target_path: installer/tests/test_adapter_sdk.py
+    owner: kit-maintainer
+    probe_cmd: Test-Path -LiteralPath '__WINDOWS_WORKSPACE__\orchestration-harness-kit\installer\tests\test_adapter_sdk.py'
+    cadence: P3650D
+    slack: P1D
+    secret_fields: []
+    privacy_class: shareable
+    break_recipe: 'dry-run: remove this file from a sandbox copy'
+    expected_red: KIT_COMPONENT_MISSING:kit-v2-governance-c96e4ed458fc
+    state: active
+    install_stage: kit
+  - id: kit-v2-governance-79a2ced7580a
+    class: kit-component
+    config_path: __WINDOWS_WORKSPACE__/orchestration-harness-kit/installer/tests/test_antigravity_adapter.py
+    export_target_path: installer/tests/test_antigravity_adapter.py
+    owner: kit-maintainer
+    probe_cmd: Test-Path -LiteralPath '__WINDOWS_WORKSPACE__\orchestration-harness-kit\installer\tests\test_antigravity_adapter.py'
+    cadence: P3650D
+    slack: P1D
+    secret_fields: []
+    privacy_class: shareable
+    break_recipe: 'dry-run: remove this file from a sandbox copy'
+    expected_red: KIT_COMPONENT_MISSING:kit-v2-governance-79a2ced7580a
+    state: active
+    install_stage: kit
+  - id: kit-v2-governance-bb562c1bd765
+    class: kit-component
+    config_path: __WINDOWS_WORKSPACE__/orchestration-harness-kit/installer/tests/test_codex_claude_moa_adapters.py
+    export_target_path: installer/tests/test_codex_claude_moa_adapters.py
+    owner: kit-maintainer
+    probe_cmd: Test-Path -LiteralPath '__WINDOWS_WORKSPACE__\orchestration-harness-kit\installer\tests\test_codex_claude_moa_adapters.py'
+    cadence: P3650D
+    slack: P1D
+    secret_fields: []
+    privacy_class: shareable
+    break_recipe: 'dry-run: remove this file from a sandbox copy'
+    expected_red: KIT_COMPONENT_MISSING:kit-v2-governance-bb562c1bd765
+    state: active
+    install_stage: kit
+  - id: kit-v2-governance-efa8beb2dc58
+    class: kit-component
+    config_path: __WINDOWS_WORKSPACE__/orchestration-harness-kit/installer/tests/test_cursor_adapter.py
+    export_target_path: installer/tests/test_cursor_adapter.py
+    owner: kit-maintainer
+    probe_cmd: Test-Path -LiteralPath '__WINDOWS_WORKSPACE__\orchestration-harness-kit\installer\tests\test_cursor_adapter.py'
+    cadence: P3650D
+    slack: P1D
+    secret_fields: []
+    privacy_class: shareable
+    break_recipe: 'dry-run: remove this file from a sandbox copy'
+    expected_red: KIT_COMPONENT_MISSING:kit-v2-governance-efa8beb2dc58
+    state: active
+    install_stage: kit
+  - id: kit-v2-governance-aef7627b93ea
+    class: kit-component
+    config_path: __WINDOWS_WORKSPACE__/orchestration-harness-kit/installer/tests/test_goalposts.py
+    export_target_path: installer/tests/test_goalposts.py
+    owner: kit-maintainer
+    probe_cmd: Test-Path -LiteralPath '__WINDOWS_WORKSPACE__\orchestration-harness-kit\installer\tests\test_goalposts.py'
+    cadence: P3650D
+    slack: P1D
+    secret_fields: []
+    privacy_class: shareable
+    break_recipe: 'dry-run: remove this file from a sandbox copy'
+    expected_red: KIT_COMPONENT_MISSING:kit-v2-governance-aef7627b93ea
+    state: active
+    install_stage: kit
+  - id: kit-v2-governance-46f37da84d84
+    class: kit-component
+    config_path: __WINDOWS_WORKSPACE__/orchestration-harness-kit/installer/tests/test_governance_routing.py
+    export_target_path: installer/tests/test_governance_routing.py
+    owner: kit-maintainer
+    probe_cmd: Test-Path -LiteralPath '__WINDOWS_WORKSPACE__\orchestration-harness-kit\installer\tests\test_governance_routing.py'
+    cadence: P3650D
+    slack: P1D
+    secret_fields: []
+    privacy_class: shareable
+    break_recipe: 'dry-run: remove this file from a sandbox copy'
+    expected_red: KIT_COMPONENT_MISSING:kit-v2-governance-46f37da84d84
+    state: active
+    install_stage: kit
+  - id: kit-v2-governance-688a7f814677
+    class: kit-component
+    config_path: __WINDOWS_WORKSPACE__/orchestration-harness-kit/installer/tests/test_orchestration_core.py
+    export_target_path: installer/tests/test_orchestration_core.py
+    owner: kit-maintainer
+    probe_cmd: Test-Path -LiteralPath '__WINDOWS_WORKSPACE__\orchestration-harness-kit\installer\tests\test_orchestration_core.py'
+    cadence: P3650D
+    slack: P1D
+    secret_fields: []
+    privacy_class: shareable
+    break_recipe: 'dry-run: remove this file from a sandbox copy'
+    expected_red: KIT_COMPONENT_MISSING:kit-v2-governance-688a7f814677
+    state: active
+    install_stage: kit
+  - id: kit-v2-governance-855984e76f34
+    class: kit-component
+    config_path: __WINDOWS_WORKSPACE__/orchestration-harness-kit/modules/adapter-sdk/verify-adapter-sdk.py
+    export_target_path: modules/adapter-sdk/verify-adapter-sdk.py
+    owner: kit-maintainer
+    probe_cmd: Test-Path -LiteralPath '__WINDOWS_WORKSPACE__\orchestration-harness-kit\modules\adapter-sdk\verify-adapter-sdk.py'
+    cadence: P3650D
+    slack: P1D
+    secret_fields: []
+    privacy_class: shareable
+    break_recipe: 'dry-run: remove this file from a sandbox copy'
+    expected_red: KIT_COMPONENT_MISSING:kit-v2-governance-855984e76f34
+    state: active
+    install_stage: kit
+  - id: kit-v2-governance-774010e8d150
+    class: kit-component
+    config_path: __WINDOWS_WORKSPACE__/orchestration-harness-kit/modules/adapters/compatibility-matrix.json
+    export_target_path: modules/adapters/compatibility-matrix.json
+    owner: kit-maintainer
+    probe_cmd: Test-Path -LiteralPath '__WINDOWS_WORKSPACE__\orchestration-harness-kit\modules\adapters\compatibility-matrix.json'
+    cadence: P3650D
+    slack: P1D
+    secret_fields: []
+    privacy_class: shareable
+    break_recipe: 'dry-run: remove this file from a sandbox copy'
+    expected_red: KIT_COMPONENT_MISSING:kit-v2-governance-774010e8d150
+    state: active
+    install_stage: kit
+  - id: kit-v2-governance-7b0a30e5e012
+    class: kit-component
+    config_path: __WINDOWS_WORKSPACE__/orchestration-harness-kit/modules/adapters/verify-adapters.py
+    export_target_path: modules/adapters/verify-adapters.py
+    owner: kit-maintainer
+    probe_cmd: Test-Path -LiteralPath '__WINDOWS_WORKSPACE__\orchestration-harness-kit\modules\adapters\verify-adapters.py'
+    cadence: P3650D
+    slack: P1D
+    secret_fields: []
+    privacy_class: shareable
+    break_recipe: 'dry-run: remove this file from a sandbox copy'
+    expected_red: KIT_COMPONENT_MISSING:kit-v2-governance-7b0a30e5e012
+    state: active
+    install_stage: kit
+  - id: kit-v2-governance-8ca9d2c1dd30
+    class: kit-component
+    config_path: __WINDOWS_WORKSPACE__/orchestration-harness-kit/modules/orchestration-core/README.md
+    export_target_path: modules/orchestration-core/README.md
+    owner: kit-maintainer
+    probe_cmd: Test-Path -LiteralPath '__WINDOWS_WORKSPACE__\orchestration-harness-kit\modules\orchestration-core\README.md'
+    cadence: P3650D
+    slack: P1D
+    secret_fields: []
+    privacy_class: shareable
+    break_recipe: 'dry-run: remove this file from a sandbox copy'
+    expected_red: KIT_COMPONENT_MISSING:kit-v2-governance-8ca9d2c1dd30
+    state: active
+    install_stage: kit
+  - id: kit-v2-governance-ae39a1294717
+    class: kit-component
+    config_path: __WINDOWS_WORKSPACE__/orchestration-harness-kit/modules/orchestration-core/goal-contract.example.json
+    export_target_path: modules/orchestration-core/goal-contract.example.json
+    owner: kit-maintainer
+    probe_cmd: Test-Path -LiteralPath '__WINDOWS_WORKSPACE__\orchestration-harness-kit\modules\orchestration-core\goal-contract.example.json'
+    cadence: P3650D
+    slack: P1D
+    secret_fields: []
+    privacy_class: shareable
+    break_recipe: 'dry-run: remove this file from a sandbox copy'
+    expected_red: KIT_COMPONENT_MISSING:kit-v2-governance-ae39a1294717
+    state: active
+    install_stage: kit
+  - id: kit-v2-governance-52c5b959bfce
+    class: kit-component
+    config_path: __WINDOWS_WORKSPACE__/orchestration-harness-kit/modules/orchestration-core/goalposts.py
+    export_target_path: modules/orchestration-core/goalposts.py
+    owner: kit-maintainer
+    probe_cmd: Test-Path -LiteralPath '__WINDOWS_WORKSPACE__\orchestration-harness-kit\modules\orchestration-core\goalposts.py'
+    cadence: P3650D
+    slack: P1D
+    secret_fields: []
+    privacy_class: shareable
+    break_recipe: 'dry-run: remove this file from a sandbox copy'
+    expected_red: KIT_COMPONENT_MISSING:kit-v2-governance-52c5b959bfce
+    state: active
+    install_stage: kit
+  - id: kit-v2-governance-50084cc378e6
+    class: kit-component
+    config_path: __WINDOWS_WORKSPACE__/orchestration-harness-kit/modules/orchestration-core/lapart_core/__init__.py
+    export_target_path: modules/orchestration-core/lapart_core/__init__.py
+    owner: kit-maintainer
+    probe_cmd: Test-Path -LiteralPath '__WINDOWS_WORKSPACE__\orchestration-harness-kit\modules\orchestration-core\lapart_core\__init__.py'
+    cadence: P3650D
+    slack: P1D
+    secret_fields: []
+    privacy_class: shareable
+    break_recipe: 'dry-run: remove this file from a sandbox copy'
+    expected_red: KIT_COMPONENT_MISSING:kit-v2-governance-50084cc378e6
+    state: active
+    install_stage: kit
+  - id: kit-v2-governance-e3ac857be566
+    class: kit-component
+    config_path: __WINDOWS_WORKSPACE__/orchestration-harness-kit/modules/orchestration-core/lapart_core/autonomy_intent.py
+    export_target_path: modules/orchestration-core/lapart_core/autonomy_intent.py
+    owner: kit-maintainer
+    probe_cmd: Test-Path -LiteralPath '__WINDOWS_WORKSPACE__\orchestration-harness-kit\modules\orchestration-core\lapart_core\autonomy_intent.py'
+    cadence: P3650D
+    slack: P1D
+    secret_fields: []
+    privacy_class: shareable
+    break_recipe: 'dry-run: remove this file from a sandbox copy'
+    expected_red: KIT_COMPONENT_MISSING:kit-v2-governance-e3ac857be566
+    state: active
+    install_stage: kit
+  - id: kit-v2-governance-d8f3fb056e53
+    class: kit-component
+    config_path: __WINDOWS_WORKSPACE__/orchestration-harness-kit/modules/orchestration-core/lapart_core/core.py
+    export_target_path: modules/orchestration-core/lapart_core/core.py
+    owner: kit-maintainer
+    probe_cmd: Test-Path -LiteralPath '__WINDOWS_WORKSPACE__\orchestration-harness-kit\modules\orchestration-core\lapart_core\core.py'
+    cadence: P3650D
+    slack: P1D
+    secret_fields: []
+    privacy_class: shareable
+    break_recipe: 'dry-run: remove this file from a sandbox copy'
+    expected_red: KIT_COMPONENT_MISSING:kit-v2-governance-d8f3fb056e53
+    state: active
+    install_stage: kit
+  - id: kit-v2-governance-046c3ecb8d66
+    class: kit-component
+    config_path: __WINDOWS_WORKSPACE__/orchestration-harness-kit/modules/orchestration-core/lapart_core/execution_value_router.py
+    export_target_path: modules/orchestration-core/lapart_core/execution_value_router.py
+    owner: kit-maintainer
+    probe_cmd: Test-Path -LiteralPath '__WINDOWS_WORKSPACE__\orchestration-harness-kit\modules\orchestration-core\lapart_core\execution_value_router.py'
+    cadence: P3650D
+    slack: P1D
+    secret_fields: []
+    privacy_class: shareable
+    break_recipe: 'dry-run: remove this file from a sandbox copy'
+    expected_red: KIT_COMPONENT_MISSING:kit-v2-governance-046c3ecb8d66
+    state: active
+    install_stage: kit
+  - id: kit-v2-governance-e08d84036c29
+    class: kit-component
+    config_path: __WINDOWS_WORKSPACE__/orchestration-harness-kit/modules/orchestration-core/lapart_core/goalposts.py
+    export_target_path: modules/orchestration-core/lapart_core/goalposts.py
+    owner: kit-maintainer
+    probe_cmd: Test-Path -LiteralPath '__WINDOWS_WORKSPACE__\orchestration-harness-kit\modules\orchestration-core\lapart_core\goalposts.py'
+    cadence: P3650D
+    slack: P1D
+    secret_fields: []
+    privacy_class: shareable
+    break_recipe: 'dry-run: remove this file from a sandbox copy'
+    expected_red: KIT_COMPONENT_MISSING:kit-v2-governance-e08d84036c29
+    state: active
+    install_stage: kit
+  - id: kit-v2-governance-40cf009c56b3
+    class: kit-component
+    config_path: __WINDOWS_WORKSPACE__/orchestration-harness-kit/modules/orchestration-core/lapart_core/providers.py
+    export_target_path: modules/orchestration-core/lapart_core/providers.py
+    owner: kit-maintainer
+    probe_cmd: Test-Path -LiteralPath '__WINDOWS_WORKSPACE__\orchestration-harness-kit\modules\orchestration-core\lapart_core\providers.py'
+    cadence: P3650D
+    slack: P1D
+    secret_fields: []
+    privacy_class: shareable
+    break_recipe: 'dry-run: remove this file from a sandbox copy'
+    expected_red: KIT_COMPONENT_MISSING:kit-v2-governance-40cf009c56b3
+    state: active
+    install_stage: kit
+  - id: kit-v2-governance-9966c49e6d4f
+    class: kit-component
+    config_path: __WINDOWS_WORKSPACE__/orchestration-harness-kit/modules/orchestration-core/lapart_core/review/README.md
+    export_target_path: modules/orchestration-core/lapart_core/review/README.md
+    owner: kit-maintainer
+    probe_cmd: Test-Path -LiteralPath '__WINDOWS_WORKSPACE__\orchestration-harness-kit\modules\orchestration-core\lapart_core\review\README.md'
+    cadence: P3650D
+    slack: P1D
+    secret_fields: []
+    privacy_class: shareable
+    break_recipe: 'dry-run: remove this file from a sandbox copy'
+    expected_red: KIT_COMPONENT_MISSING:kit-v2-governance-9966c49e6d4f
+    state: active
+    install_stage: kit
+  - id: kit-v2-governance-487c3a1227ba
+    class: kit-component
+    config_path: __WINDOWS_WORKSPACE__/orchestration-harness-kit/modules/orchestration-core/lapart_core/review/__init__.py
+    export_target_path: modules/orchestration-core/lapart_core/review/__init__.py
+    owner: kit-maintainer
+    probe_cmd: Test-Path -LiteralPath '__WINDOWS_WORKSPACE__\orchestration-harness-kit\modules\orchestration-core\lapart_core\review\__init__.py'
+    cadence: P3650D
+    slack: P1D
+    secret_fields: []
+    privacy_class: shareable
+    break_recipe: 'dry-run: remove this file from a sandbox copy'
+    expected_red: KIT_COMPONENT_MISSING:kit-v2-governance-487c3a1227ba
+    state: active
+    install_stage: kit
+  - id: kit-v2-governance-f1fce9dde98f
+    class: kit-component
+    config_path: __WINDOWS_WORKSPACE__/orchestration-harness-kit/modules/orchestration-core/lapart_core/review/adapters.py
+    export_target_path: modules/orchestration-core/lapart_core/review/adapters.py
+    owner: kit-maintainer
+    probe_cmd: Test-Path -LiteralPath '__WINDOWS_WORKSPACE__\orchestration-harness-kit\modules\orchestration-core\lapart_core\review\adapters.py'
+    cadence: P3650D
+    slack: P1D
+    secret_fields: []
+    privacy_class: shareable
+    break_recipe: 'dry-run: remove this file from a sandbox copy'
+    expected_red: KIT_COMPONENT_MISSING:kit-v2-governance-f1fce9dde98f
+    state: active
+    install_stage: kit
+  - id: kit-v2-governance-c4e9ac3a4d59
+    class: kit-component
+    config_path: __WINDOWS_WORKSPACE__/orchestration-harness-kit/modules/orchestration-core/lapart_core/review/catalog.py
+    export_target_path: modules/orchestration-core/lapart_core/review/catalog.py
+    owner: kit-maintainer
+    probe_cmd: Test-Path -LiteralPath '__WINDOWS_WORKSPACE__\orchestration-harness-kit\modules\orchestration-core\lapart_core\review\catalog.py'
+    cadence: P3650D
+    slack: P1D
+    secret_fields: []
+    privacy_class: shareable
+    break_recipe: 'dry-run: remove this file from a sandbox copy'
+    expected_red: KIT_COMPONENT_MISSING:kit-v2-governance-c4e9ac3a4d59
+    state: active
+    install_stage: kit
+  - id: kit-v2-governance-a22d855a5d21
+    class: kit-component
+    config_path: __WINDOWS_WORKSPACE__/orchestration-harness-kit/modules/orchestration-core/lapart_core/review/context.py
+    export_target_path: modules/orchestration-core/lapart_core/review/context.py
+    owner: kit-maintainer
+    probe_cmd: Test-Path -LiteralPath '__WINDOWS_WORKSPACE__\orchestration-harness-kit\modules\orchestration-core\lapart_core\review\context.py'
+    cadence: P3650D
+    slack: P1D
+    secret_fields: []
+    privacy_class: shareable
+    break_recipe: 'dry-run: remove this file from a sandbox copy'
+    expected_red: KIT_COMPONENT_MISSING:kit-v2-governance-a22d855a5d21
+    state: active
+    install_stage: kit
+  - id: kit-v2-governance-b082079f6c83
+    class: kit-component
+    config_path: __WINDOWS_WORKSPACE__/orchestration-harness-kit/modules/orchestration-core/lapart_core/review/interface.py
+    export_target_path: modules/orchestration-core/lapart_core/review/interface.py
+    owner: kit-maintainer
+    probe_cmd: Test-Path -LiteralPath '__WINDOWS_WORKSPACE__\orchestration-harness-kit\modules\orchestration-core\lapart_core\review\interface.py'
+    cadence: P3650D
+    slack: P1D
+    secret_fields: []
+    privacy_class: shareable
+    break_recipe: 'dry-run: remove this file from a sandbox copy'
+    expected_red: KIT_COMPONENT_MISSING:kit-v2-governance-b082079f6c83
+    state: active
+    install_stage: kit
+  - id: kit-v2-governance-0d22e44d290d
+    class: kit-component
+    config_path: __WINDOWS_WORKSPACE__/orchestration-harness-kit/modules/orchestration-core/lapart_core/review/models.py
+    export_target_path: modules/orchestration-core/lapart_core/review/models.py
+    owner: kit-maintainer
+    probe_cmd: Test-Path -LiteralPath '__WINDOWS_WORKSPACE__\orchestration-harness-kit\modules\orchestration-core\lapart_core\review\models.py'
+    cadence: P3650D
+    slack: P1D
+    secret_fields: []
+    privacy_class: shareable
+    break_recipe: 'dry-run: remove this file from a sandbox copy'
+    expected_red: KIT_COMPONENT_MISSING:kit-v2-governance-0d22e44d290d
+    state: active
+    install_stage: kit
+  - id: kit-v2-governance-0e76d0eda4b5
+    class: kit-component
+    config_path: __WINDOWS_WORKSPACE__/orchestration-harness-kit/modules/orchestration-core/lapart_core/review/policy.py
+    export_target_path: modules/orchestration-core/lapart_core/review/policy.py
+    owner: kit-maintainer
+    probe_cmd: Test-Path -LiteralPath '__WINDOWS_WORKSPACE__\orchestration-harness-kit\modules\orchestration-core\lapart_core\review\policy.py'
+    cadence: P3650D
+    slack: P1D
+    secret_fields: []
+    privacy_class: shareable
+    break_recipe: 'dry-run: remove this file from a sandbox copy'
+    expected_red: KIT_COMPONENT_MISSING:kit-v2-governance-0e76d0eda4b5
+    state: active
+    install_stage: kit
+  - id: kit-v2-governance-d7cc90f27fe2
+    class: kit-component
+    config_path: __WINDOWS_WORKSPACE__/orchestration-harness-kit/modules/orchestration-core/lapart_core/review/reconcile.py
+    export_target_path: modules/orchestration-core/lapart_core/review/reconcile.py
+    owner: kit-maintainer
+    probe_cmd: Test-Path -LiteralPath '__WINDOWS_WORKSPACE__\orchestration-harness-kit\modules\orchestration-core\lapart_core\review\reconcile.py'
+    cadence: P3650D
+    slack: P1D
+    secret_fields: []
+    privacy_class: shareable
+    break_recipe: 'dry-run: remove this file from a sandbox copy'
+    expected_red: KIT_COMPONENT_MISSING:kit-v2-governance-d7cc90f27fe2
+    state: active
+    install_stage: kit
+  - id: kit-v2-governance-acee7b90b06f
+    class: kit-component
+    config_path: __WINDOWS_WORKSPACE__/orchestration-harness-kit/modules/orchestration-core/lapart_core/review/router.py
+    export_target_path: modules/orchestration-core/lapart_core/review/router.py
+    owner: kit-maintainer
+    probe_cmd: Test-Path -LiteralPath '__WINDOWS_WORKSPACE__\orchestration-harness-kit\modules\orchestration-core\lapart_core\review\router.py'
+    cadence: P3650D
+    slack: P1D
+    secret_fields: []
+    privacy_class: shareable
+    break_recipe: 'dry-run: remove this file from a sandbox copy'
+    expected_red: KIT_COMPONENT_MISSING:kit-v2-governance-acee7b90b06f
+    state: active
+    install_stage: kit
+  - id: kit-v2-governance-bdacf9588dee
+    class: kit-component
+    config_path: __WINDOWS_WORKSPACE__/orchestration-harness-kit/modules/orchestration-core/lapart_core/review/runner.py
+    export_target_path: modules/orchestration-core/lapart_core/review/runner.py
+    owner: kit-maintainer
+    probe_cmd: Test-Path -LiteralPath '__WINDOWS_WORKSPACE__\orchestration-harness-kit\modules\orchestration-core\lapart_core\review\runner.py'
+    cadence: P3650D
+    slack: P1D
+    secret_fields: []
+    privacy_class: shareable
+    break_recipe: 'dry-run: remove this file from a sandbox copy'
+    expected_red: KIT_COMPONENT_MISSING:kit-v2-governance-bdacf9588dee
+    state: active
+    install_stage: kit
+  - id: kit-v2-governance-de89e0ede4b6
+    class: kit-component
+    config_path: __WINDOWS_WORKSPACE__/orchestration-harness-kit/modules/orchestration-core/lapart_core/routing.py
+    export_target_path: modules/orchestration-core/lapart_core/routing.py
+    owner: kit-maintainer
+    probe_cmd: Test-Path -LiteralPath '__WINDOWS_WORKSPACE__\orchestration-harness-kit\modules\orchestration-core\lapart_core\routing.py'
+    cadence: P3650D
+    slack: P1D
+    secret_fields: []
+    privacy_class: shareable
+    break_recipe: 'dry-run: remove this file from a sandbox copy'
+    expected_red: KIT_COMPONENT_MISSING:kit-v2-governance-de89e0ede4b6
+    state: active
+    install_stage: kit
+  - id: kit-v2-governance-b6c34dc34520
+    class: kit-component
+    config_path: __WINDOWS_WORKSPACE__/orchestration-harness-kit/modules/orchestration-core/provider-route.schema.json
+    export_target_path: modules/orchestration-core/provider-route.schema.json
+    owner: kit-maintainer
+    probe_cmd: Test-Path -LiteralPath '__WINDOWS_WORKSPACE__\orchestration-harness-kit\modules\orchestration-core\provider-route.schema.json'
+    cadence: P3650D
+    slack: P1D
+    secret_fields: []
+    privacy_class: shareable
+    break_recipe: 'dry-run: remove this file from a sandbox copy'
+    expected_red: KIT_COMPONENT_MISSING:kit-v2-governance-b6c34dc34520
+    state: active
+    install_stage: kit
+  - id: kit-v2-governance-6e662869844d
+    class: kit-component
+    config_path: __WINDOWS_WORKSPACE__/orchestration-harness-kit/modules/orchestration-core/review-policy.json
+    export_target_path: modules/orchestration-core/review-policy.json
+    owner: kit-maintainer
+    probe_cmd: Test-Path -LiteralPath '__WINDOWS_WORKSPACE__\orchestration-harness-kit\modules\orchestration-core\review-policy.json'
+    cadence: P3650D
+    slack: P1D
+    secret_fields: []
+    privacy_class: shareable
+    break_recipe: 'dry-run: remove this file from a sandbox copy'
+    expected_red: KIT_COMPONENT_MISSING:kit-v2-governance-6e662869844d
+    state: active
+    install_stage: kit
+  - id: kit-v2-governance-702e4b4f0ba0
+    class: kit-component
+    config_path: __WINDOWS_WORKSPACE__/orchestration-harness-kit/modules/orchestration-core/review-policy.schema.json
+    export_target_path: modules/orchestration-core/review-policy.schema.json
+    owner: kit-maintainer
+    probe_cmd: Test-Path -LiteralPath '__WINDOWS_WORKSPACE__\orchestration-harness-kit\modules\orchestration-core\review-policy.schema.json'
+    cadence: P3650D
+    slack: P1D
+    secret_fields: []
+    privacy_class: shareable
+    break_recipe: 'dry-run: remove this file from a sandbox copy'
+    expected_red: KIT_COMPONENT_MISSING:kit-v2-governance-702e4b4f0ba0
+    state: active
+    install_stage: kit
+  - id: kit-v2-governance-57a74f80d6c9
+    class: kit-component
+    config_path: __WINDOWS_WORKSPACE__/orchestration-harness-kit/modules/orchestration-core/source-hashes.json
+    export_target_path: modules/orchestration-core/source-hashes.json
+    owner: kit-maintainer
+    probe_cmd: Test-Path -LiteralPath '__WINDOWS_WORKSPACE__\orchestration-harness-kit\modules\orchestration-core\source-hashes.json'
+    cadence: P3650D
+    slack: P1D
+    secret_fields: []
+    privacy_class: shareable
+    break_recipe: 'dry-run: remove this file from a sandbox copy'
+    expected_red: KIT_COMPONENT_MISSING:kit-v2-governance-57a74f80d6c9
+    state: active
+    install_stage: kit
+  - id: kit-v2-governance-876505ac010e
+    class: kit-component
+    config_path: __WINDOWS_WORKSPACE__/orchestration-harness-kit/modules/orchestration-core/verify-core.py
+    export_target_path: modules/orchestration-core/verify-core.py
+    owner: kit-maintainer
+    probe_cmd: Test-Path -LiteralPath '__WINDOWS_WORKSPACE__\orchestration-harness-kit\modules\orchestration-core\verify-core.py'
+    cadence: P3650D
+    slack: P1D
+    secret_fields: []
+    privacy_class: shareable
+    break_recipe: 'dry-run: remove this file from a sandbox copy'
+    expected_red: KIT_COMPONENT_MISSING:kit-v2-governance-876505ac010e
+    state: active
+    install_stage: kit
+  - id: kit-v2-governance-8190c0cbefc5
+    class: kit-component
+    config_path: __WINDOWS_WORKSPACE__/orchestration-harness-kit/modules/orchestration-core/verify-governance.py
+    export_target_path: modules/orchestration-core/verify-governance.py
+    owner: kit-maintainer
+    probe_cmd: Test-Path -LiteralPath '__WINDOWS_WORKSPACE__\orchestration-harness-kit\modules\orchestration-core\verify-governance.py'
+    cadence: P3650D
+    slack: P1D
+    secret_fields: []
+    privacy_class: shareable
+    break_recipe: 'dry-run: remove this file from a sandbox copy'
+    expected_red: KIT_COMPONENT_MISSING:kit-v2-governance-8190c0cbefc5
+    state: active
+    install_stage: kit
+  - id: kit-v2-governance-c5fa31f41292
+    class: kit-component
+    config_path: __WINDOWS_WORKSPACE__/orchestration-harness-kit/modules/orchestration-protocol/source-hashes.json
+    export_target_path: modules/orchestration-protocol/source-hashes.json
+    owner: kit-maintainer
+    probe_cmd: Test-Path -LiteralPath '__WINDOWS_WORKSPACE__\orchestration-harness-kit\modules\orchestration-protocol\source-hashes.json'
+    cadence: P3650D
+    slack: P1D
+    secret_fields: []
+    privacy_class: shareable
+    break_recipe: 'dry-run: remove this file from a sandbox copy'
+    expected_red: KIT_COMPONENT_MISSING:kit-v2-governance-c5fa31f41292
+    state: active
+    install_stage: kit
+  - id: kit-v2-governance-fb7dc780cf23
+    class: kit-component
+    config_path: __WINDOWS_WORKSPACE__/orchestration-harness-kit/modules/orchestration-protocol/verify-protocol.py
+    export_target_path: modules/orchestration-protocol/verify-protocol.py
+    owner: kit-maintainer
+    probe_cmd: Test-Path -LiteralPath '__WINDOWS_WORKSPACE__\orchestration-harness-kit\modules\orchestration-protocol\verify-protocol.py'
+    cadence: P3650D
+    slack: P1D
+    secret_fields: []
+    privacy_class: shareable
+    break_recipe: 'dry-run: remove this file from a sandbox copy'
+    expected_red: KIT_COMPONENT_MISSING:kit-v2-governance-fb7dc780cf23
+    state: active
+    install_stage: kit
+
+  - id: kit-v2-governance-a54ff182c7e8
+    class: kit-component
+    config_path: __WINDOWS_WORKSPACE__/orchestration-harness-kit/AGENTS.md
+    export_target_path: AGENTS.md
+    owner: kit-maintainer
+    probe_cmd: Test-Path -LiteralPath '__WINDOWS_WORKSPACE__\orchestration-harness-kit\AGENTS.md'
+    cadence: P3650D
+    slack: P1D
+    secret_fields: []
+    privacy_class: shareable
+    break_recipe: 'dry-run: remove this file from a sandbox copy'
+    expected_red: KIT_COMPONENT_MISSING:kit-v2-governance-a54ff182c7e8
+    state: active
+    install_stage: kit
+  - id: kit-v2-governance-ff94efd8442d
+    class: kit-component
+    config_path: __WINDOWS_WORKSPACE__/orchestration-harness-kit/docs/v2/GOALS-AND-ROUTING-VERIFICATION.md
+    export_target_path: docs/v2/GOALS-AND-ROUTING-VERIFICATION.md
+    owner: kit-maintainer
+    probe_cmd: Test-Path -LiteralPath '__WINDOWS_WORKSPACE__\orchestration-harness-kit\docs\v2\GOALS-AND-ROUTING-VERIFICATION.md'
+    cadence: P3650D
+    slack: P1D
+    secret_fields: []
+    privacy_class: shareable
+    break_recipe: 'dry-run: remove this file from a sandbox copy'
+    expected_red: KIT_COMPONENT_MISSING:kit-v2-governance-ff94efd8442d
+    state: active
+    install_stage: kit
+  - id: kit-v2-governance-3cdf586bdf5f
+    class: kit-component
+    config_path: __WINDOWS_WORKSPACE__/orchestration-harness-kit/installer/token-compute-activation-qualification.json
+    export_target_path: installer/token-compute-activation-qualification.json
+    owner: kit-maintainer
+    probe_cmd: Test-Path -LiteralPath '__WINDOWS_WORKSPACE__\orchestration-harness-kit\installer\token-compute-activation-qualification.json'
+    cadence: P3650D
+    slack: P1D
+    secret_fields: []
+    privacy_class: shareable
+    break_recipe: 'dry-run: remove this file from a sandbox copy'
+    expected_red: KIT_COMPONENT_MISSING:kit-v2-governance-3cdf586bdf5f
+    state: active
+    install_stage: kit
+  - id: kit-v2-governance-32ba2904f76a
+    class: kit-component
+    config_path: __WINDOWS_WORKSPACE__/orchestration-harness-kit/modules/adapter-sdk/source-hashes.json
+    export_target_path: modules/adapter-sdk/source-hashes.json
+    owner: kit-maintainer
+    probe_cmd: Test-Path -LiteralPath '__WINDOWS_WORKSPACE__\orchestration-harness-kit\modules\adapter-sdk\source-hashes.json'
+    cadence: P3650D
+    slack: P1D
+    secret_fields: []
+    privacy_class: shareable
+    break_recipe: 'dry-run: remove this file from a sandbox copy'
+    expected_red: KIT_COMPONENT_MISSING:kit-v2-governance-32ba2904f76a
+    state: active
+    install_stage: kit
+  - id: kit-v2-governance-49a7afd7e72c
+    class: kit-component
+    config_path: __WINDOWS_WORKSPACE__/orchestration-harness-kit/modules/adapters/cursor/source-hashes.json
+    export_target_path: modules/adapters/cursor/source-hashes.json
+    owner: kit-maintainer
+    probe_cmd: Test-Path -LiteralPath '__WINDOWS_WORKSPACE__\orchestration-harness-kit\modules\adapters\cursor\source-hashes.json'
+    cadence: P3650D
+    slack: P1D
+    secret_fields: []
+    privacy_class: shareable
+    break_recipe: 'dry-run: remove this file from a sandbox copy'
+    expected_red: KIT_COMPONENT_MISSING:kit-v2-governance-49a7afd7e72c
+    state: active
+    install_stage: kit
+  - id: kit-v2-governance-8f985523c0fd
+    class: kit-component
+    config_path: __WINDOWS_WORKSPACE__/orchestration-harness-kit/modules/token-compute-optimization/source-hashes.json
+    export_target_path: modules/token-compute-optimization/source-hashes.json
+    owner: kit-maintainer
+    probe_cmd: Test-Path -LiteralPath '__WINDOWS_WORKSPACE__\orchestration-harness-kit\modules\token-compute-optimization\source-hashes.json'
+    cadence: P3650D
+    slack: P1D
+    secret_fields: []
+    privacy_class: shareable
+    break_recipe: 'dry-run: remove this file from a sandbox copy'
+    expected_red: KIT_COMPONENT_MISSING:kit-v2-governance-8f985523c0fd
+    state: active
+    install_stage: kit
+  - id: kit-release-edbdab5ece94
+    class: kit-component
+    config_path: __WINDOWS_WORKSPACE__/orchestration-harness-kit/tools/test-release-readiness.py
+    export_target_path: tools/test-release-readiness.py
+    owner: kit-maintainer
+    probe_cmd: Test-Path -LiteralPath '__WINDOWS_WORKSPACE__/orchestration-harness-kit/tools/test-release-readiness.py'
+    cadence: P3650D
+    slack: P1D
+    secret_fields: []
+    privacy_class: shareable
+    break_recipe: 'dry-run: remove this file from a sandbox copy'
+    expected_red: KIT_COMPONENT_MISSING:kit-release-edbdab5ece94
+    state: active
+    install_stage: kit
+
+  - id: kit-review-enforcement-cba8009461ac
+    class: kit-component
+    config_path: __WINDOWS_WORKSPACE__/orchestration-harness-kit/modules/orchestration-core/lapart_core/review/transport.py
+    export_target_path: modules/orchestration-core/lapart_core/review/transport.py
+    owner: kit-maintainer
+    probe_cmd: Test-Path -LiteralPath '__WINDOWS_WORKSPACE__/orchestration-harness-kit/modules/orchestration-core/lapart_core/review/transport.py'
+    cadence: P3650D
+    slack: P1D
+    secret_fields: []
+    privacy_class: shareable
+    break_recipe: 'dry-run: remove this file from a sandbox copy'
+    expected_red: KIT_COMPONENT_MISSING:kit-review-enforcement-cba8009461ac
+    state: active
+    install_stage: kit
+
+  - id: kit-review-enforcement-dbc3698c17a1
+    class: kit-component
+    config_path: __WINDOWS_WORKSPACE__/orchestration-harness-kit/installer/tests/test_review_enforcement.py
+    export_target_path: installer/tests/test_review_enforcement.py
+    owner: kit-maintainer
+    probe_cmd: Test-Path -LiteralPath '__WINDOWS_WORKSPACE__/orchestration-harness-kit/installer/tests/test_review_enforcement.py'
+    cadence: P3650D
+    slack: P1D
+    secret_fields: []
+    privacy_class: shareable
+    break_recipe: 'dry-run: remove this file from a sandbox copy'
+    expected_red: KIT_COMPONENT_MISSING:kit-review-enforcement-dbc3698c17a1
+    state: active
+    install_stage: kit
+
+  - id: kit-review-quality-070a85c50b22
+    class: kit-component
+    config_path: __WINDOWS_WORKSPACE__/orchestration-harness-kit/modules/orchestration-core/lapart_core/review/prompts.py
+    export_target_path: modules/orchestration-core/lapart_core/review/prompts.py
+    owner: kit-maintainer
+    probe_cmd: Test-Path -LiteralPath '__WINDOWS_WORKSPACE__/orchestration-harness-kit/modules/orchestration-core/lapart_core/review/prompts.py'
+    cadence: P3650D
+    slack: P1D
+    secret_fields: []
+    privacy_class: shareable
+    break_recipe: 'dry-run: remove this file from a sandbox copy'
+    expected_red: KIT_COMPONENT_MISSING:kit-review-quality-070a85c50b22
+    state: active
+    install_stage: kit
+
+  - id: kit-review-quality-45becad5ca51
+    class: kit-component
+    config_path: __WINDOWS_WORKSPACE__/orchestration-harness-kit/modules/orchestration-core/lapart_core/review/proofs.py
+    export_target_path: modules/orchestration-core/lapart_core/review/proofs.py
+    owner: kit-maintainer
+    probe_cmd: Test-Path -LiteralPath '__WINDOWS_WORKSPACE__/orchestration-harness-kit/modules/orchestration-core/lapart_core/review/proofs.py'
+    cadence: P3650D
+    slack: P1D
+    secret_fields: []
+    privacy_class: shareable
+    break_recipe: 'dry-run: remove this file from a sandbox copy'
+    expected_red: KIT_COMPONENT_MISSING:kit-review-quality-45becad5ca51
+    state: active
+    install_stage: kit
+
+  - id: kit-review-completion-b4fe2b3b3910
+    class: kit-component
+    config_path: __WINDOWS_WORKSPACE__/orchestration-harness-kit/modules/orchestration-core/lapart_core/review/controller.py
+    export_target_path: modules/orchestration-core/lapart_core/review/controller.py
+    owner: kit-maintainer
+    probe_cmd: Test-Path -LiteralPath '__WINDOWS_WORKSPACE__/orchestration-harness-kit/modules/orchestration-core/lapart_core/review/controller.py'
+    cadence: P3650D
+    slack: P1D
+    secret_fields: []
+    privacy_class: shareable
+    break_recipe: 'dry-run: remove this file from a sandbox copy'
+    expected_red: KIT_COMPONENT_MISSING:kit-review-completion-b4fe2b3b3910
+    state: active
+    install_stage: kit
+
+  - id: kit-review-completion-eba217597edc
+    class: kit-component
+    config_path: __WINDOWS_WORKSPACE__/orchestration-harness-kit/modules/orchestration-core/lapart_core/review/COMPLETION.md
+    export_target_path: modules/orchestration-core/lapart_core/review/COMPLETION.md
+    owner: kit-maintainer
+    probe_cmd: Test-Path -LiteralPath '__WINDOWS_WORKSPACE__/orchestration-harness-kit/modules/orchestration-core/lapart_core/review/COMPLETION.md'
+    cadence: P3650D
+    slack: P1D
+    secret_fields: []
+    privacy_class: shareable
+    break_recipe: 'dry-run: remove this file from a sandbox copy'
+    expected_red: KIT_COMPONENT_MISSING:kit-review-completion-eba217597edc
+    state: active
+    install_stage: kit
+
+  - id: kit-review-completion-77a07a689ce0
+    class: kit-component
+    config_path: __WINDOWS_WORKSPACE__/orchestration-harness-kit/installer/tests/test_review_controller.py
+    export_target_path: installer/tests/test_review_controller.py
+    owner: kit-maintainer
+    probe_cmd: Test-Path -LiteralPath '__WINDOWS_WORKSPACE__/orchestration-harness-kit/installer/tests/test_review_controller.py'
+    cadence: P3650D
+    slack: P1D
+    secret_fields: []
+    privacy_class: shareable
+    break_recipe: 'dry-run: remove this file from a sandbox copy'
+    expected_red: KIT_COMPONENT_MISSING:kit-review-completion-77a07a689ce0
+    state: active
+    install_stage: kit
+
+  - id: kit-review-completion-364c2a2088db
+    class: kit-component
+    config_path: __WINDOWS_WORKSPACE__/orchestration-harness-kit/installer/tests/test_full_repo_scanner.py
+    export_target_path: installer/tests/test_full_repo_scanner.py
+    owner: kit-maintainer
+    probe_cmd: Test-Path -LiteralPath '__WINDOWS_WORKSPACE__/orchestration-harness-kit/installer/tests/test_full_repo_scanner.py'
+    cadence: P3650D
+    slack: P1D
+    secret_fields: []
+    privacy_class: shareable
+    break_recipe: 'dry-run: remove this file from a sandbox copy'
+    expected_red: KIT_COMPONENT_MISSING:kit-review-completion-364c2a2088db
+    state: active
+    install_stage: kit
+
+  - id: kit-s4-scenarios-1ee8df5c1d0a
+    class: kit-component
+    config_path: __WINDOWS_WORKSPACE__/orchestration-harness-kit/modules/orchestration-core/lapart_core/review/s4_scenarios.py
+    export_target_path: modules/orchestration-core/lapart_core/review/s4_scenarios.py
+    owner: kit-maintainer
+    probe_cmd: Test-Path -LiteralPath '__WINDOWS_WORKSPACE__/orchestration-harness-kit/modules/orchestration-core/lapart_core/review/s4_scenarios.py'
+    cadence: P3650D
+    slack: P1D
+    secret_fields: []
+    privacy_class: shareable
+    break_recipe: 'dry-run: remove this file from a sandbox copy'
+    expected_red: KIT_COMPONENT_MISSING:kit-s4-scenarios-1ee8df5c1d0a
+    state: active
+    install_stage: kit
+
+  - id: kit-s4-scenarios-03708391dd82
+    class: kit-component
+    config_path: __WINDOWS_WORKSPACE__/orchestration-harness-kit/installer/tests/test_s4_scenarios.py
+    export_target_path: installer/tests/test_s4_scenarios.py
+    owner: kit-maintainer
+    probe_cmd: Test-Path -LiteralPath '__WINDOWS_WORKSPACE__/orchestration-harness-kit/installer/tests/test_s4_scenarios.py'
+    cadence: P3650D
+    slack: P1D
+    secret_fields: []
+    privacy_class: shareable
+    break_recipe: 'dry-run: remove this file from a sandbox copy'
+    expected_red: KIT_COMPONENT_MISSING:kit-s4-scenarios-03708391dd82
+    state: active
+    install_stage: kit
+
+  - id: kit-s4-scenarios-82056e3aac1f
+    class: kit-component
+    config_path: __WINDOWS_WORKSPACE__/orchestration-harness-kit/modules/orchestration-core/lapart_core/review/S4-SCENARIOS.md
+    export_target_path: modules/orchestration-core/lapart_core/review/S4-SCENARIOS.md
+    owner: kit-maintainer
+    probe_cmd: Test-Path -LiteralPath '__WINDOWS_WORKSPACE__/orchestration-harness-kit/modules/orchestration-core/lapart_core/review/S4-SCENARIOS.md'
+    cadence: P3650D
+    slack: P1D
+    secret_fields: []
+    privacy_class: shareable
+    break_recipe: 'dry-run: remove this file from a sandbox copy'
+    expected_red: KIT_COMPONENT_MISSING:kit-s4-scenarios-82056e3aac1f
+    state: active
+    install_stage: kit
+
+  - id: kit-native-review-556d02d513be
+    class: kit-component
+    config_path: __WINDOWS_WORKSPACE__/orchestration-harness-kit/modules/orchestration-core/lapart_core/review/s4_dispatch.py
+    export_target_path: modules/orchestration-core/lapart_core/review/s4_dispatch.py
+    owner: kit-maintainer
+    probe_cmd: Test-Path -LiteralPath '__WINDOWS_WORKSPACE__/orchestration-harness-kit/modules/orchestration-core/lapart_core/review/s4_dispatch.py'
+    cadence: P3650D
+    slack: P1D
+    secret_fields: []
+    privacy_class: shareable
+    break_recipe: 'dry-run: remove this file from a sandbox copy'
+    expected_red: KIT_COMPONENT_MISSING:kit-native-review-556d02d513be
+    state: active
+    install_stage: kit
+
+  - id: kit-native-review-f5d8332506f8
+    class: kit-component
+    config_path: __WINDOWS_WORKSPACE__/orchestration-harness-kit/modules/orchestration-core/lapart_core/native_review.py
+    export_target_path: modules/orchestration-core/lapart_core/native_review.py
+    owner: kit-maintainer
+    probe_cmd: Test-Path -LiteralPath '__WINDOWS_WORKSPACE__/orchestration-harness-kit/modules/orchestration-core/lapart_core/native_review.py'
+    cadence: P3650D
+    slack: P1D
+    secret_fields: []
+    privacy_class: shareable
+    break_recipe: 'dry-run: remove this file from a sandbox copy'
+    expected_red: KIT_COMPONENT_MISSING:kit-native-review-f5d8332506f8
+    state: active
+    install_stage: kit
+
+  - id: kit-native-review-4e4dcc0cb047
+    class: kit-component
+    config_path: __WINDOWS_WORKSPACE__/orchestration-harness-kit/installer/tests/test_native_review_protocol.py
+    export_target_path: installer/tests/test_native_review_protocol.py
+    owner: kit-maintainer
+    probe_cmd: Test-Path -LiteralPath '__WINDOWS_WORKSPACE__/orchestration-harness-kit/installer/tests/test_native_review_protocol.py'
+    cadence: P3650D
+    slack: P1D
+    secret_fields: []
+    privacy_class: shareable
+    break_recipe: 'dry-run: remove this file from a sandbox copy'
+    expected_red: KIT_COMPONENT_MISSING:kit-native-review-4e4dcc0cb047
+    state: active
+    install_stage: kit
+
+  - id: kit-worker-port-core
+    class: kit-component
+    config_path: __WINDOWS_WORKSPACE__/orchestration-harness-kit/modules/worker-transport/worker_port/worker_transport.py
+    export_target_path: modules/worker-transport/worker_port/worker_transport.py
+    owner: kit-maintainer
+    probe_cmd: Test-Path -LiteralPath '__WINDOWS_WORKSPACE__/orchestration-harness-kit/modules/worker-transport/worker_port/worker_transport.py'
+    cadence: P3650D
+    slack: P1D
+    secret_fields: []
+    privacy_class: shareable
+    break_recipe: 'dry-run: remove this file from a sandbox copy'
+    expected_red: KIT_COMPONENT_MISSING:kit-worker-port-core
+    state: active
+    install_stage: kit
+
+  - id: kit-worker-port-package
+    class: kit-component
+    config_path: __WINDOWS_WORKSPACE__/orchestration-harness-kit/modules/worker-transport/worker_port/__init__.py
+    export_target_path: modules/worker-transport/worker_port/__init__.py
+    owner: kit-maintainer
+    probe_cmd: Test-Path -LiteralPath '__WINDOWS_WORKSPACE__/orchestration-harness-kit/modules/worker-transport/worker_port/__init__.py'
+    cadence: P3650D
+    slack: P1D
+    secret_fields: []
+    privacy_class: shareable
+    break_recipe: 'dry-run: remove this file from a sandbox copy'
+    expected_red: KIT_COMPONENT_MISSING:kit-worker-port-package
+    state: active
+    install_stage: kit
+
+  - id: kit-worker-port-snapshot
+    class: kit-component
+    config_path: __WINDOWS_WORKSPACE__/orchestration-harness-kit/modules/worker-transport/worker_port/git_snapshot.py
+    export_target_path: modules/worker-transport/worker_port/git_snapshot.py
+    owner: kit-maintainer
+    probe_cmd: Test-Path -LiteralPath '__WINDOWS_WORKSPACE__/orchestration-harness-kit/modules/worker-transport/worker_port/git_snapshot.py'
+    cadence: P3650D
+    slack: P1D
+    secret_fields: []
+    privacy_class: shareable
+    break_recipe: 'dry-run: remove this file from a sandbox copy'
+    expected_red: KIT_COMPONENT_MISSING:kit-worker-port-snapshot
+    state: active
+    install_stage: kit
+
+  - id: kit-worker-port-contracts
+    class: kit-component
+    config_path: __WINDOWS_WORKSPACE__/orchestration-harness-kit/modules/worker-transport/worker_port/contracts.py
+    export_target_path: modules/worker-transport/worker_port/contracts.py
+    owner: kit-maintainer
+    probe_cmd: Test-Path -LiteralPath '__WINDOWS_WORKSPACE__/orchestration-harness-kit/modules/worker-transport/worker_port/contracts.py'
+    cadence: P3650D
+    slack: P1D
+    secret_fields: []
+    privacy_class: shareable
+    break_recipe: 'dry-run: remove this file from a sandbox copy'
+    expected_red: KIT_COMPONENT_MISSING:kit-worker-port-contracts
+    state: active
+    install_stage: kit
+
+  - id: kit-worker-port-receipt
+    class: kit-component
+    config_path: __WINDOWS_WORKSPACE__/orchestration-harness-kit/modules/worker-transport/worker_port/schemas/remote-worktree-receipt.schema.json
+    export_target_path: modules/worker-transport/worker_port/schemas/remote-worktree-receipt.schema.json
+    owner: kit-maintainer
+    probe_cmd: Test-Path -LiteralPath '__WINDOWS_WORKSPACE__/orchestration-harness-kit/modules/worker-transport/worker_port/schemas/remote-worktree-receipt.schema.json'
+    cadence: P3650D
+    slack: P1D
+    secret_fields: []
+    privacy_class: shareable
+    break_recipe: 'dry-run: remove this file from a sandbox copy'
+    expected_red: KIT_COMPONENT_MISSING:kit-worker-port-receipt
+    state: active
+    install_stage: kit
+
+  - id: kit-worker-port-event
+    class: kit-component
+    config_path: __WINDOWS_WORKSPACE__/orchestration-harness-kit/modules/worker-transport/worker_port/schemas/external-status-event.schema.json
+    export_target_path: modules/worker-transport/worker_port/schemas/external-status-event.schema.json
+    owner: kit-maintainer
+    probe_cmd: Test-Path -LiteralPath '__WINDOWS_WORKSPACE__/orchestration-harness-kit/modules/worker-transport/worker_port/schemas/external-status-event.schema.json'
+    cadence: P3650D
+    slack: P1D
+    secret_fields: []
+    privacy_class: shareable
+    break_recipe: 'dry-run: remove this file from a sandbox copy'
+    expected_red: KIT_COMPONENT_MISSING:kit-worker-port-event
+    state: active
+    install_stage: kit
+
+  - id: kit-worker-port-verify
+    class: kit-component
+    config_path: __WINDOWS_WORKSPACE__/orchestration-harness-kit/modules/worker-transport/verify.py
+    export_target_path: modules/worker-transport/verify.py
+    owner: kit-maintainer
+    probe_cmd: Test-Path -LiteralPath '__WINDOWS_WORKSPACE__/orchestration-harness-kit/modules/worker-transport/verify.py'
+    cadence: P3650D
+    slack: P1D
+    secret_fields: []
+    privacy_class: shareable
+    break_recipe: 'dry-run: remove this file from a sandbox copy'
+    expected_red: KIT_COMPONENT_MISSING:kit-worker-port-verify
+    state: active
+    install_stage: kit
+
+  - id: kit-worker-port-readme
+    class: kit-component
+    config_path: __WINDOWS_WORKSPACE__/orchestration-harness-kit/modules/worker-transport/README.md
+    export_target_path: modules/worker-transport/README.md
+    owner: kit-maintainer
+    probe_cmd: Test-Path -LiteralPath '__WINDOWS_WORKSPACE__/orchestration-harness-kit/modules/worker-transport/README.md'
+    cadence: P3650D
+    slack: P1D
+    secret_fields: []
+    privacy_class: shareable
+    break_recipe: 'dry-run: remove this file from a sandbox copy'
+    expected_red: KIT_COMPONENT_MISSING:kit-worker-port-readme
+    state: active
+    install_stage: kit
+
+  - id: kit-worker-port-provenance
+    class: kit-component
+    config_path: __WINDOWS_WORKSPACE__/orchestration-harness-kit/modules/worker-transport/PROVENANCE.json
+    export_target_path: modules/worker-transport/PROVENANCE.json
+    owner: kit-maintainer
+    probe_cmd: Test-Path -LiteralPath '__WINDOWS_WORKSPACE__/orchestration-harness-kit/modules/worker-transport/PROVENANCE.json'
+    cadence: P3650D
+    slack: P1D
+    secret_fields: []
+    privacy_class: shareable
+    break_recipe: 'dry-run: remove this file from a sandbox copy'
+    expected_red: KIT_COMPONENT_MISSING:kit-worker-port-provenance
+    state: active
+    install_stage: kit
+
+  - id: kit-worker-port-packets
+    class: kit-component
+    config_path: __WINDOWS_WORKSPACE__/orchestration-harness-kit/modules/orchestration-core/lapart_core/review/packets.py
+    export_target_path: modules/orchestration-core/lapart_core/review/packets.py
+    owner: kit-maintainer
+    probe_cmd: Test-Path -LiteralPath '__WINDOWS_WORKSPACE__/orchestration-harness-kit/modules/orchestration-core/lapart_core/review/packets.py'
+    cadence: P3650D
+    slack: P1D
+    secret_fields: []
+    privacy_class: shareable
+    break_recipe: 'dry-run: remove this file from a sandbox copy'
+    expected_red: KIT_COMPONENT_MISSING:kit-worker-port-packets
+    state: active
+    install_stage: kit
+
+  - id: kit-worker-port-packet-tests
+    class: kit-component
+    config_path: __WINDOWS_WORKSPACE__/orchestration-harness-kit/installer/tests/test_review_packets.py
+    export_target_path: installer/tests/test_review_packets.py
+    owner: kit-maintainer
+    probe_cmd: Test-Path -LiteralPath '__WINDOWS_WORKSPACE__/orchestration-harness-kit/installer/tests/test_review_packets.py'
+    cadence: P3650D
+    slack: P1D
+    secret_fields: []
+    privacy_class: shareable
+    break_recipe: 'dry-run: remove this file from a sandbox copy'
+    expected_red: KIT_COMPONENT_MISSING:kit-worker-port-packet-tests
+    state: active
+    install_stage: kit
+
+  - id: kit-worker-port-ledger
+    class: kit-component
+    config_path: __WINDOWS_WORKSPACE__/orchestration-harness-kit/system-snapshot/hermes-agent-self-evolution/prime_bridge/job_ledger.py
+    export_target_path: system-snapshot/hermes-agent-self-evolution/prime_bridge/job_ledger.py
+    owner: kit-maintainer
+    probe_cmd: Test-Path -LiteralPath '__WINDOWS_WORKSPACE__/orchestration-harness-kit/system-snapshot/hermes-agent-self-evolution/prime_bridge/job_ledger.py'
+    cadence: P3650D
+    slack: P1D
+    secret_fields: []
+    privacy_class: shareable
+    break_recipe: 'dry-run: remove this file from a sandbox copy'
+    expected_red: KIT_COMPONENT_MISSING:kit-worker-port-ledger
+    state: active
+    install_stage: kit
+
+  - id: kit-budget-exception
+    class: kit-component
+    config_path: __WINDOWS_WORKSPACE__/orchestration-harness-kit/modules/orchestration-core/lapart_core/review/budget_exception.py
+    export_target_path: modules/orchestration-core/lapart_core/review/budget_exception.py
+    owner: kit-maintainer
+    probe_cmd: Test-Path -LiteralPath '__WINDOWS_WORKSPACE__/orchestration-harness-kit/modules/orchestration-core/lapart_core/review/budget_exception.py'
+    cadence: P3650D
+    slack: P1D
+    secret_fields: []
+    privacy_class: shareable
+    break_recipe: 'dry-run: remove this file from a sandbox copy'
+    expected_red: KIT_COMPONENT_MISSING:kit-budget-exception
+    state: active
+    install_stage: kit
+
+  - id: kit-budget-approval
+    class: kit-component
+    config_path: __WINDOWS_WORKSPACE__/orchestration-harness-kit/modules/orchestration-core/lapart_core/review/budget_approval.py
+    export_target_path: modules/orchestration-core/lapart_core/review/budget_approval.py
+    owner: kit-maintainer
+    probe_cmd: Test-Path -LiteralPath '__WINDOWS_WORKSPACE__/orchestration-harness-kit/modules/orchestration-core/lapart_core/review/budget_approval.py'
+    cadence: P3650D
+    slack: P1D
+    secret_fields: []
+    privacy_class: shareable
+    break_recipe: 'dry-run: remove this file from a sandbox copy'
+    expected_red: KIT_COMPONENT_MISSING:kit-budget-approval
+    state: active
+    install_stage: kit
+
+  - id: kit-budget-exception-tests
+    class: kit-component
+    config_path: __WINDOWS_WORKSPACE__/orchestration-harness-kit/installer/tests/test_review_budget_exception.py
+    export_target_path: installer/tests/test_review_budget_exception.py
+    owner: kit-maintainer
+    probe_cmd: Test-Path -LiteralPath '__WINDOWS_WORKSPACE__/orchestration-harness-kit/installer/tests/test_review_budget_exception.py'
+    cadence: P3650D
+    slack: P1D
+    secret_fields: []
+    privacy_class: shareable
+    break_recipe: 'dry-run: remove this file from a sandbox copy'
+    expected_red: KIT_COMPONENT_MISSING:kit-budget-exception-tests
+    state: active
+    install_stage: kit
+
+  - id: kit-worker-port-capability-broker
+    class: kit-component
+    config_path: __WINDOWS_WORKSPACE__/orchestration-harness-kit/system-snapshot/hermes-agent-self-evolution/prime_bridge/capability_broker.py
+    export_target_path: system-snapshot/hermes-agent-self-evolution/prime_bridge/capability_broker.py
+    owner: kit-maintainer
+    probe_cmd: Test-Path -LiteralPath '__WINDOWS_WORKSPACE__/orchestration-harness-kit/system-snapshot/hermes-agent-self-evolution/prime_bridge/capability_broker.py'
+    cadence: P3650D
+    slack: P1D
+    secret_fields: []
+    privacy_class: shareable
+    break_recipe: 'dry-run: remove this file from a sandbox copy'
+    expected_red: KIT_COMPONENT_MISSING:kit-worker-port-capability-broker
+    state: active
+    install_stage: kit
+
+  - id: kit-worker-port-capability-ledger
+    class: kit-component
+    config_path: __WINDOWS_WORKSPACE__/orchestration-harness-kit/system-snapshot/hermes-agent-self-evolution/prime_bridge/capability_ledger.py
+    export_target_path: system-snapshot/hermes-agent-self-evolution/prime_bridge/capability_ledger.py
+    owner: kit-maintainer
+    probe_cmd: Test-Path -LiteralPath '__WINDOWS_WORKSPACE__/orchestration-harness-kit/system-snapshot/hermes-agent-self-evolution/prime_bridge/capability_ledger.py'
+    cadence: P3650D
+    slack: P1D
+    secret_fields: []
+    privacy_class: shareable
+    break_recipe: 'dry-run: remove this file from a sandbox copy'
+    expected_red: KIT_COMPONENT_MISSING:kit-worker-port-capability-ledger
+    state: active
+    install_stage: kit
+
+  - id: kit-worker-port-mcp-client
+    class: kit-component
+    config_path: __WINDOWS_WORKSPACE__/orchestration-harness-kit/system-snapshot/hermes-agent-self-evolution/prime_bridge/hermes_mcp_client.py
+    export_target_path: system-snapshot/hermes-agent-self-evolution/prime_bridge/hermes_mcp_client.py
+    owner: kit-maintainer
+    probe_cmd: Test-Path -LiteralPath '__WINDOWS_WORKSPACE__/orchestration-harness-kit/system-snapshot/hermes-agent-self-evolution/prime_bridge/hermes_mcp_client.py'
+    cadence: P3650D
+    slack: P1D
+    secret_fields: []
+    privacy_class: shareable
+    break_recipe: 'dry-run: remove this file from a sandbox copy'
+    expected_red: KIT_COMPONENT_MISSING:kit-worker-port-mcp-client
+    state: active
+    install_stage: kit
+
+  - id: kit-prime-dependency-adaptive-depth
+    class: kit-component
+    config_path: __WINDOWS_WORKSPACE__/orchestration-harness-kit/system-snapshot/hermes-agent-self-evolution/prime_bridge/adaptive_depth.py
+    export_target_path: system-snapshot/hermes-agent-self-evolution/prime_bridge/adaptive_depth.py
+    owner: kit-maintainer
+    probe_cmd: Test-Path -LiteralPath '__WINDOWS_WORKSPACE__/orchestration-harness-kit/system-snapshot/hermes-agent-self-evolution/prime_bridge/adaptive_depth.py'
+    cadence: P3650D
+    slack: P1D
+    secret_fields: []
+    privacy_class: shareable
+    break_recipe: 'dry-run: remove this file from a sandbox copy'
+    expected_red: KIT_COMPONENT_MISSING:kit-prime-dependency-adaptive-depth
+    state: active
+    install_stage: kit
+
+  - id: kit-prime-dependency-adaptive-review-budget-approval
+    class: kit-component
+    config_path: __WINDOWS_WORKSPACE__/orchestration-harness-kit/system-snapshot/hermes-agent-self-evolution/prime_bridge/adaptive_review/budget_approval.py
+    export_target_path: system-snapshot/hermes-agent-self-evolution/prime_bridge/adaptive_review/budget_approval.py
+    owner: kit-maintainer
+    probe_cmd: Test-Path -LiteralPath '__WINDOWS_WORKSPACE__/orchestration-harness-kit/system-snapshot/hermes-agent-self-evolution/prime_bridge/adaptive_review/budget_approval.py'
+    cadence: P3650D
+    slack: P1D
+    secret_fields: []
+    privacy_class: shareable
+    break_recipe: 'dry-run: remove this file from a sandbox copy'
+    expected_red: KIT_COMPONENT_MISSING:kit-prime-dependency-adaptive-review-budget-approval
+    state: active
+    install_stage: kit
+
+  - id: kit-prime-dependency-adaptive-review-host
+    class: kit-component
+    config_path: __WINDOWS_WORKSPACE__/orchestration-harness-kit/system-snapshot/hermes-agent-self-evolution/prime_bridge/adaptive_review/host.py
+    export_target_path: system-snapshot/hermes-agent-self-evolution/prime_bridge/adaptive_review/host.py
+    owner: kit-maintainer
+    probe_cmd: Test-Path -LiteralPath '__WINDOWS_WORKSPACE__/orchestration-harness-kit/system-snapshot/hermes-agent-self-evolution/prime_bridge/adaptive_review/host.py'
+    cadence: P3650D
+    slack: P1D
+    secret_fields: []
+    privacy_class: shareable
+    break_recipe: 'dry-run: remove this file from a sandbox copy'
+    expected_red: KIT_COMPONENT_MISSING:kit-prime-dependency-adaptive-review-host
+    state: active
+    install_stage: kit
+
+  - id: kit-prime-dependency-autonomy-intent
+    class: kit-component
+    config_path: __WINDOWS_WORKSPACE__/orchestration-harness-kit/system-snapshot/hermes-agent-self-evolution/prime_bridge/autonomy_intent.py
+    export_target_path: system-snapshot/hermes-agent-self-evolution/prime_bridge/autonomy_intent.py
+    owner: kit-maintainer
+    probe_cmd: Test-Path -LiteralPath '__WINDOWS_WORKSPACE__/orchestration-harness-kit/system-snapshot/hermes-agent-self-evolution/prime_bridge/autonomy_intent.py'
+    cadence: P3650D
+    slack: P1D
+    secret_fields: []
+    privacy_class: shareable
+    break_recipe: 'dry-run: remove this file from a sandbox copy'
+    expected_red: KIT_COMPONENT_MISSING:kit-prime-dependency-autonomy-intent
+    state: active
+    install_stage: kit
+
+  - id: kit-prime-dependency-budget-policy
+    class: kit-component
+    config_path: __WINDOWS_WORKSPACE__/orchestration-harness-kit/system-snapshot/hermes-agent-self-evolution/prime_bridge/budget_policy.py
+    export_target_path: system-snapshot/hermes-agent-self-evolution/prime_bridge/budget_policy.py
+    owner: kit-maintainer
+    probe_cmd: Test-Path -LiteralPath '__WINDOWS_WORKSPACE__/orchestration-harness-kit/system-snapshot/hermes-agent-self-evolution/prime_bridge/budget_policy.py'
+    cadence: P3650D
+    slack: P1D
+    secret_fields: []
+    privacy_class: shareable
+    break_recipe: 'dry-run: remove this file from a sandbox copy'
+    expected_red: KIT_COMPONENT_MISSING:kit-prime-dependency-budget-policy
+    state: active
+    install_stage: kit
+
+  - id: kit-prime-dependency-checkpoints
+    class: kit-component
+    config_path: __WINDOWS_WORKSPACE__/orchestration-harness-kit/system-snapshot/hermes-agent-self-evolution/prime_bridge/checkpoints.py
+    export_target_path: system-snapshot/hermes-agent-self-evolution/prime_bridge/checkpoints.py
+    owner: kit-maintainer
+    probe_cmd: Test-Path -LiteralPath '__WINDOWS_WORKSPACE__/orchestration-harness-kit/system-snapshot/hermes-agent-self-evolution/prime_bridge/checkpoints.py'
+    cadence: P3650D
+    slack: P1D
+    secret_fields: []
+    privacy_class: shareable
+    break_recipe: 'dry-run: remove this file from a sandbox copy'
+    expected_red: KIT_COMPONENT_MISSING:kit-prime-dependency-checkpoints
+    state: active
+    install_stage: kit
+
+  - id: kit-prime-dependency-coding-execution
+    class: kit-component
+    config_path: __WINDOWS_WORKSPACE__/orchestration-harness-kit/system-snapshot/hermes-agent-self-evolution/prime_bridge/coding_execution.py
+    export_target_path: system-snapshot/hermes-agent-self-evolution/prime_bridge/coding_execution.py
+    owner: kit-maintainer
+    probe_cmd: Test-Path -LiteralPath '__WINDOWS_WORKSPACE__/orchestration-harness-kit/system-snapshot/hermes-agent-self-evolution/prime_bridge/coding_execution.py'
+    cadence: P3650D
+    slack: P1D
+    secret_fields: []
+    privacy_class: shareable
+    break_recipe: 'dry-run: remove this file from a sandbox copy'
+    expected_red: KIT_COMPONENT_MISSING:kit-prime-dependency-coding-execution
+    state: active
+    install_stage: kit
+
+  - id: kit-prime-dependency-context-cache
+    class: kit-component
+    config_path: __WINDOWS_WORKSPACE__/orchestration-harness-kit/system-snapshot/hermes-agent-self-evolution/prime_bridge/context_cache.py
+    export_target_path: system-snapshot/hermes-agent-self-evolution/prime_bridge/context_cache.py
+    owner: kit-maintainer
+    probe_cmd: Test-Path -LiteralPath '__WINDOWS_WORKSPACE__/orchestration-harness-kit/system-snapshot/hermes-agent-self-evolution/prime_bridge/context_cache.py'
+    cadence: P3650D
+    slack: P1D
+    secret_fields: []
+    privacy_class: shareable
+    break_recipe: 'dry-run: remove this file from a sandbox copy'
+    expected_red: KIT_COMPONENT_MISSING:kit-prime-dependency-context-cache
+    state: active
+    install_stage: kit
+
+  - id: kit-prime-dependency-context-efficiency
+    class: kit-component
+    config_path: __WINDOWS_WORKSPACE__/orchestration-harness-kit/system-snapshot/hermes-agent-self-evolution/prime_bridge/context_efficiency.py
+    export_target_path: system-snapshot/hermes-agent-self-evolution/prime_bridge/context_efficiency.py
+    owner: kit-maintainer
+    probe_cmd: Test-Path -LiteralPath '__WINDOWS_WORKSPACE__/orchestration-harness-kit/system-snapshot/hermes-agent-self-evolution/prime_bridge/context_efficiency.py'
+    cadence: P3650D
+    slack: P1D
+    secret_fields: []
+    privacy_class: shareable
+    break_recipe: 'dry-run: remove this file from a sandbox copy'
+    expected_red: KIT_COMPONENT_MISSING:kit-prime-dependency-context-efficiency
+    state: active
+    install_stage: kit
+
+  - id: kit-prime-dependency-evidence-adapter
+    class: kit-component
+    config_path: __WINDOWS_WORKSPACE__/orchestration-harness-kit/system-snapshot/hermes-agent-self-evolution/prime_bridge/evidence_adapter.py
+    export_target_path: system-snapshot/hermes-agent-self-evolution/prime_bridge/evidence_adapter.py
+    owner: kit-maintainer
+    probe_cmd: Test-Path -LiteralPath '__WINDOWS_WORKSPACE__/orchestration-harness-kit/system-snapshot/hermes-agent-self-evolution/prime_bridge/evidence_adapter.py'
+    cadence: P3650D
+    slack: P1D
+    secret_fields: []
+    privacy_class: shareable
+    break_recipe: 'dry-run: remove this file from a sandbox copy'
+    expected_red: KIT_COMPONENT_MISSING:kit-prime-dependency-evidence-adapter
+    state: active
+    install_stage: kit
+
+  - id: kit-prime-dependency-execution-target
+    class: kit-component
+    config_path: __WINDOWS_WORKSPACE__/orchestration-harness-kit/system-snapshot/hermes-agent-self-evolution/prime_bridge/execution_target.py
+    export_target_path: system-snapshot/hermes-agent-self-evolution/prime_bridge/execution_target.py
+    owner: kit-maintainer
+    probe_cmd: Test-Path -LiteralPath '__WINDOWS_WORKSPACE__/orchestration-harness-kit/system-snapshot/hermes-agent-self-evolution/prime_bridge/execution_target.py'
+    cadence: P3650D
+    slack: P1D
+    secret_fields: []
+    privacy_class: shareable
+    break_recipe: 'dry-run: remove this file from a sandbox copy'
+    expected_red: KIT_COMPONENT_MISSING:kit-prime-dependency-execution-target
+    state: active
+    install_stage: kit
+
+  - id: kit-prime-dependency-governed-session-bridge
+    class: kit-component
+    config_path: __WINDOWS_WORKSPACE__/orchestration-harness-kit/system-snapshot/hermes-agent-self-evolution/prime_bridge/governed_session_bridge.py
+    export_target_path: system-snapshot/hermes-agent-self-evolution/prime_bridge/governed_session_bridge.py
+    owner: kit-maintainer
+    probe_cmd: Test-Path -LiteralPath '__WINDOWS_WORKSPACE__/orchestration-harness-kit/system-snapshot/hermes-agent-self-evolution/prime_bridge/governed_session_bridge.py'
+    cadence: P3650D
+    slack: P1D
+    secret_fields: []
+    privacy_class: shareable
+    break_recipe: 'dry-run: remove this file from a sandbox copy'
+    expected_red: KIT_COMPONENT_MISSING:kit-prime-dependency-governed-session-bridge
+    state: active
+    install_stage: kit
+
+  - id: kit-prime-dependency-marginal-value
+    class: kit-component
+    config_path: __WINDOWS_WORKSPACE__/orchestration-harness-kit/system-snapshot/hermes-agent-self-evolution/prime_bridge/marginal_value.py
+    export_target_path: system-snapshot/hermes-agent-self-evolution/prime_bridge/marginal_value.py
+    owner: kit-maintainer
+    probe_cmd: Test-Path -LiteralPath '__WINDOWS_WORKSPACE__/orchestration-harness-kit/system-snapshot/hermes-agent-self-evolution/prime_bridge/marginal_value.py'
+    cadence: P3650D
+    slack: P1D
+    secret_fields: []
+    privacy_class: shareable
+    break_recipe: 'dry-run: remove this file from a sandbox copy'
+    expected_red: KIT_COMPONENT_MISSING:kit-prime-dependency-marginal-value
+    state: active
+    install_stage: kit
+
+  - id: kit-prime-dependency-native-recovery
+    class: kit-component
+    config_path: __WINDOWS_WORKSPACE__/orchestration-harness-kit/system-snapshot/hermes-agent-self-evolution/prime_bridge/native_recovery.py
+    export_target_path: system-snapshot/hermes-agent-self-evolution/prime_bridge/native_recovery.py
+    owner: kit-maintainer
+    probe_cmd: Test-Path -LiteralPath '__WINDOWS_WORKSPACE__/orchestration-harness-kit/system-snapshot/hermes-agent-self-evolution/prime_bridge/native_recovery.py'
+    cadence: P3650D
+    slack: P1D
+    secret_fields: []
+    privacy_class: shareable
+    break_recipe: 'dry-run: remove this file from a sandbox copy'
+    expected_red: KIT_COMPONENT_MISSING:kit-prime-dependency-native-recovery
+    state: active
+    install_stage: kit
+
+  - id: kit-prime-dependency-omp-sdk-runner
+    class: kit-component
+    config_path: __WINDOWS_WORKSPACE__/orchestration-harness-kit/system-snapshot/hermes-agent-self-evolution/prime_bridge/omp_sdk_runner.py
+    export_target_path: system-snapshot/hermes-agent-self-evolution/prime_bridge/omp_sdk_runner.py
+    owner: kit-maintainer
+    probe_cmd: Test-Path -LiteralPath '__WINDOWS_WORKSPACE__/orchestration-harness-kit/system-snapshot/hermes-agent-self-evolution/prime_bridge/omp_sdk_runner.py'
+    cadence: P3650D
+    slack: P1D
+    secret_fields: []
+    privacy_class: shareable
+    break_recipe: 'dry-run: remove this file from a sandbox copy'
+    expected_red: KIT_COMPONENT_MISSING:kit-prime-dependency-omp-sdk-runner
+    state: active
+    install_stage: kit
+
+  - id: kit-prime-dependency-omp-service
+    class: kit-component
+    config_path: __WINDOWS_WORKSPACE__/orchestration-harness-kit/system-snapshot/hermes-agent-self-evolution/prime_bridge/omp_service.py
+    export_target_path: system-snapshot/hermes-agent-self-evolution/prime_bridge/omp_service.py
+    owner: kit-maintainer
+    probe_cmd: Test-Path -LiteralPath '__WINDOWS_WORKSPACE__/orchestration-harness-kit/system-snapshot/hermes-agent-self-evolution/prime_bridge/omp_service.py'
+    cadence: P3650D
+    slack: P1D
+    secret_fields: []
+    privacy_class: shareable
+    break_recipe: 'dry-run: remove this file from a sandbox copy'
+    expected_red: KIT_COMPONENT_MISSING:kit-prime-dependency-omp-service
+    state: active
+    install_stage: kit
+
+  - id: kit-prime-dependency-omp-singleflight
+    class: kit-component
+    config_path: __WINDOWS_WORKSPACE__/orchestration-harness-kit/system-snapshot/hermes-agent-self-evolution/prime_bridge/omp_singleflight.py
+    export_target_path: system-snapshot/hermes-agent-self-evolution/prime_bridge/omp_singleflight.py
+    owner: kit-maintainer
+    probe_cmd: Test-Path -LiteralPath '__WINDOWS_WORKSPACE__/orchestration-harness-kit/system-snapshot/hermes-agent-self-evolution/prime_bridge/omp_singleflight.py'
+    cadence: P3650D
+    slack: P1D
+    secret_fields: []
+    privacy_class: shareable
+    break_recipe: 'dry-run: remove this file from a sandbox copy'
+    expected_red: KIT_COMPONENT_MISSING:kit-prime-dependency-omp-singleflight
+    state: active
+    install_stage: kit
+
+  - id: kit-prime-dependency-omp-task-packet
+    class: kit-component
+    config_path: __WINDOWS_WORKSPACE__/orchestration-harness-kit/system-snapshot/hermes-agent-self-evolution/prime_bridge/omp_task_packet.py
+    export_target_path: system-snapshot/hermes-agent-self-evolution/prime_bridge/omp_task_packet.py
+    owner: kit-maintainer
+    probe_cmd: Test-Path -LiteralPath '__WINDOWS_WORKSPACE__/orchestration-harness-kit/system-snapshot/hermes-agent-self-evolution/prime_bridge/omp_task_packet.py'
+    cadence: P3650D
+    slack: P1D
+    secret_fields: []
+    privacy_class: shareable
+    break_recipe: 'dry-run: remove this file from a sandbox copy'
+    expected_red: KIT_COMPONENT_MISSING:kit-prime-dependency-omp-task-packet
+    state: active
+    install_stage: kit
+
+  - id: kit-prime-dependency-rlm-worker-adapters
+    class: kit-component
+    config_path: __WINDOWS_WORKSPACE__/orchestration-harness-kit/system-snapshot/hermes-agent-self-evolution/prime_bridge/rlm_worker_adapters.py
+    export_target_path: system-snapshot/hermes-agent-self-evolution/prime_bridge/rlm_worker_adapters.py
+    owner: kit-maintainer
+    probe_cmd: Test-Path -LiteralPath '__WINDOWS_WORKSPACE__/orchestration-harness-kit/system-snapshot/hermes-agent-self-evolution/prime_bridge/rlm_worker_adapters.py'
+    cadence: P3650D
+    slack: P1D
+    secret_fields: []
+    privacy_class: shareable
+    break_recipe: 'dry-run: remove this file from a sandbox copy'
+    expected_red: KIT_COMPONENT_MISSING:kit-prime-dependency-rlm-worker-adapters
+    state: active
+    install_stage: kit
+
+  - id: kit-prime-dependency-task-authorization
+    class: kit-component
+    config_path: __WINDOWS_WORKSPACE__/orchestration-harness-kit/system-snapshot/hermes-agent-self-evolution/prime_bridge/task_authorization.py
+    export_target_path: system-snapshot/hermes-agent-self-evolution/prime_bridge/task_authorization.py
+    owner: kit-maintainer
+    probe_cmd: Test-Path -LiteralPath '__WINDOWS_WORKSPACE__/orchestration-harness-kit/system-snapshot/hermes-agent-self-evolution/prime_bridge/task_authorization.py'
+    cadence: P3650D
+    slack: P1D
+    secret_fields: []
+    privacy_class: shareable
+    break_recipe: 'dry-run: remove this file from a sandbox copy'
+    expected_red: KIT_COMPONENT_MISSING:kit-prime-dependency-task-authorization
+    state: active
+    install_stage: kit
+
+  - id: kit-prime-dependency-usage-ledger
+    class: kit-component
+    config_path: __WINDOWS_WORKSPACE__/orchestration-harness-kit/system-snapshot/hermes-agent-self-evolution/prime_bridge/usage_ledger.py
+    export_target_path: system-snapshot/hermes-agent-self-evolution/prime_bridge/usage_ledger.py
+    owner: kit-maintainer
+    probe_cmd: Test-Path -LiteralPath '__WINDOWS_WORKSPACE__/orchestration-harness-kit/system-snapshot/hermes-agent-self-evolution/prime_bridge/usage_ledger.py'
+    cadence: P3650D
+    slack: P1D
+    secret_fields: []
+    privacy_class: shareable
+    break_recipe: 'dry-run: remove this file from a sandbox copy'
+    expected_red: KIT_COMPONENT_MISSING:kit-prime-dependency-usage-ledger
+    state: active
+    install_stage: kit
+
+  - id: kit-prime-dependency-verified-success
+    class: kit-component
+    config_path: __WINDOWS_WORKSPACE__/orchestration-harness-kit/system-snapshot/hermes-agent-self-evolution/prime_bridge/verified_success.py
+    export_target_path: system-snapshot/hermes-agent-self-evolution/prime_bridge/verified_success.py
+    owner: kit-maintainer
+    probe_cmd: Test-Path -LiteralPath '__WINDOWS_WORKSPACE__/orchestration-harness-kit/system-snapshot/hermes-agent-self-evolution/prime_bridge/verified_success.py'
+    cadence: P3650D
+    slack: P1D
+    secret_fields: []
+    privacy_class: shareable
+    break_recipe: 'dry-run: remove this file from a sandbox copy'
+    expected_red: KIT_COMPONENT_MISSING:kit-prime-dependency-verified-success
+    state: active
+    install_stage: kit
+
+  - id: kit-prime-dependency-runtime-authority
+    class: kit-component
+    config_path: __WINDOWS_WORKSPACE__/orchestration-harness-kit/system-snapshot/hermes-agent-self-evolution/config/prime-runtime-authority.json
+    export_target_path: system-snapshot/hermes-agent-self-evolution/config/prime-runtime-authority.json
+    owner: kit-maintainer
+    probe_cmd: Test-Path -LiteralPath '__WINDOWS_WORKSPACE__/orchestration-harness-kit/system-snapshot/hermes-agent-self-evolution/config/prime-runtime-authority.json'
+    cadence: P3650D
+    slack: P1D
+    secret_fields: []
+    privacy_class: shareable
+    break_recipe: 'dry-run: remove this file from a sandbox copy'
+    expected_red: KIT_COMPONENT_MISSING:kit-prime-dependency-runtime-authority
+    state: active
+    install_stage: kit
+
+  - id: kit-prime-dependency-image-lock
+    class: kit-component
+    config_path: __WINDOWS_WORKSPACE__/orchestration-harness-kit/system-snapshot/hermes-agent-self-evolution/containers/prime-probe/image-lock.json
+    export_target_path: system-snapshot/hermes-agent-self-evolution/containers/prime-probe/image-lock.json
+    owner: kit-maintainer
+    probe_cmd: Test-Path -LiteralPath '__WINDOWS_WORKSPACE__/orchestration-harness-kit/system-snapshot/hermes-agent-self-evolution/containers/prime-probe/image-lock.json'
+    cadence: P3650D
+    slack: P1D
+    secret_fields: []
+    privacy_class: shareable
+    break_recipe: 'dry-run: remove this file from a sandbox copy'
+    expected_red: KIT_COMPONENT_MISSING:kit-prime-dependency-image-lock
+    state: active
+    install_stage: kit
+
+  - id: kit-prime-dependency-job-schema
+    class: kit-component
+    config_path: __WINDOWS_WORKSPACE__/orchestration-harness-kit/system-snapshot/hermes-agent-self-evolution/contracts/prime-job.schema.json
+    export_target_path: system-snapshot/hermes-agent-self-evolution/contracts/prime-job.schema.json
+    owner: kit-maintainer
+    probe_cmd: Test-Path -LiteralPath '__WINDOWS_WORKSPACE__/orchestration-harness-kit/system-snapshot/hermes-agent-self-evolution/contracts/prime-job.schema.json'
+    cadence: P3650D
+    slack: P1D
+    secret_fields: []
+    privacy_class: shareable
+    break_recipe: 'dry-run: remove this file from a sandbox copy'
+    expected_red: KIT_COMPONENT_MISSING:kit-prime-dependency-job-schema
+    state: active
+    install_stage: kit
+
+  - id: kit-prime-dependency-ponytail-skill
+    class: kit-component
+    config_path: __WINDOWS_WORKSPACE__/orchestration-harness-kit/system-snapshot/skills-shared/ponytail/skills/ponytail/SKILL.md
+    export_target_path: system-snapshot/skills-shared/ponytail/skills/ponytail/SKILL.md
+    owner: kit-maintainer
+    probe_cmd: Test-Path -LiteralPath '__WINDOWS_WORKSPACE__/orchestration-harness-kit/system-snapshot/skills-shared/ponytail/skills/ponytail/SKILL.md'
+    cadence: P3650D
+    slack: P1D
+    secret_fields: []
+    privacy_class: shareable
+    break_recipe: 'dry-run: remove this file from a sandbox copy'
+    expected_red: KIT_COMPONENT_MISSING:kit-prime-dependency-ponytail-skill
+    state: active
+    install_stage: kit
+
+  - id: kit-prime-dependency-rpc-stub
+    class: kit-component
+    config_path: __WINDOWS_WORKSPACE__/orchestration-harness-kit/system-snapshot/hermes-agent-self-evolution/tests/fixtures/prime_rpc_stub.py
+    export_target_path: system-snapshot/hermes-agent-self-evolution/tests/fixtures/prime_rpc_stub.py
+    owner: kit-maintainer
+    probe_cmd: Test-Path -LiteralPath '__WINDOWS_WORKSPACE__/orchestration-harness-kit/system-snapshot/hermes-agent-self-evolution/tests/fixtures/prime_rpc_stub.py'
+    cadence: P3650D
+    slack: P1D
+    secret_fields: []
+    privacy_class: shareable
+    break_recipe: 'dry-run: remove this file from a sandbox copy'
+    expected_red: KIT_COMPONENT_MISSING:kit-prime-dependency-rpc-stub
+    state: active
+    install_stage: kit
+
+  - id: kit-prime-accounting-mcp-server
+    class: kit-component
+    config_path: __WINDOWS_WORKSPACE__/orchestration-harness-kit/system-snapshot/hermes-agent-self-evolution/prime_bridge/mcp_server.py
+    export_target_path: system-snapshot/hermes-agent-self-evolution/prime_bridge/mcp_server.py
+    owner: kit-maintainer
+    probe_cmd: Test-Path -LiteralPath '__WINDOWS_WORKSPACE__/orchestration-harness-kit/system-snapshot/hermes-agent-self-evolution/prime_bridge/mcp_server.py'
+    cadence: P3650D
+    slack: P1D
+    secret_fields: []
+    privacy_class: shareable
+    break_recipe: 'dry-run: remove this file from a sandbox copy'
+    expected_red: KIT_COMPONENT_MISSING:kit-prime-accounting-mcp-server
+    state: active
+    install_stage: kit
+
+  - id: kit-prime-accounting-rpc-worker
+    class: kit-component
+    config_path: __WINDOWS_WORKSPACE__/orchestration-harness-kit/system-snapshot/hermes-agent-self-evolution/prime_bridge/prime_rpc_worker.py
+    export_target_path: system-snapshot/hermes-agent-self-evolution/prime_bridge/prime_rpc_worker.py
+    owner: kit-maintainer
+    probe_cmd: Test-Path -LiteralPath '__WINDOWS_WORKSPACE__/orchestration-harness-kit/system-snapshot/hermes-agent-self-evolution/prime_bridge/prime_rpc_worker.py'
+    cadence: P3650D
+    slack: P1D
+    secret_fields: []
+    privacy_class: shareable
+    break_recipe: 'dry-run: remove this file from a sandbox copy'
+    expected_red: KIT_COMPONENT_MISSING:kit-prime-accounting-rpc-worker
+    state: active
+    install_stage: kit
+
+  - id: kit-prime-accounting-coding-execution-tests
+    class: kit-component
+    config_path: __WINDOWS_WORKSPACE__/orchestration-harness-kit/system-snapshot/hermes-agent-self-evolution/tests/integration/test_prime_coding_execution.py
+    export_target_path: system-snapshot/hermes-agent-self-evolution/tests/integration/test_prime_coding_execution.py
+    owner: kit-maintainer
+    probe_cmd: Test-Path -LiteralPath '__WINDOWS_WORKSPACE__/orchestration-harness-kit/system-snapshot/hermes-agent-self-evolution/tests/integration/test_prime_coding_execution.py'
+    cadence: P3650D
+    slack: P1D
+    secret_fields: []
+    privacy_class: shareable
+    break_recipe: 'dry-run: remove this file from a sandbox copy'
+    expected_red: KIT_COMPONENT_MISSING:kit-prime-accounting-coding-execution-tests
+    state: active
+    install_stage: kit
+
+  - id: kit-prime-accounting-job-ledger-tests
+    class: kit-component
+    config_path: __WINDOWS_WORKSPACE__/orchestration-harness-kit/system-snapshot/hermes-agent-self-evolution/tests/integration/test_prime_job_ledger.py
+    export_target_path: system-snapshot/hermes-agent-self-evolution/tests/integration/test_prime_job_ledger.py
+    owner: kit-maintainer
+    probe_cmd: Test-Path -LiteralPath '__WINDOWS_WORKSPACE__/orchestration-harness-kit/system-snapshot/hermes-agent-self-evolution/tests/integration/test_prime_job_ledger.py'
+    cadence: P3650D
+    slack: P1D
+    secret_fields: []
+    privacy_class: shareable
+    break_recipe: 'dry-run: remove this file from a sandbox copy'
+    expected_red: KIT_COMPONENT_MISSING:kit-prime-accounting-job-ledger-tests
+    state: active
+    install_stage: kit
+
+  - id: kit-prime-accounting-rpc-worker-tests
+    class: kit-component
+    config_path: __WINDOWS_WORKSPACE__/orchestration-harness-kit/system-snapshot/hermes-agent-self-evolution/tests/integration/test_prime_rpc_worker.py
+    export_target_path: system-snapshot/hermes-agent-self-evolution/tests/integration/test_prime_rpc_worker.py
+    owner: kit-maintainer
+    probe_cmd: Test-Path -LiteralPath '__WINDOWS_WORKSPACE__/orchestration-harness-kit/system-snapshot/hermes-agent-self-evolution/tests/integration/test_prime_rpc_worker.py'
+    cadence: P3650D
+    slack: P1D
+    secret_fields: []
+    privacy_class: shareable
+    break_recipe: 'dry-run: remove this file from a sandbox copy'
+    expected_red: KIT_COMPONENT_MISSING:kit-prime-accounting-rpc-worker-tests
+    state: active
+    install_stage: kit
+
+  - id: kit-budget-exception-docs
+    class: kit-component
+    config_path: __WINDOWS_WORKSPACE__/orchestration-harness-kit/modules/orchestration-core/REVIEW-BUDGET-EXCEPTION.md
+    export_target_path: modules/orchestration-core/REVIEW-BUDGET-EXCEPTION.md
+    owner: kit-maintainer
+    probe_cmd: Test-Path -LiteralPath '__WINDOWS_WORKSPACE__/orchestration-harness-kit/modules/orchestration-core/REVIEW-BUDGET-EXCEPTION.md'
+    cadence: P3650D
+    slack: P1D
+    secret_fields: []
+    privacy_class: shareable
+    break_recipe: 'dry-run: remove this file from a sandbox copy'
+    expected_red: KIT_COMPONENT_MISSING:kit-budget-exception-docs
+    state: active
+    install_stage: kit

@@ -53,8 +53,158 @@
     "__WINDOWS_WORKSPACE__",
     "__WSL_WORKSPACE__"
   ],
-  "file_count": 312,
+  "file_count": 336,
   "files": [
+    {
+      "path": "autoexperiment/ablation.ps1",
+      "sha256": "df06995d0738696eab61b2adee01120301beaf24e3f9b0f2a76d712582208be3",
+      "bytes": 4023
+    },
+    {
+      "path": "autoexperiment/after-backup.ps1",
+      "sha256": "e2b500df7b3067ce8529d4df16dbe539cb35777490d89363b22c17a774346d15",
+      "bytes": 4140
+    },
+    {
+      "path": "autoexperiment/campaign.ps1",
+      "sha256": "f5e4832917e43b8ba19507e89c59480c7fdc3e0b8f452930b495d9c1b6fc3ccc",
+      "bytes": 5228
+    },
+    {
+      "path": "autoexperiment/checkpoint.ps1",
+      "sha256": "517a260c7deac634c6a6f3d712fbf5c5f691bdc2324f22a9e4198a7c3dd10f55",
+      "bytes": 3358
+    },
+    {
+      "path": "autoexperiment/control-plane.ps1",
+      "sha256": "7a1df51d9ba77a8d4b699edd0c47d95b3730d7e61c57b81178aff5e58d2f658d",
+      "bytes": 1597
+    },
+    {
+      "path": "autoexperiment/converge.ps1",
+      "sha256": "44a8113f362116033f7c81bc31fa5305712b69b8c54e1a7fdc85c63082340b5f",
+      "bytes": 1591
+    },
+    {
+      "path": "autoexperiment/ingest.ps1",
+      "sha256": "795ac916780e4ff4679054637937c2fa0d4975a8da393c301441889f3a402f61",
+      "bytes": 3918
+    },
+    {
+      "path": "autoexperiment/judge.ps1",
+      "sha256": "37d72318fc6d3a30aecc7681bc4f42b3fb140119f1d9303711f8b194572b98f4",
+      "bytes": 4650
+    },
+    {
+      "path": "autoexperiment/kernel.ps1",
+      "sha256": "1bf0d62fb9db8aad58abadd649cec3e3dd0d7c650a6b7898cccc6b9183063965",
+      "bytes": 11105
+    },
+    {
+      "path": "autoexperiment/ledger.ps1",
+      "sha256": "58a9fab1d8e1bb32e079834949268e6133cb845caf132aad2cf7d649fad513f2",
+      "bytes": 1285
+    },
+    {
+      "path": "autoexperiment/markdown-optimizer.ps1",
+      "sha256": "1b031e1961d346a7edaaa038a622a61920d378acf7b3a68ca44de8f453188a3b",
+      "bytes": 3547
+    },
+    {
+      "path": "autoexperiment/observe.ps1",
+      "sha256": "8e783d34dafd53478866eb16b84996cb1e4305616c293b051950c54e8bddadf7",
+      "bytes": 10010
+    },
+    {
+      "path": "autoexperiment/preflight.ps1",
+      "sha256": "b438c7968611f54c8a0c613c58e7dca54b3fcb8d70e79d2f577a26eecb9235a1",
+      "bytes": 18946
+    },
+    {
+      "path": "autoexperiment/promotion.ps1",
+      "sha256": "ba8a1a7c7e4cce5e7ef0e5938add9842e331e6f2afac8d4a03e1c94ac924a5af",
+      "bytes": 2251
+    },
+    {
+      "path": "autoexperiment/rank.ps1",
+      "sha256": "a96e5045536b3bcf4c8ef0d4dcd44dfe27ac1ac2b5f9868927c7b55e94420ce5",
+      "bytes": 3690
+    },
+    {
+      "path": "autoexperiment/register-scheduled-scans.ps1",
+      "sha256": "8064f16482d91215e0873a6229f82cf26547e2af720ed97dc993ad748339eb4c",
+      "bytes": 2610
+    },
+    {
+      "path": "autoexperiment/report.ps1",
+      "sha256": "d67d9cb3c35381a3106b8a593aba50ede0e96f1f617255137d1f2fe771a8348e",
+      "bytes": 2281
+    },
+    {
+      "path": "autoexperiment/run-backup-chain.ps1",
+      "sha256": "f085a06786776edf5f4a56c54283ca047e79994dceeb7403464c6a42b754d90c",
+      "bytes": 2380
+    },
+    {
+      "path": "autoexperiment/sandbox.ps1",
+      "sha256": "aac736a13a324dfeea1cfafdfca3e15470a6bad74fc3f58420bf6aa58b5b2a88",
+      "bytes": 3068
+    },
+    {
+      "path": "autoexperiment/scheduler.ps1",
+      "sha256": "1886b64becc9771e97b34bb0a44229b8114ed9295a932e58968cd1d52ff05769",
+      "bytes": 2408
+    },
+    {
+      "path": "autoexperiment/scout.ps1",
+      "sha256": "265700b771d6215c75ef147702fad58913f0c5803866bcdfda22d6615318ae16",
+      "bytes": 1581
+    },
+    {
+      "path": "autoexperiment/tests/checkpoint.tests.ps1",
+      "sha256": "542ee16bb5c535c60f251be5ddb6f935d16bbfe206a50d9299b51aeff15da686",
+      "bytes": 6614
+    },
+    {
+      "path": "autoexperiment/tests/e2e.tests.ps1",
+      "sha256": "9dc3c252770abc9e4065d711dfa4fdcade1f7ed888fd3b925eef484c157057c1",
+      "bytes": 3576
+    },
+    {
+      "path": "autoexperiment/tests/ingest.tests.ps1",
+      "sha256": "76f9095a5ea20f7bd2cbd103ab3f550c7e16c9a771c6bfd06df2c4c460920a0e",
+      "bytes": 4091
+    },
+    {
+      "path": "autoexperiment/tests/judge.tests.ps1",
+      "sha256": "0cf7fb92b135fd05b35265b0b6441ba97cf60d02316132781d978c1f0fbaf1d7",
+      "bytes": 9405
+    },
+    {
+      "path": "autoexperiment/tests/kernel.tests.ps1",
+      "sha256": "c7507438c76b61421e7d60caae24bd656b96df451cb389e7403bd824209ebd74",
+      "bytes": 10241
+    },
+    {
+      "path": "autoexperiment/tests/markdown.tests.ps1",
+      "sha256": "6adcb2b7a77a692a140960a2d66d83bcdea45fde414086377e86533c7f4c2942",
+      "bytes": 4498
+    },
+    {
+      "path": "autoexperiment/tests/preflight.tests.ps1",
+      "sha256": "050bd199bd43a54b1190b4c24a4b95494caff08718f5a3b5e1760d47c9621c8d",
+      "bytes": 8997
+    },
+    {
+      "path": "autoexperiment/tests/scheduler.tests.ps1",
+      "sha256": "f3baf427f460014bc1961d2d857cf765fe88d4b67de5cb8f2537e2243bbd3d0b",
+      "bytes": 11511
+    },
+    {
+      "path": "hermes-agent-self-evolution/README.md",
+      "sha256": "ebecc0a1f483e655041b9aa531ef7535ee0165f7058b65420896d6e89c7acc92",
+      "bytes": 3561
+    },
     {
       "path": "hermes-agent-self-evolution/comfyui_bridge/HERMES_SKILL_OVERRIDE.md",
       "sha256": "52b53257e0a9e3b79dabbc8694de877dd844c2b7819f5aace99a941759773b10",
@@ -141,19 +291,19 @@
       "bytes": 101858
     },
     {
-      "path": "hermes-agent-self-evolution/containers/prime-probe/build_image.py",
-      "sha256": "c1fe59b74f6178e982288afce77eaa8ee9370d09b23585749c75df9f1d602b37",
-      "bytes": 20545
-    },
-    {
       "path": "hermes-agent-self-evolution/containers/prime-probe/Containerfile",
       "sha256": "ab645ef701d4646f89b0f98f00ae40c42e335805f60aa1ed61c7144eb738b305",
       "bytes": 2531
     },
     {
+      "path": "hermes-agent-self-evolution/containers/prime-probe/build_image.py",
+      "sha256": "c1fe59b74f6178e982288afce77eaa8ee9370d09b23585749c75df9f1d602b37",
+      "bytes": 20545
+    },
+    {
       "path": "hermes-agent-self-evolution/containers/prime-probe/image-lock.json",
-      "sha256": "7128cf11d1f8f24b1567bc2d42c7bda1761bbe30b01d99b75d36f913bd8038c1",
-      "bytes": 4188
+      "sha256": "1a989b420615b73faf97c928ffddd6eacf3fa2e14daf72e4cb761c1e37d72f83",
+      "bytes": 4104
     },
     {
       "path": "hermes-agent-self-evolution/containers/prime-probe/package-lock.json",
@@ -237,8 +387,8 @@
     },
     {
       "path": "hermes-agent-self-evolution/contracts/prime-job.schema.json",
-      "sha256": "c81a9066036ce6619328e9c7d884e5a56712ff234d9c5b330e092b8228bd7be1",
-      "bytes": 3512
+      "sha256": "9124d63c2f3a36560e5e53adeaad108e95c8dd48c01c5440464390fb5811a076",
+      "bytes": 4020
     },
     {
       "path": "hermes-agent-self-evolution/contracts/prime-model-route.schema.json",
@@ -256,14 +406,19 @@
       "bytes": 3790
     },
     {
-      "path": "hermes-agent-self-evolution/docs/model-profile-switching-contract.md",
-      "sha256": "83419dc00b673729865b6b9959fa5ceb634d07d905d84b54497780cd5f6af045",
-      "bytes": 4501
-    },
-    {
       "path": "hermes-agent-self-evolution/docs/OMP-PRIME-CODING-RUNBOOK.md",
       "sha256": "53cdacdd7cefbeb401e5aa57adcf02af83539394532c1ccec2fee0236353c27d",
       "bytes": 3956
+    },
+    {
+      "path": "hermes-agent-self-evolution/docs/VERIFIED-WEEKLY-MAINTENANCE-RUNBOOK.md",
+      "sha256": "00d74a1658a8339ad5944f2a1617b8c8252a342f5f5335177045644294c4cc42",
+      "bytes": 1408
+    },
+    {
+      "path": "hermes-agent-self-evolution/docs/model-profile-switching-contract.md",
+      "sha256": "83419dc00b673729865b6b9959fa5ceb634d07d905d84b54497780cd5f6af045",
+      "bytes": 4501
     },
     {
       "path": "hermes-agent-self-evolution/docs/plans/2026-05-22-g-managed-telegram-profile.md",
@@ -294,11 +449,6 @@
       "path": "hermes-agent-self-evolution/docs/telegram-default-model.yaml",
       "sha256": "b7fbe71596691cd68546f9480f96cf9167808a68e55fff972fba98425577b733",
       "bytes": 607
-    },
-    {
-      "path": "hermes-agent-self-evolution/docs/VERIFIED-WEEKLY-MAINTENANCE-RUNBOOK.md",
-      "sha256": "00d74a1658a8339ad5944f2a1617b8c8252a342f5f5335177045644294c4cc42",
-      "bytes": 1408
     },
     {
       "path": "hermes-agent-self-evolution/evolution/__init__.py",
@@ -386,6 +536,21 @@
       "bytes": 701
     },
     {
+      "path": "hermes-agent-self-evolution/prime_bridge/adaptive_depth.py",
+      "sha256": "df228b0fc8dcc32aaccfbdd18834a744a933402a2df5890ceedf01a2940a3ee4",
+      "bytes": 10576
+    },
+    {
+      "path": "hermes-agent-self-evolution/prime_bridge/adaptive_review/budget_approval.py",
+      "sha256": "677606fd699952b9beff33d0c81b0c377e883a616eabb064d184e0b3254aff46",
+      "bytes": 5227
+    },
+    {
+      "path": "hermes-agent-self-evolution/prime_bridge/adaptive_review/host.py",
+      "sha256": "d5ed358552d76e424eca2669b238277422e50afe250bf7ec4bb098eb6aab4b20",
+      "bytes": 13796
+    },
+    {
       "path": "hermes-agent-self-evolution/prime_bridge/admission.py",
       "sha256": "4d5c29510580185babdcbd77f610fba5d8bcaec76c709ae2aa43f3f8c9bb5cec",
       "bytes": 7017
@@ -401,9 +566,19 @@
       "bytes": 2976
     },
     {
+      "path": "hermes-agent-self-evolution/prime_bridge/autonomy_intent.py",
+      "sha256": "7241cd138ca8d954aa31fdb84fc767fb459d54ab9e26dac931ff04e15dfabf1d",
+      "bytes": 4310
+    },
+    {
+      "path": "hermes-agent-self-evolution/prime_bridge/budget_policy.py",
+      "sha256": "9f1653d300b519e6bcd1d210ca72d9633740e8bc079eb5c94a21dfacb717bd43",
+      "bytes": 4876
+    },
+    {
       "path": "hermes-agent-self-evolution/prime_bridge/capability_broker.py",
-      "sha256": "e86ed96ddbf47dd1599446b75a0661556d9a3629bf707e718fc3e67d9510d797",
-      "bytes": 6029
+      "sha256": "b0d11eca756e54ac3e6441e2465ef3712c1fc0aafb56c35411e62984674ba92b",
+      "bytes": 8989
     },
     {
       "path": "hermes-agent-self-evolution/prime_bridge/capability_client.py",
@@ -412,13 +587,23 @@
     },
     {
       "path": "hermes-agent-self-evolution/prime_bridge/capability_ledger.py",
-      "sha256": "8cc8957048e78cec368b7d9764b416a06f4ad1272fd41489d91b52c9a61fc97e",
-      "bytes": 7005
+      "sha256": "dd21aa433f3fb20efe301d5193440a7c9a46e5a56e7c0e81a90d9a8dcb10e382",
+      "bytes": 7288
     },
     {
       "path": "hermes-agent-self-evolution/prime_bridge/capability_policy.py",
       "sha256": "f46db9c4b5f6ad5bcf5cc884b1780345d24faa38f388e6c93d926106cb7d5dfa",
       "bytes": 5614
+    },
+    {
+      "path": "hermes-agent-self-evolution/prime_bridge/checkpoints.py",
+      "sha256": "d4b4357287d70fdb1cfc5bdf5b8149e1b36c636544eaafc757bb90dc7aad28bc",
+      "bytes": 4883
+    },
+    {
+      "path": "hermes-agent-self-evolution/prime_bridge/coding_execution.py",
+      "sha256": "59b1049595e3ebd1577e8d9c39f2a6d2c1baad07974bf0dc7d269e754927a825",
+      "bytes": 52912
     },
     {
       "path": "hermes-agent-self-evolution/prime_bridge/config_transaction.py",
@@ -461,6 +646,16 @@
       "bytes": 7897
     },
     {
+      "path": "hermes-agent-self-evolution/prime_bridge/context_cache.py",
+      "sha256": "f02373273c96bed52fef5a20db781db8abae1b54204262fc813f5bee513322bd",
+      "bytes": 7516
+    },
+    {
+      "path": "hermes-agent-self-evolution/prime_bridge/context_efficiency.py",
+      "sha256": "7c63423534180bea2f0b81ef7dbcfc584f4b8035a4c7a40ee9978359ebac3bc0",
+      "bytes": 19901
+    },
+    {
       "path": "hermes-agent-self-evolution/prime_bridge/delegation_advisory.py",
       "sha256": "c9262ab19055e0879eb5b0fd75095f74043c165153544b9c7a58da9b48643721",
       "bytes": 1960
@@ -471,14 +666,29 @@
       "bytes": 4921
     },
     {
+      "path": "hermes-agent-self-evolution/prime_bridge/evidence_adapter.py",
+      "sha256": "018b8021fd5311467d69abffabc3a634a15dea3c110dfe900d88158a977f7674",
+      "bytes": 42728
+    },
+    {
       "path": "hermes-agent-self-evolution/prime_bridge/evidence_scan.py",
       "sha256": "9cb4587e3b3c75244cc3dabbdd0646f523541075a232cb55e9b5e8017aeabd00",
       "bytes": 13888
     },
     {
+      "path": "hermes-agent-self-evolution/prime_bridge/execution_target.py",
+      "sha256": "285c5eca8de9f01db0221b51cd901c9353ad69256abb1891012bcb7dbc400b73",
+      "bytes": 2579
+    },
+    {
+      "path": "hermes-agent-self-evolution/prime_bridge/governed_session_bridge.py",
+      "sha256": "1a41f10a202c02ca51b424cabc1a59be6e4979b2efc35d84d730a4c6d647fbe4",
+      "bytes": 16112
+    },
+    {
       "path": "hermes-agent-self-evolution/prime_bridge/hermes_mcp_client.py",
-      "sha256": "546fae53d39e927315c5fff4834bd54e51f80a577d06eacc1df5f62cad13d512",
-      "bytes": 3813
+      "sha256": "a0c9f759061583465d951128e8ef785691c3a0015f75f7f0e81a98002242e2d2",
+      "bytes": 4045
     },
     {
       "path": "hermes-agent-self-evolution/prime_bridge/inference_relay.py",
@@ -502,8 +712,8 @@
     },
     {
       "path": "hermes-agent-self-evolution/prime_bridge/job_ledger.py",
-      "sha256": "6319c74cbf6dd76b34b16db155e4938f779abcd676575591521e3662facd75fe",
-      "bytes": 23882
+      "sha256": "9e5e7d3318dd34e8f8d94d15a62cd4a04c1c82242d7fc9423d724019fba34b77",
+      "bytes": 36608
     },
     {
       "path": "hermes-agent-self-evolution/prime_bridge/learning_ledger.py",
@@ -526,14 +736,24 @@
       "bytes": 4484
     },
     {
+      "path": "hermes-agent-self-evolution/prime_bridge/marginal_value.py",
+      "sha256": "11b7856c80150c6a1d1c8fae510830bff86c49c937a714053ed60602ed6261e1",
+      "bytes": 5729
+    },
+    {
       "path": "hermes-agent-self-evolution/prime_bridge/mcp_server.py",
-      "sha256": "96d1f678c9a5d96748a537e692563e6c869daf03e32a03d52d0fec865cf37569",
-      "bytes": 38828
+      "sha256": "32eadf8a6b8ba79f9d5e4233b96d7e7e981b33740544d95c0718949f369ff99a",
+      "bytes": 110562
     },
     {
       "path": "hermes-agent-self-evolution/prime_bridge/model_route.py",
       "sha256": "85ed736e6dc2c6d4d8171e7b1f2bcccf1460874087c6d3c3385768e557204e98",
       "bytes": 11949
+    },
+    {
+      "path": "hermes-agent-self-evolution/prime_bridge/native_recovery.py",
+      "sha256": "63376497ca498f869a0b56aaa4b43d38617992b0c5478ee868a5d89ca61a4522",
+      "bytes": 24617
     },
     {
       "path": "hermes-agent-self-evolution/prime_bridge/omp_adapters.py",
@@ -549,6 +769,26 @@
       "path": "hermes-agent-self-evolution/prime_bridge/omp_runtime.py",
       "sha256": "9c53154752d3b55d344e4c4a7404a1a69de449b4575e101c8ee9955162cddcac",
       "bytes": 7207
+    },
+    {
+      "path": "hermes-agent-self-evolution/prime_bridge/omp_sdk_runner.py",
+      "sha256": "a541e5e4d93f671cc148314e4fd1e497d731995108a7746fdc4478b2f32f23ff",
+      "bytes": 25070
+    },
+    {
+      "path": "hermes-agent-self-evolution/prime_bridge/omp_service.py",
+      "sha256": "817124328854d32afa76827f180551eb30e16b8f8d00f46438afe5affdce169a",
+      "bytes": 12482
+    },
+    {
+      "path": "hermes-agent-self-evolution/prime_bridge/omp_singleflight.py",
+      "sha256": "1e64371cd465efe984385124734d72e5a0211d080d450be96458e11f1c818421",
+      "bytes": 974
+    },
+    {
+      "path": "hermes-agent-self-evolution/prime_bridge/omp_task_packet.py",
+      "sha256": "1f21baf96a9974d2c342fb2136eb9ccaf5682f6f56cc5aa00c05dfb8f92195cd",
+      "bytes": 18511
     },
     {
       "path": "hermes-agent-self-evolution/prime_bridge/omp_worker.py",
@@ -567,8 +807,8 @@
     },
     {
       "path": "hermes-agent-self-evolution/prime_bridge/prime_rpc_worker.py",
-      "sha256": "e57e214d6c6b8e17983f860eab52a1c60f6d589ada21bd3ff8943b7377f0112f",
-      "bytes": 7751
+      "sha256": "9daa3220cd5e7aaee801c968bc192a6bfbe7c3ffe6b8e424919b2017ff69716f",
+      "bytes": 18388
     },
     {
       "path": "hermes-agent-self-evolution/prime_bridge/profile_policy.py",
@@ -596,6 +836,11 @@
       "bytes": 3350
     },
     {
+      "path": "hermes-agent-self-evolution/prime_bridge/rlm_worker_adapters.py",
+      "sha256": "6189591a5dd3a6d999013a47cd40c8332585ad68a9c57d869d18e411550fb84b",
+      "bytes": 5525
+    },
+    {
       "path": "hermes-agent-self-evolution/prime_bridge/rollout_policy.py",
       "sha256": "c790a88df14571dd351b220836bfae450000bdb0479d06c62863f5ff9239d057",
       "bytes": 5668
@@ -621,9 +866,24 @@
       "bytes": 14288
     },
     {
+      "path": "hermes-agent-self-evolution/prime_bridge/task_authorization.py",
+      "sha256": "8bfe349e8f1632dccdf03c2277af647a7724553fce0bfba83f73ac68b38f033f",
+      "bytes": 3591
+    },
+    {
       "path": "hermes-agent-self-evolution/prime_bridge/upgrade_gate.py",
       "sha256": "b96ec2b580f4c3a84b4181b16d2673c181eba11e4f84d271cfef8405cf327177",
       "bytes": 4843
+    },
+    {
+      "path": "hermes-agent-self-evolution/prime_bridge/usage_ledger.py",
+      "sha256": "9e37dc4c338541a56480fd7c123fc51c3b9c341b8c3e3ef22c8837599930111e",
+      "bytes": 13707
+    },
+    {
+      "path": "hermes-agent-self-evolution/prime_bridge/verified_success.py",
+      "sha256": "254f77cdc10a57fb111a80efdfb709ce5dae2f414bb01000e0e2c7d082a739eb",
+      "bytes": 2669
     },
     {
       "path": "hermes-agent-self-evolution/profiles/home/config.yaml",
@@ -631,24 +891,19 @@
       "bytes": 6443
     },
     {
-      "path": "hermes-agent-self-evolution/profiles/telegram/config.yaml",
-      "sha256": "dd323b8abeb5d9a16fb780fb6bb08eb293ab46c56a74b48a52987312dc60fbfc",
-      "bytes": 17701
-    },
-    {
       "path": "hermes-agent-self-evolution/profiles/telegram/README.md",
       "sha256": "79ebd4281f2e48d046543ed22dcd84b8708655eae393384931a02ef973d5ade0",
       "bytes": 9280
     },
     {
+      "path": "hermes-agent-self-evolution/profiles/telegram/config.yaml",
+      "sha256": "dd323b8abeb5d9a16fb780fb6bb08eb293ab46c56a74b48a52987312dc60fbfc",
+      "bytes": 17701
+    },
+    {
       "path": "hermes-agent-self-evolution/pyproject.toml",
       "sha256": "dc0d3101d0ee95a9431f111452346e1791f4685c5ad307455997de8d95d4e226",
       "bytes": 1286
-    },
-    {
-      "path": "hermes-agent-self-evolution/README.md",
-      "sha256": "ebecc0a1f483e655041b9aa531ef7535ee0165f7058b65420896d6e89c7acc92",
-      "bytes": 3561
     },
     {
       "path": "hermes-agent-self-evolution/requirements/phase01-tools.lock",
@@ -962,8 +1217,8 @@
     },
     {
       "path": "hermes-agent-self-evolution/tests/fixtures/prime_rpc_stub.py",
-      "sha256": "bd11199d1de2e9a53b489bbd81e8f7875aac61ccf732e261a731d112c8bb81c1",
-      "bytes": 618
+      "sha256": "e9be4f776c134f8ab29fc108cd816b4f44ea81e54184a93867dc3c991cdf9f20",
+      "bytes": 779
     },
     {
       "path": "hermes-agent-self-evolution/tests/integration/test_maintenance_ledger.py",
@@ -1026,6 +1281,11 @@
       "bytes": 3808
     },
     {
+      "path": "hermes-agent-self-evolution/tests/integration/test_prime_coding_execution.py",
+      "sha256": "0cc9d10cd0dd4cf6c54fd30496d380b7cc49b6c40b9b8b074978a7e11c64b5a4",
+      "bytes": 39665
+    },
+    {
       "path": "hermes-agent-self-evolution/tests/integration/test_prime_config_promotion.py",
       "sha256": "2a3bd0360185f786efa1e8c95ae0fa8318ddb4df9cd3a4ab128560e137c0f675",
       "bytes": 5525
@@ -1062,8 +1322,8 @@
     },
     {
       "path": "hermes-agent-self-evolution/tests/integration/test_prime_job_ledger.py",
-      "sha256": "e2923cfdcd0ff7a66412f572d5a6d3bc2e7a7624af769f6f9e8a00fb6a27945e",
-      "bytes": 9059
+      "sha256": "6ccbbcc214233e6e3de6085232f20a0b8a5d0de4164bbf6d071b5eb8c5fd4d22",
+      "bytes": 12604
     },
     {
       "path": "hermes-agent-self-evolution/tests/integration/test_prime_learning_ledger.py",
@@ -1137,8 +1397,8 @@
     },
     {
       "path": "hermes-agent-self-evolution/tests/integration/test_prime_rpc_worker.py",
-      "sha256": "59e23f3dc4d94ad001dadc93f320e10b8e0722d9591b3e002a2506ceea77ecb7",
-      "bytes": 3665
+      "sha256": "3a524fe98c367df9fd161d4639640921a5a9ff238a30e77e21bbd313da36f0c9",
+      "bytes": 9876
     },
     {
       "path": "hermes-agent-self-evolution/tests/integration/test_prime_session_contract.py",
@@ -1191,151 +1451,6 @@
       "bytes": 2692
     },
     {
-      "path": "autoexperiment/ablation.ps1",
-      "sha256": "df06995d0738696eab61b2adee01120301beaf24e3f9b0f2a76d712582208be3",
-      "bytes": 4023
-    },
-    {
-      "path": "autoexperiment/after-backup.ps1",
-      "sha256": "e2b500df7b3067ce8529d4df16dbe539cb35777490d89363b22c17a774346d15",
-      "bytes": 4140
-    },
-    {
-      "path": "autoexperiment/campaign.ps1",
-      "sha256": "f5e4832917e43b8ba19507e89c59480c7fdc3e0b8f452930b495d9c1b6fc3ccc",
-      "bytes": 5228
-    },
-    {
-      "path": "autoexperiment/checkpoint.ps1",
-      "sha256": "517a260c7deac634c6a6f3d712fbf5c5f691bdc2324f22a9e4198a7c3dd10f55",
-      "bytes": 3358
-    },
-    {
-      "path": "autoexperiment/control-plane.ps1",
-      "sha256": "7a1df51d9ba77a8d4b699edd0c47d95b3730d7e61c57b81178aff5e58d2f658d",
-      "bytes": 1597
-    },
-    {
-      "path": "autoexperiment/converge.ps1",
-      "sha256": "44a8113f362116033f7c81bc31fa5305712b69b8c54e1a7fdc85c63082340b5f",
-      "bytes": 1591
-    },
-    {
-      "path": "autoexperiment/ingest.ps1",
-      "sha256": "795ac916780e4ff4679054637937c2fa0d4975a8da393c301441889f3a402f61",
-      "bytes": 3918
-    },
-    {
-      "path": "autoexperiment/judge.ps1",
-      "sha256": "37d72318fc6d3a30aecc7681bc4f42b3fb140119f1d9303711f8b194572b98f4",
-      "bytes": 4650
-    },
-    {
-      "path": "autoexperiment/kernel.ps1",
-      "sha256": "1bf0d62fb9db8aad58abadd649cec3e3dd0d7c650a6b7898cccc6b9183063965",
-      "bytes": 11105
-    },
-    {
-      "path": "autoexperiment/ledger.ps1",
-      "sha256": "58a9fab1d8e1bb32e079834949268e6133cb845caf132aad2cf7d649fad513f2",
-      "bytes": 1285
-    },
-    {
-      "path": "autoexperiment/markdown-optimizer.ps1",
-      "sha256": "1b031e1961d346a7edaaa038a622a61920d378acf7b3a68ca44de8f453188a3b",
-      "bytes": 3547
-    },
-    {
-      "path": "autoexperiment/observe.ps1",
-      "sha256": "8e783d34dafd53478866eb16b84996cb1e4305616c293b051950c54e8bddadf7",
-      "bytes": 10010
-    },
-    {
-      "path": "autoexperiment/preflight.ps1",
-      "sha256": "b438c7968611f54c8a0c613c58e7dca54b3fcb8d70e79d2f577a26eecb9235a1",
-      "bytes": 18946
-    },
-    {
-      "path": "autoexperiment/promotion.ps1",
-      "sha256": "ba8a1a7c7e4cce5e7ef0e5938add9842e331e6f2afac8d4a03e1c94ac924a5af",
-      "bytes": 2251
-    },
-    {
-      "path": "autoexperiment/rank.ps1",
-      "sha256": "a96e5045536b3bcf4c8ef0d4dcd44dfe27ac1ac2b5f9868927c7b55e94420ce5",
-      "bytes": 3690
-    },
-    {
-      "path": "autoexperiment/register-scheduled-scans.ps1",
-      "sha256": "8064f16482d91215e0873a6229f82cf26547e2af720ed97dc993ad748339eb4c",
-      "bytes": 2610
-    },
-    {
-      "path": "autoexperiment/report.ps1",
-      "sha256": "d67d9cb3c35381a3106b8a593aba50ede0e96f1f617255137d1f2fe771a8348e",
-      "bytes": 2281
-    },
-    {
-      "path": "autoexperiment/run-backup-chain.ps1",
-      "sha256": "f085a06786776edf5f4a56c54283ca047e79994dceeb7403464c6a42b754d90c",
-      "bytes": 2380
-    },
-    {
-      "path": "autoexperiment/sandbox.ps1",
-      "sha256": "aac736a13a324dfeea1cfafdfca3e15470a6bad74fc3f58420bf6aa58b5b2a88",
-      "bytes": 3068
-    },
-    {
-      "path": "autoexperiment/scheduler.ps1",
-      "sha256": "1886b64becc9771e97b34bb0a44229b8114ed9295a932e58968cd1d52ff05769",
-      "bytes": 2408
-    },
-    {
-      "path": "autoexperiment/scout.ps1",
-      "sha256": "265700b771d6215c75ef147702fad58913f0c5803866bcdfda22d6615318ae16",
-      "bytes": 1581
-    },
-    {
-      "path": "autoexperiment/tests/checkpoint.tests.ps1",
-      "sha256": "542ee16bb5c535c60f251be5ddb6f935d16bbfe206a50d9299b51aeff15da686",
-      "bytes": 6614
-    },
-    {
-      "path": "autoexperiment/tests/e2e.tests.ps1",
-      "sha256": "9dc3c252770abc9e4065d711dfa4fdcade1f7ed888fd3b925eef484c157057c1",
-      "bytes": 3576
-    },
-    {
-      "path": "autoexperiment/tests/ingest.tests.ps1",
-      "sha256": "76f9095a5ea20f7bd2cbd103ab3f550c7e16c9a771c6bfd06df2c4c460920a0e",
-      "bytes": 4091
-    },
-    {
-      "path": "autoexperiment/tests/judge.tests.ps1",
-      "sha256": "0cf7fb92b135fd05b35265b0b6441ba97cf60d02316132781d978c1f0fbaf1d7",
-      "bytes": 9405
-    },
-    {
-      "path": "autoexperiment/tests/kernel.tests.ps1",
-      "sha256": "c7507438c76b61421e7d60caae24bd656b96df451cb389e7403bd824209ebd74",
-      "bytes": 10241
-    },
-    {
-      "path": "autoexperiment/tests/markdown.tests.ps1",
-      "sha256": "6adcb2b7a77a692a140960a2d66d83bcdea45fde414086377e86533c7f4c2942",
-      "bytes": 4498
-    },
-    {
-      "path": "autoexperiment/tests/preflight.tests.ps1",
-      "sha256": "050bd199bd43a54b1190b4c24a4b95494caff08718f5a3b5e1760d47c9621c8d",
-      "bytes": 8997
-    },
-    {
-      "path": "autoexperiment/tests/scheduler.tests.ps1",
-      "sha256": "f3baf427f460014bc1961d2d857cf765fe88d4b67de5cb8f2537e2243bbd3d0b",
-      "bytes": 11511
-    },
-    {
       "path": "ops/backup-projects-chunked-core.sh",
       "sha256": "0c4e7211f9f4315b12581d5aca6e1cac168344946bbf83a0429d3223bf10caec",
       "bytes": 12890
@@ -1386,14 +1501,14 @@
       "bytes": 412
     },
     {
-      "path": "ops/probes/probe-backup-freshness.ps1",
-      "sha256": "b73e817cf1d7652136689d072ee0d97348db6719b485efc484a9813b257c7aa1",
-      "bytes": 1713
-    },
-    {
       "path": "ops/probes/probe-__PRIVATE_TOKEN_08__.ps1",
       "sha256": "f823a3f4612556304402b61ed397dea31c11a08534d8a33168d7717383995ee4",
       "bytes": 2658
+    },
+    {
+      "path": "ops/probes/probe-backup-freshness.ps1",
+      "sha256": "b73e817cf1d7652136689d072ee0d97348db6719b485efc484a9813b257c7aa1",
+      "bytes": 1713
     },
     {
       "path": "ops/probes/probe-model-catalog.ps1",
@@ -1444,6 +1559,11 @@
       "path": "ops/write-daily-recovery-manifest.ps1",
       "sha256": "7032c5ca5622bf5301c1b9a22b24490b67b839711c8024b40507839ddfd59fca",
       "bytes": 3119
+    },
+    {
+      "path": "skills-shared/ponytail/skills/ponytail/SKILL.md",
+      "sha256": "1b9eaae4b639a2a6c311ad88a83e2bb0b38a612c17c84e8ac0b7603ec325604e",
+      "bytes": 5164
     },
     {
       "path": "workspace-support/.claude/AUTHORITY-CONSTITUTION.md",
@@ -1531,14 +1651,29 @@
       "bytes": 1966
     },
     {
-      "path": "workspace-support/.planning/autoexperiment-control-plane/adapters/schema.yaml",
-      "sha256": "27b707b65e8ae398ae0a4ede1f849b07c1a998dee564845e0d3a63c7c3bbb26a",
-      "bytes": 1016
-    },
-    {
       "path": "workspace-support/.planning/autoexperiment-control-plane/CONTEXT.md",
       "sha256": "f4376e08f198acfd7bbc5e2099d12fe684cf978ccc93f8d983a787daad73e4b7",
       "bytes": 4675
+    },
+    {
+      "path": "workspace-support/.planning/autoexperiment-control-plane/PLAN.md",
+      "sha256": "0f496b69a7928603484c26942784b46b81df15a459ec4cc613ef4060d2a17782",
+      "bytes": 24452
+    },
+    {
+      "path": "workspace-support/.planning/autoexperiment-control-plane/RESEARCH-POLICY.md",
+      "sha256": "9f186064f352386b2d1f8a5154ea50494737166134f6660a8ae0180b1318807f",
+      "bytes": 3736
+    },
+    {
+      "path": "workspace-support/.planning/autoexperiment-control-plane/RESEARCH.md",
+      "sha256": "2d1a1a443c0a47d77e0862aaad4859505a750517738ccb447a612dd962a39bb7",
+      "bytes": 5240
+    },
+    {
+      "path": "workspace-support/.planning/autoexperiment-control-plane/adapters/schema.yaml",
+      "sha256": "27b707b65e8ae398ae0a4ede1f849b07c1a998dee564845e0d3a63c7c3bbb26a",
+      "bytes": 1016
     },
     {
       "path": "workspace-support/.planning/autoexperiment-control-plane/contracts/cost-model.yaml",
@@ -1586,21 +1721,6 @@
       "bytes": 3418
     },
     {
-      "path": "workspace-support/.planning/autoexperiment-control-plane/PLAN.md",
-      "sha256": "0f496b69a7928603484c26942784b46b81df15a459ec4cc613ef4060d2a17782",
-      "bytes": 24452
-    },
-    {
-      "path": "workspace-support/.planning/autoexperiment-control-plane/RESEARCH-POLICY.md",
-      "sha256": "9f186064f352386b2d1f8a5154ea50494737166134f6660a8ae0180b1318807f",
-      "bytes": 3736
-    },
-    {
-      "path": "workspace-support/.planning/autoexperiment-control-plane/RESEARCH.md",
-      "sha256": "2d1a1a443c0a47d77e0862aaad4859505a750517738ccb447a612dd962a39bb7",
-      "bytes": 5240
-    },
-    {
       "path": "workspace-support/.planning/autoexperiment-control-plane/templates/CAMPAIGN.md",
       "sha256": "c9219aafc63008dbedad6511f799dd949b1ddf4b0e956607a46b6280147e98dc",
       "bytes": 2546
@@ -1612,8 +1732,8 @@
     },
     {
       "path": "workspace-support/SURFACE-GRAPH.yaml",
-      "sha256": "6d7a5d0b8eb49e423ce079808a722231bec96408025ac952ae96ddfeb32e8215",
-      "bytes": 85693
+      "sha256": "54dc8ef6dbe57a7c28e78c51b66b54f6718cae619111ca2386ba9236f1828a86",
+      "bytes": 197318
     }
   ]
 }

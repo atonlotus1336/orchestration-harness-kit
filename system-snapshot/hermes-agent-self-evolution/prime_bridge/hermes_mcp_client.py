@@ -73,9 +73,12 @@ class HermesMCPClient:
             if tool not in {item.name for item in listed.tools}:
                 raise HermesMCPClientError("policy target is not advertised by MCP server")
             result = await session.call_tool(tool, arguments)
-        if result.isError:
+        error = getattr(result, "isError", getattr(result, "is_error", None))
+        if not isinstance(error, bool):
+            raise HermesMCPClientError("MCP tool result has no valid error status")
+        if error:
             raise HermesMCPClientError("MCP tool returned an error")
-        structured = getattr(result, "structuredContent", None)
+        structured = getattr(result, "structuredContent", getattr(result, "structured_content", None))
         if structured is not None:
             return structured
         output: list[Any] = []

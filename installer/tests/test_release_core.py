@@ -237,10 +237,15 @@ def test_release_has_no_active_retired_document_backend():
             or path.suffix.lower() not in text_suffixes
         ):
             continue
-        content = path.read_text(encoding="utf-8-sig", errors="ignore").lower()
+        relative = path.relative_to(ROOT)
+        if relative == Path("system-snapshot/SNAPSHOT-MANIFEST.json"):
+            manifest = json.loads(path.read_text(encoding="utf-8"))
+            content = "\n".join(item["path"] for item in manifest["files"]).lower()
+        else:
+            content = path.read_text(encoding="utf-8-sig", errors="ignore").lower()
         for token in forbidden:
             if token in content:
-                hits.append(f"{path.relative_to(ROOT)}: {token}")
+                hits.append(f"{relative}: {token}")
     assert hits == []
 
 

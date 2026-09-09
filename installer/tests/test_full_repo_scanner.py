@@ -64,6 +64,22 @@ def snapshot_exporter():
     return module
 
 
+def snapshot_restorer():
+    import importlib.util
+    root = Path(__file__).resolve().parents[2]
+    spec = importlib.util.spec_from_file_location("snapshot_restorer", root / "tools/restore-private-system-snapshot.py")
+    module = importlib.util.module_from_spec(spec); spec.loader.exec_module(module)
+    return module
+
+
+@pytest.mark.parametrize("content", [b"one\r\ntwo\r\n", b"one\ntwo\n"])
+def test_snapshot_restorer_verifies_exact_exported_bytes(tmp_path, content):
+    import hashlib
+    module = snapshot_restorer(); sample = tmp_path / "script.ps1"
+    sample.write_bytes(content)
+    assert module.sha256(sample) == hashlib.sha256(content).hexdigest()
+
+
 @pytest.mark.parametrize("value", ["DEVICE_TEST42", "device-test42", "Device_Test42", "DEVICE[-_]TEST42", "DEVICE[_-]TEST42"])
 def test_exporter_removes_case_separator_and_regex_host_variants(tmp_path, value):
     module = snapshot_exporter(); sample = tmp_path / "source.txt"; sample.write_text(value)
@@ -88,3 +104,9 @@ def test_snapshot_bytes_match_recipient_checkout_line_endings(tmp_path, name, ex
     module = snapshot_exporter(); sample = tmp_path / name
     sample.write_bytes(b"one\r\ntwo\n")
     assert module.sanitized_bytes(sample, [], [], []) == expected
+
+
+def test_snapshot_exports_only_the_required_skill_dependency():
+    module = snapshot_exporter()
+    assert module.skill_dependency_selected(Path("ponytail/skills/ponytail/SKILL.md"))
+    assert not module.skill_dependency_selected(Path("unrelated/SKILL.md"))

@@ -19,21 +19,17 @@ DESTINATIONS = {
     "hermes-agent-self-evolution": Path("hermes-agent-self-evolution"),
     "autoexperiment": Path("scripts") / "autoexperiment",
     "ops": Path("scripts") / "ops",
+    "skills-shared": Path("skills-shared"),
     "workspace-support": Path("."),
 }
 
 
 def sha256(path: Path) -> str:
-    """Hash canonical LF bytes so normal Windows checkouts verify identically."""
+    """Hash the exact recipient bytes recorded by the snapshot exporter."""
     digest = hashlib.sha256()
-    data = path.read_bytes()
-    if b"\x00" not in data:
-        try:
-            data.decode("utf-8")
-            data = data.replace(b"\r\n", b"\n").replace(b"\r", b"\n")
-        except UnicodeDecodeError:
-            pass
-    digest.update(data)
+    with path.open("rb") as handle:
+        for chunk in iter(lambda: handle.read(1024 * 1024), b""):
+            digest.update(chunk)
     return digest.hexdigest()
 
 

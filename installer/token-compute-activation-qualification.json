@@ -48,7 +48,7 @@
     "modules/adapters/cursor/cursor-plugin/scripts/before_submit_prompt.py": "f5a6503992a8e8bfcc93a5d496f7359aecb8f6c5c460d43a1e2bd1904dfd40c5",
     "modules/adapters/cursor/cursor-plugin/scripts/session_start.py": "126b487fcc047cd5960eddcaf4d178d2043b0666888dd9c7eec9e8df06a62fad",
     "modules/adapters/cursor/source-hashes.json": "c6a5edf73666533986ff2aa29f88def4867d5fa18b05ed59b20cf6846247d26b",
-    "modules/orchestration-core/README.md": "fb0166abb5498ff1849893d67000df8e7f868a16171d17dcafdf098182b367e0",
+    "modules/orchestration-core/README.md": "e38308b0f28c64d54cb325d148b1293845b53edd29fab09372d4c5e9bee77009",
     "modules/orchestration-protocol/source-hashes.json": "aa9353e79cd30b1c911e3e53cffe450b174b792d91d70acdfec50f5c0b5ae6ad",
     "modules/token-compute-optimization/README.md": "1a35b915d9d1d8cfa15b583150e0faac6f10a3c465e6d9646e3aea30eed25871",
     "modules/token-compute-optimization/activate-token-compute.py": "6bc9ce579f607274c05b4bb7a969538c3edf79901aa2466a34b5793dbe5fda87",

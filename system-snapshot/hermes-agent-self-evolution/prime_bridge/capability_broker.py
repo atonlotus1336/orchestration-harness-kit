@@ -16,6 +16,14 @@ class CapabilityAdapter(Protocol):
     def configured(self) -> tuple[str, ...]: ...
 
 
+class CapabilityLeaseGuard(Protocol):
+    """Optional server-owned GER lease validator for Prime capability calls."""
+
+    def authorize(self, *, token: str, task_id: str, actor_id: str, audience: str,
+                  tool_id: str, action: str, resource: str, arguments_digest: str,
+                  policy_revision: str, budget: dict[str, int | float]) -> None: ...
+
+
 class CapabilityBrokerError(RuntimeError):
     pass
 
@@ -25,19 +33,38 @@ class CapabilityBroker:
         self, policy: CapabilityPolicy, ledger: CapabilityLedger,
         adapter: CapabilityAdapter, *, job_ledger: Any | None = None,
         internal_handlers: dict[str, Callable[[str, dict[str, Any], dict[str, str]], Awaitable[Any]]] | None = None,
+        lease_guard: CapabilityLeaseGuard | None = None,
     ):
         self.policy = policy
         self.ledger = ledger
         self.adapter = adapter
         self.job_ledger = job_ledger
         self.internal_handlers = dict(internal_handlers or {})
+        self.lease_guard = lease_guard
+
+    def _policy_revision(self) -> str:
+        material = {
+            "enabled": self.policy.enabled,
+            "aliases": {
+                alias: {
+                    "classification": item.classification, "approval": item.approval,
+                    "server": item.server, "tool": item.tool,
+                }
+                for alias, item in sorted(self.policy.aliases.items())
+            },
+            "approval_ttl_seconds": self.policy.approval_ttl_seconds,
+            "max_argument_bytes": self.policy.max_argument_bytes,
+            "max_result_bytes": self.policy.max_result_bytes,
+        }
+        encoded = json.dumps(material, sort_keys=True, separators=(",", ":"), ensure_ascii=False).encode()
+        return "sha256:" + hashlib.sha256(encoded).hexdigest()
 
     def _audit(self, job_id: str, kind: str, data: dict[str, Any]) -> None:
         if self.job_ledger is not None:
             self.job_ledger.note(job_id, kind, data)
 
     async def handle(self, request: dict[str, Any]) -> dict[str, Any]:
-        if not isinstance(request, dict) or set(request) - {"job_id", "profile", "alias", "arguments", "request_id"}:
+        if not isinstance(request, dict) or set(request) - {"job_id", "profile", "alias", "arguments", "request_id", "lease_token"}:
             raise CapabilityBrokerError("invalid capability request")
         job_id, profile, alias = request.get("job_id"), request.get("profile"), request.get("alias")
         if not all(isinstance(value, str) for value in (job_id, profile, alias)):
@@ -46,6 +73,18 @@ class CapabilityBroker:
         try:
             decision = self.policy.decision(alias)
             arguments = self.policy.canonical_arguments(request.get("arguments", {}))
+            if self.lease_guard is not None:
+                lease_token = request.get("lease_token")
+                if not isinstance(lease_token, str) or not lease_token:
+                    raise CapabilityBrokerError("capability lease is required")
+                self.lease_guard.authorize(
+                    token=lease_token, task_id=job_id, actor_id=profile,
+                    audience="prime-capability-broker", tool_id=f"{decision.server}.{decision.tool}",
+                    action=alias, resource=alias, arguments_digest="sha256:" + arguments.digest,
+                    policy_revision=self._policy_revision(),
+                    budget={"max_wall_seconds": self.policy.approval_ttl_seconds,
+                            "max_tool_calls": 1, "max_cost_usd": 0},
+                )
             request_id = request.get("request_id")
             if request_id is None:
                 record = self.ledger.create(
@@ -68,15 +107,31 @@ class CapabilityBroker:
                 raise CapabilityBrokerError("invalid capability request ID")
             existing = self.ledger.get(request_id)
             active_request_id = request_id
-            if existing["alias"] != alias:
+            if (existing["alias"] != alias or
+                    existing["target"] != {"server": decision.server, "tool": decision.tool}):
                 raise CapabilityBrokerError("approval binding mismatch")
             self.ledger.authorize(
                 request_id, profile=profile, job_id=job_id,
                 argument_hash=arguments.digest,
             )
             if decision.server in self.internal_handlers:
+                receipt_material = {
+                    "job_id": job_id, "profile": profile, "request_id": request_id,
+                    "alias": alias, "arguments_digest": arguments.digest,
+                }
+                capability_receipt = hashlib.sha256(
+                    json.dumps(receipt_material, sort_keys=True, separators=(",", ":")).encode()
+                ).hexdigest()
+                self._audit(job_id, "capability_authorized", {
+                    "request_id": request_id,
+                    "alias": alias,
+                    "capability_digest": hashlib.sha256(capability_receipt.encode()).hexdigest(),
+                })
                 result = await self.internal_handlers[decision.server](
-                    decision.tool, arguments.value(), {"job_id": job_id, "profile": profile},
+                    decision.tool, arguments.value(), {
+                        "job_id": job_id, "profile": profile, "request_id": request_id,
+                        "capability_receipt": capability_receipt,
+                    },
                 )
             else:
                 result = await self.adapter.call(decision.server, decision.tool, arguments.value())

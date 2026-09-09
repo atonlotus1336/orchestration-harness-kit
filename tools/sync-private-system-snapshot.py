@@ -177,6 +177,10 @@ def workspace_support_selected(relative: Path) -> bool:
     )
 
 
+def skill_dependency_selected(relative: Path) -> bool:
+    return relative.as_posix() == "ponytail/skills/ponytail/SKILL.md"
+
+
 def git_value(root: Path, *args: str) -> str | None:
     result = subprocess.run(
         ["git", "-c", f"safe.directory={root.as_posix()}", "-C", str(root), *args],
@@ -307,6 +311,7 @@ def main() -> int:
     parser.add_argument("--autoexperiment-root", type=Path, required=True)
     parser.add_argument("--ops-root", type=Path, required=True)
     parser.add_argument("--workspace-root", type=Path, required=True)
+    parser.add_argument("--skills-root", type=Path)
     parser.add_argument("--sanitizer-rules", type=Path)
     parser.add_argument("--denylist", type=Path)
     parser.add_argument(
@@ -316,10 +321,12 @@ def main() -> int:
     )
     args = parser.parse_args()
 
+    skills_root = (args.skills_root or (args.workspace_root / "skills-shared")).resolve()
     roots = {
         "hermes-agent-self-evolution": (args.hermes_root.resolve(), hermes_selected),
         "autoexperiment": (args.autoexperiment_root.resolve(), generic_selected),
         "ops": (args.ops_root.resolve(), generic_selected),
+        "skills-shared": (skills_root, skill_dependency_selected),
         "workspace-support": (args.workspace_root.resolve(), workspace_support_selected),
     }
     for label, (root, _) in roots.items():

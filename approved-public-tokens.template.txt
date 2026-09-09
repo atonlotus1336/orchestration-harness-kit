@@ -20,7 +20,16 @@ C:\...\index.js
 prefix:G:\\MyVault
 com.com
 api.telegram.org
+api.openai.com
 github.com
 n8n.io
 json-schema.org
 config.local
+pass@model.invalid
+docker.io
+lapart.local
+prefix:/opt/prime-agent
+prefix:/opt/omp
+/mnt/{drive.group(1).lower()}/{drive.group(2)}
+/mnt/g/{suffix}
+/mnt/g

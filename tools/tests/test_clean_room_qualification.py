@@ -47,7 +47,7 @@ def test_selftest_and_static_safety_contract():
     assert "--no-hardlinks" in source
     assert "source repository must be clean" in source
     assert set(MODULE.HARNESSES) == {
-        "hermes", "opencode", "pi", "antigravity", "codex", "claude-code", "moa",
+        "hermes", "opencode", "pi", "antigravity", "codex", "claude-code", "moa", "cursor",
     }
     assert '"provider_calls": 0' in source
     assert '"live_activation": "unchanged"' in source

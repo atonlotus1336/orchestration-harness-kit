@@ -107,14 +107,16 @@ class CapabilityLedger:
         with self._connect() as db:
             return [json.loads(row[0]) for row in db.execute(query, values)]
 
-    def _replace(self, record: dict[str, Any]) -> dict[str, Any]:
+    def _replace(self, record: dict[str, Any], *, expected_status: str) -> dict[str, Any]:
         record["updated_at"] = _now().isoformat()
         validate_safe(record)
         with self._connect() as db:
-            db.execute(
-                "UPDATE capability_requests SET status=?,record_json=?,updated_at=? WHERE request_id=?",
-                (record["status"], json.dumps(record, sort_keys=True, separators=(",", ":")), record["updated_at"], record["request_id"]),
+            changed = db.execute(
+                "UPDATE capability_requests SET status=?,record_json=?,updated_at=? WHERE request_id=? AND status=?",
+                (record["status"], json.dumps(record, sort_keys=True, separators=(",", ":")), record["updated_at"], record["request_id"], expected_status),
             )
+            if changed.rowcount != 1:
+                raise CapabilityLedgerError("capability state changed; approval is single-use")
         return record
 
     def resolve(
@@ -131,7 +133,7 @@ class CapabilityLedger:
             raise CapabilityLedgerError("capability request cannot be resolved")
         record["status"] = decision
         record["approval_provenance"] = {"kind": "operator", "approver": approver, "decided_at": _now().isoformat()}
-        return self._replace(record)
+        return self._replace(record, expected_status="pending")
 
     def authorize(self, request_id: str, *, profile: str, job_id: str, argument_hash: str) -> dict[str, Any]:
         record = self.get(request_id)
@@ -144,7 +146,7 @@ class CapabilityLedger:
         if datetime.fromisoformat(record["expires_at"]) <= _now():
             raise CapabilityLedgerError("capability approval expired")
         record["status"] = "executing"
-        return self._replace(record)
+        return self._replace(record, expected_status="approved")
 
     def complete(self, request_id: str, *, outcome: str, result_summary: dict[str, Any]) -> dict[str, Any]:
         record = self.get(request_id)
@@ -153,4 +155,4 @@ class CapabilityLedger:
         validate_safe(result_summary, max_bytes=16_384)
         record["status"] = "executed" if outcome == "ok" else "failed"
         record["result_summary"] = result_summary
-        return self._replace(record)
+        return self._replace(record, expected_status="executing")
