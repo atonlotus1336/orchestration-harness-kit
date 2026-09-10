@@ -47,6 +47,20 @@ def test_document_gate_fails_when_required_file_is_absent(monkeypatch):
     assert any(item.startswith("missing document:") for item in MODULE.verify_documents())
 
 
+def test_claim_gate_fails_when_recipient_payload_omits_distribution_notice(monkeypatch):
+    original_loads = MODULE.json.loads
+
+    def loads(text):
+        value = original_loads(text)
+        if isinstance(value, dict) and value.get("version") == 1 and "groups" in value:
+            value = copy.deepcopy(value)
+            value["groups"]["core"].remove("THIRD-PARTY-NOTICES.md")
+        return value
+
+    monkeypatch.setattr(MODULE.json, "loads", loads)
+    assert "recipient payload omits distribution notices" in MODULE.verify_claims()
+
+
 def test_stable_tag_gate_ignores_older_release_tag(monkeypatch):
     monkeypatch.setattr(MODULE, "_git", lambda *args: "v2.0.0" if args == ("tag", "--list") else "")
     assert "stable tag does not identify HEAD" not in MODULE.verify_claims()

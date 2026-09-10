@@ -1,5 +1,15 @@
 # Changelog
 
+## Unreleased
+
+### Distribution
+
+- Added scoped proprietary terms for Kit-Proprietor-authored materials, a private
+  recipient policy, and third-party license notices that preserve upstream
+  rights.
+- Recipient builds and release readiness now fail when required distribution
+  notices are missing. Public distribution is not authorized.
+
 ## 2.0.1
 
 ### Added

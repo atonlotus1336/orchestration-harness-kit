@@ -16,10 +16,14 @@ from installer import kit
 
 TOKEN_COMPUTE_SOURCE_PATHS = {
     "CHANGELOG.md",
+    "LICENSE",
+    "PRIVATE-DISTRIBUTION.md",
     "README.md",
+    "THIRD-PARTY-NOTICES.md",
     "docs/v2/ACTIVATION.md",
     "docs/v2/COMPATIBILITY.md",
     "docs/v2/README.md",
+    "docs/v2/RELEASE-CHECKLIST.md",
     "docs/v2/RELEASE-NOTES-2.0.1.md",
     "installer/contracts/public-payload.json",
     "installer/kit.py",
@@ -43,6 +47,9 @@ TOKEN_COMPUTE_SOURCE_PATHS = {
     "modules/token-compute-optimization/source-hashes.json",
     "modules/token-compute-optimization/token-compute-policy.json",
     "modules/token-compute-optimization/verify-token-compute.py",
+}
+REQUIRED_DISTRIBUTION_DOCS = {
+    "LICENSE", "PRIVATE-DISTRIBUTION.md", "THIRD-PARTY-NOTICES.md",
 }
 REQUIRED_COMMANDS = {
     "install", "connect", "doctor", "verify", "upgrade", "rollback", "uninstall",
@@ -129,6 +136,10 @@ def verify() -> list[str]:
         target = ROOT / relative
         if not target.is_file() or hashlib.sha256(target.read_bytes()).hexdigest() != expected:
             failures.append(f"current-source hash mismatch: {relative}")
+    payload = json.loads((ROOT / "installer/contracts/public-payload.json").read_text(encoding="utf-8"))
+    core_entries = set(payload.get("groups", {}).get("core", []))
+    if not REQUIRED_DISTRIBUTION_DOCS <= core_entries:
+        failures.append("recipient payload omits distribution notices")
 
     managed = json.loads((ROOT / "installer/contracts/managed-files.schema.json").read_text(encoding="utf-8"))
     if managed.get("required") != ["kit_version", "install_root", "data_root", "files"]:

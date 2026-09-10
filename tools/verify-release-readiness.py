@@ -20,6 +20,9 @@ from installer.kit import VERSION, scan_public_payload
 
 
 REQUIRED_DOCS = {
+    "LICENSE": ("PROPRIETARY LICENSE", "No redistribution", "Third-party materials"),
+    "PRIVATE-DISTRIBUTION.md": ("private, proprietary", "whether redistribution", "recipient payload"),
+    "THIRD-PARTY-NOTICES.md": ("Hermes Agent Self-Evolution", "Prime Agent", "Oh My Pi"),
     "docs/QUICK-START.md": ("ten-minute", "installed-not-activated", "provider-free"),
     "docs/v2/MIGRATION-GUIDE.md": ("additive migration", "rollback", "recipient"),
     "docs/v2/ADAPTER-AUTHORING.md": ("thin harness adapter", "provider-free", "shared core"),
@@ -28,6 +31,7 @@ REQUIRED_DOCS = {
     "docs/v2/RELEASE-CHECKLIST.md": ("Publication gate", "Activation gate", "SHA-256"),
     "docs/v2/ACTIVATION.md": ("installed-not-activated", "shadow", "without a Phase 83"),
 }
+DISTRIBUTION_DOCS = {"LICENSE", "PRIVATE-DISTRIBUTION.md", "THIRD-PARTY-NOTICES.md"}
 EXPECTED_ADAPTERS = {
     "hermes-os-reference",
     "opencode",
@@ -126,6 +130,10 @@ def verify_documents() -> list[str]:
 
 def verify_claims() -> list[str]:
     failures = []
+    payload = json.loads((ROOT / "installer/contracts/public-payload.json").read_text(encoding="utf-8"))
+    core_entries = set(payload.get("groups", {}).get("core", []))
+    if not DISTRIBUTION_DOCS <= core_entries:
+        failures.append("recipient payload omits distribution notices")
     matrix = json.loads((ROOT / "modules/adapters/compatibility-matrix.json").read_text(encoding="utf-8"))
     adapters = {item.get("id") for item in matrix.get("adapters", [])}
     if adapters != EXPECTED_ADAPTERS:

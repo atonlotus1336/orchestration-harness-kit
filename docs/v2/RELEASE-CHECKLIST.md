@@ -14,10 +14,17 @@ Never edit an old receipt to convert HOLD to PASS.
       documentation match the shipped bytes.
 - [ ] Runtime version, compatibility matrix, and intended tag agree.
 - [ ] No provider, model, default, service, or activation changed during build.
+- [ ] `LICENSE`, `PRIVATE-DISTRIBUTION.md`, and `THIRD-PARTY-NOTICES.md` are
+      present and included in the allowlisted recipient payload.
+- [ ] Third-party notices and the transitive license inventory are reconciled
+      for every built image, executable, or dependency bundle being delivered.
 
 ## Publication gate
 
-- [ ] Repository visibility is an intentional decision.
+- [ ] Repository visibility is private; any exception requires a new legal and
+      source-history review plus explicit authorization.
+- [ ] The recipient, authorization, artifact digest, and delivery date are
+      recorded. Confidential sharing uses a separate recipient agreement.
 - [ ] Before making source history public, resolve every historical privacy hold
       or use an approved clean public lineage.
 - [ ] Build the client artifact from the qualified commit and confirm that its
@@ -46,6 +53,9 @@ Run `tools/verify-release-readiness.py --receipt <windows-receipt>
 The gate rejects stale sources, missing adapters, mismatched artifacts, dirty
 checkouts, and working-tree receipts used for publication. Run
 `python tools/test-release-readiness.py` to replay synthetic failing evidence.
+
+The internal name `public-payload` is a legacy technical identifier for the
+allowlisted recipient payload; it does not grant permission to publish.
 
 The existing Phase 80 receipts remain historical evidence. They do not qualify
 the current release. Keeping the repository private does not clear the separate

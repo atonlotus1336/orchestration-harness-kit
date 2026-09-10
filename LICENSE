@@ -1,0 +1,52 @@
+PROPRIETARY LICENSE AND PRIVATE DISTRIBUTION NOTICE
+
+Copyright (c) 2026. All rights reserved.
+
+For this notice, the "Kit Proprietor" is the copyright holder identified in
+the recipient's written authorization or private provenance record.
+
+1. Scope
+
+This notice applies only to original orchestration, integration, configuration,
+documentation, schemas, tests, modifications, and packaging authored by
+the Kit Proprietor in this repository (the "Proprietary Materials"). It does not claim
+ownership of Third-Party Materials identified in THIRD-PARTY-NOTICES.md or of
+any other material governed by a separate license.
+
+2. Limited private-use permission
+
+Possession of or access to this repository does not grant a public license.
+An authorized recipient may use and evaluate the Proprietary Materials only
+for the recipient's own internal purposes and only while authorized in writing
+by the Kit Proprietor. This permission is limited, non-exclusive, non-transferable,
+non-sublicensable, and revocable to the extent permitted by applicable law.
+
+3. No redistribution
+
+Unless the Kit Proprietor gives prior written permission, no recipient may publish,
+mirror, fork into a publicly accessible location, distribute, sublicense,
+sell, give away, or otherwise make the Proprietary Materials available to any
+third party, whether free of charge or for compensation. Removing or altering
+copyright, attribution, license, or provenance notices is prohibited.
+
+4. Third-party materials
+
+Third-Party Materials remain subject exclusively to their respective licenses.
+Nothing in this notice limits rights granted by an applicable third-party
+license or removes an obligation imposed by one. A recipient must retain all
+applicable third-party copyright and permission notices. See
+THIRD-PARTY-NOTICES.md.
+
+5. No implied rights
+
+No patent, trademark, trade-secret, or other right is granted by implication,
+estoppel, or otherwise. Any broader use, redistribution, hosted service,
+commercial deployment, or transfer requires a separate written agreement.
+
+6. Disclaimer
+
+THE PROPRIETARY MATERIALS ARE PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+EXPRESS OR IMPLIED, INCLUDING WARRANTIES OF MERCHANTABILITY, FITNESS FOR A
+PARTICULAR PURPOSE, TITLE, AND NON-INFRINGEMENT. TO THE MAXIMUM EXTENT PERMITTED
+BY LAW, THE KIT PROPRIETOR IS NOT LIABLE FOR ANY CLAIM, DAMAGE, OR OTHER LIABILITY ARISING
+FROM THE MATERIALS OR THEIR USE.

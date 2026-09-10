@@ -3,7 +3,8 @@
   "default_groups": ["core", "memory", "docs", "installer"],
   "groups": {
     "core": [
-      ".gitattributes", ".gitignore", "LICENSE", "README.md", "CHANGELOG.md",
+      ".gitattributes", ".gitignore", "LICENSE", "PRIVATE-DISTRIBUTION.md",
+      "THIRD-PARTY-NOTICES.md", "README.md", "CHANGELOG.md",
       "AGENTS.md", "CLAUDE.md", "REMOTE-ACCESS.md", "modules/**", "hooks/**",
       "tools/init-maintainer-policy.py", "tools/verify-prime-omp-client-path.py",
       "tools/verify-v2-provenance.py", "tools/verify-v1-compatibility.py"

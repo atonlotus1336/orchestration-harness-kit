@@ -1,5 +1,12 @@
 # Orchestration Harness Kit
 
+> **Private proprietary distribution.** This repository is not open source and
+> is not licensed for public or unauthorized redistribution, whether free or
+> paid. Access does not grant redistribution rights. See [`LICENSE`](LICENSE),
+> [`PRIVATE-DISTRIBUTION.md`](PRIVATE-DISTRIBUTION.md), and
+> [`THIRD-PARTY-NOTICES.md`](THIRD-PARTY-NOTICES.md). Incorporated third-party
+> materials remain governed by their own licenses.
+
 **Make your AI coding agents safer, more reliable, and more capable — one part at a
 time.** This kit packages a battle-tested personal stack (persistent memory, a
 destructive-command safety gate, reasoning techniques for small local models,
@@ -107,7 +114,7 @@ distributed to clients.
 | prime-omp | Hermes plus locally installed Prime Agent and OMP | contract verifier plus harmless patch rehearsal |
 | token-compute-optimization | orchestration core plus a recipient-local activation registry | provider-free module verifier plus rollback rehearsal |
 
-Prime/OMP has two distribution tiers. The public client payload ships the
+Prime/OMP has two distribution tiers. The allowlisted recipient payload ships the
 contract and diagnostic only. Authorized full-Git recipients can restore and
 register the bridge by following
 [`docs/PRIME-OMP-CLIENT-SETUP.md`](docs/PRIME-OMP-CLIENT-SETUP.md); their machine
@@ -115,14 +122,16 @@ must still pass the live Hermes handshake, Prime runtime, and OMP runtime gates.
 | verified-maintenance | your backup command and scheduler | schedule verifier plus intentionally failed backup test |
 | private system snapshot | Python 3.11 and a destination workspace | hash-verifying restore dry-run |
 
-## Why it's safe to share (the 30-second version)
+## Why it's safe to share privately (the 30-second version)
 
 Three deterministic layers keep private data out, none of them "being careful":
 an **allowlist** (only named files can enter — a mistake means a missing file, never
 a leak), an **identity scrub** (usernames/paths/hosts → placeholders), and a
 **tripwire** (build aborts if any private token appears anywhere). Your clone gets a
 fourth: run `git config core.hooksPath .githooks` to arm the commit-time leak guard
-for your own tokens.
+for your own tokens. These controls prevent data leakage; they do not authorize
+public distribution. Follow [`PRIVATE-DISTRIBUTION.md`](PRIVATE-DISTRIBUTION.md)
+for every recipient.
 
 ## Keeping it current
 
