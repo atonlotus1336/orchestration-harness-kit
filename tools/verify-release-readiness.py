@@ -24,7 +24,7 @@ REQUIRED_DOCS = {
     "docs/v2/MIGRATION-GUIDE.md": ("additive migration", "rollback", "recipient"),
     "docs/v2/ADAPTER-AUTHORING.md": ("thin harness adapter", "provider-free", "shared core"),
     "docs/v2/COMPATIBILITY.md": ("Hermes OS", "OpenCode", "MOA"),
-    "docs/v2/RELEASE-NOTES-2.0.0.md": ("2.0.0", "eight", "v1"),
+    f"docs/v2/RELEASE-NOTES-{VERSION}.md": (VERSION, "eight", "v1"),
     "docs/v2/RELEASE-CHECKLIST.md": ("Publication gate", "Activation gate", "SHA-256"),
     "docs/v2/ACTIVATION.md": ("installed-not-activated", "shadow", "without a Phase 83"),
 }
@@ -137,10 +137,11 @@ def verify_claims() -> list[str]:
         failures.append("production base policy")
     if set(policy.get("required_promotion_gates", [])) != {"quality", "calls", "latency", "rollback", "tokens"}:
         failures.append("promotion gate inventory")
-    if VERSION != "2.0.0" or matrix.get("sdk_version") != VERSION:
+    if matrix.get("sdk_version") != VERSION:
         failures.append("stable version identity")
     tags = set(_git("tag", "--list").splitlines())
-    if "v2.0.0" in tags and _git("rev-parse", "v2.0.0^{commit}").strip() != _git("rev-parse", "HEAD").strip():
+    stable_tag = f"v{VERSION}"
+    if stable_tag in tags and _git("rev-parse", f"{stable_tag}^{{commit}}").strip() != _git("rev-parse", "HEAD").strip():
         failures.append("stable tag does not identify HEAD")
     return failures
 

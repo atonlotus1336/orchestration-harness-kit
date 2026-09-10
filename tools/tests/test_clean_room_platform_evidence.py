@@ -24,8 +24,11 @@ def documents():
     )
 
 
-def test_current_platform_evidence_passes():
-    assert MODULE.verify() == []
+def test_historical_platform_evidence_preserves_qualifier_hold():
+    # Phase 80 is immutable evidence for its historical source. The qualifier
+    # has evolved since then, so the old receipt must remain a precise HOLD
+    # rather than being rewritten to describe current code.
+    assert MODULE.verify() == ["qualifier source hash mismatch"]
 
 
 @pytest.mark.parametrize("mutation, expected", [

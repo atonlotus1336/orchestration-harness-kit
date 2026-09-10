@@ -2,7 +2,7 @@
   "schema": "lapart.harness-manifest.v2",
   "name": "pi-coding-agent",
   "display_name": "Pi Universal Adapter",
-  "harness_version": "2.0.0",
+  "harness_version": "2.0.1",
   "adapter": {
     "language": "python",
     "entrypoint": "pi_adapter.py",

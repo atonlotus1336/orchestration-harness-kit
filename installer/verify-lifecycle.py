@@ -20,7 +20,7 @@ TOKEN_COMPUTE_SOURCE_PATHS = {
     "docs/v2/ACTIVATION.md",
     "docs/v2/COMPATIBILITY.md",
     "docs/v2/README.md",
-    "docs/v2/RELEASE-NOTES-2.0.0.md",
+    "docs/v2/RELEASE-NOTES-2.0.1.md",
     "installer/contracts/public-payload.json",
     "installer/kit.py",
     "installer/modules/module-manifest.json",

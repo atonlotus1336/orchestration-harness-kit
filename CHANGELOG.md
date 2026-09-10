@@ -1,5 +1,33 @@
 # Changelog
 
+## 2.0.1
+
+### Added
+
+- Provider-independent evidence collection and integrity enforcement for actual
+  Git changes, test execution, deletion evidence, and reviewer acceptance packets.
+- Governed Prime/OMP coordination dependencies, task authorization, usage
+  accounting, recovery, checkpointing, and verified-success handling in the
+  private system snapshot.
+- Complete isolated restore dependency closure, including the Ponytail skill,
+  current runtime schemas, image lock, and RPC fixture.
+
+### Fixed
+
+- Release qualification now derives the stable tag from the current SDK version,
+  preserving older published tags instead of requiring them to move with HEAD.
+- Snapshot restoration verifies the exact bytes written by the exporter across
+  Windows and Linux rather than normalizing line endings before hashing.
+- Native recovery resolves .NET, NuGet, temporary, and WSL paths from the host
+  environment instead of fixed machine locations.
+
+### Safety
+
+- Automatic evaluation remains governed by the existing policy and capability
+  owners; provider activation, model routing, and production state are unchanged.
+- Historical qualification receipts and the published `v2.0.0` tag remain
+  immutable. Version `2.0.1` requires fresh committed-source qualification.
+
 ## 2.0.0
 
 ### Added

@@ -2,7 +2,7 @@
   "schema": "lapart.harness-manifest.v2",
   "name": "opencode",
   "display_name": "OpenCode Universal Adapter",
-  "harness_version": "2.0.0",
+  "harness_version": "2.0.1",
   "adapter": {
     "language": "python",
     "entrypoint": "opencode_adapter.py",

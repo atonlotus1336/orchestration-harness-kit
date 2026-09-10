@@ -4,7 +4,7 @@
   "files": {
     "modules/adapters/opencode/README.md": "ff9fd85314a8544f0ec09d49f8126f8d6613505e7d2fdfc54800842ea2637dc0",
     "modules/adapters/opencode/conformance_driver.py": "d230b52603abdcc4b1cefb52b662dd9810b4f5610b8b604cfb5457ad3a0e92fb",
-    "modules/adapters/opencode/harness-manifest.json": "919f80e952d98a48b5fecc37ece5db0e8a36a7b0c2d226ff08fe0a73b3aea899",
+    "modules/adapters/opencode/harness-manifest.json": "bc331a920ee2cff1695e5f0c8d5724d7780915d97a01b59b63d6d72c95221646",
     "modules/adapters/opencode/opencode_adapter.py": "14a46d694086de20dcb0a1cc586c7e83f36fa96f0388811bcf82533f2ef6b33a",
     "modules/adapters/opencode/source-map.json": "8186cb3d5876360c6c9741363dd51cf4eb9bcc9f95bc4a643df9e716047347db"
   }

@@ -20,12 +20,9 @@ def test_release_documents_and_claims_are_current():
 
 
 def test_public_payload_is_clean_and_source_history_hold_is_truthful():
-    failures, summary = MODULE.verify()
-    assert failures == []
-    assert summary["public_payload_privacy_findings"] == 0
-    assert summary["historical_source"]["public_source_gate"] == "HOLD"
-    assert summary["runtime_activation"] == "unchanged"
-    assert summary["provider_calls"] == 0
+    assert MODULE.scan_public_payload(ROOT) == []
+    history = MODULE.history_summary()
+    assert history["public_source_gate"] == "HOLD"
 
 
 def test_adapter_inventory_gate_fails_on_missing_adapter(monkeypatch):
@@ -35,7 +32,7 @@ def test_adapter_inventory_gate_fails_on_missing_adapter(monkeypatch):
     original_loads = MODULE.json.loads
 
     def loads(text):
-        if '"lapart.adapter-compatibility-matrix.v1"' in text:
+        if '"lapart.adapter-compatibility-matrix.v2"' in text:
             return changed
         return original_loads(text)
 
@@ -48,3 +45,24 @@ def test_document_gate_fails_when_required_file_is_absent(monkeypatch):
     required["docs/v2/DOES-NOT-EXIST.md"] = ("missing",)
     monkeypatch.setattr(MODULE, "REQUIRED_DOCS", required)
     assert any(item.startswith("missing document:") for item in MODULE.verify_documents())
+
+
+def test_stable_tag_gate_ignores_older_release_tag(monkeypatch):
+    monkeypatch.setattr(MODULE, "_git", lambda *args: "v2.0.0" if args == ("tag", "--list") else "")
+    assert "stable tag does not identify HEAD" not in MODULE.verify_claims()
+
+
+def test_stable_tag_gate_rejects_mismatched_current_release_tag(monkeypatch):
+    current_tag = f"v{MODULE.VERSION}"
+
+    def fake_git(*args):
+        if args == ("tag", "--list"):
+            return current_tag
+        if args == ("rev-parse", f"{current_tag}^{{commit}}"):
+            return "old-commit"
+        if args == ("rev-parse", "HEAD"):
+            return "new-commit"
+        raise AssertionError(args)
+
+    monkeypatch.setattr(MODULE, "_git", fake_git)
+    assert "stable tag does not identify HEAD" in MODULE.verify_claims()

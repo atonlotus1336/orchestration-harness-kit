@@ -22,7 +22,7 @@ from pathlib import Path, PurePosixPath
 
 ROOT = Path(__file__).resolve().parents[1]
 CONTRACT = ROOT / "installer" / "contracts" / "public-payload.json"
-VERSION = "2.0.0"
+VERSION = "2.0.1"
 sys.path.insert(0, str(ROOT))
 from installer.lib.redaction import redact
 

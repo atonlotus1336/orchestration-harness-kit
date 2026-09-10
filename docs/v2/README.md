@@ -4,7 +4,7 @@ This directory records the public design and release guidance for the v2 SDK.
 The SDK keeps policy and orchestration in a shared core while harness-specific
 adapters translate local capabilities into one versioned protocol.
 
-Version: 2.0.0. The shared core and eight thin adapters include the portable
+Version: 2.0.1. The shared core and eight thin adapters include the portable
 lifecycle. Each release requires fresh Windows/Linux qualification bound to
 its source. Check GitHub for publication status; source files are not proof
 that a release exists.
@@ -17,7 +17,7 @@ No v2 runtime activation is implied by files in this directory.
 - [Adapter authoring guide](ADAPTER-AUTHORING.md)
 - [Compatibility matrix](COMPATIBILITY.md)
 - [Provider lease and backend admission](PROVIDER-BACKEND-ADMISSION.md)
-- [Release notes](RELEASE-NOTES-2.0.0.md)
+- [Release notes](RELEASE-NOTES-2.0.1.md)
 - [Release checklist](RELEASE-CHECKLIST.md)
 - [Activation boundary](ACTIVATION.md)
 - [Universal orchestration protocol](../../modules/orchestration-protocol/SPEC.md)

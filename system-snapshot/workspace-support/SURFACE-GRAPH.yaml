@@ -2493,10 +2493,10 @@ surfaces:
     install_stage: kit
   - id: kit-v2-governance-cbdad52cc649
     class: kit-component
-    config_path: __WINDOWS_WORKSPACE__/orchestration-harness-kit/docs/v2/RELEASE-NOTES-2.0.0.md
-    export_target_path: docs/v2/RELEASE-NOTES-2.0.0.md
+    config_path: __WINDOWS_WORKSPACE__/orchestration-harness-kit/docs/v2/RELEASE-NOTES-2.0.1.md
+    export_target_path: docs/v2/RELEASE-NOTES-2.0.1.md
     owner: kit-maintainer
-    probe_cmd: Test-Path -LiteralPath '__WINDOWS_WORKSPACE__\orchestration-harness-kit\docs\v2\RELEASE-NOTES-2.0.0.md'
+    probe_cmd: Test-Path -LiteralPath '__WINDOWS_WORKSPACE__\orchestration-harness-kit\docs\v2\RELEASE-NOTES-2.0.1.md'
     cadence: P3650D
     slack: P1D
     secret_fields: []

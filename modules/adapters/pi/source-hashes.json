@@ -4,7 +4,7 @@
   "files": {
     "modules/adapters/pi/README.md": "7f64b1b7faae954a614a4f0b6d15c0bef63e32a614c5fec09cacd134e5ff5bd5",
     "modules/adapters/pi/conformance_driver.py": "29c4bfaf49f975732913156efd06b1820b8ba930a6de56c9e4542205ec3d56d8",
-    "modules/adapters/pi/harness-manifest.json": "d8e35a390619017ad00a9400c5194977c3288859cb11236b795473b3f7648a3d",
+    "modules/adapters/pi/harness-manifest.json": "5ccf50c123a731924a9008f02337fea88cadb73d2fa9cc384f8db07a6328320a",
     "modules/adapters/pi/pi_adapter.py": "d84c1d7f5ed4b52e53555926ad7f9a958419c96956c9c91c41c44970eec7f13c",
     "modules/adapters/pi/source-map.json": "3ea48d589e63f29c1a454d069be00639f7963e39c3ad90ffcbbcf9e40d12a03a"
   }
