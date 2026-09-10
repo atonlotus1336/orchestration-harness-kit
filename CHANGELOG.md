@@ -2,6 +2,21 @@
 
 ## Unreleased
 
+## 2.1.0
+
+### Added
+
+- Optional, inactive-by-default additive parallel observation profile for two
+  independent read-only children, parent-only completion, serial fallback, and
+  provider-free feature conformance.
+- Orca observation-only contract and release documentation. No Orca command,
+  launch, approval, review, completion, or polling authority is shipped.
+
+### Compatibility and safety
+
+- The shared protocol, adapter capability manifests, default harness activation,
+  provider routing, and production state remain unchanged.
+
 ### Distribution
 
 - Added scoped proprietary terms for Kit-Proprietor-authored materials, a private

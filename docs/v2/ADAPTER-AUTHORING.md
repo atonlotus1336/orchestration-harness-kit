@@ -36,3 +36,12 @@ python3 modules/conformance-kit/run-conformance.py --adapter-dir path/to/adapter
 
 Use the Hermes OS adapter as the reference for the complete manifest and the
 other seven adapters as examples of harness-specific event translation.
+
+## Optional additive parallel observation projection
+
+An adapter may surface local read-only child lifecycle evidence and an Orca
+observation result to the recipient's feature overlay. It must not decide
+admission, synthesize a child result, mark canonical completion, or issue an
+Orca command. Keep this optional projection outside the closed adapter
+capability manifest and core protocol. The shared feature profile owns the
+max-two, read-only, serial-fallback, and parent-verification rules.

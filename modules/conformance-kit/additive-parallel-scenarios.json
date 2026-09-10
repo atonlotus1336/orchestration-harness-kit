@@ -1,0 +1,8 @@
+{
+  "schema": "lapart.additive-parallel-scenarios.v1",
+  "cases": [
+    {"name": "valid-two-read-only", "expected": "parallel_read_only", "children": [{"id": "inspect", "operation": "inspect", "independent": true, "shared_mutable_state": false, "frozen_context": true, "bounded": true, "read_only": true}, {"id": "review", "operation": "review", "independent": true, "shared_mutable_state": false, "frozen_context": true, "bounded": true, "read_only": true}]},
+    {"name": "shared-state-fallback", "expected": "serial", "children": [{"id": "inspect", "operation": "inspect", "independent": true, "shared_mutable_state": false, "frozen_context": true, "bounded": true, "read_only": true}, {"id": "review", "operation": "review", "independent": true, "shared_mutable_state": true, "frozen_context": true, "bounded": true, "read_only": true}]},
+    {"name": "single-child-fallback", "expected": "serial", "children": [{"id": "inspect", "operation": "inspect", "independent": true, "shared_mutable_state": false, "frozen_context": true, "bounded": true, "read_only": true}]}
+  ]
+}

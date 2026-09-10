@@ -12,21 +12,21 @@ import subprocess
 from pathlib import Path
 
 
-def _remote_owner(root: Path) -> str:
+def _remote_owner(repository: Path) -> str:
     result = subprocess.run(
-        ["git", "-C", str(root), "remote", "get-url", "origin"],
+        ["git", "-C", str(repository), "remote", "get-url", "origin"],
         capture_output=True, text=True, check=False,
     )
     match = re.search(r"(?:github\.com[:/])([^/]+)/", result.stdout)
     return match.group(1) if match else ""
 
 
-def identity_values(root: Path) -> list[str]:
+def identity_values(repository: Path) -> list[str]:
     """Return local identity markers; callers must never print the values."""
     candidates = {
         getpass.getuser(), socket.gethostname(), Path.home().name,
         os.environ.get("USERNAME", ""), os.environ.get("USER", ""),
-        os.environ.get("COMPUTERNAME", ""), _remote_owner(root),
+        os.environ.get("COMPUTERNAME", ""), _remote_owner(repository),
     }
     return sorted(
         {value.strip() for value in candidates if len(value.strip()) >= 4},
@@ -35,7 +35,7 @@ def identity_values(root: Path) -> list[str]:
 
 
 def policy_payload(values: list[str]) -> tuple[str, str]:
-    denylist = "# Generated locally. Values are regex-escaped identity markers.\n"
+    denylist = "# Generated on this machine. Values are regex-escaped identity markers.\n"
     denylist += "\n".join(re.escape(value) for value in values) + "\n"
     rules = [
         {"From": value, "To": "alice" if index else "devbox"}
@@ -66,12 +66,12 @@ def main() -> int:
     if args.selftest:
         return selftest()
 
-    root = args.root.resolve()
-    values = identity_values(root)
+    repository = args.root.resolve()
+    values = identity_values(repository)
     if not values:
         print(json.dumps({"status": "BLOCKED", "reason": "no_identity_markers"}))
         return 2
-    targets = [root / ".private-denylist", root / ".sanitize-rules.local.json"]
+    targets = [repository / ".private-denylist", repository / ".sanitize-rules.local.json"]
     if any(path.exists() for path in targets) and not args.force:
         print(json.dumps({"status": "BLOCKED", "reason": "policy_already_exists"}))
         return 2

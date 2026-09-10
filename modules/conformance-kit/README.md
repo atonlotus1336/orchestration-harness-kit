@@ -24,3 +24,18 @@ or activation. To test another adapter, pass its directory with `--harness-dir`.
 
 The adapter may translate local formats only. Routing, authority, memory,
 retrieval, provider selection, optimization, and activation remain core-owned.
+
+## Optional additive-parallel feature conformance
+
+The primary conformance suite remains closed: it exercises every protocol
+operation exactly once. The optional additive-parallel profile therefore has a
+separate provider-free scenario suite:
+
+```text
+python verify-additive-parallel.py
+```
+
+It verifies only the portable feature boundary: two independent read-only
+children, serial fallback, parent-only completion, and Orca observation-only.
+It does not launch a child, connect Orca, call a provider, or activate a
+harness.

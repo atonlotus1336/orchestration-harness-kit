@@ -21,13 +21,18 @@ TOKEN_COMPUTE_SOURCE_PATHS = {
     "README.md",
     "THIRD-PARTY-NOTICES.md",
     "docs/v2/ACTIVATION.md",
+    "docs/v2/ADAPTER-AUTHORING.md",
+    "docs/v2/ADDITIVE-PARALLEL-OBSERVATION.md",
     "docs/v2/COMPATIBILITY.md",
+    "docs/v2/MIGRATION-GUIDE.md",
     "docs/v2/README.md",
     "docs/v2/RELEASE-CHECKLIST.md",
-    "docs/v2/RELEASE-NOTES-2.0.1.md",
+    "docs/v2/RELEASE-NOTES-2.1.0.md",
     "installer/contracts/public-payload.json",
+    "installer/contracts/version-policy.json",
     "installer/kit.py",
     "installer/modules/module-manifest.json",
+    "installer/tests/test_additive_parallel.py",
     "installer/tests/test_cursor_adapter.py",
     "installer/tests/test_token_compute_activation.py",
     "installer/verify-lifecycle.py",
@@ -40,6 +45,14 @@ TOKEN_COMPUTE_SOURCE_PATHS = {
     "modules/adapters/cursor/source-hashes.json",
     "modules/orchestration-core/README.md",
     "modules/orchestration-protocol/source-hashes.json",
+    "modules/additive-parallel/README.md",
+    "modules/additive-parallel/additive-parallel.profile.json",
+    "modules/additive-parallel/parallel-profile.schema.json",
+    "modules/additive-parallel/verify-additive-parallel.py",
+    "modules/conformance-kit/README.md",
+    "modules/conformance-kit/additive-parallel-scenarios.json",
+    "modules/conformance-kit/source-hashes.json",
+    "modules/conformance-kit/verify-additive-parallel.py",
     "modules/token-compute-optimization/README.md",
     "modules/token-compute-optimization/activate-token-compute.py",
     "modules/token-compute-optimization/lapart_token_compute/__init__.py",
@@ -160,7 +173,8 @@ def main() -> int:
             print(f"- {failure}")
         return 1
     print("PASS: install/connect/doctor/verify/upgrade/rollback/uninstall")
-    print("PASS: 8 harness adapters expose safe token-compute feature activation")
+    print("PASS: 8 harness adapters retain safe feature activation defaults")
+    print("PASS: additive parallel profile remains inactive and provider-free")
     print("PASS: provider_calls=0, provider_tokens=0, provider activation unchanged")
     print("PASS: Phase 81 and Cursor source receipts preserved as immutable historical evidence")
     print("PASS: content-addressed rollback and recipient-local preservation")

@@ -1,5 +1,5 @@
 {
-  "version": "modules-v16-goalposts-review-boundaries",
+  "version": "modules-v17-additive-parallel-observation",
   "default_path": [
     "orchestration-protocol",
     "orchestration-core",
@@ -45,6 +45,13 @@
       "required": true,
       "source": "modules/conformance-kit",
       "description": "Install the provider-free conformance runner, deterministic operation suite, and representative fake harness."
+    },
+    {
+      "id": "additive-parallel-observation",
+      "stage": 4,
+      "required": false,
+      "source": "modules/additive-parallel",
+      "description": "OPTIONAL provider-free max-two read-only child admission and Orca observation contract. The shipped profile is inactive and never changes a live harness."
     },
     {
       "id": "adapter-hermes",

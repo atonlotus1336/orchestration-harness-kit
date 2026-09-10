@@ -1,0 +1,45 @@
+{
+  "schema": "lapart.additive-parallel-profile.v1",
+  "feature_state": "inactive",
+  "core_activation_state": "inactive",
+  "limits": {
+    "max_concurrent_children": 2,
+    "minimum_independent_tasks": 2
+  },
+  "admission": {
+    "eligible_operations": ["inspect", "search", "analyze", "review", "compare"],
+    "require_independent_tasks": true,
+    "require_no_shared_mutable_state": true,
+    "require_frozen_context_references": true,
+    "require_bounded_assignments": true,
+    "parent_only_synthesis": true,
+    "parent_verification_required": true
+  },
+  "prohibited_capabilities": {
+    "file_writes": false,
+    "database_mutation": false,
+    "service_changes": false,
+    "external_side_effects": false,
+    "parallel_coding": false,
+    "recursive_delegation": false,
+    "provider_or_model_changes": false,
+    "new_provider_consumption": false
+  },
+  "fallback": {
+    "mode": "serial",
+    "on_uncertain_independence": true,
+    "on_unsupported_control": true,
+    "on_failed_admission": true,
+    "preserve_evidence": true
+  },
+  "orca": {
+    "mode": "observation_only",
+    "allowed_operations": ["bind-orca", "observe-orca", "observe-orca-worker-show"],
+    "may_launch_or_resume": false,
+    "may_issue_commands": false,
+    "may_approve": false,
+    "may_select_review": false,
+    "may_complete_canonical_job": false,
+    "polling_loop_installed": false
+  }
+}

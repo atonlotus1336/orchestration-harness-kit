@@ -30,3 +30,13 @@ owner updates the range. Source-hash and provider-terms changes also require
 requalification. Windows, Linux/WSL, and Docker Linux have
 provider-free clean-room qualification. macOS and live messenger/provider paths
 remain separately qualified surfaces.
+
+## Optional additive-parallel qualification
+
+The additive-parallel observation module is portable, but it does not qualify a
+harness automatically. Every row above remains `not activated` until that
+recipient proves its own isolated read-only child controls and rollback. The
+module's profile is inactive by default, limits successful admission to two
+independent read-only children, and allows Orca observation only. A source pass
+does not authorize parallel writes, recursive delegation, provider changes, or
+Orca control authority.

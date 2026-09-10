@@ -2,7 +2,7 @@
   "schema": "lapart.conformance-source-hashes.v1",
   "algorithm": "sha256",
   "files": {
-    "modules/conformance-kit/README.md": "fee6acce0d344b7a4db208ca97cf2ed3d91097f6a5b51fad9b5b2854a57ec31f",
+    "modules/conformance-kit/README.md": "90ae59e5a649e2cadfdd22531e7582821b0a133b3becd5567b2a5ecf24fa01a4",
     "modules/conformance-kit/conformance-suite.json": "246e841045102326af126de811a9852047d86853de38b5f56663b23d0c892e95",
     "modules/conformance-kit/fake-harness/README.md": "2ad3145f20cc5efa3428094ccbd8d4e1c9c55bb7b1ee40bcba265a9524a35599",
     "modules/conformance-kit/fake-harness/conformance_driver.py": "fedee37d0ddd4dd6ced59f0c86333268ad92de0b32a0bb61a4f4b8e8c28bc078",

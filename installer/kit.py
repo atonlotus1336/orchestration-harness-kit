@@ -22,7 +22,7 @@ from pathlib import Path, PurePosixPath
 
 ROOT = Path(__file__).resolve().parents[1]
 CONTRACT = ROOT / "installer" / "contracts" / "public-payload.json"
-VERSION = "2.0.1"
+VERSION = "2.1.0"
 sys.path.insert(0, str(ROOT))
 from installer.lib.redaction import redact
 
@@ -247,6 +247,8 @@ def _payload_verification_errors(payload: Path) -> list[str]:
     commands = (
         "modules/orchestration-core/verify-core.py",
         "modules/token-compute-optimization/verify-token-compute.py",
+        "modules/additive-parallel/verify-additive-parallel.py",
+        "modules/conformance-kit/verify-additive-parallel.py",
         "modules/adapters/hermes/verify-hermes-adapter.py",
         "modules/adapters/verify-adapters.py",
         "installer/verify-lifecycle.py",

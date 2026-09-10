@@ -12,7 +12,13 @@ contract or changing recipient-owned state.
 4. Apply the upgrade with `--apply --yes`.
 5. Run `doctor`, then `verify` without a harness name.
 6. Connect one adapter by reference and run its scoped `verify`.
-7. Leave activation unchanged until a separate shadow canary is authorized.
+7. Leave activation unchanged until a separate shadow canary has authorization.
+
+The optional additive-parallel observation module may appear after a v2.1
+upgrade. Its shipped profile is inactive. Do not copy another machine's active
+overlay, receipt, worker observation, skill projection, or provider state into
+the recipient data directory. Qualify and activate only a local isolated
+profile, or continue serially.
 
 ```sh
 python3 installer/kit.py upgrade --target "$HOME/agent-kit"
@@ -21,12 +27,12 @@ python3 installer/kit.py doctor --target "$HOME/agent-kit"
 python3 installer/kit.py verify --target "$HOME/agent-kit"
 ```
 
-## What is preserved
+## Preserved components
 
 - protocol generation 1 and the v1 command surface
 - recipient memory, retrieval stores, credentials, and local configuration
 - unmanaged files and reference-only connection descriptors
-- the immutable v1 rollback commit recorded in `version-policy.json`
+- the immutable v1 rollback commit that `version-policy.json` records
 
 ## Rollback
 

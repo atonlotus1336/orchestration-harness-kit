@@ -47,3 +47,21 @@ This marks feature controls active, not a provider, model, service, or productio
 profile. Harness-native integration must consume the registry or dispatch
 `optimization.plan`. The Cursor template demonstrates fail-closed request
 admission through `beforeSubmitPrompt`.
+
+## Additive parallel observation feature
+
+The optional `modules/additive-parallel` feature ships as an **inactive**
+profile. It permits a recipient-local, separately qualified mapping to the
+existing core `shadow` state for at most two independent read-only child
+assignments. It does not add a core activation state or modify a harness during
+installation.
+
+Before a recipient enables the local feature overlay, require a provider-free
+replay of the module and feature-conformance verifiers, an isolated profile,
+explicit local approval, and a rollback reference. The feature's provider and
+token cap is zero. Orca may only observe a host-bound existing job. It cannot
+launch, command, approve, review, complete, or poll. Rollback returns the local
+overlay to inactive, retains evidence, and blocks new child batches.
+
+See [additive parallel observation](ADDITIVE-PARALLEL-OBSERVATION.md) for the
+complete admission and rollback contract.

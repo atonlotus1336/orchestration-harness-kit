@@ -1,0 +1,24 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "lapart.additive-parallel-profile.v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "feature_state", "core_activation_state", "limits", "admission", "prohibited_capabilities", "fallback", "orca"],
+  "properties": {
+    "schema": {"const": "lapart.additive-parallel-profile.v1"},
+    "feature_state": {"enum": ["inactive", "shadow"]},
+    "core_activation_state": {"enum": ["inactive", "shadow"]},
+    "limits": {
+      "type": "object", "additionalProperties": false,
+      "required": ["max_concurrent_children", "minimum_independent_tasks"],
+      "properties": {
+        "max_concurrent_children": {"const": 2},
+        "minimum_independent_tasks": {"const": 2}
+      }
+    },
+    "admission": {"type": "object"},
+    "prohibited_capabilities": {"type": "object"},
+    "fallback": {"type": "object"},
+    "orca": {"type": "object"}
+  }
+}
