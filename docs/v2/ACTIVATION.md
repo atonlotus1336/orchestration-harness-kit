@@ -2,11 +2,19 @@
 
 ## Adaptive parallel switches
 
-The optional module ships the `on`, `off`, `status`, and `refresh`
-grammar with `--global` or repeatable `--harness`. Installation stays
-inactive. Recipients must supply a closed registry, signer, identity adapter,
-and consumer verifier. The reference CLI reports `ADAPTER_REQUIRED` and
-performs zero activation changes.
+The optional module ships operational `on`, `off`, `status`, and `refresh`
+commands with `--global` or repeatable `--harness`. Installation stays
+inactive. Recipients supply a closed registry and a local adapter module through
+`--adapter-module`; adapter or state-root omission returns
+`ADAPTER_REQUIRED`, performs zero changes, and exits nonzero.
+
+Every activation and deactivation runs one transaction across selected
+adapters: prepare, commit, independently verify the proposed state, atomically
+write paper state, and finalize. Any earlier failure compensates all selected
+adapters and restores the exact prior paper-state bytes. The CLI reports
+`FAILED_ROLLED_BACK` only after verified restoration; uncertainty reports
+`ROLLBACK_INCOMPLETE` and fails closed. Runtime credentials and concrete
+signer/process logic remain recipient-local.
 
 SDK installation and adapter connection are not activation. The portable kit
 ends in `installed-not-activated`. This is the safe default for every recipient.
@@ -72,6 +80,7 @@ launch, command, approve, review, complete, or poll. Rollback returns the local
 overlay to inactive, retains evidence, and blocks new child batches.
 
 V1 keeps this exact observation-only meaning. Adaptive v2 installs separately
-with all five layer grants disabled and no activation command. See
+with all five layer grants disabled; its switch command is inert until the
+recipient supplies a transactional adapter module and explicitly invokes it. See
 [adaptive parallelism v2](ADAPTIVE-PARALLELISM.md) for staged installation,
 source-parity verification, qualification boundaries, and byte-exact rollback.

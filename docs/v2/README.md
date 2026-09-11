@@ -20,6 +20,7 @@ No v2 runtime activation is implied by files in this directory.
 - [Release notes](RELEASE-NOTES-2.1.0.md)
 - [Release checklist](RELEASE-CHECKLIST.md)
 - [Activation boundary](ACTIVATION.md)
+- [Transactional switch qualification](TRANSACTIONAL-SWITCH-QUALIFICATION.md)
 - [Universal orchestration protocol](../../modules/orchestration-protocol/SPEC.md)
 - [Shared orchestration core](../../modules/orchestration-core/README.md)
 - [Token-compute feature activation](../../modules/token-compute-optimization/README.md)

@@ -1,5 +1,5 @@
 {
-  "version": "modules-v19-adaptive-parallel-switches",
+  "version": "modules-v20-transactional-adaptive-switches",
   "default_path": [
     "orchestration-protocol",
     "orchestration-core",
@@ -51,7 +51,7 @@
       "stage": 4,
       "required": false,
       "source": "modules/additive-parallel",
-      "description": "OPTIONAL provider-free additive module: immutable v1 max-two read-only semantics plus inactive adaptive v2 execution, global and harness-scoped switches, staged reviewer concurrency, and catalog-bound career facts."
+      "description": "OPTIONAL provider-free additive module: immutable v1 max-two read-only semantics plus inactive adaptive v2 execution, transactional global and harness-scoped switches, staged reviewer concurrency, and catalog-bound career facts."
     },
     {
       "id": "adapter-hermes",

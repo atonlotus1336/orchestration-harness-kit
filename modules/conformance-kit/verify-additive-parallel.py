@@ -100,15 +100,36 @@ def verify() -> list[str]:
         failures.append("observation-only completion boundary failed")
 
     class Adapter:
-        def __init__(self, *, fail=False):
+        def __init__(self):
             self.active = False
-            self.fail = fail
+            self.transactions = {}
+            self.fail_commit = False
 
-        def authorize(self):
-            self.active = not self.fail
+        def prepare(self, transaction_id, desired_state):
+            self.transactions[transaction_id] = (self.active, desired_state)
+            return {"state": "PREPARED"}
+
+        def commit(self, transaction_id):
+            if self.fail_commit:
+                raise RuntimeError("commit failed")
+            _prior, desired = self.transactions[transaction_id]
+            self.active = desired == "ACTIVE"
+            return {"state": "COMMITTED"}
+
+        def rollback(self, transaction_id):
+            if transaction_id in self.transactions:
+                self.active = self.transactions[transaction_id][0]
+            return {"state": "ROLLED_BACK"}
+
+        def finalize(self, transaction_id):
+            self.transactions.pop(transaction_id, None)
+            return {"state": "FINALIZED"}
 
         def verify(self):
             return {"state": "ACTIVE" if self.active else "INACTIVE"}
+
+        def refresh(self):
+            return {"state": "REFRESHED"}
 
     registry = ("codex", "hermes")
     with tempfile.TemporaryDirectory() as state_root:
@@ -122,9 +143,9 @@ def verify() -> list[str]:
         all_targets = switch_module.resolve_targets(registry, global_selector=True)
         if switch.set(all_targets, turn_on=True)["after"]["global"] != "ACTIVE":
             failures.append("portable global switch failed")
-        adapters["hermes"].active = False
-        adapters["hermes"].fail = True
-        switch.set(("hermes",), turn_on=False)
+        if switch.set(("hermes",), turn_on=False)["after"]["global"] != "PARTIAL":
+            failures.append("portable deactivation switch failed")
+        adapters["hermes"].fail_commit = True
         failed = switch.set(("hermes",), turn_on=True)
         if failed.get("result") != "FAILED_ROLLED_BACK" or switch.status()["global"] != "PARTIAL":
             failures.append("portable switch rollback failed")

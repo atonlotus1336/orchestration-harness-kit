@@ -90,11 +90,36 @@ def test_adaptive_v2_stage_and_rollback_preserve_local_files(tmp_path):
     assert preview["status"] == "DRY-RUN" and prior.read_bytes() == b"recipient prior bytes\n"
     staged = manager.stage(target, backups, apply=True, yes=True)
     assert staged["status"] == "PASS" and staged["feature_state"] == "inactive"
+    assert {"adaptive-switch.py", "adaptive_switch.py"} <= set(manager.MANAGED_FILES)
+    for switch_file in ("adaptive-switch.py", "adaptive_switch.py"):
+        assert (target / switch_file).read_bytes() == (MODULE / switch_file).read_bytes()
     assert local.read_text(encoding="utf-8") == '{"state":"review"}\n'
+    prior.write_bytes(b"recipient upgrade bytes\n")
+    upgraded = manager.stage(target, backups, apply=True, yes=True)
+    assert upgraded["status"] == "PASS" and prior.read_bytes() == (MODULE / "README.md").read_bytes()
+    assert manager.rollback(
+        target, backups, upgraded["snapshot"], apply=True, yes=True,
+    )["status"] == "PASS"
+    assert prior.read_bytes() == b"recipient upgrade bytes\n"
     restored = manager.rollback(target, backups, staged["snapshot"], apply=True, yes=True)
     assert restored["status"] == "PASS"
     assert prior.read_bytes() == b"recipient prior bytes\n"
     assert local.read_text(encoding="utf-8") == '{"state":"review"}\n'
+    uninstall_backups = tmp_path / "data" / "uninstall-backups"
+    restaged = manager.stage(
+        target, tmp_path / "data" / "restage-backups", apply=True, yes=True)
+    assert restaged["status"] == "PASS"
+    assert manager.uninstall(
+        target, uninstall_backups, apply=False, yes=False)["status"] == "DRY-RUN"
+    removed = manager.uninstall(
+        target, uninstall_backups, apply=True, yes=True)
+    assert removed["status"] == "PASS"
+    assert not any((target / name).exists() for name in manager.MANAGED_FILES)
+    assert local.read_text(encoding="utf-8") == '{"state":"review"}\n'
+    assert manager.rollback(
+        target, uninstall_backups, removed["snapshot"], apply=True, yes=True,
+    )["status"] == "PASS"
+    assert all((target / name).is_file() for name in manager.MANAGED_FILES)
 
 
 def test_adaptive_v2_rejects_authority_and_equal_method_diversity():
@@ -270,42 +295,219 @@ def test_adaptive_v2_packet_conflicts_cover_case_directory_root_resource_and_ali
     )
 
 
-def test_portable_switch_global_subset_last_off_and_rollback(tmp_path):
+def _load_portable_switch():
     spec = importlib.util.spec_from_file_location(
         "portable_switch", MODULE / "adaptive_switch.py")
     switch = importlib.util.module_from_spec(spec)
     assert spec and spec.loader
     spec.loader.exec_module(switch)
+    return switch
 
-    class Adapter:
-        def __init__(self):
-            self.active = False
-            self.fail = False
 
-        def authorize(self):
-            self.active = not self.fail
+class _TransactionalAdapter:
+    def __init__(self):
+        self.active = False
+        self.transactions = {}
+        self.fail_prepare = False
+        self.fail_commit = False
+        self.fail_rollback = False
+        self.fail_finalize = False
+        self.committed_states = []
 
-        def verify(self):
-            return {"state": "ACTIVE" if self.active else "INVALID"}
+    def prepare(self, transaction_id, desired_state):
+        self.transactions[transaction_id] = (self.active, desired_state)
+        if self.fail_prepare:
+            raise RuntimeError("prepare failed")
+        return {"state": "PREPARED"}
 
-    adapters = {name: Adapter() for name in ("codex", "hermes")}
+    def commit(self, transaction_id):
+        if self.fail_commit:
+            raise RuntimeError("commit failed")
+        _, desired_state = self.transactions[transaction_id]
+        self.active = desired_state == "ACTIVE"
+        self.committed_states.append(desired_state)
+        return {"state": "COMMITTED"}
+
+    def rollback(self, transaction_id):
+        if self.fail_rollback:
+            raise RuntimeError("rollback failed")
+        if transaction_id in self.transactions:
+            self.active = self.transactions[transaction_id][0]
+        return {"state": "ROLLED_BACK"}
+
+    def finalize(self, transaction_id):
+        if self.fail_finalize:
+            raise RuntimeError("finalize failed")
+        self.transactions.pop(transaction_id, None)
+        return {"state": "FINALIZED"}
+
+    def verify(self):
+        return {"state": "ACTIVE" if self.active else "INACTIVE"}
+
+    def refresh(self):
+        return {"state": "REFRESHED"}
+
+
+def test_portable_switch_global_subset_and_actual_deactivation(tmp_path):
+    switch = _load_portable_switch()
+    adapters = {name: _TransactionalAdapter() for name in ("codex", "hermes")}
     owner = switch.PortableSwitch(tmp_path, tuple(adapters), adapters)
     assert owner.status()["global"] == "INACTIVE"
     assert owner.set(("codex",), turn_on=True)["after"]["global"] == "PARTIAL"
     assert owner.set(("hermes",), turn_on=True)["after"]["global"] == "ACTIVE"
-    assert owner.set(("codex",), turn_on=False)["after"]["global"] == "PARTIAL"
-    adapters["codex"].fail = True
+    result = owner.set(("codex",), turn_on=False)
+    assert result["after"]["global"] == "PARTIAL"
+    assert adapters["codex"].active is False
+    assert adapters["codex"].committed_states[-1] == "INACTIVE"
+    assert owner.set(("hermes",), turn_on=False)["after"]["global"] == "INACTIVE"
+    assert adapters["hermes"].active is False
+
+
+@pytest.mark.parametrize("turn_on", [True, False])
+def test_portable_switch_compensates_partial_activation_and_deactivation(
+        tmp_path, turn_on):
+    switch = _load_portable_switch()
+    adapters = {name: _TransactionalAdapter() for name in ("codex", "hermes")}
+    owner = switch.PortableSwitch(tmp_path, tuple(adapters), adapters)
+    if not turn_on:
+        assert owner.set(tuple(adapters), turn_on=True)["result"] == "ACTIVE"
+    expected = turn_on is False
+    prior_bytes = owner.path.read_bytes() if owner.path.exists() else None
+    adapters["hermes"].fail_commit = True
+    failed = owner.set(tuple(adapters), turn_on=turn_on)
+    assert failed["result"] == "FAILED_ROLLED_BACK"
+    assert adapters["codex"].active is expected
+    assert adapters["hermes"].active is expected
+    assert (owner.path.read_bytes() if owner.path.exists() else None) == prior_bytes
+    assert failed["after"]["global"] == ("ACTIVE" if expected else "INACTIVE")
+
+
+def test_portable_switch_compensates_paper_write_failure(tmp_path, monkeypatch):
+    switch = _load_portable_switch()
+    adapters = {name: _TransactionalAdapter() for name in ("codex", "hermes")}
+    owner = switch.PortableSwitch(tmp_path, tuple(adapters), adapters)
+    assert owner.set(("hermes",), turn_on=True)["result"] == "PARTIAL"
+    prior_bytes = owner.path.read_bytes()
+
+    def fail_write(_value):
+        raise OSError("disk full")
+
+    monkeypatch.setattr(owner, "_write", fail_write)
     failed = owner.set(("codex",), turn_on=True)
     assert failed["result"] == "FAILED_ROLLED_BACK"
-    assert failed["after"]["enabled_harnesses"] == ["hermes"]
-    assert owner.set(("hermes",), turn_on=False)["after"]["global"] == "INACTIVE"
+    assert adapters["codex"].active is False
+    assert adapters["hermes"].active is True
+    assert owner.path.read_bytes() == prior_bytes
 
 
-def test_portable_switch_cli_grammar_is_closed_and_inactive():
+def test_portable_switch_detects_unrestored_paper_state(tmp_path, monkeypatch):
+    switch = _load_portable_switch()
+    adapters = {name: _TransactionalAdapter() for name in ("codex", "hermes")}
+    owner = switch.PortableSwitch(tmp_path, tuple(adapters), adapters)
+    assert owner.set(("hermes",), turn_on=True)["result"] == "PARTIAL"
+    adapters["codex"].fail_commit = True
+
+    def corrupt_restore(_prior_bytes):
+        owner.path.write_bytes(b"corrupt")
+
+    monkeypatch.setattr(owner, "_restore", corrupt_restore)
+    failed = owner.set(("codex",), turn_on=True)
+    assert failed["result"] == "ROLLBACK_INCOMPLETE"
+    assert {"harness": "paper_state", "phase": "verify_restoration"} in failed["rollback_errors"]
+
+
+def test_portable_switch_reports_incomplete_rollback_and_invalid_state(tmp_path):
+    switch = _load_portable_switch()
+    adapters = {name: _TransactionalAdapter() for name in ("codex", "hermes")}
+    owner = switch.PortableSwitch(tmp_path, tuple(adapters), adapters)
+    adapters["codex"].fail_rollback = True
+    adapters["hermes"].fail_commit = True
+    failed = owner.set(tuple(adapters), turn_on=True)
+    assert failed["result"] == "ROLLBACK_INCOMPLETE"
+    assert failed["after"]["global"] == "INVALID"
+    assert adapters["codex"].active is True
+    assert not owner.path.exists()
+
+
+def test_portable_switch_status_verifies_disabled_adapters(tmp_path):
+    switch = _load_portable_switch()
+    adapters = {name: _TransactionalAdapter() for name in ("codex", "hermes")}
+    owner = switch.PortableSwitch(tmp_path, tuple(adapters), adapters)
+    adapters["codex"].active = True
+    assert owner.status()["global"] == "INVALID"
+
+
+def test_portable_switch_cli_operates_configured_fake_adapters(tmp_path):
+    adapter_module = tmp_path / "recipient_adapters.py"
+    adapter_module.write_text(
+        """from pathlib import Path
+HARNESS_REGISTRY = ("codex", "hermes")
+
+class Adapter:
+    def __init__(self, root, name):
+        self.path = Path(root) / ("external-" + name)
+        self.transactions = {}
+    def prepare(self, transaction_id, desired_state):
+        self.transactions[transaction_id] = (self.path.exists(), desired_state)
+        return {"state": "PREPARED"}
+    def commit(self, transaction_id):
+        _prior, desired = self.transactions[transaction_id]
+        if desired == "ACTIVE":
+            self.path.parent.mkdir(parents=True, exist_ok=True)
+            self.path.write_text("active", encoding="utf-8")
+        elif self.path.exists():
+            self.path.unlink()
+        return {"state": "COMMITTED"}
+    def rollback(self, transaction_id):
+        prior, _desired = self.transactions.get(transaction_id, (False, "INACTIVE"))
+        if prior:
+            self.path.parent.mkdir(parents=True, exist_ok=True)
+            self.path.write_text("active", encoding="utf-8")
+        elif self.path.exists():
+            self.path.unlink()
+        return {"state": "ROLLED_BACK"}
+    def finalize(self, transaction_id):
+        self.transactions.pop(transaction_id, None)
+        return {"state": "FINALIZED"}
+    def verify(self):
+        return {"state": "ACTIVE" if self.path.exists() else "INACTIVE"}
+    def refresh(self):
+        return {"state": "REFRESHED"}
+
+def build_adapters(state_root):
+    return {name: Adapter(state_root, name) for name in HARNESS_REGISTRY}
+""",
+        encoding="utf-8",
+    )
+    base = [
+        sys.executable, str(MODULE / "adaptive-switch.py"),
+        "--state-root", str(tmp_path / "state"),
+        "--adapter-module", str(adapter_module),
+    ]
+    activated = subprocess.run(
+        [*base, "on", "--global"], cwd=MODULE, text=True,
+        capture_output=True, check=False)
+    assert activated.returncode == 0, activated.stdout + activated.stderr
+    assert json.loads(activated.stdout)["activation_changes"] == 2
+    deactivated = subprocess.run(
+        [*base, "off", "--harness", "codex"], cwd=MODULE, text=True,
+        capture_output=True, check=False)
+    assert deactivated.returncode == 0, deactivated.stdout + deactivated.stderr
+    receipt = json.loads(deactivated.stdout)
+    assert receipt["status"] == "PARTIAL" and receipt["activation_changes"] == 1
+    assert not (tmp_path / "state" / "external-codex").exists()
+    assert (tmp_path / "state" / "external-hermes").is_file()
+    status = subprocess.run(
+        [*base, "status"], cwd=MODULE, text=True,
+        capture_output=True, check=False)
+    assert status.returncode == 0
+    assert json.loads(status.stdout)["status"] == "PARTIAL"
+
+def test_portable_switch_cli_missing_adapter_is_nonzero():
     process = subprocess.run(
         [sys.executable, str(MODULE / "adaptive-switch.py"), "on", "--global"],
         cwd=MODULE, text=True, capture_output=True, check=False)
-    assert process.returncode == 0
+    assert process.returncode == 3
     assert json.loads(process.stdout) == {
         "activation_changes": 0, "command": "on",
         "status": "ADAPTER_REQUIRED", "targets": ["codex", "hermes"]}

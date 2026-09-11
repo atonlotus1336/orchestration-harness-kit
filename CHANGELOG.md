@@ -2,6 +2,17 @@
 
 ## Unreleased
 
+### Fixed
+
+- Adaptive parallel `on` and `off` now use the same recipient-adapter
+  transaction and verify external state before changing paper state.
+- Failed compensation reports `FAILED_ROLLED_BACK` only after exact runtime
+  and paper-state restoration; uncertain restoration fails closed as
+  `ROLLBACK_INCOMPLETE`.
+- The operational switch CLI now loads explicit recipient adapters, returns
+  nonzero when they are absent, and ships in adaptive-v2 stage, upgrade,
+  rollback, and uninstall operations.
+
 ## 2.2.0
 
 ### Added

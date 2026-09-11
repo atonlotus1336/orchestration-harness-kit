@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Stage or roll back the adaptive v2 module without activating it."""
+"""Stage, uninstall, or roll back adaptive v2 without changing activation."""
 
 from __future__ import annotations
 
@@ -22,6 +22,8 @@ MANAGED_FILES = (
     "adaptive-v2.policy.json",
     "adaptive-v2.review.json",
     "adaptive-v2-policy.schema.json",
+    "adaptive-switch.py",
+    "adaptive_switch.py",
     "adaptive_v2.py",
     "career-shadow.schema.json",
     "source-projection.json",
@@ -105,10 +107,40 @@ def rollback(target: Path, backup_root: Path, snapshot: str, *, apply: bool, yes
     return {"status": "PASS", "operation": "rollback", "snapshot": snapshot, "activation": "unchanged"}
 
 
+def uninstall(target: Path, backup_root: Path, *, apply: bool, yes: bool) -> dict:
+    target, backup_root = _safe(target), _safe(backup_root)
+    if not apply:
+        return {"status": "DRY-RUN", "operation": "uninstall", "activation": "unchanged", "files": list(MANAGED_FILES)}
+    if not yes:
+        return {"status": "BLOCKED", "operation": "uninstall", "reason": "CONFIRMATION_REQUIRED"}
+    snapshot = _snapshot_id(target)
+    snapshot_root = backup_root / snapshot
+    if snapshot_root.exists():
+        raise ValueError("snapshot identity already exists")
+    (snapshot_root / "files").mkdir(parents=True)
+    prior = {}
+    for relative in MANAGED_FILES:
+        source = target / PurePosixPath(relative)
+        prior[relative] = source.is_file()
+        if source.is_file():
+            backup = snapshot_root / "files" / PurePosixPath(relative)
+            backup.parent.mkdir(parents=True, exist_ok=True)
+            shutil.copyfile(source, backup)
+    (snapshot_root / "snapshot.json").write_text(
+        json.dumps({"schema": "lapart.adaptive-v2-snapshot.v1", "snapshot": snapshot, "prior": prior}, indent=2) + "\n",
+        encoding="utf-8",
+    )
+    for relative in MANAGED_FILES:
+        destination = target / PurePosixPath(relative)
+        if destination.is_file():
+            destination.unlink()
+    return {"status": "PASS", "operation": "uninstall", "snapshot": snapshot, "activation": "unchanged"}
+
+
 def main() -> int:
     parser = argparse.ArgumentParser()
     sub = parser.add_subparsers(dest="command", required=True)
-    for name in ("stage", "rollback"):
+    for name in ("stage", "rollback", "uninstall"):
         command = sub.add_parser(name)
         command.add_argument("--target", type=Path, required=True)
         command.add_argument("--backup-root", type=Path, required=True)
@@ -120,8 +152,10 @@ def main() -> int:
     try:
         if args.command == "stage":
             result = stage(args.target, args.backup_root, apply=args.apply, yes=args.yes)
-        else:
+        elif args.command == "rollback":
             result = rollback(args.target, args.backup_root, args.snapshot, apply=args.apply, yes=args.yes)
+        else:
+            result = uninstall(args.target, args.backup_root, apply=args.apply, yes=args.yes)
     except (OSError, ValueError, json.JSONDecodeError) as exc:
         result = {"status": "FAIL", "operation": args.command, "reason": type(exc).__name__}
     print(json.dumps(result, sort_keys=True))

@@ -2,10 +2,12 @@
 
 ### Simple switches
 
-`adaptive_switch.py` is the portable state owner; `adaptive-switch.py`
-demonstrates the global/per-harness grammar. It cannot activate by itself.
-Recipients bind authority and consumers locally, so fresh installs stay
-inactive and no keys, routes, usernames, receipts, or process IDs are exported.
+`adaptive_switch.py` is the portable transaction coordinator;
+`adaptive-switch.py` is an operational global/per-harness CLI once a recipient
+supplies its local adapter module. Without both `--state-root` and
+`--adapter-module`, it returns `ADAPTER_REQUIRED` with a nonzero exit code and
+makes zero changes. Fresh installs stay inactive, and no keys, routes,
+usernames, receipts, or process IDs are exported.
 
 **What it is:** an optional, provider-free package with two compatible tracks:
 the unchanged v1 profile for exactly two independent read-only child tasks, and
@@ -34,6 +36,34 @@ python manage-adaptive-v2.py stage --target <recipient-module> --backup-root <re
 The command backs up prior module bytes and reports a snapshot ID. It copies an
 inactive policy and disabled capability-port template. It does not create or
 modify a recipient activation record.
+
+## Bind and operate the switches
+
+The recipient adapter module exports a nonempty `HARNESS_REGISTRY` tuple and
+`build_adapters(state_root)`. Each returned adapter must implement:
+
+- `prepare(transaction_id, desired_state)` -> `{"state": "PREPARED"}`
+- `commit(transaction_id)` -> `{"state": "COMMITTED"}`
+- `rollback(transaction_id)` -> `{"state": "ROLLED_BACK"}`
+- `finalize(transaction_id)` -> `{"state": "FINALIZED"}`
+- `verify()` -> `{"state": "ACTIVE"}` or `{"state": "INACTIVE"}`
+
+`refresh()` -> `{"state": "REFRESHED"}` is additionally required for the
+`refresh` command. Adapter rollback must be idempotent and restore the
+pre-transaction runtime state even if prepare or commit only partly completed.
+
+```text
+python adaptive-switch.py --state-root <recipient-data>/adaptive-switch --adapter-module <recipient-adapter.py> on --global
+python adaptive-switch.py --state-root <recipient-data>/adaptive-switch --adapter-module <recipient-adapter.py> off --harness codex
+python adaptive-switch.py --state-root <recipient-data>/adaptive-switch --adapter-module <recipient-adapter.py> status
+```
+
+Activation and deactivation use the same prepare/commit/verify/paper-state
+transaction. A failed operation reports `FAILED_ROLLED_BACK` only when every
+adapter and the exact prior paper-state bytes were independently verified as
+restored. Otherwise it reports `ROLLBACK_INCOMPLETE`, exits nonzero, and leaves
+the mismatch visible as `INVALID`. `FINALIZE_INCOMPLETE` means the requested
+state is active and verified but adapter transaction cleanup needs attention.
 
 ## Test it
 
@@ -66,6 +96,14 @@ python manage-adaptive-v2.py rollback --target <recipient-module> --backup-root 
 python manage-adaptive-v2.py rollback --target <recipient-module> --backup-root <recipient-data>/adaptive-backups --snapshot <snapshot-id> --apply --yes
 ```
 
+To remove only the managed module files while preserving recipient-local files,
+preview and confirm `uninstall`. It creates a rollback snapshot first:
+
+```text
+python manage-adaptive-v2.py uninstall --target <recipient-module> --backup-root <recipient-data>/adaptive-backups
+python manage-adaptive-v2.py uninstall --target <recipient-module> --backup-root <recipient-data>/adaptive-backups --apply --yes
+```
+
 ## Safety boundary
 
 - V1 still requires exactly two independent read-only child packets.
@@ -91,5 +129,7 @@ python manage-adaptive-v2.py rollback --target <recipient-module> --backup-root 
 - Only the parent may synthesize and verify a result.
 - Orca may bind or observe an existing job, including `worker-show`; it cannot
   launch, command, approve, review, complete, or poll.
-- Rollback restores module bytes, keeps evidence, and admits no new work by
-  itself.
+- Transaction rollback covers recipient runtime adapters and exact paper-state
+  bytes; an unverified restoration is never labeled successful.
+- Installer rollback restores managed module bytes, keeps evidence, and admits
+  no new work by itself.
