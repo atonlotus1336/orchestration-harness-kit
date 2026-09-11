@@ -53,7 +53,7 @@
     "__WINDOWS_WORKSPACE__",
     "__WSL_WORKSPACE__"
   ],
-  "file_count": 336,
+  "file_count": 373,
   "files": [
     {
       "path": "autoexperiment/ablation.ps1",
@@ -214,6 +214,21 @@
       "path": "hermes-agent-self-evolution/comfyui_bridge/TELEGRAM_COMMANDS.md",
       "sha256": "d244f9b0c44d4aacd18e216c1bf3152ea8f52d9bcafb9b99eea474e541fe3945",
       "bytes": 2749
+    },
+    {
+      "path": "hermes-agent-self-evolution/config/adaptive-parallel-policy.json",
+      "sha256": "8b8fb84138d8e4588e4e264755c827476d4cca1e2b202323e8e09582151fc57c",
+      "bytes": 1346
+    },
+    {
+      "path": "hermes-agent-self-evolution/config/adaptive-review-runtime.json",
+      "sha256": "f801ba5f72565a3fb5d4de1388973610fe7cbc260fce388f35da0b3bb680c5c7",
+      "bytes": 1281
+    },
+    {
+      "path": "hermes-agent-self-evolution/config/adaptive-reviewer-catalog.json",
+      "sha256": "dbd98174fc6bb55bc222022183ec4d555dd9ff26547719415c3110835ad72431",
+      "bytes": 13736
     },
     {
       "path": "hermes-agent-self-evolution/config/connectivity-authority.json",
@@ -406,6 +421,11 @@
       "bytes": 3790
     },
     {
+      "path": "hermes-agent-self-evolution/docs/ADAPTIVE-PARALLELISM.md",
+      "sha256": "c30de5a477ed8ef3788119448b320ee1333a9e2533d55d443bb92031b9d5aaaf",
+      "bytes": 3434
+    },
+    {
       "path": "hermes-agent-self-evolution/docs/OMP-PRIME-CODING-RUNBOOK.md",
       "sha256": "53cdacdd7cefbeb401e5aa57adcf02af83539394532c1ccec2fee0236353c27d",
       "bytes": 3956
@@ -541,14 +561,154 @@
       "bytes": 10576
     },
     {
+      "path": "hermes-agent-self-evolution/prime_bridge/adaptive_parallel_activation.py",
+      "sha256": "a0cf81c9cd5a70724fd59d5dbd11d7333f159f9561ac8734a55d0503377ea67e",
+      "bytes": 27216
+    },
+    {
+      "path": "hermes-agent-self-evolution/prime_bridge/adaptive_parallel_paths.py",
+      "sha256": "7efda6648a43a9b5952ee4917505d24a2c8c977bd5d29d79d08099424ae55842",
+      "bytes": 1418
+    },
+    {
+      "path": "hermes-agent-self-evolution/prime_bridge/adaptive_review/adapters.py",
+      "sha256": "4fcbba9e59e3f9e6201aadd5799d0ee7e36beb1cf1e7859c318c0b12e1a3b61a",
+      "bytes": 5784
+    },
+    {
       "path": "hermes-agent-self-evolution/prime_bridge/adaptive_review/budget_approval.py",
       "sha256": "677606fd699952b9beff33d0c81b0c377e883a616eabb064d184e0b3254aff46",
       "bytes": 5227
     },
     {
+      "path": "hermes-agent-self-evolution/prime_bridge/adaptive_review/budget_exception.py",
+      "sha256": "b2e20fd24236b592b52b30b110d7eea371b9dd6c624d2f1db14e4ba3a6902558",
+      "bytes": 9232
+    },
+    {
+      "path": "hermes-agent-self-evolution/prime_bridge/adaptive_review/careers.py",
+      "sha256": "5f0b61bed38013d66d7f46ed36ff47f8063cef8c9f1c66a111f46e529ea5ac77",
+      "bytes": 11490
+    },
+    {
+      "path": "hermes-agent-self-evolution/prime_bridge/adaptive_review/catalog.py",
+      "sha256": "ceac6d493c4ad0d89a9f5e47f5f25370247737b58b020818c60bdc3768474c9a",
+      "bytes": 19954
+    },
+    {
+      "path": "hermes-agent-self-evolution/prime_bridge/adaptive_review/cli.py",
+      "sha256": "2afea2bdebb94c13abeb081351f5b207d5cd64bd4abb86350580016ea0debcfe",
+      "bytes": 18436
+    },
+    {
+      "path": "hermes-agent-self-evolution/prime_bridge/adaptive_review/context.py",
+      "sha256": "0096bcef68d77af155b65112f91fe57481756376de9b6450280a49e5899a3823",
+      "bytes": 19101
+    },
+    {
+      "path": "hermes-agent-self-evolution/prime_bridge/adaptive_review/controller.py",
+      "sha256": "f0acb1fc57fe3a15ea1042c197d4962d3819e8590e98d5205e9f409e8d6137b7",
+      "bytes": 49450
+    },
+    {
+      "path": "hermes-agent-self-evolution/prime_bridge/adaptive_review/event_hooks.py",
+      "sha256": "8b93d25b0e1280cba4a0e7483a6348d28ba0fac1c4efe5a1a0b7ef0c17f51de2",
+      "bytes": 11682
+    },
+    {
+      "path": "hermes-agent-self-evolution/prime_bridge/adaptive_review/facts.py",
+      "sha256": "2d1df4fbb96ea74fccb56c92269cb862b956d831260a627def6d354539b4860b",
+      "bytes": 1442
+    },
+    {
+      "path": "hermes-agent-self-evolution/prime_bridge/adaptive_review/gsd_adapter.py",
+      "sha256": "49c5e3490e033a9962cb7a6ee5a53f3019594983d47dc474bd5b2a6dee05b8fc",
+      "bytes": 3500
+    },
+    {
       "path": "hermes-agent-self-evolution/prime_bridge/adaptive_review/host.py",
       "sha256": "d5ed358552d76e424eca2669b238277422e50afe250bf7ec4bb098eb6aab4b20",
       "bytes": 13796
+    },
+    {
+      "path": "hermes-agent-self-evolution/prime_bridge/adaptive_review/identity.py",
+      "sha256": "fbf9286b5f3e5fc85ad8e2c80ec72530b8923e1ffb18c7dc0d2708adbb48e200",
+      "bytes": 4756
+    },
+    {
+      "path": "hermes-agent-self-evolution/prime_bridge/adaptive_review/models.py",
+      "sha256": "82e8a0c3f4fbcdf0181898bacb8ab235af00925b08ffdcf332311bc20c52ffb2",
+      "bytes": 878
+    },
+    {
+      "path": "hermes-agent-self-evolution/prime_bridge/adaptive_review/notifications.py",
+      "sha256": "5f430d0d801ba8b844689276fb155cd6865966ea4c06c8a6d77343862c771f1a",
+      "bytes": 2408
+    },
+    {
+      "path": "hermes-agent-self-evolution/prime_bridge/adaptive_review/packets.py",
+      "sha256": "ad653268a24a98d8c307cec9d22cc133c16c1b120626367ba1f20de44faaabea",
+      "bytes": 2595
+    },
+    {
+      "path": "hermes-agent-self-evolution/prime_bridge/adaptive_review/parallel_feedback.py",
+      "sha256": "181b3d1ed17cbf2bc8648cf3f484334d7a500b7ff75bf27e1c6a513ef5fd81fe",
+      "bytes": 652
+    },
+    {
+      "path": "hermes-agent-self-evolution/prime_bridge/adaptive_review/policy.py",
+      "sha256": "02076d8118a02e3ad9f90b723980610efd02d4357971c8a0876cd277b77edf98",
+      "bytes": 6892
+    },
+    {
+      "path": "hermes-agent-self-evolution/prime_bridge/adaptive_review/prompts.py",
+      "sha256": "5d063c240a7e63a3509ea34c8d310164b81cf8abe907b49452bd283a75e02782",
+      "bytes": 8525
+    },
+    {
+      "path": "hermes-agent-self-evolution/prime_bridge/adaptive_review/proofs.py",
+      "sha256": "c3dbefae3c4de90ecf0c37027bd902500f55337b2e0941f70658c44ff2674fa5",
+      "bytes": 5998
+    },
+    {
+      "path": "hermes-agent-self-evolution/prime_bridge/adaptive_review/receipts.py",
+      "sha256": "d380291f8cf3fdeb321c1afced2d1780c104daa2b16343ae63ce3786f43f48b3",
+      "bytes": 9981
+    },
+    {
+      "path": "hermes-agent-self-evolution/prime_bridge/adaptive_review/reconcile.py",
+      "sha256": "ac284bda06cc5e2673e632196321927db0ccb854b5a4325739ed65faf1319290",
+      "bytes": 2271
+    },
+    {
+      "path": "hermes-agent-self-evolution/prime_bridge/adaptive_review/review_scheduler.py",
+      "sha256": "206a526e27453444994af5c88a1ecee3a958150e5d4ad692f3b17c67a7f6e06e",
+      "bytes": 5697
+    },
+    {
+      "path": "hermes-agent-self-evolution/prime_bridge/adaptive_review/router.py",
+      "sha256": "82ac1df913848c9cc5c8aaf66325b3651e84afba5d6ec585545f6c73426fcd96",
+      "bytes": 7591
+    },
+    {
+      "path": "hermes-agent-self-evolution/prime_bridge/adaptive_review/runner.py",
+      "sha256": "eefee09cc1c0ab1c871872d0e9af75ec624a6128962d3891b91e5fe0a437f806",
+      "bytes": 22207
+    },
+    {
+      "path": "hermes-agent-self-evolution/prime_bridge/adaptive_review/s4_dispatch.py",
+      "sha256": "8ebbcd58d42a91649dd4b13e436dd3f65924f130f18c5d28eda59d92c99e7b3b",
+      "bytes": 8872
+    },
+    {
+      "path": "hermes-agent-self-evolution/prime_bridge/adaptive_review/s4_scenarios.py",
+      "sha256": "2865e0dfaa89ccd282711c2c065c10d0b0cc1bc39cec81dcb2d46f5bb5d1d564",
+      "bytes": 6753
+    },
+    {
+      "path": "hermes-agent-self-evolution/prime_bridge/adaptive_review/transport.py",
+      "sha256": "b2f79404f83d6360dcf547ce47fba6fd653c2fca2340c85247aeb60f288deb69",
+      "bytes": 12661
     },
     {
       "path": "hermes-agent-self-evolution/prime_bridge/admission.py",
@@ -742,8 +902,8 @@
     },
     {
       "path": "hermes-agent-self-evolution/prime_bridge/mcp_server.py",
-      "sha256": "32eadf8a6b8ba79f9d5e4233b96d7e7e981b33740544d95c0718949f369ff99a",
-      "bytes": 110562
+      "sha256": "452c94acc640f2c284cbd51a3c5486e3b6e90164241a37c241a22121b90c51ca",
+      "bytes": 141868
     },
     {
       "path": "hermes-agent-self-evolution/prime_bridge/model_route.py",
@@ -921,6 +1081,11 @@
       "bytes": 1256
     },
     {
+      "path": "hermes-agent-self-evolution/schemas/adaptive-parallel-policy.schema.json",
+      "sha256": "f5a5b84cff57962f0db139a235df4cde0c66f91d3919c8cdb8851b2e3e4c02ac",
+      "bytes": 3138
+    },
+    {
       "path": "hermes-agent-self-evolution/scripts/acquire-prime-agent-source.sh",
       "sha256": "8fcb759529b62b01f0e14bb16afbf85f31e810dd39036c9665fd5f33125f039e",
       "bytes": 3840
@@ -1017,8 +1182,8 @@
     },
     {
       "path": "hermes-agent-self-evolution/scripts/launch-prime-mcp.sh",
-      "sha256": "9d4ae4b87d6ca10394aa53a58b2888e052993d460aa0dde20383e78c3615b962",
-      "bytes": 296
+      "sha256": "76a7019e4ea22da9f35124c01caafb584018d37e117c76678dafbc61cc050a4c",
+      "bytes": 1618
     },
     {
       "path": "hermes-agent-self-evolution/scripts/maintenance/register-weekly-maintenance.ps1",
@@ -1221,6 +1386,21 @@
       "bytes": 779
     },
     {
+      "path": "hermes-agent-self-evolution/tests/integration/test_adaptive_parallel_activation.py",
+      "sha256": "3c4e1b1466394b7825e09f9f674e16cf4d7419811cdbcf21dcc3dfc394f00995",
+      "bytes": 13269
+    },
+    {
+      "path": "hermes-agent-self-evolution/tests/integration/test_adaptive_parallel_paths.py",
+      "sha256": "b6a7c0eaf6279e38ea541b9ec43e6006768b47d128671536f38e2e5581694566",
+      "bytes": 3620
+    },
+    {
+      "path": "hermes-agent-self-evolution/tests/integration/test_adaptive_parallel_routing.py",
+      "sha256": "4e9c8524803be336b7b424d3229a55612e36197fbf86c2640284955aaf7955fb",
+      "bytes": 23499
+    },
+    {
       "path": "hermes-agent-self-evolution/tests/integration/test_maintenance_ledger.py",
       "sha256": "0bf0548fbedb6a7b0ac8e61864bdb85b9999b2510b05fb081e348296a7ddd4b0",
       "bytes": 758
@@ -1334,6 +1514,11 @@
       "path": "hermes-agent-self-evolution/tests/integration/test_prime_learning_mcp.py",
       "sha256": "7332e3f3dfaaace6fc8d43fc6259dc4faa86886f4a84ae93e4a2b8b384474c3c",
       "bytes": 4833
+    },
+    {
+      "path": "hermes-agent-self-evolution/tests/integration/test_prime_mcp_launcher.py",
+      "sha256": "45a6b928c123bf0525a9bcf31cb05cff2c69bcd3d65afc61ba7403f1d764dfdf",
+      "bytes": 2946
     },
     {
       "path": "hermes-agent-self-evolution/tests/integration/test_prime_mcp_server.py",
@@ -1734,6 +1919,58 @@
       "path": "workspace-support/SURFACE-GRAPH.yaml",
       "sha256": "a46d51f3edc3b303d15542a2a733ce32fdf3a96c4a62fb454ceb1c8e737559cc",
       "bytes": 197318
+    }
+  ],
+  "targeted_exports": [
+    {
+      "captured_at_utc": "2026-09-11T06:56:39.854671+00:00",
+      "source_hermes_git_head": "944c36472e14a3527fe8e7d68f50b2a9ea3d48fc",
+      "source_worktree_dirty": true,
+      "sanitizer_rule_count": 10,
+      "paths": [
+        "hermes-agent-self-evolution/config/adaptive-parallel-policy.json",
+        "hermes-agent-self-evolution/config/adaptive-review-runtime.json",
+        "hermes-agent-self-evolution/config/adaptive-reviewer-catalog.json",
+        "hermes-agent-self-evolution/docs/ADAPTIVE-PARALLELISM.md",
+        "hermes-agent-self-evolution/prime_bridge/adaptive_parallel_paths.py",
+        "hermes-agent-self-evolution/prime_bridge/adaptive_parallel_activation.py",
+        "hermes-agent-self-evolution/prime_bridge/mcp_server.py",
+        "hermes-agent-self-evolution/schemas/adaptive-parallel-policy.schema.json",
+        "hermes-agent-self-evolution/scripts/launch-prime-mcp.sh",
+        "hermes-agent-self-evolution/tests/integration/test_adaptive_parallel_paths.py",
+        "hermes-agent-self-evolution/tests/integration/test_adaptive_parallel_activation.py",
+        "hermes-agent-self-evolution/tests/integration/test_adaptive_parallel_routing.py",
+        "hermes-agent-self-evolution/tests/integration/test_prime_mcp_launcher.py",
+        "hermes-agent-self-evolution/prime_bridge/adaptive_review/adapters.py",
+        "hermes-agent-self-evolution/prime_bridge/adaptive_review/budget_approval.py",
+        "hermes-agent-self-evolution/prime_bridge/adaptive_review/budget_exception.py",
+        "hermes-agent-self-evolution/prime_bridge/adaptive_review/careers.py",
+        "hermes-agent-self-evolution/prime_bridge/adaptive_review/catalog.py",
+        "hermes-agent-self-evolution/prime_bridge/adaptive_review/cli.py",
+        "hermes-agent-self-evolution/prime_bridge/adaptive_review/context.py",
+        "hermes-agent-self-evolution/prime_bridge/adaptive_review/controller.py",
+        "hermes-agent-self-evolution/prime_bridge/adaptive_review/event_hooks.py",
+        "hermes-agent-self-evolution/prime_bridge/adaptive_review/facts.py",
+        "hermes-agent-self-evolution/prime_bridge/adaptive_review/gsd_adapter.py",
+        "hermes-agent-self-evolution/prime_bridge/adaptive_review/host.py",
+        "hermes-agent-self-evolution/prime_bridge/adaptive_review/identity.py",
+        "hermes-agent-self-evolution/prime_bridge/adaptive_review/models.py",
+        "hermes-agent-self-evolution/prime_bridge/adaptive_review/notifications.py",
+        "hermes-agent-self-evolution/prime_bridge/adaptive_review/packets.py",
+        "hermes-agent-self-evolution/prime_bridge/adaptive_review/parallel_feedback.py",
+        "hermes-agent-self-evolution/prime_bridge/adaptive_review/policy.py",
+        "hermes-agent-self-evolution/prime_bridge/adaptive_review/prompts.py",
+        "hermes-agent-self-evolution/prime_bridge/adaptive_review/proofs.py",
+        "hermes-agent-self-evolution/prime_bridge/adaptive_review/receipts.py",
+        "hermes-agent-self-evolution/prime_bridge/adaptive_review/reconcile.py",
+        "hermes-agent-self-evolution/prime_bridge/adaptive_review/review_scheduler.py",
+        "hermes-agent-self-evolution/prime_bridge/adaptive_review/router.py",
+        "hermes-agent-self-evolution/prime_bridge/adaptive_review/runner.py",
+        "hermes-agent-self-evolution/prime_bridge/adaptive_review/s4_dispatch.py",
+        "hermes-agent-self-evolution/prime_bridge/adaptive_review/s4_scenarios.py",
+        "hermes-agent-self-evolution/prime_bridge/adaptive_review/transport.py"
+      ],
+      "purpose": "Bounded adaptive activation export; runtime state and credentials excluded."
     }
   ]
 }

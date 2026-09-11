@@ -1,0 +1,62 @@
+{
+  "schema_version": "1.0",
+  "max_deliveries": 2,
+  "provider": {
+    "endpoint": "http://127.0.0.1:11434/v1/chat/completions",
+    "model": "deepseek-v4-flash:cloud",
+    "reasoning_effort": "low"
+  },
+  "harness_modes": {
+    "codex": "enforced",
+    "claude-code": "shadow",
+    "hermes": "enforced",
+    "moa": "enforced",
+    "cursor": "enforced",
+    "dsh": "enforced",
+    "opencode": "enforced",
+    "pi": "enforced",
+    "antigravity": "shadow"
+  },
+  "approved_workspaces": [
+    "__WSL_WORKSPACE__",
+    "__WINDOWS_WORKSPACE__"
+  ],
+  "checks": {},
+  "required_environment": {
+    "hermes": {
+      "HERMES_HOME": "/home/jonvilario/.hermes/profiles/workspace"
+    },
+    "moa": {
+      "HERMES_HOME": "/home/jonvilario/.hermes/profiles/workspace"
+    },
+    "pi": {
+      "OS": "Windows_NT"
+    },
+    "dsh": {
+      "OS": "Windows_NT"
+    },
+    "opencode": {
+      "OS": "Windows_NT",
+      "LAPART_OPENCODE_COMPLETION_OWNER": "1"
+    },
+    "codex": {
+      "OS": "Windows_NT"
+    },
+    "cursor": {
+      "OS": "Windows_NT",
+      "LAPART_CURSOR_COMPLETION_OWNER": "1"
+    }
+  },
+  "automatic_s4": {
+    "enabled_harnesses": [
+      "hermes",
+      "moa",
+      "pi",
+      "dsh",
+      "opencode",
+      "codex",
+      "cursor"
+    ],
+    "goal_states": {}
+  }
+}

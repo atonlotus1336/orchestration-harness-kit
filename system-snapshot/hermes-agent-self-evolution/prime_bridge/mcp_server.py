@@ -3,10 +3,14 @@
 from __future__ import annotations
 
 import asyncio
+import base64
 import hashlib
+import hmac
 import importlib
 import json
+import os
 import re
+import sys
 import uuid
 from datetime import datetime, timezone
 from pathlib import Path
@@ -543,6 +547,11 @@ class PrimeToolService:
         resource_provider: Any = system_resource_snapshot,
         recovery_executor: Any | None = None,
         governed_session_bridge: GovernedSessionBridge | None = None,
+        adaptive_policy_path: Path | None = None,
+        adaptive_qualification_path: Path | None = None,
+        adaptive_feedback_root: Path | None = None,
+        adaptive_authority_key: bytes | str | None = None,
+        adaptive_host_capacity: int | None = None,
     ):
         self.profile = profile
         self.mode = mode
@@ -582,6 +591,28 @@ class PrimeToolService:
         self.worker_factory = worker_factory
         self.recovery_executor = recovery_executor
         self.governed_session_bridge = governed_session_bridge or GovernedSessionBridge.from_environment()
+        from prime_bridge import adaptive_parallel_paths as state_paths
+        self.adaptive_policy_path = state_paths.policy_path(adaptive_policy_path)
+        self.adaptive_qualification_path = state_paths.qualification_path(adaptive_qualification_path)
+        self.adaptive_feedback_root = Path(
+            adaptive_feedback_root
+            or os.environ.get("LAPART_REVIEW_STATE", Path.home() / ".lapart/adaptive-review")
+        ) / "adaptive-feedback"
+        raw_adaptive_key = adaptive_authority_key
+        if raw_adaptive_key is None:
+            raw_adaptive_key = os.environ.get("LAPART_QUALIFICATION_HMAC_KEY")
+        self.adaptive_authority_key = (
+            raw_adaptive_key.encode("utf-8")
+            if isinstance(raw_adaptive_key, str) else raw_adaptive_key
+        )
+        if adaptive_host_capacity is not None and (
+            type(adaptive_host_capacity) is not int or adaptive_host_capacity < 1
+        ):
+            raise PrimeToolError("adaptive_host_capacity must be a positive integer")
+        self.adaptive_host_capacity = adaptive_host_capacity
+        self._last_adaptive_preparation: dict[str, Any] = {
+            "status": "NOT_EVALUATED", "reason": "ADAPTIVE_POLICY_NOT_EVALUATED",
+        }
         self._governed_sessions: dict[str, Any] = {}
         self._governed_defer_finalize: set[str] = set()
         self.session_control = PrimeSessionControl(
@@ -593,6 +624,209 @@ class PrimeToolService:
         """Expose the current profile-resolved public route to host instrumentation."""
         route, _config = _profile_route(self.profile, self.profile_config)
         return route
+
+    @staticmethod
+    def _adaptive_runtime():
+        """Load the installed scheduler implementation, never a caller projection."""
+        source = ROOT.parent / "governed-executor-runtime/src"
+        source_text = str(source.resolve())
+        if source_text not in sys.path:
+            sys.path.insert(0, source_text)
+        module = importlib.import_module("lapart_executor.adaptive_parallel")
+        return (
+            module.AdaptiveParallelPolicy,
+            module.AdaptiveAdmissionFacts,
+            module.decide_admission,
+        )
+
+    def _trusted_execution_qualification(
+        self, *, policy: Any, harness: str, workload_class: str,
+        model_route_sha256: str, now: datetime,
+    ) -> dict[str, Any] | None:
+        """Resolve the active grant to one current, signed, host-owned record."""
+        grant = policy.grants["execution_parallelism"]
+        reference = grant.qualification_reference
+        if (
+            not grant.enabled
+            or not isinstance(reference, str)
+            or re.fullmatch(r"[0-9a-f]{64}", reference) is None
+            or not self.adaptive_qualification_path.is_file()
+            or not self.adaptive_authority_key
+        ):
+            return None
+        try:
+            store = json.loads(self.adaptive_qualification_path.read_text(encoding="utf-8"))
+            if (
+                set(store) != {"schema_version", "records", "current"}
+                or store["schema_version"] != "2.1"
+                or not isinstance(store["records"], dict)
+                or not isinstance(store["current"], dict)
+                or reference not in store["current"].values()
+            ):
+                return None
+            record = store["records"].get(reference)
+            if not isinstance(record, dict):
+                return None
+            digest = hashlib.sha256(json.dumps(
+                record, sort_keys=True, separators=(",", ":"),
+            ).encode()).hexdigest()
+            if digest != reference:
+                return None
+            from prime_bridge.adaptive_parallel_activation import (
+                _evidence_hmac_sha256,
+                source_binding,
+            )
+            evidence = {
+                key: value for key, value in record.items()
+                if key not in {"layer", "qualification_state", "source_binding", "qualified_at"}
+            }
+            signature = evidence.get("authority_hmac_sha256")
+            expected_signature = _evidence_hmac_sha256(
+                evidence, self.adaptive_authority_key,
+            )
+            expected_source = source_binding(self.adaptive_policy_path)
+            expires = datetime.fromisoformat(
+                str(record["expires_at"]).replace("Z", "+00:00")
+            )
+            expected_scope = {
+                "canary": ("candidate", "canary"),
+                "pilot_limited": ("canary_qualified", "canary"),
+                "pilot_wider": ("production_qualified", "limited"),
+                "production": ("production_qualified", "wider"),
+            }.get(policy.activation_state)
+            if (
+                not hmac.compare_digest(str(signature or ""), expected_signature)
+                or record.get("layer") != "execution_parallelism"
+                or record.get("qualification_state") != grant.state
+                or record.get("capability") != "isolated_coding"
+                or record.get("harness") != harness
+                or record.get("profile") != self.profile
+                or record.get("workload_class") != workload_class
+                or record.get("model_route_sha256") != model_route_sha256
+                or record.get("source_binding") != expected_source
+                or record.get("policy_sha256") != expected_source["policy_sha256"]
+                or expires.tzinfo is None
+                or now >= expires.astimezone(timezone.utc)
+                or expected_scope is None
+                or (record.get("qualification_state"), record.get("scope")) != expected_scope
+            ):
+                return None
+            return record
+        except (KeyError, OSError, TypeError, ValueError, json.JSONDecodeError):
+            return None
+
+    def _trusted_adaptive_feedback(self, policy_sha256: str) -> dict[str, Any]:
+        """Read optional signed scheduler feedback; absence stays conservative."""
+        default = {
+            "verified_streak": 0, "adverse_streak": 0, "reviewer_reserve": 1,
+            "cooldown_until": None, "trusted_feedback_sha256": None,
+        }
+        path = self.adaptive_feedback_root / "execution.json"
+        if not path.is_file() or not self.adaptive_authority_key:
+            return default
+        try:
+            value = json.loads(path.read_text(encoding="utf-8"))
+            fields = {
+                "schema_version", "layer", "source_policy_sha256",
+                "verified_streak", "adverse_streak", "reviewer_reserve",
+                "cooldown_until", "trusted_feedback_sha256", "authority_hmac_sha256",
+            }
+            if set(value) != fields or value.get("schema_version") != "2.0" or value.get("layer") != "execution":
+                return default
+            unsigned = {key: item for key, item in value.items() if key != "authority_hmac_sha256"}
+            expected = hmac.new(
+                self.adaptive_authority_key,
+                json.dumps(unsigned, sort_keys=True, separators=(",", ":")).encode(),
+                hashlib.sha256,
+            ).hexdigest()
+            if (
+                not hmac.compare_digest(str(value["authority_hmac_sha256"]), expected)
+                or value["source_policy_sha256"] != policy_sha256
+                or any(
+                    type(value[name]) is not int or value[name] < 0
+                    for name in ("verified_streak", "adverse_streak", "reviewer_reserve")
+                )
+                or value["reviewer_reserve"] < 1
+                or value["cooldown_until"] is not None
+                and datetime.fromisoformat(str(value["cooldown_until"]).replace("Z", "+00:00")).tzinfo is None
+                or value["trusted_feedback_sha256"] is not None
+                and re.fullmatch(r"[0-9a-f]{64}", str(value["trusted_feedback_sha256"])) is None
+            ):
+                return default
+            return {key: value[key] for key in default}
+        except (OSError, TypeError, ValueError, json.JSONDecodeError):
+            return default
+
+    def prepare_adaptive_coding_admission(
+        self, *, actual_lane: str, task: str, workspace: Path, project: str,
+        harness: str, declared_paths: list[str] | tuple[str, ...],
+        workload_class: str = "coding", now: datetime | None = None,
+    ) -> dict[str, Any] | None:
+        """Produce an admission solely from installed authority and host observations."""
+        self._last_adaptive_preparation = {
+            "status": "SERIAL", "reason": "ADAPTIVE_NOT_QUALIFIED",
+        }
+        if actual_lane not in ELIGIBLE_LANES or len(declared_paths) < 2:
+            self._last_adaptive_preparation["reason"] = "EXISTING_LANE_OR_ATOMIC_WORK_PRESERVED"
+            return None
+        current = (now or datetime.now(timezone.utc)).astimezone(timezone.utc)
+        try:
+            Policy, Facts, decide_admission = self._adaptive_runtime()
+            policy = Policy.load(self.adaptive_policy_path)
+            route = self.resolved_route()
+            qualification = self._trusted_execution_qualification(
+                policy=policy, harness=harness, workload_class=workload_class,
+                model_route_sha256=route["fingerprint"], now=current,
+            )
+            if qualification is None:
+                return None
+            active = self.ledger.list(nonterminal=True)
+            resource = self.admission_controller.assess(
+                {"profile": self.profile}, active, now=current,
+            )
+            configured_capacity = self.adaptive_host_capacity or max(
+                4, min(10, policy.execution.qualified_ceiling + 2),
+            )
+            host_capacity = configured_capacity if resource.get("status") == "ADMIT" else 0
+            feedback = self._trusted_adaptive_feedback(policy.canonical_sha256())
+            lineage = hashlib.sha256(json.dumps({
+                "harness": harness, "profile": self.profile, "project": project,
+                "route": route["fingerprint"], "workspace": str(Path(workspace).resolve()),
+                "task_sha256": hashlib.sha256(task.encode()).hexdigest(),
+            }, sort_keys=True, separators=(",", ":")).encode()).hexdigest()
+            facts = Facts.from_mapping({
+                "ready_count": len(declared_paths),
+                "running_count": len(active),
+                "host_capacity": host_capacity,
+                "parent_reserve": 1,
+                "reviewer_reserve": feedback["reviewer_reserve"],
+                "verified_streak": feedback["verified_streak"],
+                "adverse_streak": feedback["adverse_streak"],
+                "backlog_count": len(declared_paths),
+                "cooldown_until": feedback["cooldown_until"],
+                "trusted_feedback_sha256": feedback["trusted_feedback_sha256"],
+                "lineage_sha256": lineage,
+                "candidate_canary_authorized": qualification["qualification_state"] == "candidate",
+            })
+            decision = decide_admission(policy, facts, layer="execution", now=current)
+            decision_value = decision.to_dict()
+            if decision.admitted_count < 2:
+                self._last_adaptive_preparation = {
+                    "status": "SERIAL", "reason": "ADAPTIVE_PARALLEL_CAPACITY_UNAVAILABLE",
+                    "decision": decision_value,
+                }
+                return None
+            self._last_adaptive_preparation = {
+                "status": "READY", "reason": "TRUSTED_ADAPTIVE_ADMISSION",
+                "qualification_reference": policy.grants["execution_parallelism"].qualification_reference,
+                "decision": decision_value,
+            }
+            return decision_value
+        except Exception as exc:
+            self._last_adaptive_preparation = {
+                "status": "SERIAL", "reason": f"ADAPTIVE_AUTHORITY_UNAVAILABLE:{type(exc).__name__}",
+            }
+            return None
 
     def for_profile(self, profile: str) -> "PrimeToolService":
         """Create a request-scoped service that preserves the selected profile's authority."""
@@ -609,6 +843,11 @@ class PrimeToolService:
             worker_factory=self.worker_factory,
             recovery_executor=self.recovery_executor,
             governed_session_bridge=self.governed_session_bridge,
+            adaptive_policy_path=self.adaptive_policy_path,
+            adaptive_qualification_path=self.adaptive_qualification_path,
+            adaptive_feedback_root=self.adaptive_feedback_root.parent,
+            adaptive_authority_key=self.adaptive_authority_key,
+            adaptive_host_capacity=self.adaptive_host_capacity,
         )
 
     def _bootstrap_governed_session(self, record: dict[str, Any], prompt: str, actual_lane: str) -> dict[str, Any] | None:
@@ -943,6 +1182,399 @@ class PrimeToolService:
 
         task.add_done_callback(complete)
         return self.session_control.status(record["job_id"], session_id=session_id)
+
+    @staticmethod
+    def _adaptive_scoped_packet(
+        raw_packet: dict[str, Any], paths: tuple[str, ...],
+    ) -> dict[str, Any]:
+        value = {key: item for key, item in raw_packet.items() if key != "packet_hash"}
+        assertions = []
+        for assertion in value.get("semantic_assertions", []):
+            parts = assertion.split(":", 2) if isinstance(assertion, str) else []
+            if len(parts) == 3 and parts[1] in paths:
+                assertions.append(assertion)
+        value["allowed_paths"] = list(paths)
+        value["required_observations"] = [f"read:{path}" for path in paths]
+        value["semantic_assertions"] = assertions
+        value["dependencies"] = []
+        value["edit_class"] = "multi_file" if len(paths) > 1 else "exact_replace"
+        value["size_budget"] = {
+            **dict(value["size_budget"]), "max_files": len(paths),
+        }
+        if "change_contract" in value:
+            contract = dict(value["change_contract"])
+            contract["declared_paths"] = list(paths)
+            contract["semantic_assertions"] = assertions
+            value["change_contract"] = contract
+        packet = OmpTaskPacket.from_mapping(value)
+        return {**packet.canonical_data(), "packet_hash": packet.packet_hash}
+
+    def _adaptive_authority(self, record: dict[str, Any]) -> dict[str, Any]:
+        policy_digest = self.omp_service.omp_policy.fingerprint
+        allowed_child_tools = ("omp.worker.run",)
+        capability_digest = hashlib.sha256(json.dumps(
+            {"allowed_child_tools": allowed_child_tools, "profile": self.profile},
+            sort_keys=True, separators=(",", ":"),
+        ).encode()).hexdigest()
+        preset_digest = hashlib.sha256(json.dumps({
+            "preset": "coding", "policy_digest": policy_digest,
+            "profile": self.profile,
+            "route_fingerprint": record["route"]["fingerprint"],
+            "workspace": record["workspace"],
+        }, sort_keys=True, separators=(",", ":")).encode()).hexdigest()
+        return {
+            "policy_digest": policy_digest,
+            "capability_digest": capability_digest,
+            "preset_digest": preset_digest,
+            "allowed_child_tools": allowed_child_tools,
+        }
+
+    def _admit_adaptive_children(
+        self, *, handle: Any, record: dict[str, Any], units: list[dict[str, Any]],
+        admission: dict[str, Any], qualification_reference: str,
+    ) -> None:
+        controller = handle.service.child_providers
+        coordinator = controller.coordinator
+        required = ("record_parent_turn", "record_child_request", "admit_batch")
+        if not all(callable(getattr(coordinator, name, None)) for name in required):
+            return
+        authority = self._adaptive_authority(record)
+        if callable(getattr(controller, "set_activation", None)):
+            handle.service.append_session_event(
+                handle.session_id,
+                event_type="verification.recorded", actor="governed-kernel",
+                payload={
+                    "subject": "child-provider-seam-candidate", "status": "PASS",
+                    "source_receipt_digest": qualification_reference,
+                    "candidate_only": True,
+                },
+                event_id=f"child-provider-verification:{qualification_reference}",
+            )
+            controller.set_activation(
+                handle.session_id, preset_digest=authority["preset_digest"],
+                status="active", activation_id=f"adaptive-{record['job_id']}",
+                reason="signed adaptive execution qualification",
+                source_receipt_digest=qualification_reference,
+            )
+        scope = tuple(handle.service.session_header(handle.session_id)["scope"])
+        requests = []
+        for unit in units:
+            packet = unit["task_packet"]
+            requests.append({
+                "child_session_id": unit["child_session_id"],
+                "parent_session_id": handle.session_id,
+                "parent_run_id": handle.run_id,
+                "child_run_id": f"run-{unit['child_session_id']}",
+                "executor_kind": "read_only",
+                "allowed_tools": authority["allowed_child_tools"],
+                "goal_digest": packet["packet_hash"],
+                "lane": handle.actual_lane,
+                "model_route_fingerprint": record["route"]["fingerprint"],
+                "policy_digest": authority["policy_digest"],
+                "capability_digest": authority["capability_digest"],
+                "preset_digest": authority["preset_digest"],
+                "workspace_scope": scope,
+                "reserved_budget": {"max_tool_calls": 5, "tokens": 120_000},
+                "depth": 1,
+                "expected_artifact": "isolated-coding-proposal-v1",
+                "reservation_class": "execution",
+                "batch_id": f"adaptive-{record['job_id']}",
+                "slot_count": 1,
+                "shared_slot_limit": admission["admitted_count"],
+                "reserved_slots": {"execution": admission["admitted_count"]},
+                "scheduler_state": admission,
+            })
+        turn = coordinator.record_parent_turn(
+            handle.session_id, native_turn_id=f"adaptive-{record['job_id']}",
+        )
+        causation = coordinator.record_child_request(
+            handle.session_id, parent_turn_event_id=turn["event_id"],
+            requests=tuple(requests),
+        )
+        for request in requests:
+            request["causation_event_id"] = causation["event_id"]
+        coordinator.admit_batch(tuple(requests))
+
+    def _adaptive_apply_proposal(
+        self, *, proposal: dict[str, Any], workspace: Path,
+        packet: OmpTaskPacket,
+    ) -> dict[str, Any]:
+        wrapper = proposal.get("patch")
+        if not isinstance(wrapper, dict) or set(wrapper) != {"omp_patch", "capability_receipt"}:
+            return {"status": "VERIFIED_FAILED", "reason": "ADAPTIVE_PATCH_SCHEMA_INVALID"}
+        snapshot = {}
+        for relative in proposal["changed_paths"]:
+            target = (workspace / relative).resolve()
+            snapshot[relative] = target.read_bytes() if target.is_file() else None
+        try:
+            result = verify_and_apply_patch(
+                patch=wrapper["omp_patch"], project_root=workspace,
+                capability_receipt=wrapper["capability_receipt"],
+                test_policy=self.omp_service.test_policy,
+                test_command_id=_host_verification_command(packet, self.omp_service.test_policy),
+                semantic_assertions=packet.semantic_assertions,
+                declared_paths=packet.allowed_paths,
+            )
+        except Exception as exc:
+            return {"status": "VERIFIED_FAILED", "reason": type(exc).__name__}
+        if result.get("status") == "VERIFIED_OK":
+            result = {**result, "rollback_token": snapshot}
+        return result
+
+    @staticmethod
+    def _adaptive_rollback(workspace: Path, token: Any) -> dict[str, Any]:
+        if not isinstance(token, dict):
+            return {"status": "FAILED", "reason": "ROLLBACK_TOKEN_INVALID"}
+        try:
+            root = workspace.resolve()
+            for relative, previous in token.items():
+                target = (root / relative).resolve()
+                if not target.is_relative_to(root):
+                    raise ValueError("rollback scope escaped")
+                if previous is None:
+                    target.unlink(missing_ok=True)
+                else:
+                    target.parent.mkdir(parents=True, exist_ok=True)
+                    target.write_bytes(previous)
+            return {"status": "ROLLED_BACK", "paths": sorted(token)}
+        except Exception as exc:
+            return {"status": "FAILED", "reason": type(exc).__name__}
+
+    def _adaptive_aggregate_verify(
+        self, *, workspace: Path, packet: OmpTaskPacket,
+        proposals: list[dict[str, Any]], qualification_reference: str,
+    ) -> dict[str, Any]:
+        paths = sorted({
+            path for proposal in proposals for path in proposal.get("changed_paths", [])
+        })
+        if not paths:
+            return {"status": "VERIFIED_FAILED", "reason": "NO_AGGREGATE_PATHS"}
+        manifest = []
+        source = {}
+        try:
+            root = workspace.resolve()
+            for relative in paths:
+                target = (root / relative).resolve()
+                if not target.is_relative_to(root) or not target.is_file():
+                    raise ValueError("aggregate path unavailable")
+                content = target.read_bytes()
+                before_hash = hashlib.sha256(content).hexdigest()
+                source[relative] = before_hash
+                manifest.append({
+                    "path": relative, "operation": "replace",
+                    "before_hash": before_hash,
+                    "after_bytes_b64": base64.b64encode(content).decode("ascii"),
+                    "after_hash": before_hash,
+                })
+            source_hash = hashlib.sha256(json.dumps(
+                source, sort_keys=True, separators=(",", ":"),
+            ).encode()).hexdigest()
+            noop_patch = {
+                "manifest": manifest,
+                "patch_hash": hashlib.sha256(json.dumps(
+                    manifest, sort_keys=True, separators=(",", ":"),
+                ).encode()).hexdigest(),
+                "source_hash": source_hash,
+                "final_tree_hash": source_hash,
+            }
+            result = verify_and_apply_patch(
+                patch=noop_patch, project_root=root,
+                capability_receipt=qualification_reference,
+                test_policy=self.omp_service.test_policy,
+                test_command_id=_host_verification_command(packet, self.omp_service.test_policy),
+                semantic_assertions=packet.semantic_assertions,
+                declared_paths=packet.allowed_paths,
+            )
+            return {**result, "aggregate": True, "proposal_count": len(proposals)}
+        except Exception as exc:
+            return {
+                "status": "VERIFIED_FAILED", "reason": type(exc).__name__,
+                "aggregate": True,
+            }
+
+    async def execute_adaptive_coding_plan(self, arguments: dict[str, Any]) -> dict[str, Any]:
+        """Run trusted parallel children while this service remains the sole writer."""
+        raw_packet = arguments.get("task_packet")
+        admission = arguments.get("adaptive_admission")
+        actual_lane = arguments.get("execution_lane")
+        if (
+            not isinstance(raw_packet, dict)
+            or not isinstance(admission, dict)
+            or actual_lane not in ELIGIBLE_LANES
+        ):
+            return {
+                "outcome": "fallback", "reason": "ADAPTIVE_INPUT_UNAVAILABLE",
+                "integration_authorized": False, "provider_calls": 0,
+                "proposal_count": 0,
+            }
+        try:
+            packet = OmpTaskPacket.from_mapping({
+                key: value for key, value in raw_packet.items() if key != "packet_hash"
+            })
+            if raw_packet.get("packet_hash") != packet.packet_hash:
+                raise OmpTaskPacketError("packet hash mismatch")
+            decided_at = datetime.fromisoformat(
+                str(admission["decided_at"]).replace("Z", "+00:00")
+            ).astimezone(timezone.utc)
+            trusted = self.prepare_adaptive_coding_admission(
+                actual_lane=actual_lane,
+                task=str(arguments.get("task") or ""),
+                workspace=Path(arguments["workspace"]),
+                project=str(arguments.get("project") or Path(arguments["workspace"]).name),
+                harness=str(arguments.get("harness") or ""),
+                declared_paths=list(packet.allowed_paths),
+                now=decided_at,
+            )
+            if (
+                trusted != admission
+                or admission.get("admitted_count", 0) < 2
+                or abs((datetime.now(timezone.utc) - decided_at).total_seconds()) > 60
+            ):
+                raise ValueError("untrusted or stale adaptive admission")
+        except (KeyError, TypeError, ValueError, OmpTaskPacketError):
+            return {
+                "outcome": "fallback", "reason": "ADAPTIVE_ADMISSION_UNTRUSTED",
+                "integration_authorized": False, "provider_calls": 0,
+                "proposal_count": 0,
+            }
+
+        task = str(arguments["task"])
+        workspace = Path(arguments["workspace"])
+        request = {
+            "prompt": arguments.get("prompt") or build_coding_prompt(
+                task, harness=str(arguments["harness"]),
+            ),
+            "workspace": str(workspace.resolve()),
+            "project": arguments.get("project"),
+            "session_id": arguments.get("session_id"),
+            "explicit_handoff": True,
+            "actual_lane": actual_lane,
+        }
+        record = None
+        try:
+            record, _supervisor = self._prepare_job(request)
+            self.ledger.transition(record["job_id"], "starting")
+            bootstrap = self._bootstrap_governed_session(
+                record, request["prompt"], actual_lane,
+            )
+            handle = self._governed_sessions.get(record["job_id"])
+            if (
+                not isinstance(bootstrap, dict)
+                or bootstrap.get("status") != "READY"
+                or handle is None
+            ):
+                self.ledger.transition(
+                    record["job_id"], "cancelled",
+                    last_error="adaptive governed session unavailable",
+                )
+                return {
+                    "outcome": "fallback",
+                    "reason": "ADAPTIVE_GOVERNED_SESSION_UNAVAILABLE",
+                    "parent": self.ledger.get(record["job_id"]),
+                    "integration_authorized": False,
+                    "provider_calls": 0, "proposal_count": 0,
+                }
+            self.ledger.transition(record["job_id"], "running")
+            handle.lifecycle("running", reason="adaptive child batch admitted")
+
+            count = int(admission["admitted_count"])
+            groups = [tuple(packet.allowed_paths[index::count]) for index in range(count)]
+            groups = [group for group in groups if group]
+            units = []
+            packet_by_child = {}
+            for index, group in enumerate(groups, start=1):
+                child_id = f"adaptive-{record['job_id'][:12]}-{index}"
+                scoped = self._adaptive_scoped_packet(raw_packet, group)
+                scoped_packet = OmpTaskPacket.from_mapping({
+                    key: value for key, value in scoped.items() if key != "packet_hash"
+                })
+                packet_by_child[child_id] = scoped_packet
+                units.append({
+                    "child_session_id": child_id,
+                    "provider_kind": "prime", "preset_id": "coding",
+                    "start_mode": "spawn",
+                    "operation_id": f"start-{record['job_id'][:12]}-{index}",
+                    "result_operation_id": f"result-{record['job_id'][:12]}-{index}",
+                    "allowed_paths": list(group), "task_packet": scoped,
+                })
+            qualification_reference = str(
+                self._last_adaptive_preparation["qualification_reference"]
+            )
+            self._admit_adaptive_children(
+                handle=handle, record=record, units=units,
+                admission=admission,
+                qualification_reference=qualification_reference,
+            )
+            batch = handle.execute_adaptive_coding_batch(
+                admission=admission, workspace=workspace, units=units,
+                apply_proposal=lambda proposal: self._adaptive_apply_proposal(
+                    proposal=proposal, workspace=workspace,
+                    packet=packet_by_child[proposal["child_session_id"]],
+                ),
+                rollback_proposal=lambda token: self._adaptive_rollback(workspace, token),
+                verify_aggregate=lambda proposals: self._adaptive_aggregate_verify(
+                    workspace=workspace, packet=packet,
+                    proposals=list(proposals),
+                    qualification_reference=qualification_reference,
+                ),
+            )
+            complete = (
+                batch.get("status") == "PASS"
+                and batch.get("integration_authorized") is True
+            )
+            self.ledger.transition(
+                record["job_id"], "completed" if complete else "failed",
+                **(
+                    {"result_summary": "adaptive parallel integration verified"}
+                    if complete else {"last_error": str(batch.get("reason"))}
+                ),
+            )
+            handle.lifecycle(
+                "completed" if complete else "failed",
+                reason=str(batch.get("reason") or "adaptive batch terminal"),
+            )
+            self._close_governed_session(record["job_id"])
+            return {
+                "outcome": "complete" if complete else (
+                    "fallback" if batch.get("status") == "FALLBACK" else "blocked"
+                ),
+                "reason": batch.get("reason"),
+                "parent": self.ledger.get(record["job_id"]),
+                "omp_children": [],
+                "integration_authorized": complete,
+                "host_apply": batch.get("aggregate_verification"),
+                "proposal_count": batch.get("proposal_count", 0),
+                "provider_calls": batch.get("provider_calls", 0),
+                "model_requests": batch.get("provider_calls", 0),
+                "provider_capabilities": batch.get("capabilities", []),
+                "integration_sequence": batch.get("integration_sequence", []),
+                "aggregate_verification": batch.get("aggregate_verification"),
+                "rollback": batch.get("rollback", []),
+                "rollback_complete": batch.get("rollback_complete"),
+            }
+        except Exception as exc:
+            if record is not None:
+                try:
+                    current = self.ledger.get(record["job_id"])
+                    if current["status"] == "created":
+                        self.ledger.transition(
+                            record["job_id"], "cancelled",
+                            last_error=type(exc).__name__,
+                        )
+                    elif current["status"] in {"starting", "running"}:
+                        self.ledger.transition(
+                            record["job_id"], "failed",
+                            last_error=type(exc).__name__,
+                        )
+                except Exception:
+                    pass
+                self._close_governed_session(record["job_id"])
+            return {
+                "outcome": "fallback",
+                "reason": f"ADAPTIVE_EXECUTION_UNAVAILABLE:{type(exc).__name__}",
+                "integration_authorized": False,
+                "provider_calls": 0, "proposal_count": 0,
+            }
 
     async def execute_coding_plan(self, arguments: dict[str, Any]) -> dict[str, Any]:
         """Canonical Prime-parent/OMP-child pipeline for every harness."""

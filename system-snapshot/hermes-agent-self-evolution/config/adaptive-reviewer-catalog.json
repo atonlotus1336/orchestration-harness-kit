@@ -1,0 +1,183 @@
+{
+  "schema_version": "2.0",
+  "reviewers": [
+    {
+      "reviewer_id": "ponytail-review",
+      "lens": "changed_scope_simplicity",
+      "triggers": ["change", "behavior", "simplicity", "maintenance_hotspot"],
+      "skill_path": "skills-shared/ponytail/skills/ponytail-review/SKILL.md",
+      "skill_sha256": "621a315926add6ceef427ca4ca3518d458eb1d58d6e44b88c253234a776932b9",
+      "overlaps": ["ponytail-audit"]
+    },
+    {
+      "reviewer_id": "evidence-integrity-audit",
+      "lens": "evidence_integrity",
+      "triggers": ["evidence", "tests", "gates", "receipts", "behavior_changed_with_incomplete_evidence"],
+      "skill_path": "skills-shared/evidence-integrity-audit/SKILL.md",
+      "skill_sha256": "fa909f24f719b613d4d7f39779709910f0c306064f439d2a048e344e02128857"
+    },
+    {
+      "reviewer_id": "improve-codebase-architecture",
+      "lens": "architecture",
+      "triggers": ["architecture", "multiple_subsystems", "public_interface", "migration", "persistence", "concurrency"],
+      "skill_path": "skills-shared/improve-codebase-architecture/SKILL.md",
+      "skill_sha256": "0927050bedf8a3d9dc2dd26391206a3ef7fd6ab36c1efb8aa2622c7c78d3afd6"
+    },
+    {
+      "reviewer_id": "ponytail-audit",
+      "lens": "system_simplicity",
+      "triggers": ["system"],
+      "skill_path": "skills-shared/ponytail/skills/ponytail-audit/SKILL.md",
+      "skill_sha256": "c97372c276bb76cd8f91477bacbd76c799551d5e540924ba1aa1a7ed4f764514",
+      "overlaps": ["ponytail-review"],
+      "requires_confirmation": true
+    },
+    {
+      "reviewer_id": "ponytail-debt",
+      "lens": "system_debt",
+      "triggers": ["system", "debt"],
+      "skill_path": "skills-shared/ponytail/skills/ponytail-debt/SKILL.md",
+      "skill_sha256": "a6d39233aab0ae80edf60942885664fe1f3a504cd686c0dace3287acc8c84921",
+      "requires_confirmation": true
+    },
+    {
+      "reviewer_id": "improve",
+      "lens": "system_improvement",
+      "triggers": ["system"],
+      "skill_path": "skills-shared/improve/SKILL.md",
+      "skill_sha256": "52f40440c27de246c6a36ac3f9d2cf8b51e66e64a3c0b157793984d9d716ba49",
+      "requires_confirmation": true
+    }
+  ],
+  "lens_matrix": {
+    "behavioral_correctness": {"evidence": ["behavioral oracle", "regression result"]},
+    "evidence_integrity": {"evidence": ["source-bound receipt", "replayed check"]},
+    "architecture_ownership": {"evidence": ["owner trace", "integration boundary"]},
+    "authority_security": {"evidence": ["authority trace", "negative capability case"]},
+    "lifecycle_recovery": {"evidence": ["restart replay", "liability reconciliation"]},
+    "interface_compatibility": {"evidence": ["contract corpus", "version migration"]},
+    "operability_rollback": {"evidence": ["operator status", "in-flight rollback"]},
+    "goal_memory_provenance": {"evidence": ["goal identity", "memory provenance"]},
+    "debt_improvement": {"evidence": ["bounded debt finding", "regression-safe improvement"]}
+  },
+  "reviewer_bindings": {
+    "ponytail-review": ["behavioral_correctness"],
+    "evidence-integrity-audit": ["evidence_integrity"],
+    "improve-codebase-architecture": ["architecture_ownership"],
+    "ponytail-audit": ["behavioral_correctness", "evidence_integrity"],
+    "ponytail-debt": ["debt_improvement"],
+    "improve": ["architecture_ownership"]
+  },
+  "desired_distinct_careers": {"S0": 0, "S1": 1, "S2": 2, "S3": 3, "S4": 4},
+  "method_tags": {
+    "structuralist": "invariants",
+    "phenomenologist": "experience",
+    "psychoanalyst": "incentives",
+    "chaos_mathematician": "dynamics",
+    "linguist": "semantics",
+    "game_theorist": "incentives",
+    "anthropologist": "observation",
+    "physicist": "constraints",
+    "engineer": "failure_analysis",
+    "evolutionary_biologist": "adaptation",
+    "mythologist": "precedent",
+    "economist": "allocation"
+  },
+  "compatibility": {
+    "behavioral_correctness": ["engineer", "game_theorist", "phenomenologist"],
+    "evidence_integrity": ["anthropologist", "physicist", "engineer"],
+    "architecture_ownership": ["structuralist", "engineer", "evolutionary_biologist"],
+    "authority_security": ["game_theorist", "engineer", "linguist"],
+    "lifecycle_recovery": ["engineer", "chaos_mathematician", "evolutionary_biologist"],
+    "interface_compatibility": ["linguist", "structuralist", "engineer"],
+    "operability_rollback": ["engineer", "anthropologist", "phenomenologist"],
+    "goal_memory_provenance": ["structuralist", "anthropologist", "mythologist"],
+    "debt_improvement": ["economist", "engineer", "evolutionary_biologist", "psychoanalyst"]
+  },
+  "careers": [
+    {
+      "career_id": "anthropologist", "primary_method": "observation",
+      "source_path": "skills-shared/brainstorm-council/agents/bc-anthropologist.md", "source_sha256": "68177accc137df22ba94ad55217112c096f8c8e10e17253ff068b1388dce86aa",
+      "career_method": "Study observed behavior and informal conventions before inferring intent.", "lunar_method": "Harvest Moon",
+      "temperament": {"temperament_id": "western:taurus", "strengths": ["groundedness", "persistence", "material reality"], "biases": ["stubbornness"]},
+      "career_shadow": {"shadow_id": "eastern:rooster", "countercheck": "Challenge observations for pride, overconfidence, and excessive criticism.", "dispositions": ["accepted", "rejected", "unresolved"]}, "qualification_state": "candidate"
+    },
+    {
+      "career_id": "chaos_mathematician", "primary_method": "dynamics",
+      "source_path": "skills-shared/brainstorm-council/agents/bc-chaos-mathematician.md", "source_sha256": "e37fc3503fa23a9b847295c2a04f5500bfc5c841b15fcf995820594c68a82b07",
+      "career_method": "Trace thresholds, feedback loops, and emergent behavior.", "lunar_method": "Sturgeon Moon",
+      "temperament": {"temperament_id": "western:aquarius", "strengths": ["innovation", "systems thinking", "originality"], "biases": ["detachment"]},
+      "career_shadow": {"shadow_id": "eastern:snake", "countercheck": "Challenge elegant dynamics for cunning assumptions and hidden transformations.", "dispositions": ["accepted", "rejected", "unresolved"]}, "qualification_state": "candidate"
+    },
+    {
+      "career_id": "economist", "primary_method": "allocation",
+      "source_path": "skills-shared/brainstorm-council/agents/bc-economist.md", "source_sha256": "c514ec879aac53f2718b081ac224cb6be49ec016c25f90c5e69a413768136150",
+      "career_method": "Evaluate allocation, opportunity cost, latency, and sustainability.", "lunar_method": "Beaver Moon",
+      "temperament": {"temperament_id": "western:libra", "strengths": ["balance", "justice", "diplomacy"], "biases": ["indecision"]},
+      "career_shadow": {"shadow_id": "eastern:dog", "countercheck": "Challenge allocation conclusions for anxiety, over-guarding, and misplaced loyalty.", "dispositions": ["accepted", "rejected", "unresolved"]}, "qualification_state": "candidate"
+    },
+    {
+      "career_id": "engineer", "primary_method": "failure_analysis",
+      "source_path": "skills-shared/brainstorm-council/agents/bc-engineer.md", "source_sha256": "a38d24a955615e7be7ec05097a86f41eb92905829ba3fcae038e5de371615f96",
+      "career_method": "Stress edge cases, failure behavior, and recovery paths.", "lunar_method": "Snow Moon",
+      "temperament": {"temperament_id": "western:virgo", "strengths": ["precision", "analysis", "practicality"], "biases": ["perfectionism"]},
+      "career_shadow": {"shadow_id": "eastern:goat", "countercheck": "Challenge failure analysis for dependency overload and dependency on ideal conditions.", "dispositions": ["accepted", "rejected", "unresolved"]}, "qualification_state": "candidate"
+    },
+    {
+      "career_id": "evolutionary_biologist", "primary_method": "adaptation",
+      "source_path": "skills-shared/brainstorm-council/agents/bc-evolutionary-biologist.md", "source_sha256": "a6d76fce2ca41c884629108254867ed4f3be749a325ac9fadc0dc617c74298bf",
+      "career_method": "Examine long-run selection, drift, and adaptation pressure.", "lunar_method": "Buck Moon",
+      "temperament": {"temperament_id": "western:sagittarius", "strengths": ["exploration", "optimism", "truth-seeking"], "biases": ["restlessness"]},
+      "career_shadow": {"shadow_id": "eastern:dragon", "countercheck": "Challenge adaptation narratives for arrogance, power bias, and unjustified transformation.", "dispositions": ["accepted", "rejected", "unresolved"]}, "qualification_state": "candidate"
+    },
+    {
+      "career_id": "game_theorist", "primary_method": "incentives",
+      "source_path": "skills-shared/brainstorm-council/agents/bc-game-theorist.md", "source_sha256": "bcc27530e9215a56a6ba5a0a3d930921eb91ecadbedc22d4e3a0d162b14ea514",
+      "career_method": "Model incentives, dominant strategies, and exploitability.", "lunar_method": "Hunter's Moon",
+      "temperament": {"temperament_id": "western:aries", "strengths": ["initiative", "courage", "leadership"], "biases": ["impulsiveness"]},
+      "career_shadow": {"shadow_id": "eastern:horse", "countercheck": "Challenge strategy claims for impatience, premature independence, and wandering scope.", "dispositions": ["accepted", "rejected", "unresolved"]}, "qualification_state": "candidate"
+    },
+    {
+      "career_id": "linguist", "primary_method": "semantics",
+      "source_path": "skills-shared/brainstorm-council/agents/bc-linguist.md", "source_sha256": "425be270d2e0fd87e1324e0e61f6ca4d35fa9acbb0e127b8eeb11bea7c9e6acf",
+      "career_method": "Inspect naming, framing, prompts, and semantic ambiguity.", "lunar_method": "Cold Moon",
+      "temperament": {"temperament_id": "western:gemini", "strengths": ["communication", "curiosity", "adaptability"], "biases": ["restlessness"]},
+      "career_shadow": {"shadow_id": "eastern:ox", "countercheck": "Challenge semantic precision for stubborn framing and overly methodical readings.", "dispositions": ["accepted", "rejected", "unresolved"]}, "qualification_state": "candidate"
+    },
+    {
+      "career_id": "mythologist", "primary_method": "precedent",
+      "source_path": "skills-shared/brainstorm-council/agents/bc-mythologist.md", "source_sha256": "1c8f829c44f16fd123453625ffdc04384a477be6a3cc30481ac00395c0e8dec6",
+      "career_method": "Find recurring patterns, precedent, and continuity.", "lunar_method": "Strawberry Moon",
+      "temperament": {"temperament_id": "western:cancer", "strengths": ["intuition", "memory", "protectiveness"], "biases": ["overprotection"]},
+      "career_shadow": {"shadow_id": "eastern:tiger", "countercheck": "Challenge precedent claims for passion, unpredictability, and protective overreach.", "dispositions": ["accepted", "rejected", "unresolved"]}, "qualification_state": "candidate"
+    },
+    {
+      "career_id": "phenomenologist", "primary_method": "experience",
+      "source_path": "skills-shared/brainstorm-council/agents/bc-phenomenologist.md", "source_sha256": "1c66524f8df370f0da71d97f2fc21df72f9cbf0fe61755c4fb5cb4d4f02d2593",
+      "career_method": "Inspect lived runtime experience and pre-interpretive friction.", "lunar_method": "Pink Moon",
+      "temperament": {"temperament_id": "western:pisces", "strengths": ["intuition", "empathy", "compassion"], "biases": ["dissolution"]},
+      "career_shadow": {"shadow_id": "eastern:rat", "countercheck": "Challenge experience claims for opportunism, survival bias, and over-adaptation.", "dispositions": ["accepted", "rejected", "unresolved"]}, "qualification_state": "candidate"
+    },
+    {
+      "career_id": "physicist", "primary_method": "constraints",
+      "source_path": "skills-shared/brainstorm-council/agents/bc-physicist.md", "source_sha256": "669894fef2553a46a5fdc683a627a9c2f4ca01eb6492e1d77d25b9a7768f4940",
+      "career_method": "Derive constraints, conservation relationships, and capacity limits.", "lunar_method": "Flower Moon",
+      "temperament": {"temperament_id": "western:leo", "strengths": ["confidence", "authority", "generosity"], "biases": ["pride"]},
+      "career_shadow": {"shadow_id": "eastern:pig", "countercheck": "Challenge constraint claims for indulgence, naivety, and assumed abundance.", "dispositions": ["accepted", "rejected", "unresolved"]}, "qualification_state": "candidate"
+    },
+    {
+      "career_id": "psychoanalyst", "primary_method": "incentives",
+      "source_path": "skills-shared/brainstorm-council/agents/bc-psychoanalyst.md", "source_sha256": "926ebd78b7bc1bbed9b6e346904f00f6e113cd4173922d734ca8e7cb70f5197d",
+      "career_method": "Surface unstated incentives, tensions, and avoided implications.", "lunar_method": "Wolf Moon",
+      "temperament": {"temperament_id": "western:scorpio", "strengths": ["intensity", "depth", "hidden truth"], "biases": ["obsession"]},
+      "career_shadow": {"shadow_id": "eastern:rabbit", "countercheck": "Challenge inferred motives for sensitivity, conflict avoidance, and unfalsifiable depth.", "dispositions": ["accepted", "rejected", "unresolved"]}, "qualification_state": "candidate"
+    },
+    {
+      "career_id": "structuralist", "primary_method": "invariants",
+      "source_path": "skills-shared/brainstorm-council/agents/bc-structuralist.md", "source_sha256": "398fa664a31651eb0f886e56ce288faf040de57eda6a773b018757b2ba935056",
+      "career_method": "Recover invariant structure beneath surface implementation.", "lunar_method": "Worm Moon",
+      "temperament": {"temperament_id": "western:capricorn", "strengths": ["discipline", "structure", "responsibility"], "biases": ["rigidity"]},
+      "career_shadow": {"shadow_id": "eastern:monkey", "countercheck": "Challenge invariants for clever exceptions, opportunistic reframing, and false universality.", "dispositions": ["accepted", "rejected", "unresolved"]}, "qualification_state": "candidate"
+    }
+  ]
+}
