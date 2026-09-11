@@ -1,0 +1,42 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "lapart.adaptive-parallel-adapter.v2",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "capabilities", "ports", "authority"],
+  "properties": {
+    "schema_version": {"const": "2.0"},
+    "capabilities": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["execution_parallelism", "reviewer_concurrency", "career_overlay"],
+      "properties": {
+        "execution_parallelism": {"type": "boolean"},
+        "reviewer_concurrency": {"type": "boolean"},
+        "career_overlay": {"type": "boolean"}
+      }
+    },
+    "ports": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["execute", "review", "cancel", "status"],
+      "properties": {
+        "execute": {"type": ["string", "null"]},
+        "review": {"type": ["string", "null"]},
+        "cancel": {"type": ["string", "null"]},
+        "status": {"type": ["string", "null"]}
+      }
+    },
+    "authority": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["select_s_pipeline", "change_permissions", "complete_review", "publish"],
+      "properties": {
+        "select_s_pipeline": {"const": false},
+        "change_permissions": {"const": false},
+        "complete_review": {"const": false},
+        "publish": {"const": false}
+      }
+    }
+  }
+}

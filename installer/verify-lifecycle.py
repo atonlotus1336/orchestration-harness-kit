@@ -21,6 +21,7 @@ TOKEN_COMPUTE_SOURCE_PATHS = {
     "README.md",
     "THIRD-PARTY-NOTICES.md",
     "docs/v2/ACTIVATION.md",
+    "docs/v2/ADAPTIVE-PARALLELISM.md",
     "docs/v2/ADAPTER-AUTHORING.md",
     "docs/v2/ADDITIVE-PARALLEL-OBSERVATION.md",
     "docs/v2/COMPATIBILITY.md",
@@ -46,8 +47,20 @@ TOKEN_COMPUTE_SOURCE_PATHS = {
     "modules/orchestration-core/README.md",
     "modules/orchestration-protocol/source-hashes.json",
     "modules/additive-parallel/README.md",
+    "modules/additive-parallel/adaptive-v2-policy.schema.json",
+    "modules/additive-parallel/adaptive-v2.adapter.example.json",
+    "modules/additive-parallel/adaptive-v2.adapter.schema.json",
+    "modules/additive-parallel/adaptive-v2.catalog.json",
+    "modules/additive-parallel/adaptive-v2.policy.json",
+    "modules/additive-parallel/adaptive-v2.review.json",
+    "modules/additive-parallel/adaptive_v2.py",
     "modules/additive-parallel/additive-parallel.profile.json",
+    "modules/additive-parallel/career-shadow.schema.json",
+    "modules/additive-parallel/manage-adaptive-v2.py",
     "modules/additive-parallel/parallel-profile.schema.json",
+    "modules/additive-parallel/source-hashes.json",
+    "modules/additive-parallel/source-projection.json",
+    "modules/additive-parallel/verify-adaptive-v2.py",
     "modules/additive-parallel/verify-additive-parallel.py",
     "modules/conformance-kit/README.md",
     "modules/conformance-kit/additive-parallel-scenarios.json",
@@ -149,6 +162,11 @@ def verify() -> list[str]:
         target = ROOT / relative
         if not target.is_file() or hashlib.sha256(target.read_bytes()).hexdigest() != expected:
             failures.append(f"current-source hash mismatch: {relative}")
+    adaptive_inventory = json.loads((ROOT / "modules/additive-parallel/source-hashes.json").read_text(encoding="utf-8"))
+    for relative, expected in adaptive_inventory.get("files", {}).items():
+        target = ROOT / relative
+        if not target.is_file() or hashlib.sha256(target.read_bytes()).hexdigest() != expected:
+            failures.append(f"adaptive source inventory mismatch: {relative}")
     payload = json.loads((ROOT / "installer/contracts/public-payload.json").read_text(encoding="utf-8"))
     core_entries = set(payload.get("groups", {}).get("core", []))
     if not REQUIRED_DISTRIBUTION_DOCS <= core_entries:
@@ -174,7 +192,7 @@ def main() -> int:
         return 1
     print("PASS: install/connect/doctor/verify/upgrade/rollback/uninstall")
     print("PASS: 8 harness adapters retain safe feature activation defaults")
-    print("PASS: additive parallel profile remains inactive and provider-free")
+    print("PASS: v1 additive semantics and inactive adaptive v2 remain provider-free")
     print("PASS: provider_calls=0, provider_tokens=0, provider activation unchanged")
     print("PASS: Phase 81 and Cursor source receipts preserved as immutable historical evidence")
     print("PASS: content-addressed rollback and recipient-local preservation")

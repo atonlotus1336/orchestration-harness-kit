@@ -1,8 +1,376 @@
 {
   "schema": "lapart.additive-parallel-scenarios.v1",
   "cases": [
-    {"name": "valid-two-read-only", "expected": "parallel_read_only", "children": [{"id": "inspect", "operation": "inspect", "independent": true, "shared_mutable_state": false, "frozen_context": true, "bounded": true, "read_only": true}, {"id": "review", "operation": "review", "independent": true, "shared_mutable_state": false, "frozen_context": true, "bounded": true, "read_only": true}]},
-    {"name": "shared-state-fallback", "expected": "serial", "children": [{"id": "inspect", "operation": "inspect", "independent": true, "shared_mutable_state": false, "frozen_context": true, "bounded": true, "read_only": true}, {"id": "review", "operation": "review", "independent": true, "shared_mutable_state": true, "frozen_context": true, "bounded": true, "read_only": true}]},
-    {"name": "single-child-fallback", "expected": "serial", "children": [{"id": "inspect", "operation": "inspect", "independent": true, "shared_mutable_state": false, "frozen_context": true, "bounded": true, "read_only": true}]}
-  ]
+    {
+      "name": "valid-two-read-only",
+      "expected": "parallel_read_only",
+      "children": [
+        {
+          "id": "inspect",
+          "operation": "inspect",
+          "independent": true,
+          "shared_mutable_state": false,
+          "frozen_context": true,
+          "bounded": true,
+          "read_only": true
+        },
+        {
+          "id": "review",
+          "operation": "review",
+          "independent": true,
+          "shared_mutable_state": false,
+          "frozen_context": true,
+          "bounded": true,
+          "read_only": true
+        }
+      ]
+    },
+    {
+      "name": "shared-state-fallback",
+      "expected": "serial",
+      "children": [
+        {
+          "id": "inspect",
+          "operation": "inspect",
+          "independent": true,
+          "shared_mutable_state": false,
+          "frozen_context": true,
+          "bounded": true,
+          "read_only": true
+        },
+        {
+          "id": "review",
+          "operation": "review",
+          "independent": true,
+          "shared_mutable_state": true,
+          "frozen_context": true,
+          "bounded": true,
+          "read_only": true
+        }
+      ]
+    },
+    {
+      "name": "single-child-fallback",
+      "expected": "serial",
+      "children": [
+        {
+          "id": "inspect",
+          "operation": "inspect",
+          "independent": true,
+          "shared_mutable_state": false,
+          "frozen_context": true,
+          "bounded": true,
+          "read_only": true
+        }
+      ]
+    }
+  ],
+  "adaptive_v2": {
+    "execution": [
+      {
+        "name": "inactive",
+        "activation_state": "inactive",
+        "strategy": "adaptive",
+        "expected_desired": 0,
+        "expected_admitted": 0,
+        "expected_reason": "INACTIVE",
+        "facts": {
+          "ready_count": 9,
+          "running_count": 0,
+          "host_capacity": 12,
+          "parent_reserve": 0,
+          "reviewer_reserve": 0,
+          "verified_streak": 0,
+          "adverse_streak": 0,
+          "backlog_count": 9,
+          "cooldown_until": null,
+          "trusted_feedback_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+          "lineage_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+          "candidate_canary_authorized": false
+        }
+      },
+      {
+        "name": "shadow-observation-only",
+        "activation_state": "shadow",
+        "strategy": "adaptive",
+        "grant_state": "production_qualified",
+        "expected_desired": 2,
+        "expected_admitted": 0,
+        "expected_reason": "SHADOW_OBSERVATION_ONLY",
+        "facts": {
+          "ready_count": 9,
+          "running_count": 0,
+          "host_capacity": 12,
+          "parent_reserve": 0,
+          "reviewer_reserve": 0,
+          "verified_streak": 3,
+          "adverse_streak": 0,
+          "backlog_count": 9,
+          "cooldown_until": null,
+          "trusted_feedback_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+          "lineage_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+          "candidate_canary_authorized": false
+        }
+      },
+      {
+        "name": "serial-cap",
+        "activation_state": "production",
+        "strategy": "serial",
+        "grant_state": "production_qualified",
+        "expected_desired": 1,
+        "expected_admitted": 1,
+        "facts": {
+          "ready_count": 9,
+          "running_count": 0,
+          "host_capacity": 12,
+          "parent_reserve": 0,
+          "reviewer_reserve": 0,
+          "verified_streak": 99,
+          "adverse_streak": 0,
+          "backlog_count": 9,
+          "cooldown_until": null,
+          "trusted_feedback_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+          "lineage_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+          "candidate_canary_authorized": false
+        }
+      },
+      {
+        "name": "fixed-two-cap",
+        "activation_state": "production",
+        "strategy": "fixed_two",
+        "grant_state": "production_qualified",
+        "expected_desired": 2,
+        "expected_admitted": 2,
+        "facts": {
+          "ready_count": 9,
+          "running_count": 0,
+          "host_capacity": 12,
+          "parent_reserve": 0,
+          "reviewer_reserve": 0,
+          "verified_streak": 99,
+          "adverse_streak": 0,
+          "backlog_count": 9,
+          "cooldown_until": null,
+          "trusted_feedback_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+          "lineage_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+          "candidate_canary_authorized": false
+        }
+      },
+      {
+        "name": "adaptive-tier-two",
+        "activation_state": "production",
+        "strategy": "adaptive",
+        "grant_state": "production_qualified",
+        "expected_desired": 2,
+        "expected_admitted": 2,
+        "facts": {
+          "ready_count": 9,
+          "running_count": 0,
+          "host_capacity": 12,
+          "parent_reserve": 0,
+          "reviewer_reserve": 0,
+          "verified_streak": 0,
+          "adverse_streak": 0,
+          "backlog_count": 9,
+          "cooldown_until": null,
+          "trusted_feedback_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+          "lineage_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+          "candidate_canary_authorized": false
+        }
+      },
+      {
+        "name": "adaptive-tier-four",
+        "activation_state": "production",
+        "strategy": "adaptive",
+        "grant_state": "production_qualified",
+        "expected_desired": 4,
+        "expected_admitted": 4,
+        "facts": {
+          "ready_count": 9,
+          "running_count": 0,
+          "host_capacity": 12,
+          "parent_reserve": 0,
+          "reviewer_reserve": 0,
+          "verified_streak": 3,
+          "adverse_streak": 0,
+          "backlog_count": 9,
+          "cooldown_until": null,
+          "trusted_feedback_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+          "lineage_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+          "candidate_canary_authorized": false
+        }
+      },
+      {
+        "name": "adaptive-tier-eight",
+        "activation_state": "production",
+        "strategy": "adaptive",
+        "grant_state": "production_qualified",
+        "expected_desired": 8,
+        "expected_admitted": 8,
+        "facts": {
+          "ready_count": 9,
+          "running_count": 0,
+          "host_capacity": 12,
+          "parent_reserve": 0,
+          "reviewer_reserve": 0,
+          "verified_streak": 6,
+          "adverse_streak": 0,
+          "backlog_count": 9,
+          "cooldown_until": null,
+          "trusted_feedback_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+          "lineage_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+          "candidate_canary_authorized": false
+        }
+      },
+      {
+        "name": "candidate-canary-denied",
+        "activation_state": "canary",
+        "strategy": "adaptive",
+        "grant_state": "candidate",
+        "expected_desired": 0,
+        "expected_admitted": 0,
+        "expected_reason": "CANDIDATE_CANARY_UNAUTHORIZED",
+        "facts": {
+          "ready_count": 9,
+          "running_count": 0,
+          "host_capacity": 12,
+          "parent_reserve": 0,
+          "reviewer_reserve": 0,
+          "verified_streak": 0,
+          "adverse_streak": 0,
+          "backlog_count": 9,
+          "cooldown_until": null,
+          "trusted_feedback_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+          "lineage_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+          "candidate_canary_authorized": false
+        }
+      },
+      {
+        "name": "candidate-canary-selected",
+        "activation_state": "canary",
+        "strategy": "adaptive",
+        "grant_state": "candidate",
+        "expected_desired": 2,
+        "expected_admitted": 2,
+        "facts": {
+          "ready_count": 9,
+          "running_count": 0,
+          "host_capacity": 12,
+          "parent_reserve": 0,
+          "reviewer_reserve": 0,
+          "verified_streak": 0,
+          "adverse_streak": 0,
+          "backlog_count": 9,
+          "cooldown_until": null,
+          "trusted_feedback_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+          "lineage_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+          "candidate_canary_authorized": true
+        }
+      },
+      {
+        "name": "pilot-lineage-not-selected",
+        "activation_state": "pilot_wider",
+        "strategy": "adaptive",
+        "grant_state": "canary_qualified",
+        "expected_desired": 2,
+        "expected_admitted": 0,
+        "expected_reason": "PILOT_NOT_SELECTED",
+        "facts": {
+          "ready_count": 9,
+          "running_count": 0,
+          "host_capacity": 12,
+          "parent_reserve": 0,
+          "reviewer_reserve": 0,
+          "verified_streak": 0,
+          "adverse_streak": 0,
+          "backlog_count": 9,
+          "cooldown_until": null,
+          "trusted_feedback_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+          "lineage_sha256": "8888888888888888888888888888888888888888888888888888888888888888",
+          "candidate_canary_authorized": false
+        }
+      }
+    ],
+    "review": [
+      {
+        "name": "s0-zero",
+        "pipeline": "S0",
+        "members": [],
+        "expected_concurrency": 0
+      },
+      {
+        "name": "inactive-s3-serial",
+        "pipeline": "S3",
+        "members": [
+          "ponytail-review",
+          "evidence-integrity-audit",
+          "improve-codebase-architecture"
+        ],
+        "expected_concurrency": 1
+      }
+    ],
+    "conflicts": [
+      {
+        "name": "independent",
+        "left": {},
+        "right": {},
+        "expected": false
+      },
+      {
+        "name": "case-alias",
+        "left": {
+          "write_set": [
+            "SRC/Output.py"
+          ]
+        },
+        "right": {
+          "read_set": [
+            "src/output.PY"
+          ]
+        },
+        "expected": true
+      },
+      {
+        "name": "directory-overlap",
+        "left": {
+          "write_set": [
+            "src/package"
+          ]
+        },
+        "right": {
+          "read_set": [
+            "src/package/module.py"
+          ]
+        },
+        "expected": true
+      },
+      {
+        "name": "shared-resource",
+        "left": {},
+        "right": {
+          "resource_set": [
+            "resource:a"
+          ]
+        },
+        "expected": true
+      },
+      {
+        "name": "unknown-resource",
+        "left": {
+          "resource_state": "unknown",
+          "resource_set": []
+        },
+        "right": {},
+        "expected": true
+      },
+      {
+        "name": "nested-root",
+        "left": {},
+        "right": {
+          "workspace_root": "nested"
+        },
+        "expected": true
+      }
+    ]
+  }
 }

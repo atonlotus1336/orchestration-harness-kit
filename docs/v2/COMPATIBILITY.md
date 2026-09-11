@@ -36,7 +36,10 @@ remain separately qualified surfaces.
 The additive-parallel observation module is portable, but it does not qualify a
 harness automatically. Every row above remains `not activated` until that
 recipient proves its own isolated read-only child controls and rollback. The
-module's profile is inactive by default, limits successful admission to two
-independent read-only children, and allows Orca observation only. A source pass
-does not authorize parallel writes, recursive delegation, provider changes, or
-Orca control authority.
+v1 profile remains inactive by default, limits successful admission to two
+independent read-only children, and allows Orca observation only. Adaptive v2 is
+also inactive by default. Its execution, reviewer concurrency, career,
+temperament, and career-Shadow grants are independently qualified and disabled
+when shipped. The adapter consumes an already selected S pipeline and cannot
+change reviewer membership or issue completion. A source pass does not authorize
+parallel writes, recursive delegation, provider changes, or control authority.

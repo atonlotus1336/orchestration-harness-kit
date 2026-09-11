@@ -1,0 +1,19 @@
+{
+  "schema": "lapart.adaptive-review-template.v2",
+  "activation_state": "inactive",
+  "selector_owner": "recipient-s-pipeline",
+  "completion_owner": "recipient-review-controller",
+  "max_model_calls": {"S0": 0, "S1": 1, "S2": 3, "S3": 5, "S4": 7},
+  "initial_ceiling": {"S0": 0, "S1": 1, "S2": 2, "S3": 2, "S4": 2},
+  "max_concurrent_reviewers": {"S0": 0, "S1": 1, "S2": 2, "S3": 4, "S4": 4},
+  "grants": {
+    "execution_parallelism": {"enabled": false, "state": "candidate", "qualification_reference": null, "expiry": null, "rollback_target": "inactive"},
+    "reviewer_concurrency": {"enabled": false, "state": "candidate", "qualification_reference": null, "expiry": null, "rollback_target": "serial"},
+    "career_kernel": {"enabled": false, "state": "candidate", "qualification_reference": null, "expiry": null, "rollback_target": "neutral"},
+    "temperament": {"enabled": false, "state": "candidate", "qualification_reference": null, "expiry": null, "rollback_target": "disabled"},
+    "career_shadow_pass": {"enabled": false, "state": "candidate", "qualification_reference": null, "expiry": null, "rollback_target": "disabled"}
+  },
+  "provider_calls_for_selection": 0,
+  "dispatch_authority": false,
+  "completion_authority": false
+}

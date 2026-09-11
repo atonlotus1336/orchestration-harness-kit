@@ -6,6 +6,7 @@ from __future__ import annotations
 import copy
 import importlib.util
 import json
+import os
 from pathlib import Path
 
 
@@ -34,6 +35,56 @@ def verify() -> list[str]:
         result = feature.admit_batch(copy.deepcopy(profile), case.get("children", []))
         if result.get("decision") != case.get("expected") or result.get("provider_calls") != 0:
             failures.append(f"scenario failed: {case.get('name', 'unnamed')}")
+    adaptive_spec = importlib.util.spec_from_file_location("adaptive_v2", MODULE / "adaptive_v2.py")
+    adaptive = importlib.util.module_from_spec(adaptive_spec)
+    assert adaptive_spec and adaptive_spec.loader
+    adaptive_spec.loader.exec_module(adaptive)
+    policy = json.loads((MODULE / "adaptive-v2.policy.json").read_text(encoding="utf-8"))
+    review = json.loads((MODULE / "adaptive-v2.review.json").read_text(encoding="utf-8"))
+    now = __import__("datetime").datetime(2029, 1, 1, tzinfo=__import__("datetime").timezone.utc)
+    for case in scenarios.get("adaptive_v2", {}).get("execution", []):
+        candidate = copy.deepcopy(policy)
+        candidate["activation_state"] = case["activation_state"]
+        candidate["strategy"] = case["strategy"]
+        if case["activation_state"] != "inactive":
+            candidate["execution"].update(enabled=True, qualification_state=case.get("grant_state", "production_qualified"), qualified_ceiling=8)
+            candidate["grants"]["execution_parallelism"].update(
+                enabled=True, state=case.get("grant_state", "production_qualified"),
+                qualification_reference="a" * 64, expiry="2030-01-01T00:00:00Z",
+            )
+        result = adaptive.decide_admission(candidate, case["facts"], layer="execution", now=now)
+        expected_reason = case.get("expected_reason")
+        if (
+            result["desired_count"] != case["expected_desired"]
+            or result["admitted_count"] != case["expected_admitted"]
+            or expected_reason is not None and expected_reason not in result["limiting_reasons"]
+        ):
+            failures.append(f"adaptive execution scenario failed: {case['name']}")
+
+    def packet(node, overrides):
+        root = os.path.realpath(ROOT)
+        value = {
+            "schema_version": "2.0", "packet_id": f"packet-{node}", "node_id": node,
+            "workspace_root": root, "read_set": [f"src/{node}.in"],
+            "write_set": [f"src/{node}.py"], "resource_set": [f"resource:{node}"],
+            "resource_state": "complete", "dependencies": [], "base_revision": "b" * 64,
+            "expected_artifacts": [f"out/{node}.json"], "assertions": ["tests pass"],
+            "budget": {"provider_calls": 0, "tokens": 0, "wall_seconds": 30, "cost": 0},
+            "route_reference": "route-1", "goal_reference": "goal-1",
+        }
+        value.update(overrides)
+        if value["workspace_root"] == "nested":
+            value["workspace_root"] = os.path.realpath(ROOT / "modules")
+        return value
+
+    for case in scenarios.get("adaptive_v2", {}).get("conflicts", []):
+        actual = adaptive.packets_conflict(packet("a", case["left"]), packet("b", case["right"]))
+        if actual is not case["expected"]:
+            failures.append(f"adaptive conflict scenario failed: {case['name']}")
+    for case in scenarios.get("adaptive_v2", {}).get("review", []):
+        result = adaptive.plan_review_stage(review, pipeline=case["pipeline"], selected_members=tuple(case["members"]), max_model_calls=review["max_model_calls"][case["pipeline"]])
+        if result["concurrency"] != case["expected_concurrency"]:
+            failures.append(f"adaptive review scenario failed: {case['name']}")
     observation = feature.observe_events("job", [{"event_id": "ok", "job_id": "job", "status": "running"}, {"event_id": "late", "job_id": "job", "status": "cancelled"}, {"event_id": "wrong", "job_id": "other", "status": "done"}])
     if observation["canonical_completion"] is not False or observation["rejected"] != ["wrong"]:
         failures.append("observation-only completion boundary failed")
@@ -48,7 +99,7 @@ def main() -> int:
             print(f"- {failure}")
         return 1
     print("PASS: additive parallel feature conformance")
-    print("PASS: provider_calls=0, serial fallback, parent-only completion, Orca observation-only")
+    print("PASS: provider_calls=0, v1 serial fallback, inactive adaptive v2, recipient-owned completion")
     return 0
 
 

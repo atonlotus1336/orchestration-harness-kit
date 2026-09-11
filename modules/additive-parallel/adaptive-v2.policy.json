@@ -1,0 +1,65 @@
+{
+  "$schema": "adaptive-v2-policy.schema.json",
+  "schema_version": "2.0",
+  "strategy": "adaptive",
+  "activation_state": "inactive",
+  "execution": {
+    "enabled": false,
+    "capability": "isolated_coding",
+    "qualification_state": "candidate",
+    "initial_ceiling": 2,
+    "qualified_ceiling": 2,
+    "desired_ceiling": 8
+  },
+  "reviewer": {
+    "enabled": false,
+    "capability": "review",
+    "qualification_state": "candidate",
+    "initial_ceiling": 2,
+    "qualified_ceiling": 2,
+    "desired_ceiling": 4
+  },
+  "grants": {
+    "execution_parallelism": {
+      "enabled": false,
+      "state": "candidate",
+      "qualification_reference": null,
+      "expiry": null,
+      "rollback_target": "inactive"
+    },
+    "reviewer_concurrency": {
+      "enabled": false,
+      "state": "candidate",
+      "qualification_reference": null,
+      "expiry": null,
+      "rollback_target": "serial"
+    },
+    "career_kernel": {
+      "enabled": false,
+      "state": "candidate",
+      "qualification_reference": null,
+      "expiry": null,
+      "rollback_target": "neutral"
+    },
+    "temperament": {
+      "enabled": false,
+      "state": "candidate",
+      "qualification_reference": null,
+      "expiry": null,
+      "rollback_target": "disabled"
+    },
+    "career_shadow_pass": {
+      "enabled": false,
+      "state": "candidate",
+      "qualification_reference": null,
+      "expiry": null,
+      "rollback_target": "disabled"
+    }
+  },
+  "scaling": {
+    "promotion_streak": 3,
+    "demotion_streak": 1,
+    "cooldown_seconds": 300,
+    "backlog_per_worker": 1
+  }
+}

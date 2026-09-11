@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "lapart.career-shadow-result.v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "career_id", "lens_id", "status", "finding_summaries", "check_summaries", "disposition"],
+  "properties": {
+    "schema_version": {"const": "1.0"},
+    "career_id": {"type": "string", "minLength": 1},
+    "lens_id": {"type": "string", "minLength": 1},
+    "status": {"enum": ["run", "not_run"]},
+    "finding_summaries": {"type": "array", "maxItems": 8, "items": {"type": "string", "minLength": 1, "maxLength": 512}},
+    "check_summaries": {"type": "array", "maxItems": 8, "items": {"type": "string", "minLength": 1, "maxLength": 512}},
+    "disposition": {"enum": ["revised", "retained", "rejected", "disabled"]}
+  },
+  "allOf": [
+    {"if": {"properties": {"status": {"const": "not_run"}}}, "then": {"properties": {"disposition": {"const": "disabled"}, "finding_summaries": {"maxItems": 0}, "check_summaries": {"maxItems": 0}}}}
+  ]
+}

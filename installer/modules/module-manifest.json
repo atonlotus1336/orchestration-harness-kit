@@ -1,5 +1,5 @@
 {
-  "version": "modules-v17-additive-parallel-observation",
+  "version": "modules-v18-adaptive-parallel-v2",
   "default_path": [
     "orchestration-protocol",
     "orchestration-core",
@@ -51,7 +51,7 @@
       "stage": 4,
       "required": false,
       "source": "modules/additive-parallel",
-      "description": "OPTIONAL provider-free max-two read-only child admission and Orca observation contract. The shipped profile is inactive and never changes a live harness."
+      "description": "OPTIONAL provider-free additive module: immutable v1 max-two read-only semantics plus inactive adaptive v2 execution, staged reviewer concurrency, and catalog-bound career facts."
     },
     {
       "id": "adapter-hermes",

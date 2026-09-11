@@ -1,0 +1,272 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Adaptive parallel policy v2",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "strategy",
+    "activation_state",
+    "execution",
+    "reviewer",
+    "grants",
+    "scaling"
+  ],
+  "properties": {
+    "$schema": {
+      "type": "string"
+    },
+    "schema_version": {
+      "const": "2.0"
+    },
+    "strategy": {
+      "enum": [
+        "serial",
+        "fixed_two",
+        "adaptive"
+      ]
+    },
+    "activation_state": {
+      "enum": [
+        "inactive",
+        "shadow",
+        "canary",
+        "pilot_limited",
+        "pilot_wider",
+        "review",
+        "production"
+      ]
+    },
+    "execution": {
+      "$ref": "#/definitions/layer"
+    },
+    "reviewer": {
+      "$ref": "#/definitions/layer"
+    },
+    "grants": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "execution_parallelism",
+        "reviewer_concurrency",
+        "career_kernel",
+        "temperament",
+        "career_shadow_pass"
+      ],
+      "properties": {
+        "execution_parallelism": {
+          "allOf": [
+            {
+              "$ref": "#/definitions/grant"
+            },
+            {
+              "properties": {
+                "rollback_target": {
+                  "const": "inactive"
+                }
+              }
+            }
+          ]
+        },
+        "reviewer_concurrency": {
+          "allOf": [
+            {
+              "$ref": "#/definitions/grant"
+            },
+            {
+              "properties": {
+                "rollback_target": {
+                  "const": "serial"
+                }
+              }
+            }
+          ]
+        },
+        "career_kernel": {
+          "allOf": [
+            {
+              "$ref": "#/definitions/grant"
+            },
+            {
+              "properties": {
+                "rollback_target": {
+                  "const": "neutral"
+                }
+              }
+            }
+          ]
+        },
+        "temperament": {
+          "allOf": [
+            {
+              "$ref": "#/definitions/grant"
+            },
+            {
+              "properties": {
+                "rollback_target": {
+                  "const": "disabled"
+                }
+              }
+            }
+          ]
+        },
+        "career_shadow_pass": {
+          "allOf": [
+            {
+              "$ref": "#/definitions/grant"
+            },
+            {
+              "properties": {
+                "rollback_target": {
+                  "const": "disabled"
+                }
+              }
+            }
+          ]
+        }
+      }
+    },
+    "scaling": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "promotion_streak",
+        "demotion_streak",
+        "cooldown_seconds",
+        "backlog_per_worker"
+      ],
+      "properties": {
+        "promotion_streak": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 100
+        },
+        "demotion_streak": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 100
+        },
+        "cooldown_seconds": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 86400
+        },
+        "backlog_per_worker": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 100
+        }
+      }
+    }
+  },
+  "definitions": {
+    "layer": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "enabled",
+        "capability",
+        "qualification_state",
+        "initial_ceiling",
+        "qualified_ceiling",
+        "desired_ceiling"
+      ],
+      "properties": {
+        "enabled": {
+          "type": "boolean"
+        },
+        "capability": {
+          "enum": [
+            "read_only",
+            "isolated_coding",
+            "review"
+          ]
+        },
+        "qualification_state": {
+          "enum": [
+            "disabled",
+            "candidate",
+            "canary_qualified",
+            "production_qualified"
+          ]
+        },
+        "initial_ceiling": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 2
+        },
+        "qualified_ceiling": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 8
+        },
+        "desired_ceiling": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 8
+        }
+      }
+    },
+    "grant": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "enabled",
+        "state",
+        "qualification_reference",
+        "expiry",
+        "rollback_target"
+      ],
+      "properties": {
+        "enabled": {
+          "type": "boolean"
+        },
+        "state": {
+          "enum": [
+            "disabled",
+            "candidate",
+            "canary_qualified",
+            "production_qualified"
+          ]
+        },
+        "qualification_reference": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "minLength": 1,
+          "maxLength": 512
+        },
+        "expiry": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "date-time"
+        },
+        "rollback_target": {
+          "type": "string"
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "enabled": {
+                "const": true
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "expiry": {
+                "type": "string",
+                "format": "date-time"
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}

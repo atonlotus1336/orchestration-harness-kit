@@ -1,0 +1,20 @@
+{
+  "schema_version": "2.0",
+  "capabilities": {
+    "execution_parallelism": false,
+    "reviewer_concurrency": false,
+    "career_overlay": false
+  },
+  "ports": {
+    "execute": null,
+    "review": null,
+    "cancel": null,
+    "status": null
+  },
+  "authority": {
+    "select_s_pipeline": false,
+    "change_permissions": false,
+    "complete_review": false,
+    "publish": false
+  }
+}

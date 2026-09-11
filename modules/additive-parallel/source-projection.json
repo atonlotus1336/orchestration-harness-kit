@@ -1,0 +1,57 @@
+{
+  "schema": "lapart.adaptive-v2-source-projection.v1",
+  "algorithm": "sha256",
+  "projection": [
+    {
+      "source_repository": "governed-executor-runtime",
+      "source_path": "src/lapart_executor/adaptive_parallel.py",
+      "portable_contract": "adaptive_v2.py#validate_policy,decide_admission,validate_work_packet,packets_conflict",
+      "source_sha256": "f7b59aa6e34bde8356bef8736961abb4aa7718ec180b3a59707ead4f5e00f21f"
+    },
+    {
+      "source_repository": "hermes-agent-self-evolution",
+      "source_path": "prime_bridge/adaptive_review/review_scheduler.py",
+      "portable_contract": "adaptive_v2.py#plan_review_stage",
+      "source_sha256": "206a526e27453444994af5c88a1ecee3a958150e5d4ad692f3b17c67a7f6e06e"
+    },
+    {
+      "source_repository": "hermes-agent-self-evolution",
+      "source_path": "prime_bridge/adaptive_review/careers.py",
+      "portable_contract": "adaptive_v2.py#assign_careers",
+      "source_sha256": "5f0b61bed38013d66d7f46ed36ff47f8063cef8c9f1c66a111f46e529ea5ac77"
+    },
+    {
+      "source_repository": "hermes-agent-self-evolution",
+      "source_path": "prime_bridge/adaptive_review/catalog.py",
+      "portable_contract": "adaptive-v2.catalog.json",
+      "source_sha256": "ceac6d493c4ad0d89a9f5e47f5f25370247737b58b020818c60bdc3768474c9a"
+    },
+    {
+      "source_repository": "hermes-agent-self-evolution",
+      "source_path": "config/adaptive-parallel-policy.json",
+      "portable_contract": "adaptive-v2.policy.json",
+      "source_sha256": "8b8fb84138d8e4588e4e264755c827476d4cca1e2b202323e8e09582151fc57c"
+    },
+    {
+      "source_repository": "hermes-agent-self-evolution",
+      "source_path": "schemas/adaptive-parallel-policy.schema.json",
+      "portable_contract": "adaptive-v2-policy.schema.json",
+      "source_sha256": "f5a5b84cff57962f0db139a235df4cde0c66f91d3919c8cdb8851b2e3e4c02ac"
+    },
+    {
+      "source_repository": "hermes-agent-self-evolution",
+      "source_path": "config/adaptive-reviewer-catalog.json",
+      "portable_contract": "adaptive-v2.catalog.json",
+      "source_sha256": "dbd98174fc6bb55bc222022183ec4d555dd9ff26547719415c3110835ad72431"
+    }
+  ],
+  "excluded_runtime_behavior": [
+    "provider routing",
+    "model calls",
+    "reviewer invocation",
+    "Council teams",
+    "Council voting",
+    "completion authority",
+    "production activation"
+  ]
+}

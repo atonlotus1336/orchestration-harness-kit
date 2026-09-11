@@ -1,6 +1,6 @@
 {
   "schema": "ohk.version-policy.v1",
-  "sdk_release": "2.1.0",
+  "sdk_release": "2.2.0",
   "v1": {
     "baseline_commit": "04b7630937557c2dd4e6b429fc033873d5edf127",
     "proposed_tag": "v1.0.0",

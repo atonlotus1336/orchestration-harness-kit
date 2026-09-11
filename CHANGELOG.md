@@ -2,6 +2,25 @@
 
 ## Unreleased
 
+## 2.2.0
+
+### Added
+
+- Inactive adaptive v2 execution and staged reviewer-admission templates beside
+  the unchanged v1 max-two read-only profile.
+- Twelve catalog-bound career methods, symbolic temperament modifiers, and a
+  closed career-Shadow result schema without Council team or voting behavior.
+- Provider-free execution, reviewer, career, source-parity, staging, backup, and
+  rollback checks through generic capability ports.
+
+### Compatibility and safety
+
+- V1 validators and historical lifecycle receipts remain unchanged.
+- Installation and upgrade do not alter recipient configuration, memory,
+  activation records, runtime receipts, providers, models, or services.
+- The recipient's S selector and review controller remain the only owners of
+  reviewer membership and authoritative completion.
+
 ## 2.1.0
 
 ### Added

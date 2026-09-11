@@ -63,5 +63,7 @@ token cap is zero. Orca may only observe a host-bound existing job. It cannot
 launch, command, approve, review, complete, or poll. Rollback returns the local
 overlay to inactive, retains evidence, and blocks new child batches.
 
-See [additive parallel observation](ADDITIVE-PARALLEL-OBSERVATION.md) for the
-complete admission and rollback contract.
+V1 keeps this exact observation-only meaning. Adaptive v2 installs separately
+with all five layer grants disabled and no activation command. See
+[adaptive parallelism v2](ADAPTIVE-PARALLELISM.md) for staged installation,
+source-parity verification, qualification boundaries, and byte-exact rollback.
