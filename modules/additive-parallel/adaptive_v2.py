@@ -23,7 +23,7 @@ REVIEW_PATH = MODULE / "adaptive-v2.review.json"
 CATALOG_PATH = MODULE / "adaptive-v2.catalog.json"
 
 ACTIVATION_STATES = {"inactive", "shadow", "canary", "pilot_limited", "pilot_wider", "review", "production"}
-QUALIFICATION_STATES = {"disabled", "candidate", "canary_qualified", "production_qualified"}
+QUALIFICATION_STATES = {"disabled", "candidate", "canary_qualified", "production_qualified", "production_authorized"}
 CAPABILITIES = {"read_only", "isolated_coding", "review"}
 GRANT_IDS = {
     "execution_parallelism", "reviewer_concurrency", "career_kernel",
@@ -42,6 +42,7 @@ CAREER_STATES = {
     "candidate": {"canary"},
     "canary_qualified": {"canary", "pilot"},
     "production_qualified": {"canary", "pilot", "production"},
+    "production_authorized": {"production"},
     "disabled": set(),
 }
 REASON_ORDER = (
@@ -257,7 +258,8 @@ def decide_admission(policy: Mapping[str, Any], facts: Mapping[str, Any], *, lay
         desired = admitted = 0
         reasons.append("CANDIDATE_CANARY_UNAUTHORIZED")
     elif (
-        policy["activation_state"] == "production" and grant["state"] != "production_qualified"
+        policy["activation_state"] == "production"
+        and grant["state"] not in {"production_qualified", "production_authorized"}
     ) or (
         policy["activation_state"] in {"review", "pilot_limited", "pilot_wider"}
         and grant["state"] not in {"canary_qualified", "production_qualified"}

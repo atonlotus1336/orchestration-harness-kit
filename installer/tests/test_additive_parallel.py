@@ -268,3 +268,48 @@ def test_adaptive_v2_packet_conflicts_cover_case_directory_root_resource_and_ali
         _packet(tmp_path, write_set=["linked-src/output.py"]),
         _packet(tmp_path, "b", read_set=["real-src/output.py"]),
     )
+
+
+def test_portable_switch_global_subset_last_off_and_rollback(tmp_path):
+    spec = importlib.util.spec_from_file_location(
+        "portable_switch", MODULE / "adaptive_switch.py")
+    switch = importlib.util.module_from_spec(spec)
+    assert spec and spec.loader
+    spec.loader.exec_module(switch)
+
+    class Adapter:
+        def __init__(self):
+            self.active = False
+            self.fail = False
+
+        def authorize(self):
+            self.active = not self.fail
+
+        def verify(self):
+            return {"state": "ACTIVE" if self.active else "INVALID"}
+
+    adapters = {name: Adapter() for name in ("codex", "hermes")}
+    owner = switch.PortableSwitch(tmp_path, tuple(adapters), adapters)
+    assert owner.status()["global"] == "INACTIVE"
+    assert owner.set(("codex",), turn_on=True)["after"]["global"] == "PARTIAL"
+    assert owner.set(("hermes",), turn_on=True)["after"]["global"] == "ACTIVE"
+    assert owner.set(("codex",), turn_on=False)["after"]["global"] == "PARTIAL"
+    adapters["codex"].fail = True
+    failed = owner.set(("codex",), turn_on=True)
+    assert failed["result"] == "FAILED_ROLLED_BACK"
+    assert failed["after"]["enabled_harnesses"] == ["hermes"]
+    assert owner.set(("hermes",), turn_on=False)["after"]["global"] == "INACTIVE"
+
+
+def test_portable_switch_cli_grammar_is_closed_and_inactive():
+    process = subprocess.run(
+        [sys.executable, str(MODULE / "adaptive-switch.py"), "on", "--global"],
+        cwd=MODULE, text=True, capture_output=True, check=False)
+    assert process.returncode == 0
+    assert json.loads(process.stdout) == {
+        "activation_changes": 0, "command": "on",
+        "status": "ADAPTER_REQUIRED", "targets": ["codex", "hermes"]}
+    invalid = subprocess.run(
+        [sys.executable, str(MODULE / "adaptive-switch.py"), "on"],
+        cwd=MODULE, text=True, capture_output=True, check=False)
+    assert invalid.returncode == 2

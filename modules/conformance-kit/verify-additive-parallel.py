@@ -8,6 +8,7 @@ import importlib.util
 import json
 import os
 from pathlib import Path
+import tempfile
 
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -23,8 +24,17 @@ def load_feature():
     return module
 
 
+def load_switch():
+    spec = importlib.util.spec_from_file_location("adaptive_switch", MODULE / "adaptive_switch.py")
+    module = importlib.util.module_from_spec(spec)
+    assert spec and spec.loader
+    spec.loader.exec_module(module)
+    return module
+
+
 def verify() -> list[str]:
     feature = load_feature()
+    switch_module = load_switch()
     failures = feature.verify()
     scenarios = json.loads(SCENARIOS.read_text(encoding="utf-8"))
     if scenarios.get("schema") != "lapart.additive-parallel-scenarios.v1" or not isinstance(scenarios.get("cases"), list):
@@ -88,6 +98,36 @@ def verify() -> list[str]:
     observation = feature.observe_events("job", [{"event_id": "ok", "job_id": "job", "status": "running"}, {"event_id": "late", "job_id": "job", "status": "cancelled"}, {"event_id": "wrong", "job_id": "other", "status": "done"}])
     if observation["canonical_completion"] is not False or observation["rejected"] != ["wrong"]:
         failures.append("observation-only completion boundary failed")
+
+    class Adapter:
+        def __init__(self, *, fail=False):
+            self.active = False
+            self.fail = fail
+
+        def authorize(self):
+            self.active = not self.fail
+
+        def verify(self):
+            return {"state": "ACTIVE" if self.active else "INACTIVE"}
+
+    registry = ("codex", "hermes")
+    with tempfile.TemporaryDirectory() as state_root:
+        adapters = {name: Adapter() for name in registry}
+        switch = switch_module.PortableSwitch(state_root, registry, adapters)
+        if switch.status()["global"] != "INACTIVE":
+            failures.append("portable switch is not inactive by default")
+        codex = switch_module.resolve_targets(registry, harnesses=("codex",))
+        if switch.set(codex, turn_on=True)["after"]["global"] != "PARTIAL":
+            failures.append("portable harness-scoped switch failed")
+        all_targets = switch_module.resolve_targets(registry, global_selector=True)
+        if switch.set(all_targets, turn_on=True)["after"]["global"] != "ACTIVE":
+            failures.append("portable global switch failed")
+        adapters["hermes"].active = False
+        adapters["hermes"].fail = True
+        switch.set(("hermes",), turn_on=False)
+        failed = switch.set(("hermes",), turn_on=True)
+        if failed.get("result") != "FAILED_ROLLED_BACK" or switch.status()["global"] != "PARTIAL":
+            failures.append("portable switch rollback failed")
     return failures
 
 

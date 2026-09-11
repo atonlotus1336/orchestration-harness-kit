@@ -6,7 +6,7 @@
       "source_repository": "governed-executor-runtime",
       "source_path": "src/lapart_executor/adaptive_parallel.py",
       "portable_contract": "adaptive_v2.py#validate_policy,decide_admission,validate_work_packet,packets_conflict",
-      "source_sha256": "f7b59aa6e34bde8356bef8736961abb4aa7718ec180b3a59707ead4f5e00f21f"
+      "source_sha256": "580bb33043125494f59a8e311c02735b0c485dd8e6b472d00e85c28456f2b4ad"
     },
     {
       "source_repository": "hermes-agent-self-evolution",
@@ -18,7 +18,7 @@
       "source_repository": "hermes-agent-self-evolution",
       "source_path": "prime_bridge/adaptive_review/careers.py",
       "portable_contract": "adaptive_v2.py#assign_careers",
-      "source_sha256": "5f0b61bed38013d66d7f46ed36ff47f8063cef8c9f1c66a111f46e529ea5ac77"
+      "source_sha256": "ba7e3fef071849a12b1894a5ff0e9d0028854bee7835d122e336c5961dd28254"
     },
     {
       "source_repository": "hermes-agent-self-evolution",
@@ -36,13 +36,25 @@
       "source_repository": "hermes-agent-self-evolution",
       "source_path": "schemas/adaptive-parallel-policy.schema.json",
       "portable_contract": "adaptive-v2-policy.schema.json",
-      "source_sha256": "f5a5b84cff57962f0db139a235df4cde0c66f91d3919c8cdb8851b2e3e4c02ac"
+      "source_sha256": "82c32a05f3db1f73af1bd0b7152b0c4804ffd6738b80395eb7c947aeaa97001c"
     },
     {
       "source_repository": "hermes-agent-self-evolution",
       "source_path": "config/adaptive-reviewer-catalog.json",
       "portable_contract": "adaptive-v2.catalog.json",
       "source_sha256": "dbd98174fc6bb55bc222022183ec4d555dd9ff26547719415c3110835ad72431"
+    },
+    {
+      "source_repository": "hermes-agent-self-evolution",
+      "source_path": "prime_bridge/adaptive_switch.py",
+      "portable_contract": "adaptive_switch.py#resolve_targets,transition,global_state,PortableSwitch",
+      "source_sha256": "30be5c7bf4f9ea2434ac2dbfc792cb2867e76256f7783643cf92beb104aab296"
+    },
+    {
+      "source_repository": "hermes-agent-self-evolution",
+      "source_path": "prime_bridge/adaptive_runtime_refresh.py",
+      "portable_contract": "adaptive_switch.py#adapter-protocol",
+      "source_sha256": "ced8a9ad7f7be21ab883eefb9eeee33c9c85ebfb491b04ba6109b2d7fe13d2ba"
     }
   ],
   "excluded_runtime_behavior": [
@@ -52,6 +64,6 @@
     "Council teams",
     "Council voting",
     "completion authority",
-    "production activation"
+    "production authorization material"
   ]
 }

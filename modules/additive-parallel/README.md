@@ -1,5 +1,12 @@
 # Additive parallelism
 
+### Simple switches
+
+`adaptive_switch.py` is the portable state owner; `adaptive-switch.py`
+demonstrates the global/per-harness grammar. It cannot activate by itself.
+Recipients bind authority and consumers locally, so fresh installs stay
+inactive and no keys, routes, usernames, receipts, or process IDs are exported.
+
 **What it is:** an optional, provider-free package with two compatible tracks:
 the unchanged v1 profile for exactly two independent read-only child tasks, and
 an inactive adaptive v2 template for execution admission, staged reviewer

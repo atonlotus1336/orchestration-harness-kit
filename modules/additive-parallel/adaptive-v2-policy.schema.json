@@ -187,7 +187,8 @@
             "disabled",
             "candidate",
             "canary_qualified",
-            "production_qualified"
+            "production_qualified",
+            "production_authorized"
           ]
         },
         "initial_ceiling": {
@@ -226,7 +227,8 @@
             "disabled",
             "candidate",
             "canary_qualified",
-            "production_qualified"
+            "production_qualified",
+            "production_authorized"
           ]
         },
         "qualification_reference": {

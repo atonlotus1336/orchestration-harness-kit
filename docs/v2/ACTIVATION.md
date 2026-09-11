@@ -1,5 +1,13 @@
 # Activation boundary
 
+## Adaptive parallel switches
+
+The optional module ships the `on`, `off`, `status`, and `refresh`
+grammar with `--global` or repeatable `--harness`. Installation stays
+inactive. Recipients must supply a closed registry, signer, identity adapter,
+and consumer verifier. The reference CLI reports `ADAPTER_REQUIRED` and
+performs zero activation changes.
+
 SDK installation and adapter connection are not activation. The portable kit
 ends in `installed-not-activated`. This is the safe default for every recipient.
 

@@ -2,7 +2,7 @@
   "schema": "lapart.protocol-source-hashes.v1",
   "algorithm": "sha256",
   "files": {
-    "installer/modules/module-manifest.json": "7f8e593f6259fc0a1d132618dd8876b2b0db88eab5f7be1f258cd1517732f9e8",
+    "installer/modules/module-manifest.json": "7627f5a5daf596f679e7a11134dfdf719655ce04b69910425edf9a41d522e450",
     "modules/orchestration-protocol/SPEC.md": "662c324290f1441cfaf6eb3e71bc693cf1d92c851c4ba60cbf0968a0646e05df",
     "modules/orchestration-protocol/envelope.schema.json": "5bb07299b47ef3ad2ff23f89c740ecad1e0285e953f2e81d97f667ef17d7928d",
     "modules/orchestration-protocol/fixtures.json": "231b4a6d02d821b44847a05fad0fe931ac3ac7d3bd314bfaf63c53cd525a4b37",

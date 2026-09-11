@@ -10,6 +10,6 @@
     "modules/conformance-kit/fake-harness/harness-manifest.json": "328ad3fb1ece9763d4cead7778184f4af8b84b4d81daf793acbd28da3ea29f38",
     "modules/conformance-kit/run-conformance.py": "dc8f569767756c3c440f9cd90ba824594b89f573952777131e3fc3585fad1631",
     "modules/conformance-kit/additive-parallel-scenarios.json": "f00d0182d851c8d87b61b5199d2d8db8c506ba7237914d9468ed091986154543",
-    "modules/conformance-kit/verify-additive-parallel.py": "79ef3d265ccc084052ec41dbe80cc88edd0da84e545e58e961b92429a96e7cbc"
+    "modules/conformance-kit/verify-additive-parallel.py": "2424b099b72ebcd8fcb0b46fd3c2d183cadaf75977f06dfe45231e631e2b55dd"
   }
 }
