@@ -320,6 +320,44 @@ def verify(source_workspace: Path | None = None) -> list[str]:
     adapter = portable.load_json(MODULE / "adaptive-v2.adapter.example.json")
     if any(adapter["capabilities"].values()) or any(value is not False for value in adapter["authority"].values()) or any(value is not None for value in adapter["ports"].values()):
         failures.append("shipped adapter template is active or authoritative")
+    selector_source = (MODULE / "prime_bridge/adaptive_execution_provider.py").read_text(encoding="utf-8")
+    batch_source = (MODULE / "prime_bridge/orca_adaptive_batch.py").read_text(encoding="utf-8")
+    qualifier_source = (MODULE / "scripts/qualify-orca-coding.py").read_text(encoding="utf-8")
+    production_contract = (
+        "adapter_launch", "ORCA_ADAPTER_QUALIFICATION_MISMATCH",
+        "ELIGIBLE_ORCA_LANES", "automatic_dispatch_authorized",
+    )
+    if any(fragment not in selector_source for fragment in production_contract):
+        failures.append("adaptive Orca selector contract is incomplete")
+    if ("Start every admitted worker before waiting" not in batch_source
+            or "preauthorize(request_id, argument_hash)" not in batch_source
+            or "aggregate_verification" not in batch_source
+            or "rollback_complete" not in batch_source):
+        failures.append("adaptive Orca batch contract is incomplete")
+    if ("--codex-launch" not in qualifier_source
+            or '"adapter_launch": args.codex_launch' not in qualifier_source
+            or "--promote-registry" not in qualifier_source):
+        failures.append("real coding A/B qualifier contract is incomplete")
+    orca_adapters = portable.load_json(MODULE / "config/orca-harness-adapters.json")
+    expected_adapter_contract = {
+        "codex": ("native", "codex", ()),
+        "hermes": ("terminal", None, ("hermes", "--profile", "workspace")),
+        "claude-code": ("native", "claude", ()),
+        "moa": ("terminal", None, ("moa",)),
+        "cursor": ("native", "cursor", ()),
+        "dsh": ("terminal", None, ("dsh",)),
+        "pi": ("terminal", None, ("pi",)),
+        "opencode": ("terminal", None, ("opencode",)),
+        "antigravity": ("terminal", None, ("antigravity",)),
+    }
+    actual_adapter_contract = {
+        name: (row.get("launch"), row.get("agent"), tuple(row.get("command", ())))
+        for name, row in orca_adapters.get("adapters", {}).items()
+    }
+    if (actual_adapter_contract != expected_adapter_contract
+            or any(row.get("qualification") != "configured"
+                   for row in orca_adapters.get("adapters", {}).values())):
+        failures.append("portable Orca adapters contain activation or host identity")
     inventory = portable.load_json(MODULE / "source-hashes.json")
     for relative, expected in inventory.get("files", {}).items():
         path = MODULE.parents[1] / relative

@@ -9,7 +9,8 @@ supplies its local adapter module. Without both `--state-root` and
 makes zero changes. Fresh installs stay inactive, and no keys, routes,
 usernames, receipts, or process IDs are exported.
 
-Orca observation has the same concise selector grammar:
+The legacy Orca observer grammar is now a compatibility facade over the same
+unified `orchestration-switches.json`; it no longer owns a second state file:
 
 ```text
 python orca-observer.py --state-root <recipient-data>/adaptive-switch on --global
@@ -17,13 +18,17 @@ python orca-observer.py --state-root <recipient-data>/adaptive-switch off --harn
 python orca-observer.py --state-root <recipient-data>/adaptive-switch status
 ```
 
-The portable Orca switch starts inactive and writes only recipient-owned paper
-state. A recipient worker-transport adapter must consume
-`orca_observer_switch.enabled_harnesses()` and fail closed when state is
-invalid; the canonical Hermes adapter is the reference implementation.
-Installation does not activate the observer. The switch can only admit binding
-and observation and cannot add launch, command, approval, review, completion,
-merge, or polling authority.
+The portable facade starts inactive and can safely enter or leave `observe`.
+Execution modes must use the recipient lifecycle adapter so `off` can quiesce,
+drain, and verify zero active workers rather than changing paper state alone.
+
+Adaptive v2 also exports the canonical governed Orca execution provider under
+`prime_bridge/`, its operator CLI under `scripts/`, a complete nine-harness
+adapter registry, and the authority contract in
+`docs/ORCA-EXECUTION-PROVIDER.md`. The recipient must already provide the Prime
+`JobLedger`, `WorkerTransport`, capability broker, and unified switch modules;
+the provider deliberately will not invent those authorities. Installation and
+staging remain inactive and perform no Orca or model call.
 
 The kit also exports an inactive-by-default unified switch contract for route,
 review, learning, autonomy, memory, token-compute, and RAG:
@@ -94,6 +99,42 @@ restored. Otherwise it reports `ROLLBACK_INCOMPLETE`, exits nonzero, and leaves
 the mismatch visible as `INVALID`. `FINALIZE_INCOMPLETE` means the requested
 state is active and verified but adapter transaction cleanup needs attention.
 
+### Adaptive Orca production integration
+
+The kit now includes the deterministic T3/T4 provider selector, the
+parent-owned adaptive batch transport, and the real coding A/B qualifier. They
+stage as code only and remain inactive until the recipient supplies all of the
+existing authority seams: Code Router `actual_lane`, adaptive admission,
+`JobLedger`, `WorkerTransport`, capability policy/ledger, unified switch,
+runtime probe, host signing authority, and a recipient-local qualification.
+
+Production selection requires two or more admitted scopes and binds the signed
+qualification to the exact harness, route fingerprint, adapter launch type,
+parallel ceiling, and expiry. Automatic worker starts use exact-argument,
+single-use preauthorization. The global `orca.worker.start` capability remains
+approval-required outside that qualified path. Results remain isolated
+proposals which the parent applies serially and verifies as a batch.
+
+No `.state` directory, HMAC, route receipt, job ledger, user-specific executable
+path, or production adapter status is shipped. The included adapter registry is
+portable and `configured` only. Recipients qualify their own subscription-backed
+runtime with `scripts/qualify-orca-coding.py`; failure or expiry falls back to
+the existing native route before an Orca side effect.
+### Move or remove Orca
+
+Orca implements the generic `ParallelWorkerProvider` contract and is loaded
+lazily from `config/parallel-worker-providers.json`. The catalog binds it to
+the `router`, `evaluator`, or both; moving it is a configuration transaction:
+
+```text
+python scripts/manage-parallel-provider.py bind --consumer evaluator
+python scripts/manage-parallel-provider.py bind --consumer evaluator --apply
+```
+
+After verified `off`, `unregister` removes the catalog entry and broker alias.
+`uninstall` additionally snapshots and removes only provider-owned files.
+Both preserve Prime ledger evidence and support snapshot restore. The recipient
+must supply its canonical ledger and existing Prime dependencies.
 ## Test it
 
 ```text
@@ -156,8 +197,15 @@ python manage-adaptive-v2.py uninstall --target <recipient-module> --backup-root
 - Ambiguity, shared mutable state, failed admission, and unsupported controls
   return serial fallback.
 - Only the parent may synthesize and verify a result.
-- Orca may bind or observe an existing job, including `worker-show`; it cannot
-  launch, command, approve, review, complete, or poll.
+- The v1 Orca observer may only bind or observe an existing job, including
+  `worker-show`.
+- The optional v2 Orca execution provider may launch and coordinate only after
+  the recipient capability broker authorizes an approval-required action and
+  the host binds an isolated worktree. It cannot authorize itself, select the
+  route or reviewer set, issue the evaluator verdict, or complete the canonical
+  job.
+- `quiesce` denies new Orca work while allowing inspection and cleanup. `off`
+  requires a recipient-verified drain; an incomplete drain remains quiesced.
 - Transaction rollback covers recipient runtime adapters and exact paper-state
   bytes; an unverified restoration is never labeled successful.
 - Installer rollback restores managed module bytes, keeps evidence, and admits

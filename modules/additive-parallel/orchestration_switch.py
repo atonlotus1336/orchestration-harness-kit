@@ -6,7 +6,7 @@ import os
 from pathlib import Path
 import tempfile
 
-from adaptive_switch import PortableSwitchError, global_state, transition
+from adaptive_switch import PortableSwitchError, global_state
 
 FEATURE_MODES = {
     "route": ("on", "off", "native-only", "auto", "prime", "prime-omp", "full"),
@@ -16,16 +16,13 @@ FEATURE_MODES = {
     "memory": ("on", "off", "recall", "read-write", "full"),
     "token-compute": ("on", "off", "economy", "balanced", "adaptive", "full"),
     "rag": ("on", "off", "serve", "index", "full"),
+    "orca": ("on", "off", "observe", "quiesce", "supervised", "full"),
 }
 FEATURES = tuple(FEATURE_MODES)
-HARNESS_REGISTRY = ("codex", "hermes")
-
-
-def _defaults():
-    return {
-        harness: {feature: "off" for feature in FEATURES}
-        for harness in HARNESS_REGISTRY
-    }
+HARNESS_REGISTRY = (
+    "codex", "hermes", "claude-code", "moa", "cursor", "dsh", "pi",
+    "opencode", "antigravity",
+)
 
 
 class PortableOrchestrationSwitch:
@@ -40,16 +37,14 @@ class PortableOrchestrationSwitch:
 
     def _read(self):
         if not self.path.exists():
-            return {
-                harness: {feature: "off" for feature in FEATURES}
-                for harness in self.registry
-            }
+            return {harness: {feature: "off" for feature in FEATURES}
+                    for harness in self.registry}
         if self.path.is_symlink() or not self.path.is_file():
             raise PortableSwitchError("stored orchestration state is invalid")
         value = json.loads(self.path.read_text(encoding="utf-8"))
         if (not isinstance(value, dict)
                 or set(value) != {"schema_version", "harnesses"}
-                or value["schema_version"] != "1.0"
+                or value["schema_version"] not in {"1.0", "1.1"}
                 or not isinstance(value["harnesses"], dict)
                 or set(value["harnesses"]) != set(self.registry)):
             raise PortableSwitchError("stored orchestration state is invalid")
@@ -69,8 +64,7 @@ class PortableOrchestrationSwitch:
         self.root.mkdir(parents=True, exist_ok=True)
         if self.root.is_symlink() or (self.path.exists() and self.path.is_symlink()):
             raise PortableSwitchError("portable orchestration state path is invalid")
-        fd, temporary = tempfile.mkstemp(
-            dir=self.root, prefix=".orchestration-", suffix=".tmp")
+        fd, temporary = tempfile.mkstemp(dir=self.root, prefix=".orchestration-", suffix=".tmp")
         try:
             with os.fdopen(fd, "wb") as handle:
                 handle.write(payload)
@@ -94,33 +88,27 @@ class PortableOrchestrationSwitch:
     def status(self, feature=None, harnesses=None):
         selected = tuple(harnesses or self.registry)
         names = (feature,) if feature else FEATURES
-        if (set(selected) - set(self.registry) or not selected
-                or set(names) - set(FEATURES)):
+        if set(selected) - set(self.registry) or not selected or set(names) - set(FEATURES):
             raise PortableSwitchError("unsupported feature or harness")
         try:
             matrix = self._read()
         except Exception:
             return {"global": "INVALID", "features": {}, "consumer_required": True}
-        rows = {}
-        values = []
+        rows, values = {}, []
         for name in names:
             modes = {harness: matrix[harness][name] for harness in selected}
             active = tuple(harness for harness, mode in modes.items() if mode != "off")
             rows[name] = {
                 "global": global_state(selected, active), "harnesses": modes,
-                "full_harnesses": [
-                    harness for harness, mode in modes.items() if mode == "full"],
+                "desired_modes": modes,
+                "full_harnesses": [harness for harness, mode in modes.items() if mode == "full"],
             }
             values.extend(modes.values())
         active_cells = sum(mode != "off" for mode in values)
-        overall = ("INACTIVE" if active_cells == 0 else
-                   "ACTIVE" if active_cells == len(values) else "PARTIAL")
-        return {
-            "global": overall, "features": rows, "consumer_required": True,
-            "full_is_bounded": True,
-        }
+        overall = "INACTIVE" if active_cells == 0 else "ACTIVE" if active_cells == len(values) else "PARTIAL"
+        return {"global": overall, "features": rows, "consumer_required": True, "full_is_bounded": True}
 
-    def set(self, feature, mode, targets):
+    def set(self, feature, mode, targets, *, verified_orca_off=False):
         targets = tuple(name for name in self.registry if name in set(targets))
         if not targets:
             raise PortableSwitchError("unsupported or empty harness target")
@@ -133,6 +121,10 @@ class PortableOrchestrationSwitch:
         else:
             raise PortableSwitchError("unsupported feature mode")
         before = self._read()
+        if (mode == "off" and "orca" in names
+                and any(before[harness]["orca"] != "off" for harness in targets)
+                and not verified_orca_off):
+            raise PortableSwitchError("Orca off requires recipient-verified drain")
         after = {harness: dict(row) for harness, row in before.items()}
         changed = []
         for harness in targets:
@@ -142,21 +134,18 @@ class PortableOrchestrationSwitch:
                     changed.append({"harness": harness, "feature": name})
         if not changed:
             status = self.status()
-            return {"changed": False, "changed_cells": [],
-                    "result": status["global"], "after": status}
+            return {"changed": False, "changed_cells": [], "result": status["global"], "after": status}
         prior = self.path.read_bytes() if self.path.exists() else None
         try:
             self._write_bytes((json.dumps({
-                "schema_version": "1.0", "harnesses": after,
+                "schema_version": "1.1", "harnesses": after,
             }, sort_keys=True, indent=2) + "\n").encode())
             self._verify(after)
         except Exception:
             self._restore(prior)
-            return {"changed": False, "changed_cells": [],
-                    "result": "FAILED_ROLLED_BACK", "after": self.status()}
+            return {"changed": False, "changed_cells": [], "result": "FAILED_ROLLED_BACK", "after": self.status()}
         status = self.status()
-        return {"changed": True, "changed_cells": changed,
-                "result": status["global"], "after": status}
+        return {"changed": True, "changed_cells": changed, "result": status["global"], "after": status}
 
 
 def mode_for(state_path, feature, harness, registry=HARNESS_REGISTRY):
@@ -164,4 +153,3 @@ def mode_for(state_path, feature, harness, registry=HARNESS_REGISTRY):
     if owner.path != Path(state_path):
         raise PortableSwitchError("orchestration state filename is invalid")
     return owner._read()[harness][feature]
-

@@ -1,0 +1,73 @@
+{
+  "schema_version": "1.0",
+  "adapters": {
+    "codex": {
+      "launch": "native",
+      "agent": "codex",
+      "command": [],
+      "qualification": "configured"
+    },
+    "hermes": {
+      "launch": "terminal",
+      "agent": null,
+      "command": [
+        "hermes",
+        "--profile",
+        "workspace"
+      ],
+      "qualification": "configured"
+    },
+    "claude-code": {
+      "launch": "native",
+      "agent": "claude",
+      "command": [],
+      "qualification": "configured"
+    },
+    "moa": {
+      "launch": "terminal",
+      "agent": null,
+      "command": [
+        "moa"
+      ],
+      "qualification": "configured"
+    },
+    "cursor": {
+      "launch": "native",
+      "agent": "cursor",
+      "command": [],
+      "qualification": "configured"
+    },
+    "dsh": {
+      "launch": "terminal",
+      "agent": null,
+      "command": [
+        "dsh"
+      ],
+      "qualification": "configured"
+    },
+    "pi": {
+      "launch": "terminal",
+      "agent": null,
+      "command": [
+        "pi"
+      ],
+      "qualification": "configured"
+    },
+    "opencode": {
+      "launch": "terminal",
+      "agent": null,
+      "command": [
+        "opencode"
+      ],
+      "qualification": "configured"
+    },
+    "antigravity": {
+      "launch": "terminal",
+      "agent": null,
+      "command": [
+        "antigravity"
+      ],
+      "qualification": "configured"
+    }
+  }
+}

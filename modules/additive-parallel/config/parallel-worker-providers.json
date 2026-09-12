@@ -1,0 +1,22 @@
+{
+  "schema_version": "1.0",
+  "providers": {
+    "orca": {
+      "feature": "orca",
+      "module": "prime_bridge.orca_execution",
+      "factory": "build_orca_service",
+      "consumers": ["router"],
+      "capabilities": [
+        {
+          "alias": "orca.worker.start",
+          "server": "orca-worker",
+          "tool": "start",
+          "operation": "start"
+        }
+      ],
+      "options": {
+        "adapter_registry": "config/orca-harness-adapters.json"
+      }
+    }
+  }
+}

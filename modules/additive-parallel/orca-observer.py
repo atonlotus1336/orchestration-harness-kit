@@ -1,15 +1,11 @@
 #!/usr/bin/env python3
-"""Toggle portable observation-only Orca state; recipient consumer required."""
-from __future__ import annotations
-
+"""Compatibility CLI for the portable unified Orca control."""
 import argparse
 import json
 from pathlib import Path
 
 from adaptive_switch import PortableSwitchError, resolve_targets
-from orca_observer_switch import PortableOrcaObserverSwitch
-
-REGISTRY = ("codex", "hermes")
+from orca_observer_switch import HARNESS_REGISTRY, PortableOrcaObserverSwitch
 
 
 def main(argv=None):
@@ -20,30 +16,24 @@ def main(argv=None):
         command = sub.add_parser(name)
         selector = command.add_mutually_exclusive_group(required=True)
         selector.add_argument("--global", dest="global_selector", action="store_true")
-        selector.add_argument("--harness", action="append", choices=REGISTRY)
-    status = sub.add_parser("status")
-    selector = status.add_mutually_exclusive_group()
-    selector.add_argument("--global", dest="global_selector", action="store_true")
-    selector.add_argument("--harness", action="append", choices=REGISTRY)
+        selector.add_argument("--harness", action="append", choices=HARNESS_REGISTRY)
+    sub.add_parser("status")
     args = parser.parse_args(argv)
     try:
-        targets = (REGISTRY if args.command == "status"
-                   and not (args.global_selector or args.harness)
-                   else resolve_targets(
-                       REGISTRY, global_selector=args.global_selector,
-                       harnesses=tuple(args.harness or ())))
-        owner = PortableOrcaObserverSwitch(args.state_root, REGISTRY)
-        result = (owner.status() if args.command == "status"
-                  else owner.set(targets, turn_on=args.command == "on"))
-        outcome = result.get("result", result.get("global", "INVALID"))
-        payload = {"command": args.command, "status": outcome,
-                   "targets": list(targets), "result": result,
-                   "activation_changes": len(result.get("changed_harnesses", []))}
+        owner = PortableOrcaObserverSwitch(args.state_root)
+        if args.command == "status":
+            result = owner.status()
+        else:
+            targets = resolve_targets(
+                HARNESS_REGISTRY, global_selector=args.global_selector,
+                harnesses=tuple(args.harness or ()),
+            )
+            result = owner.set(targets, turn_on=args.command == "on")
     except Exception as exc:
-        payload = {"command": args.command, "status": "INVALID",
-                   "activation_changes": 0, "reason": type(exc).__name__}
-    print(json.dumps(payload, sort_keys=True))
-    return 0 if payload["status"] in {"ACTIVE", "INACTIVE", "PARTIAL"} else 3
+        result = {"result": "INVALID", "reason": type(exc).__name__}
+    print(json.dumps(result, sort_keys=True))
+    outcome = result.get("result", result.get("global", "INVALID"))
+    return 0 if outcome in {"ACTIVE", "INACTIVE", "PARTIAL"} else 3
 
 
 if __name__ == "__main__":

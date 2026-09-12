@@ -1,0 +1,44 @@
+{
+  "schema_version": "1.0",
+  "name": "orca",
+  "catalog_entry": {
+    "feature": "orca",
+    "module": "prime_bridge.orca_execution",
+    "factory": "build_orca_service",
+    "consumers": ["router"],
+    "capabilities": [
+      {
+        "alias": "orca.worker.start",
+        "server": "orca-worker",
+        "tool": "start",
+        "operation": "start"
+      }
+    ],
+    "options": {
+      "adapter_registry": "config/orca-harness-adapters.json"
+    }
+  },
+  "capability_aliases": {
+    "orca.worker.start": {
+      "classification": "action",
+      "approval": "required",
+      "server": "orca-worker",
+      "tool": "start"
+    }
+  },
+  "owned_files": [
+    "prime_bridge/orca_control.py",
+    "prime_bridge/orca_execution.py",
+    "prime_bridge/orca_observer_switch.py",
+    "prime_bridge/orca_operator.py",
+    "scripts/manage-orca.py",
+    "scripts/orca-observer.py",
+    "scripts/orca-spawn.mjs",
+    "config/orca-harness-adapters.json",
+    "docs/ORCA-EXECUTION-PROVIDER.md"
+  ],
+  "preserved_evidence": [
+    "Prime JobLedger jobs, worker bindings, events, and orca_executions rows",
+    "activation and drain receipts"
+  ]
+}
