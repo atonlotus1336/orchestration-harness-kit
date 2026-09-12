@@ -55,6 +55,18 @@
       "source_path": "prime_bridge/adaptive_runtime_refresh.py",
       "portable_contract": "adaptive_switch.py#adapter-protocol",
       "source_sha256": "ced8a9ad7f7be21ab883eefb9eeee33c9c85ebfb491b04ba6109b2d7fe13d2ba"
+    },
+    {
+      "source_repository": "hermes-agent-self-evolution",
+      "source_path": "prime_bridge/orca_observer_switch.py",
+      "portable_contract": "orca_observer_switch.py#PortableOrcaObserverSwitch,enabled_harnesses",
+      "source_sha256": "78225f2c40767dd16333245efcd11bd629cdfcc4362e133dba8b98c1dca92c12"
+    },
+    {
+      "source_repository": "hermes-agent-self-evolution",
+      "source_path": "prime_bridge/orchestration_switch.py",
+      "portable_contract": "orchestration_switch.py#PortableOrchestrationSwitch,mode_for",
+      "source_sha256": "0266de79968ad51142f21e71253045e9b6e962e45c32c34cd20f7f3d285c9e56"
     }
   ],
   "excluded_runtime_behavior": [

@@ -9,6 +9,35 @@ supplies its local adapter module. Without both `--state-root` and
 makes zero changes. Fresh installs stay inactive, and no keys, routes,
 usernames, receipts, or process IDs are exported.
 
+Orca observation has the same concise selector grammar:
+
+```text
+python orca-observer.py --state-root <recipient-data>/adaptive-switch on --global
+python orca-observer.py --state-root <recipient-data>/adaptive-switch off --harness codex
+python orca-observer.py --state-root <recipient-data>/adaptive-switch status
+```
+
+The portable Orca switch starts inactive and writes only recipient-owned paper
+state. A recipient worker-transport adapter must consume
+`orca_observer_switch.enabled_harnesses()` and fail closed when state is
+invalid; the canonical Hermes adapter is the reference implementation.
+Installation does not activate the observer. The switch can only admit binding
+and observation and cannot add launch, command, approval, review, completion,
+merge, or polling authority.
+
+The kit also exports an inactive-by-default unified switch contract for route,
+review, learning, autonomy, memory, token-compute, and RAG:
+
+```text
+python orchestration-control.py --state-root <recipient-data>/orchestration status
+python orchestration-control.py --state-root <recipient-data>/orchestration all full --global
+python orchestration-control.py --state-root <recipient-data>/orchestration memory off --harness codex
+```
+
+Recipient adapters consume `orchestration_switch.mode_for()`. Full requests
+remain bounded by recipient qualification, authorization, budgets, approvals,
+evidence, and containment. Installation performs no activation or provider call.
+
 **What it is:** an optional, provider-free package with two compatible tracks:
 the unchanged v1 profile for exactly two independent read-only child tasks, and
 an inactive adaptive v2 template for execution admission, staged reviewer

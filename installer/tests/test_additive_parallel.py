@@ -515,3 +515,66 @@ def test_portable_switch_cli_missing_adapter_is_nonzero():
         [sys.executable, str(MODULE / "adaptive-switch.py"), "on"],
         cwd=MODULE, text=True, capture_output=True, check=False)
     assert invalid.returncode == 2
+
+
+def test_portable_orca_observer_switch_cli_is_simple_and_inactive_by_default(tmp_path):
+    base = [
+        sys.executable, str(MODULE / "orca-observer.py"),
+        "--state-root", str(tmp_path / "state"),
+    ]
+    initial = subprocess.run(
+        [*base, "status"], cwd=MODULE, text=True,
+        capture_output=True, check=False)
+    assert initial.returncode == 0
+    assert json.loads(initial.stdout)["status"] == "INACTIVE"
+    active = subprocess.run(
+        [*base, "on", "--global"], cwd=MODULE, text=True,
+        capture_output=True, check=False)
+    assert active.returncode == 0
+    assert json.loads(active.stdout)["activation_changes"] == 2
+    partial = subprocess.run(
+        [*base, "off", "--harness", "codex"], cwd=MODULE, text=True,
+        capture_output=True, check=False)
+    value = json.loads(partial.stdout)
+    assert partial.returncode == 0
+    assert value["status"] == "PARTIAL"
+    assert value["result"]["after"]["authority"] == {
+        "observe_only": True, "launch": False, "command": False,
+        "approve": False, "review": False, "complete": False, "poll": False,
+    }
+
+
+def test_portable_unified_switch_is_simple_and_inactive_by_default(tmp_path):
+    base = [
+        sys.executable, str(MODULE / "orchestration-control.py"),
+        "--state-root", str(tmp_path / "state"),
+    ]
+    initial = subprocess.run(
+        [*base, "status"], cwd=MODULE, text=True,
+        capture_output=True, check=False)
+    assert initial.returncode == 0
+    assert json.loads(initial.stdout)["global"] == "INACTIVE"
+    active = subprocess.run(
+        [*base, "all", "full", "--global"], cwd=MODULE, text=True,
+        capture_output=True, check=False)
+    assert active.returncode == 0, active.stdout + active.stderr
+    assert json.loads(active.stdout)["result"] == "ACTIVE"
+    partial = subprocess.run(
+        [*base, "memory", "off", "--harness", "codex"], cwd=MODULE,
+        text=True, capture_output=True, check=False)
+    assert partial.returncode == 0
+    status = subprocess.run(
+        [*base, "status", "--feature", "memory"], cwd=MODULE,
+        text=True, capture_output=True, check=False)
+    assert json.loads(status.stdout)["features"]["memory"]["global"] == "PARTIAL"
+
+
+def test_adaptive_stage_includes_orca_switch_files():
+    manager_path = MODULE / "manage-adaptive-v2.py"
+    spec = importlib.util.spec_from_file_location("adaptive_manager_orca", manager_path)
+    manager = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(manager)
+    assert {
+        "orca-observer.py", "orca_observer_switch.py",
+        "orchestration-control.py", "orchestration_switch.py",
+    } <= set(manager.MANAGED_FILES)
