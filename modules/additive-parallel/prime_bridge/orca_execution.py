@@ -306,6 +306,31 @@ class OrcaHarnessRegistry:
         return rows
 
 
+def orca_material_fingerprint(
+    registry: OrcaHarnessRegistry, client: OrcaCLI, harness: str,
+) -> dict[str, str]:
+    """Bind persistent qualification to material adapter/runtime identity."""
+    adapter = registry.get(harness)
+    adapter_payload = {
+        "harness": adapter.harness,
+        "launch": adapter.launch,
+        "agent": adapter.agent,
+        "command": list(adapter.command),
+    }
+    candidate = Path(str(client.executable))
+    if not candidate.is_file():
+        resolved = shutil.which(str(client.executable))
+        candidate = Path(resolved) if resolved else candidate
+    if not candidate.is_file():
+        raise OrcaExecutionError("Orca executable fingerprint is unavailable")
+    return {
+        "adapter_sha256": hashlib.sha256(json.dumps(
+            adapter_payload, sort_keys=True, separators=(",", ":"),
+        ).encode()).hexdigest(),
+        "orca_executable_sha256": hashlib.sha256(candidate.read_bytes()).hexdigest(),
+    }
+
+
 def _result_id(envelope: Mapping[str, Any], entity: str) -> str:
     result = envelope.get("result")
     candidates: list[Any] = []
@@ -525,6 +550,9 @@ class OrcaExecutionProvider:
     def _permit(self, harness: str, operation: str) -> None:
         if not operation_permitted("orca", harness, operation, self.switch_path):
             raise OrcaExecutionError(f"Orca {operation} is disabled for {harness}")
+
+    def qualification_fingerprint(self, harness: str) -> dict[str, str]:
+        return orca_material_fingerprint(self.registry, self.client, harness)
 
     def allocate_worktree(self, repo: Path, root: Path, binding_id: str,
                           base_commit: str) -> Path:
@@ -1605,6 +1633,7 @@ def build_orca_service(*, ledger: JobLedger, allowed_roots, root: Path,
 
 __all__ = [    "HarnessAdapter", "OrcaCLI", "OrcaExecutionError",
     "discover_orca_executable",
+    "orca_material_fingerprint",
     "OrcaExecutionProvider", "OrcaExecutionService", "OrcaHarnessRegistry",
     "build_orca_service",
 ]

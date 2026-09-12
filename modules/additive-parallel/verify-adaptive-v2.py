@@ -328,6 +328,7 @@ def verify(source_workspace: Path | None = None) -> list[str]:
     production_contract = (
         "adapter_launch", "ORCA_ADAPTER_QUALIFICATION_MISMATCH",
         "ELIGIBLE_ORCA_LANES", "automatic_dispatch_authorized",
+        "until_material_change", "ORCA_MATERIAL_FINGERPRINT_MISMATCH",
     )
     if any(fragment not in selector_source for fragment in production_contract):
         failures.append("adaptive Orca selector contract is incomplete")
@@ -342,10 +343,14 @@ def verify(source_workspace: Path | None = None) -> list[str]:
         failures.append("portable Hermes Orca worktree interop is incomplete")
     if ('"--orca", default=None' not in operator_source):
         failures.append("Orca operator does not default to governed discovery")
+    if ("ORCA_AB_QUALIFICATION_EXPIRED" in selector_source
+            or "timedelta(days=7)" in qualifier_source):
+        failures.append("portable Orca qualification still has calendar expiry")
     if ("--harness" not in qualifier_source
             or "--adapter-launch" not in qualifier_source
             or "records[args.harness] = record" not in qualifier_source
             or "_qualification_records" not in qualifier_source
+            or "--migrate-persistent" not in qualifier_source
             or "--promote-registry" not in qualifier_source):
         failures.append("real coding A/B qualifier contract is incomplete")
     orca_adapters = portable.load_json(MODULE / "config/orca-harness-adapters.json")

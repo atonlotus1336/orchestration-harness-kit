@@ -138,10 +138,11 @@ The Code Router may select Orca automatically only for the authoritative
 `actual_lane` values `T3_PRIME_OMP` and `T4_AUTONOMOUS`, and only when at least
 two independent scopes were admitted. Selection also requires the provider to
 be bound to the router, the harness switch to be `full`, a live READY probe, a
-production adapter, and a current authority-signed qualification bound to the
-exact harness, route fingerprint, adapter launch type, and admitted ceiling.
-Any missing, expired, mismatched, or unverifiable condition falls back to the
-existing native route before an Orca side effect.
+production adapter, and an authority-signed qualification bound to the exact
+harness, route fingerprint, adapter launch type, Orca executable, qualification
+contract, and admitted ceiling. Any missing, materially changed, mismatched, or
+unverifiable condition falls back to the existing native route before an Orca
+side effect.
 
 Automatic starts use a single-use preauthorization for the exact normalized
 `orca.worker.start` arguments. The global capability remains approval-required;
@@ -155,8 +156,7 @@ against exactly one durable run/task dispatch. If Codex is ready with the task
 still present as a draft, the provider submits that same draft once. It never
 stops and duplicates an ambiguous dispatch.
 
-Qualification is deliberately time-limited and can be rerun with a
-subscription-backed Luna route:
+Qualification can be run with a subscription-backed Luna route:
 
 ```text
 python scripts/qualify-orca-coding.py --harness codex --model gpt-5.6-luna --adapter-launch native --promote-registry
@@ -171,10 +171,19 @@ does not silently substitute a provider or model. Harnesses without a real
 native baseline driver fail closed and remain `configured` until qualified on
 a recipient that can run them.
 
-Each record expires after seven days. Re-run the same command before expiry;
-automatic selection falls back to the native route if a record expires, its
-route changes, or its adapter no longer matches. This is a renewal safety gate,
-not a requirement to wait seven days after a successful qualification.
+Qualification records do not expire with elapsed time. They remain valid until
+a material fingerprint changes: the harness route, adapter, Orca executable,
+qualification contract, or admitted parallel ceiling. Runtime readiness is
+still probed, and any mismatch falls back to the native route. Upgrade an older
+signed v1.0 record without model calls using:
+
+```text
+python scripts/qualify-orca-coding.py --state-root <state-root> --migrate-persistent
+```
+
+Migration accepts only an authority-valid legacy record that has not already
+expired, removes `expires_at`, records `validity=until_material_change`, and
+re-signs the multi-harness store locally.
 
 The generated authority material and A/B evidence stay in recipient-local
 `.state`; they are never part of the portable kit.

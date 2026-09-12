@@ -4,7 +4,7 @@ from __future__ import annotations
 
 import argparse
 import asyncio
-from datetime import datetime, timedelta, timezone
+from datetime import datetime, timezone
 import hashlib
 import hmac
 import json
@@ -17,6 +17,9 @@ import time
 import traceback
 import uuid
 
+from prime_bridge.adaptive_execution_provider import (
+    QUALIFICATION_SCHEMA_VERSION, qualification_contract_sha256,
+)
 from prime_bridge.adaptive_production_authorization import host_key
 from prime_bridge.harness_registry import UNIVERSAL_HARNESS_REGISTRY
 from prime_bridge.job_cli import load_runtime_authority
@@ -24,7 +27,7 @@ from prime_bridge.job_ledger import JobLedger
 from prime_bridge.mcp_server import ROOT, _profile_route
 from prime_bridge.orca_execution import (
     HarnessAdapter, OrcaHarnessRegistry, OrcaExecutionProvider, OrcaCLI,
-    discover_orca_executable,
+    discover_orca_executable, orca_material_fingerprint,
 )
 from prime_bridge.orchestration_switch import default_state_path
 from prime_bridge.worker_transport import WorkerTransport, normalize_orca_worker_show
@@ -109,7 +112,7 @@ def _qualification_records(path: Path, key: bytes) -> dict[str, dict]:
         key, json.dumps(unsigned, sort_keys=True, separators=(",", ":")).encode(),
         hashlib.sha256,
     ).hexdigest()
-    if (existing.get("schema_version") != "1.0"
+    if (existing.get("schema_version") != QUALIFICATION_SCHEMA_VERSION
             or existing.get("provider") != "orca"
             or not isinstance(existing.get("records"), dict)
             or not hmac.compare_digest(
@@ -117,6 +120,64 @@ def _qualification_records(path: Path, key: bytes) -> dict[str, dict]:
             )):
         raise RuntimeError("existing qualification store failed authority validation")
     return dict(existing["records"])
+
+
+def _migrate_persistent_store(path: Path, key: bytes,
+                              registry: OrcaHarnessRegistry) -> dict:
+    """One-time migration of still-valid v1.0 leases without model calls."""
+    try:
+        existing = json.loads(path.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError) as exc:
+        raise RuntimeError("legacy qualification store is unreadable") from exc
+    unsigned = {
+        name: value for name, value in existing.items()
+        if name != "authority_hmac_sha256"
+    }
+    expected = hmac.new(
+        key, json.dumps(unsigned, sort_keys=True, separators=(",", ":")).encode(),
+        hashlib.sha256,
+    ).hexdigest()
+    if (existing.get("schema_version") != "1.0"
+            or existing.get("provider") != "orca"
+            or not isinstance(existing.get("records"), dict)
+            or not hmac.compare_digest(
+                str(existing.get("authority_hmac_sha256", "")), expected
+            )):
+        raise RuntimeError("legacy qualification store failed authority validation")
+    now = datetime.now(timezone.utc)
+    client = OrcaCLI(cwd=ROOT)
+    records = {}
+    for harness, source in existing["records"].items():
+        try:
+            expiry = datetime.fromisoformat(
+                str(source["expires_at"]).replace("Z", "+00:00")
+            )
+        except (KeyError, TypeError, ValueError) as exc:
+            raise RuntimeError("legacy qualification record is invalid") from exc
+        if (harness not in UNIVERSAL_HARNESS_REGISTRY
+                or source.get("status") != "qualified"
+                or expiry.tzinfo is None or expiry <= now):
+            raise RuntimeError("legacy qualification record is not migratable")
+        record = {
+            name: value for name, value in source.items()
+            if name != "expires_at"
+        }
+        record.update(
+            validity="until_material_change",
+            qualification_contract_sha256=qualification_contract_sha256(),
+            **orca_material_fingerprint(registry, client, harness),
+        )
+        records[harness] = record
+    migrated = {
+        "schema_version": QUALIFICATION_SCHEMA_VERSION,
+        "provider": "orca", "records": records,
+    }
+    migrated["authority_hmac_sha256"] = hmac.new(
+        key, json.dumps(migrated, sort_keys=True, separators=(",", ":")).encode(),
+        hashlib.sha256,
+    ).hexdigest()
+    _atomic(path, migrated)
+    return migrated
 
 
 def _build_repo(path: Path) -> None:
@@ -363,11 +424,29 @@ def main(argv=None) -> int:
     parser.add_argument("--adapter-launch", "--codex-launch",
                         dest="adapter_launch", choices=("native", "terminal"))
     parser.add_argument("--native-baseline", type=Path)
+    parser.add_argument(
+        "--migrate-persistent", action="store_true",
+        help="migrate a valid v1.0 time lease to material-change validity",
+    )
     args = parser.parse_args(argv)
     key = host_key()
     if not key:
         raise SystemExit("qualification signing authority is unavailable")
     registry = OrcaHarnessRegistry.load(ROOT / "config/orca-harness-adapters.json")
+    if args.migrate_persistent:
+        qualification_path = args.state_root / "qualification.json"
+        try:
+            migrated = _migrate_persistent_store(
+                qualification_path, key, registry,
+            )
+        except RuntimeError as exc:
+            raise SystemExit(str(exc)) from exc
+        print(json.dumps({
+            "status": "MIGRATED", "qualification": str(qualification_path),
+            "validity": "until_material_change",
+            "harnesses": sorted(migrated["records"]), "provider_calls": 0,
+        }, indent=2))
+        return 0
     configured_adapter = registry.get(args.harness)
     adapter_launch = args.adapter_launch or configured_adapter.launch
     if args.harness != "codex" and adapter_launch != configured_adapter.launch:
@@ -512,17 +591,26 @@ def main(argv=None) -> int:
         print(json.dumps({"status": "NOT_QUALIFIED", "evidence": str(evidence_path),
                           "failure": failure, "wall_time_ratio": ratio}, indent=2))
         return 2
+    material_registry = registry
+    if args.harness == "codex" and adapter_launch == "terminal":
+        material_registry.adapters["codex"] = HarnessAdapter(
+            "codex", "terminal", None, ("codex",), "configured",
+        )
     record = {
         "status": "qualified", "harness": args.harness,
         "route_sha256": route["fingerprint"],
         "qualified_at": now.isoformat().replace("+00:00", "Z"),
-        "expires_at": (now + timedelta(days=7)).isoformat().replace("+00:00", "Z"),
+        "validity": "until_material_change",
         "sample_count": 4, "quality_regressions": 0,
         "wall_time_ratio": ratio, "native_successes": native_successes,
         "orca_successes": orca["successes"], "evidence_sha256": evidence_sha,
         "automatic_dispatch_authorized": True,
         "max_parallel": args.max_parallel,
         "adapter_launch": adapter_launch,
+        "qualification_contract_sha256": qualification_contract_sha256(),
+        **orca_material_fingerprint(
+            material_registry, OrcaCLI(cwd=ROOT), args.harness,
+        ),
     }
     qualification_path = args.state_root / "qualification.json"
     try:
@@ -530,7 +618,8 @@ def main(argv=None) -> int:
     except RuntimeError as exc:
         raise SystemExit(str(exc)) from exc
     records[args.harness] = record
-    qualification = {"schema_version": "1.0", "provider": "orca",
+    qualification = {
+        "schema_version": QUALIFICATION_SCHEMA_VERSION, "provider": "orca",
                      "records": records}
     qualification["authority_hmac_sha256"] = hmac.new(
         key, json.dumps(qualification, sort_keys=True, separators=(",", ":")).encode(),

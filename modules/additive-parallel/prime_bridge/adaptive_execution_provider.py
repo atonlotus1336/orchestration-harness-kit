@@ -16,6 +16,7 @@ from .orchestration_switch import effective_mode
 
 ELIGIBLE_ORCA_LANES = frozenset({"T3_PRIME_OMP", "T4_AUTONOMOUS"})
 SHA256 = re.compile(r"[0-9a-f]{64}\Z")
+QUALIFICATION_SCHEMA_VERSION = "1.1"
 
 
 class AdaptiveProviderSelectionError(ValueError):
@@ -27,6 +28,25 @@ def default_qualification_path() -> Path:
     if override:
         return Path(override)
     return Path(__file__).resolve().parents[1] / ".state" / "orca-coding" / "qualification.json"
+
+
+def qualification_contract_sha256() -> str:
+    """Fingerprint only code that can change Orca qualification semantics."""
+    root = Path(__file__).resolve().parents[1]
+    paths = (
+        Path(__file__).resolve(),
+        root / "prime_bridge" / "orca_execution.py",
+        root / "prime_bridge" / "worker_transport.py",
+        root / "scripts" / "qualify-orca-coding.py",
+    )
+    material = {
+        str(path.relative_to(root)).replace("\\", "/"):
+        hashlib.sha256(path.read_bytes()).hexdigest()
+        for path in paths
+    }
+    return hashlib.sha256(json.dumps(
+        material, sort_keys=True, separators=(",", ":"),
+    ).encode()).hexdigest()
 
 
 @dataclass(frozen=True)
@@ -68,7 +88,7 @@ def _qualification(path: Path, *, harness: str, route_sha256: str,
         return False, None, "ORCA_AB_QUALIFICATION_INVALID", None
     required = {"schema_version", "provider", "records", "authority_hmac_sha256"}
     if (not isinstance(value, dict) or set(value) != required
-            or value.get("schema_version") != "1.0"
+            or value.get("schema_version") != QUALIFICATION_SCHEMA_VERSION
             or value.get("provider") != "orca"
             or not isinstance(value.get("records"), dict)):
         return False, None, "ORCA_AB_QUALIFICATION_INVALID", None
@@ -83,10 +103,12 @@ def _qualification(path: Path, *, harness: str, route_sha256: str,
         return False, None, "ORCA_AB_QUALIFICATION_UNSIGNED", None
     record = value["records"].get(harness)
     fields = {
-        "status", "harness", "route_sha256", "qualified_at", "expires_at",
+        "status", "harness", "route_sha256", "qualified_at", "validity",
         "sample_count", "quality_regressions", "wall_time_ratio",
         "native_successes", "orca_successes", "evidence_sha256",
         "automatic_dispatch_authorized", "max_parallel", "adapter_launch",
+        "qualification_contract_sha256", "adapter_sha256",
+        "orca_executable_sha256",
     }
     if (not isinstance(record, dict) or set(record) != fields
             or record.get("status") != "qualified"
@@ -103,17 +125,23 @@ def _qualification(path: Path, *, harness: str, route_sha256: str,
             or not isinstance(record.get("wall_time_ratio"), (int, float))
             or record["wall_time_ratio"] <= 0
             or record.get("automatic_dispatch_authorized") is not True
+            or record.get("validity") != "until_material_change"
+            or record.get("qualification_contract_sha256")
+            != qualification_contract_sha256()
+            or SHA256.fullmatch(str(record.get("adapter_sha256") or "")) is None
+            or SHA256.fullmatch(
+                str(record.get("orca_executable_sha256") or "")
+            ) is None
             or record.get("adapter_launch") not in {"native", "terminal"}
             or type(record.get("max_parallel")) is not int
             or record["max_parallel"] < admitted_count):
         return False, None, "ORCA_AB_QUALIFICATION_INVALID", None
     try:
-        expiry = datetime.fromisoformat(record["expires_at"].replace("Z", "+00:00"))
         qualified = datetime.fromisoformat(record["qualified_at"].replace("Z", "+00:00"))
     except (AttributeError, ValueError):
         return False, None, "ORCA_AB_QUALIFICATION_INVALID", None
-    if expiry.tzinfo is None or qualified.tzinfo is None or expiry <= now:
-        return False, None, "ORCA_AB_QUALIFICATION_EXPIRED", None
+    if qualified.tzinfo is None or qualified > now:
+        return False, None, "ORCA_AB_QUALIFICATION_INVALID", None
     reference = hashlib.sha256(raw).hexdigest()
     return True, reference, "ORCA_AB_QUALIFIED", record
 
@@ -170,6 +198,18 @@ def select_execution_provider(
         return _native(reason="ORCA_ADAPTER_QUALIFICATION_MISMATCH", actual_lane=actual_lane,
                        harness=harness, admitted_count=admitted_count, now=clock)
     try:
+        material = provider.qualification_fingerprint(harness)
+    except Exception:
+        return _native(reason="ORCA_MATERIAL_FINGERPRINT_UNAVAILABLE",
+                       actual_lane=actual_lane, harness=harness,
+                       admitted_count=admitted_count, now=clock)
+    if (material.get("adapter_sha256") != qualification["adapter_sha256"]
+            or material.get("orca_executable_sha256")
+            != qualification["orca_executable_sha256"]):
+        return _native(reason="ORCA_MATERIAL_FINGERPRINT_MISMATCH",
+                       actual_lane=actual_lane, harness=harness,
+                       admitted_count=admitted_count, now=clock)
+    try:
         probe = provider.probe(harness)
     except Exception:
         return _native(reason="ORCA_RUNTIME_PROBE_FAILED", actual_lane=actual_lane,
@@ -188,5 +228,6 @@ def select_execution_provider(
 __all__ = [
     "AdaptiveProviderDecision", "AdaptiveProviderSelectionError",
     "ELIGIBLE_ORCA_LANES", "default_qualification_path",
+    "qualification_contract_sha256",
     "select_execution_provider",
 ]

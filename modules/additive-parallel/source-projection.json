@@ -86,7 +86,7 @@
       "portable_contract": "prime_bridge/orca_execution.py#OrcaExecutionProvider,OrcaExecutionService",
       "source_path": "prime_bridge/orca_execution.py",
       "source_repository": "hermes-agent-self-evolution",
-      "source_sha256": "febccb0904ba5780cd536f11afc82bddf55066265bfb8a6987791a007e4e94d1"
+      "source_sha256": "cd6d520ecb55a689f7a5ffcf082c18bb5b464a762688d32af9df322d5ba5bc88"
     },
     {
       "portable_contract": "prime_bridge/orca_operator.py#governed executable discovery",
@@ -158,7 +158,7 @@
       "portable_contract": "prime_bridge/adaptive_execution_provider.py#select_execution_provider",
       "source_path": "prime_bridge/adaptive_execution_provider.py",
       "source_repository": "hermes-agent-self-evolution",
-      "source_sha256": "2d82894eedd20ae797959bf36a56592a5c36c8d19e1d6d211696f32f694e97ca"
+      "source_sha256": "d257d03c243cf92953e7721482b6927fce207ca15ae021ea6382a83760da4c4a"
     },
     {
       "portable_contract": "prime_bridge/orca_adaptive_batch.py#execute_orca_adaptive_batch",
@@ -176,13 +176,13 @@
       "portable_contract": "scripts/qualify-orca-coding.py",
       "source_path": "scripts/qualify-orca-coding.py",
       "source_repository": "hermes-agent-self-evolution",
-      "source_sha256": "8d152e1338c49bf2966d83dfb880e6b8a32db1b39fdbbdd96c2881ccaa1469f8"
+      "source_sha256": "52a446aa4427036909f0f8470243f5beb65da43b571c3636a970cf7d025970cb"
     },
     {
       "portable_contract": "docs/ORCA-EXECUTION-PROVIDER.md",
       "source_path": "docs/ORCA-EXECUTION-PROVIDER.md",
       "source_repository": "hermes-agent-self-evolution",
-      "source_sha256": "1c7cd17a329838bed4acff01d48506f6da5be664ca721ac6d1a48ed92cc5c3d5"
+      "source_sha256": "5f176ba3ec0f8418bbcdefc7298ff7f384eab3d2e133f42660671b4c90e3b880"
     }
   ],
   "schema": "lapart.adaptive-v2-source-projection.v1"
