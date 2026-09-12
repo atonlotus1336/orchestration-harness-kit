@@ -72,6 +72,10 @@ canonical Prime ledger, verifies zero remain, and only then writes `off`. An
 incomplete or unverifiable drain stays visibly quiesced and exits nonzero.
 Supply `--ledger` and `--allowed-root` when the canonical ledger cannot be
 discovered from `LAPART_PRIME_LEDGER` or the standard Hermes state path.
+Failures before a worker dispatch is requested close the exact worker and
+coordinator terminals and settle as failed, so they cannot become permanent
+paper-active records. An ambiguous failure after a dispatch request remains
+`outcome_unknown` and must be reconciled rather than guessed.
 
 Provider removal is transactional and preserves ledger evidence:
 
@@ -93,6 +97,19 @@ descriptor is present. `canary` and `production` must be earned with a live
 runtime probe and a provider-free or subscription-backed lifecycle canary for
 that exact harness. Missing commands fail closed and do not cause fallback to a
 different model or provider.
+
+Terminal shims use their bounded screen-readiness contract. Agent-specific
+Orca `tui-idle` detection remains required for Codex, but is not imposed on
+Hermes or another configured terminal shim whose TUI grammar Orca does not
+natively recognize.
+
+Hermes terminal-direct execution remains an Orca-owned lifecycle: Orca creates
+the isolated worktree, coordinator, run, task, and worker terminal, while the
+parent accepts only a stable proposal inside the receipt's declared paths and
+performs collection plus tests itself. WSL launches suppress Python bytecode
+artifacts so generated caches cannot masquerade as source-scope violations.
+The management CLI uses governed Orca discovery unless `--orca` explicitly
+overrides the executable.
 
 The operator CLI reports configuration separately from runtime readiness:
 
@@ -142,8 +159,22 @@ Qualification is deliberately time-limited and can be rerun with a
 subscription-backed Luna route:
 
 ```text
-python scripts/qualify-orca-coding.py --model gpt-5.6-luna --codex-launch native --promote-registry
+python scripts/qualify-orca-coding.py --harness codex --model gpt-5.6-luna --adapter-launch native --promote-registry
+python scripts/qualify-orca-coding.py --harness hermes --profile workspace --promote-registry
 ```
+
+The qualifier selects the configured adapter for the named harness, compares
+two real native coding canaries with the same two-worktree Orca workload, and
+adds that harness to the signed store without discarding valid records for
+other harnesses. Hermes uses its configured workspace profile and route; it
+does not silently substitute a provider or model. Harnesses without a real
+native baseline driver fail closed and remain `configured` until qualified on
+a recipient that can run them.
+
+Each record expires after seven days. Re-run the same command before expiry;
+automatic selection falls back to the native route if a record expires, its
+route changes, or its adapter no longer matches. This is a renewal safety gate,
+not a requirement to wait seven days after a successful qualification.
 
 The generated authority material and A/B evidence stay in recipient-local
 `.state`; they are never part of the portable kit.

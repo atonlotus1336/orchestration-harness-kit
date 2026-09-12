@@ -33,6 +33,7 @@ MANAGED_FILES = (
     "source-projection.json",
     "source-hashes.json",
     "prime_bridge/harness_registry.py",
+    "prime_bridge/git_interop.py",
     "prime_bridge/adaptive_execution_provider.py",
     "prime_bridge/orca_adaptive_batch.py",
     "prime_bridge/orca_control.py",

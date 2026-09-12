@@ -86,13 +86,25 @@
       "portable_contract": "prime_bridge/orca_execution.py#OrcaExecutionProvider,OrcaExecutionService",
       "source_path": "prime_bridge/orca_execution.py",
       "source_repository": "hermes-agent-self-evolution",
-      "source_sha256": "4a9b68e0c2831cac74b6ab07c7c3ae27a004ea0a2c5bbb892594b2d17a9bc3a4"
+      "source_sha256": "febccb0904ba5780cd536f11afc82bddf55066265bfb8a6987791a007e4e94d1"
+    },
+    {
+      "portable_contract": "prime_bridge/orca_operator.py#governed executable discovery",
+      "source_path": "prime_bridge/orca_operator.py",
+      "source_repository": "hermes-agent-self-evolution",
+      "source_sha256": "31c24b99daa1f558320dfb49b85a50569278b80bcda1ddf9e05e487b21163eeb"
+    },
+    {
+      "portable_contract": "prime_bridge/git_interop.py#git_argv",
+      "source_path": "prime_bridge/git_interop.py",
+      "source_repository": "hermes-agent-self-evolution",
+      "source_sha256": "5f7a0fd3befb2ca312f05a4d0c7abc10fbe152770830e377143773cf24682f1c"
     },
     {
       "portable_contract": "config/orca-harness-adapters.json",
       "source_path": "config/orca-harness-adapters.json",
       "source_repository": "hermes-agent-self-evolution",
-      "source_sha256": "3e9f759f50d6a0765a84a4cef5a00c94b6752f898ec372de48da4512aa3645da"
+      "source_sha256": "2d67ee298212abfaaddbbbacb19310aeb0f806886ebb3a14e72e3a3cb0f12665"
     },
     {
       "portable_contract": "prime_bridge/parallel_provider.py#ParallelWorkerProvider,ParallelProviderCatalog",
@@ -164,7 +176,13 @@
       "portable_contract": "scripts/qualify-orca-coding.py",
       "source_path": "scripts/qualify-orca-coding.py",
       "source_repository": "hermes-agent-self-evolution",
-      "source_sha256": "03c4f17dfc2f55400238b4c6c100de007efe7cb5c071623825b524327f2bdca2"
+      "source_sha256": "8d152e1338c49bf2966d83dfb880e6b8a32db1b39fdbbdd96c2881ccaa1469f8"
+    },
+    {
+      "portable_contract": "docs/ORCA-EXECUTION-PROVIDER.md",
+      "source_path": "docs/ORCA-EXECUTION-PROVIDER.md",
+      "source_repository": "hermes-agent-self-evolution",
+      "source_sha256": "1c7cd17a329838bed4acff01d48506f6da5be664ca721ac6d1a48ed92cc5c3d5"
     }
   ],
   "schema": "lapart.adaptive-v2-source-projection.v1"

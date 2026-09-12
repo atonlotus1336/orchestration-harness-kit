@@ -24,7 +24,7 @@ import uuid
 from typing import Any, Mapping, Sequence
 
 from .harness_registry import UNIVERSAL_HARNESS_REGISTRY
-from .git_interop import to_local_path, to_windows_path
+from .git_interop import git_argv, to_local_path, to_windows_path
 from .job_ledger import JobLedger, TERMINAL, validate_safe
 from .orchestration_switch import effective_mode, load_mode, operation_permitted
 from .worker_transport import WorkerTransport
@@ -32,6 +32,11 @@ from .worker_transport import WorkerTransport
 
 IDENTIFIER = re.compile(r"[A-Za-z0-9][A-Za-z0-9._:@/+-]{0,511}\Z")
 TERMINAL_STATES = frozenset({"completed", "failed", "cancelled", "abandoned"})
+PRE_DISPATCH_STAGES = frozenset({
+    "claimed", "coordinator-created", "run-created", "task-created",
+    "terminal-created", "terminal-direct-created",
+    "terminal-ready-unmaterialized",
+})
 MUTATING_OPERATIONS = frozenset({
     "start", "send", "stop", "abandon", "release", "retain", "retry",
     "gate-create", "gate-resolve",
@@ -349,6 +354,78 @@ def _terminal_adapter_command(adapter: HarnessAdapter, *, harness: str,
             parts.extend(["-m", model])
     return _command_text(parts)
 
+
+def _wsl_workspace(path: str) -> str:
+    normalized = str(path).replace("\\", "/")
+    matched = re.fullmatch(r"([A-Za-z]):/(.*)", normalized)
+    if matched:
+        return f"/mnt/{matched.group(1).lower()}/{matched.group(2)}"
+    return normalized
+
+
+def _terminal_direct_command(adapter: HarnessAdapter, *, harness: str,
+                             worktree: str, task_spec: str) -> str:
+    if harness != "hermes" or not adapter.command:
+        raise OrcaExecutionError("terminal direct adapter is unsupported")
+    parts = list(adapter.command)
+    if parts[0].lower() == "wsl.exe" and "--" in parts:
+        separator = parts.index("--")
+        parts[separator + 1:separator + 1] = [
+            "env", "PYTHONDONTWRITEBYTECODE=1",
+        ]
+    workspace = (
+        _wsl_workspace(worktree)
+        if parts[0].lower() == "wsl.exe" else worktree
+    )
+    parts.extend(["--in", workspace, "-z", task_spec])
+    return _command_text(parts)
+
+
+def _git_changed_paths(worktree: Path) -> tuple[str, ...]:
+    tracked = subprocess.run(
+        git_argv(worktree, "diff", "--name-only", "HEAD", "--", optional_locks=False),
+        text=True, capture_output=True, check=True,
+    ).stdout.splitlines()
+    untracked = subprocess.run(
+        git_argv(
+            worktree,
+            "ls-files",
+            "--others",
+            "--exclude-standard",
+            optional_locks=False,
+        ),
+        text=True, capture_output=True, check=True,
+    ).stdout.splitlines()
+    return tuple(sorted(set(filter(None, [*tracked, *untracked]))))
+
+
+def _wait_terminal_declared_change(client: OrcaCLI, handle: str, *,
+                                   receipt: Mapping[str, Any],
+                                   timeout_seconds: int = 180) -> tuple[str, ...]:
+    """Stop at a stable, path-bounded proposal; parent verification follows."""
+    worktree = Path(receipt["worktree"])
+    declared = set(receipt["declared_paths"])
+    deadline = time.monotonic() + timeout_seconds
+    prior: tuple[str, ...] | None = None
+    stable_samples = 0
+    while time.monotonic() < deadline:
+        changed = _git_changed_paths(worktree)
+        if set(changed) - declared:
+            raise OrcaExecutionError("terminal worker path boundary violated")
+        if changed:
+            stable_samples = stable_samples + 1 if changed == prior else 1
+            if stable_samples >= 2:
+                return changed
+        else:
+            stable_samples = 0
+        prior = changed
+        envelope = client.call(["terminal", "show", "--terminal", handle])
+        terminal = envelope.get("result", {}).get("terminal", {})
+        if terminal.get("connected") is False:
+            raise OrcaExecutionError("terminal worker exited without a proposal")
+        time.sleep(1)
+    raise OrcaExecutionError("terminal worker proposal timed out")
+
 def _command_text(parts: Sequence[str]) -> str:
     if os.name == "nt":
         return subprocess.list2cmdline(list(parts))
@@ -383,10 +460,14 @@ def _wait_terminal_agent_ready(client: OrcaCLI, handle: str, *,
         time.sleep(0.5)
     else:
         raise OrcaExecutionError("terminal agent readiness timed out")
-    client.call([
-        "terminal", "wait", "--terminal", handle,
-        "--for", "tui-idle", "--timeout-ms", "120000",
-    ], timeout=130)
+    # Orca's tui-idle detector is agent-specific. A configured terminal shim
+    # such as Hermes has already passed the bounded screen readiness check
+    # above, but cannot truthfully satisfy Orca's Codex/Claude idle grammar.
+    if harness == "codex":
+        client.call([
+            "terminal", "wait", "--terminal", handle,
+            "--for", "tui-idle", "--timeout-ms", "120000",
+        ], timeout=130)
 
 
 class OrcaExecutionProvider:
@@ -610,6 +691,52 @@ class OrcaExecutionProvider:
         failures = []
         for item in before:
             if not item.get("dispatch_id"):
+                record = self._load(item["binding_id"])
+                if (record.get("lifecycle") == "outcome_unknown"
+                        and record.get("stage") == "terminal-ready"):
+                    inventory = self.client.call([
+                        "orchestration", "worker-list", "--run", record["run_id"],
+                    ])
+                    workers = inventory.get("result", {}).get("workers", [])
+                    matches = [
+                        row for row in workers if isinstance(row, Mapping)
+                        and row.get("runId") == record["run_id"]
+                        and row.get("taskId") == record["task_id"]
+                        and isinstance(row.get("dispatchId"), str)
+                    ] if isinstance(workers, list) else []
+                    if len(matches) == 0:
+                        record["stage"] = "terminal-ready-unmaterialized"
+                    elif len(matches) == 1:
+                        record.update(
+                            dispatch_id=_identifier(
+                                matches[0]["dispatchId"], "reconciled dispatch",
+                            ),
+                            lifecycle="ready", stage="worker-start-reconciled",
+                        )
+                        self._store(record)
+                        self.transport.bind_orca(
+                            record["binding_id"], record["dispatch_id"],
+                        )
+                    else:
+                        failures.append({
+                            "binding_id": item["binding_id"],
+                            "reason": "DISPATCH_AMBIGUOUS",
+                        })
+                        continue
+                if record.get("stage") in PRE_DISPATCH_STAGES:
+                    self._settle_pre_dispatch_failure(record)
+                    stopped.append(item["binding_id"])
+                    continue
+                if record.get("dispatch_id"):
+                    try:
+                        self.stop(item["binding_id"])
+                        stopped.append(item["binding_id"])
+                    except Exception as exc:
+                        failures.append({
+                            "binding_id": item["binding_id"],
+                            "reason": type(exc).__name__,
+                        })
+                    continue
                 failures.append({"binding_id": item["binding_id"], "reason": "DISPATCH_UNKNOWN"})
                 continue
             try:
@@ -623,6 +750,24 @@ class OrcaExecutionProvider:
             "attempted": len(before), "stopped": len(stopped),
             "remaining": len(remaining), "failures": failures,
         }
+
+    def _settle_pre_dispatch_failure(self, record: dict[str, Any]) -> None:
+        """Close resources when no worker dispatch could have been requested."""
+        if (record.get("dispatch_id") is not None
+                or record.get("stage") not in PRE_DISPATCH_STAGES):
+            raise OrcaExecutionError("pre-dispatch cleanup boundary is invalid")
+        for key in ("terminal_handle", "coordinator_terminal_handle"):
+            handle = record.get(key)
+            if handle:
+                self.client.call(
+                    ["terminal", "close", "--terminal", handle], mutating=True,
+                )
+                record[key] = None
+        record.update(lifecycle="failed", stage="pre-dispatch-failed")
+        self._store(record)
+        self._note(record, "orca_pre_dispatch_failure_settled", {
+            "canonical_status_changed": False,
+        })
 
     def _load(self, binding_id: str) -> dict[str, Any]:
         with self.ledger._connect() as db:
@@ -809,6 +954,53 @@ class OrcaExecutionProvider:
             ], mutating=True, request_id=task_request)
             record.update(task_id=_result_id(envelope, "task"), stage="task-created")
             self._store(record)
+            if not adapter.native and harness == "hermes":
+                terminal = self.client.call([
+                    "terminal", "create", "--worktree",
+                    "path:" + receipt["worktree"], "--command",
+                    _terminal_direct_command(
+                        adapter, harness=harness, worktree=receipt["worktree"],
+                        task_spec=task_spec,
+                    ),
+                    "--title", f"orca-{harness}",
+                ], mutating=True)
+                record.update(
+                    terminal_handle=_result_id(terminal, "terminal"),
+                    terminal_direct=True, stage="terminal-direct-created",
+                )
+                self._store(record)
+                changed = _wait_terminal_declared_change(
+                    self.client, record["terminal_handle"], receipt=receipt,
+                )
+                self.client.call([
+                    "terminal", "close", "--terminal", record["terminal_handle"],
+                ], mutating=True)
+                record["terminal_closed"] = True
+                result_digest = hashlib.sha256(
+                    json.dumps(changed, separators=(",", ":")).encode()
+                ).hexdigest()
+                self.client.call([
+                    "orchestration", "task-update", "--id", record["task_id"],
+                    "--status", "completed", "--result",
+                    json.dumps({
+                        "transport": "terminal-direct",
+                        "proposal_sha256": result_digest,
+                    }, separators=(",", ":")),
+                    "--run", record["run_id"],
+                    "--from", record["coordinator_terminal_handle"],
+                ], mutating=True, request_id=uuid.uuid4().hex)
+                record.update(
+                    dispatch_id="terminal-" + record["terminal_handle"],
+                    lifecycle="completed", stage="terminal-direct-completed",
+                    proposal_sha256=result_digest,
+                )
+                self._store(record)
+                self.transport.bind_orca(binding_id, record["dispatch_id"])
+                self._note(record, "orca_execution_ready", {
+                    "run_id": record["run_id"], "task_id": record["task_id"],
+                    "adapter": adapter.launch, "terminal_direct": True,
+                })
+                return record
             worker_args = [
                 "orchestration", "worker-start", "--task", record["task_id"],
                 "--run", record["run_id"], "--worktree",
@@ -915,14 +1107,57 @@ class OrcaExecutionProvider:
             })
             return record
         except BaseException as exc:
-            record.update(lifecycle="outcome_unknown", error=type(exc).__name__)
-            self._store(record)
-            self._note(record, "orca_execution_uncertain", {"stage": record["stage"]})
+            record["error"] = type(exc).__name__
+            if record.get("stage") in PRE_DISPATCH_STAGES:
+                self._settle_pre_dispatch_failure(record)
+            else:
+                record.update(lifecycle="outcome_unknown")
+                self._store(record)
+                self._note(record, "orca_execution_uncertain", {
+                    "stage": record["stage"],
+                })
             raise
 
     def show(self, binding_id: str) -> dict[str, Any]:
         record = self._load(binding_id)
         self._permit(record["harness"], "show")
+        if record.get("terminal_direct"):
+            terminal_envelope = self.client.call([
+                "terminal", "show", "--terminal", record["terminal_handle"],
+            ])
+            state = {
+                "completed": ("completed", "succeeded", "settled"),
+                "failed": ("failed", "failed", "settled"),
+                "cancelled": ("cancelled", "stopped", "process_stopped"),
+                "abandoned": ("cancelled", "abandoned", "unverifiable"),
+            }.get(record["lifecycle"], ("dispatched", "running", record["stage"]))
+            worker_envelope = {
+                "id": terminal_envelope["id"], "ok": True,
+                "result": {
+                    "dispatch": {
+                        "id": record["dispatch_id"],
+                        "task_id": record["task_id"], "status": state[0],
+                    },
+                    "worker": {
+                        "state": state[1], "stage": state[2],
+                        "agent_terminal_handle": record["terminal_handle"],
+                    },
+                },
+                "_meta": terminal_envelope["_meta"],
+            }
+            digest = hashlib.sha256(json.dumps(
+                worker_envelope["result"], sort_keys=True,
+                separators=(",", ":"),
+            ).encode()).hexdigest()
+            self._note(record, "orca_execution_observed", {
+                "result_sha256": digest, "terminal_direct": True,
+            })
+            return {
+                "execution": record,
+                "worker": worker_envelope["result"],
+                "worker_envelope": worker_envelope,
+                "result_sha256": digest,
+            }
         if not record.get("dispatch_id"):
             return record
         envelope = self.client.call([
@@ -1015,6 +1250,35 @@ class OrcaExecutionProvider:
     def _worker_mutation(self, binding_id: str, operation: str) -> dict[str, Any]:
         record = self._load(binding_id)
         self._permit(record["harness"], operation)
+        if record.get("terminal_direct"):
+            if operation != "retain":
+                if record.get("terminal_handle") and not record.get("terminal_closed"):
+                    self.client.call([
+                        "terminal", "close", "--terminal",
+                        record["terminal_handle"],
+                    ], mutating=True)
+                    record["terminal_closed"] = True
+                if (operation == "release"
+                        and record.get("coordinator_terminal_handle")):
+                    self.client.call([
+                        "terminal", "close", "--terminal",
+                        record["coordinator_terminal_handle"],
+                    ], mutating=True)
+                    record["coordinator_terminal_handle"] = None
+            state = {
+                "stop": "cancelled", "abandon": "abandoned",
+                "release": "completed", "retain": record["lifecycle"],
+            }[operation]
+            record.update(lifecycle=state, stage="terminal-direct-" + operation)
+            self._store(record)
+            self._note(record, "orca_worker_" + operation, {
+                "canonical_status_changed": False, "terminal_direct": True,
+            })
+            return {
+                "execution": record,
+                "result": {"terminal_direct": True, "operation": operation},
+                "canonical_status_changed": False,
+            }
         envelope = self.client.call([
             "orchestration", "worker-" + operation,
             "--dispatch", record["dispatch_id"],

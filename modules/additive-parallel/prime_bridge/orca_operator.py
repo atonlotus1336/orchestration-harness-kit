@@ -58,7 +58,10 @@ def _parser() -> argparse.ArgumentParser:
     )
     parser.add_argument("--switch-state", type=Path, default=default_state_path())
     parser.add_argument("--harness", choices=UNIVERSAL_HARNESS_REGISTRY)
-    parser.add_argument("--orca", default="orca")
+    parser.add_argument(
+        "--orca", default=None,
+        help="Orca executable override; omit to use governed discovery",
+    )
     return parser
 
 

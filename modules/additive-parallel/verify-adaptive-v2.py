@@ -322,6 +322,8 @@ def verify(source_workspace: Path | None = None) -> list[str]:
         failures.append("shipped adapter template is active or authoritative")
     selector_source = (MODULE / "prime_bridge/adaptive_execution_provider.py").read_text(encoding="utf-8")
     batch_source = (MODULE / "prime_bridge/orca_adaptive_batch.py").read_text(encoding="utf-8")
+    execution_source = (MODULE / "prime_bridge/orca_execution.py").read_text(encoding="utf-8")
+    operator_source = (MODULE / "prime_bridge/orca_operator.py").read_text(encoding="utf-8")
     qualifier_source = (MODULE / "scripts/qualify-orca-coding.py").read_text(encoding="utf-8")
     production_contract = (
         "adapter_launch", "ORCA_ADAPTER_QUALIFICATION_MISMATCH",
@@ -334,8 +336,16 @@ def verify(source_workspace: Path | None = None) -> list[str]:
             or "aggregate_verification" not in batch_source
             or "rollback_complete" not in batch_source):
         failures.append("adaptive Orca batch contract is incomplete")
-    if ("--codex-launch" not in qualifier_source
-            or '"adapter_launch": args.codex_launch' not in qualifier_source
+    if (not (MODULE / "prime_bridge/git_interop.py").is_file()
+            or "git_argv(worktree" not in execution_source
+            or "PYTHONDONTWRITEBYTECODE=1" not in execution_source):
+        failures.append("portable Hermes Orca worktree interop is incomplete")
+    if ('"--orca", default=None' not in operator_source):
+        failures.append("Orca operator does not default to governed discovery")
+    if ("--harness" not in qualifier_source
+            or "--adapter-launch" not in qualifier_source
+            or "records[args.harness] = record" not in qualifier_source
+            or "_qualification_records" not in qualifier_source
             or "--promote-registry" not in qualifier_source):
         failures.append("real coding A/B qualifier contract is incomplete")
     orca_adapters = portable.load_json(MODULE / "config/orca-harness-adapters.json")
