@@ -1,12 +1,18 @@
 {
   "schema_version": 1,
-  "captured_at_utc": "2026-08-18T10:48:06+00:00",
+  "captured_at_utc": "2026-09-12T23:34:26+00:00",
   "purpose": "Private restorable implementation snapshot; credentials and runtime state excluded.",
   "source": {
     "hermes_git_head": "fde87710655e99cfc9e8292a8c620d56593faf3b",
     "hermes_git_branch": "main",
     "hermes_worktree_dirty": true,
-    "sanitizer_rule_count": 25
+    "sanitizer_rule_count": 25,
+    "herdr_evaluator_git_commit": "cb289bf5755f79729c87b17039bf434cb22b84da",
+    "herdr_evaluator_commits": [
+      "6670012",
+      "a186372",
+      "cb289bf"
+    ]
   },
   "excluded": [
     ".git",
@@ -53,7 +59,7 @@
     "__WINDOWS_WORKSPACE__",
     "__WSL_WORKSPACE__"
   ],
-  "file_count": 373,
+  "file_count": 439,
   "files": [
     {
       "path": "autoexperiment/ablation.ps1",
@@ -201,6 +207,11 @@
       "bytes": 11511
     },
     {
+      "path": "hermes-agent-self-evolution/.gitignore",
+      "sha256": "223896f1d23a27468d092f1fea56589057fd85bb1e91a605b72ed27e9b30c7f5",
+      "bytes": 521
+    },
+    {
       "path": "hermes-agent-self-evolution/README.md",
       "sha256": "ebecc0a1f483e655041b9aa531ef7535ee0165f7058b65420896d6e89c7acc92",
       "bytes": 3561
@@ -216,9 +227,19 @@
       "bytes": 2749
     },
     {
+      "path": "hermes-agent-self-evolution/config/adaptive-code-review-policy.json",
+      "sha256": "12ce04af24532b5a23d7b89cd22f6a739fdb97cdbe7dd753d93725d934f7b775",
+      "bytes": 7781
+    },
+    {
       "path": "hermes-agent-self-evolution/config/adaptive-parallel-policy.json",
       "sha256": "8b8fb84138d8e4588e4e264755c827476d4cca1e2b202323e8e09582151fc57c",
       "bytes": 1346
+    },
+    {
+      "path": "hermes-agent-self-evolution/config/adaptive-review-gsd-hooks.json",
+      "sha256": "ba52a042e2e6f941c021f41478d6d250a7112baf024b4c78d93ce556b9a285ca",
+      "bytes": 2776
     },
     {
       "path": "hermes-agent-self-evolution/config/adaptive-review-runtime.json",
@@ -227,13 +248,28 @@
     },
     {
       "path": "hermes-agent-self-evolution/config/adaptive-reviewer-catalog.json",
-      "sha256": "dbd98174fc6bb55bc222022183ec4d555dd9ff26547719415c3110835ad72431",
-      "bytes": 13736
+      "sha256": "a8f06563ae5fb2eba5001dc262041ac33eee9e9e62881b60fbb87445c9959745",
+      "bytes": 17449
     },
     {
       "path": "hermes-agent-self-evolution/config/connectivity-authority.json",
       "sha256": "63b9678564d1d0240fce208322f1e12e20373cba42fe5db4be7695c3e2b90984",
       "bytes": 3090
+    },
+    {
+      "path": "hermes-agent-self-evolution/config/evaluator-harness-adapters.json",
+      "sha256": "0fe640ebc483f28c3299a6330d1cbd615fc59a0272a2ee171744e4273c329a11",
+      "bytes": 1133
+    },
+    {
+      "path": "hermes-agent-self-evolution/config/herdr-evaluator-adapters.json",
+      "sha256": "a047a0469fc7fbb4781b57a1f9ae219aed21e8391959ef2cce9457cdafb2b95f",
+      "bytes": 540
+    },
+    {
+      "path": "hermes-agent-self-evolution/config/herdr-runtime-lock.json",
+      "sha256": "70a1847b4f6e9627a7b45cdf46a3538ad3e1f38388bf22eab9de425adafd08b0",
+      "bytes": 782
     },
     {
       "path": "hermes-agent-self-evolution/config/omp-coding-policy.json",
@@ -267,8 +303,8 @@
     },
     {
       "path": "hermes-agent-self-evolution/config/prime-capability-policy.json",
-      "sha256": "0f7845189608458ffcf369215f63b7dfa12f4a4049009e5fdd0cebc17e73a6c5",
-      "bytes": 1413
+      "sha256": "f9d03d67ebbbda1e24d952db89b73b0ec34620a79e016cb7c0d791c7a0133d83",
+      "bytes": 1862
     },
     {
       "path": "hermes-agent-self-evolution/config/prime-learning-policy.json",
@@ -426,6 +462,16 @@
       "bytes": 3434
     },
     {
+      "path": "hermes-agent-self-evolution/docs/HERDR-EVALUATOR-PROVIDER.md",
+      "sha256": "cd1954c8079e42705bfa167c88096b278a407def2e2cbbf886894bc20b2d2744",
+      "bytes": 9056
+    },
+    {
+      "path": "hermes-agent-self-evolution/docs/HERDR-INSTALLATION.md",
+      "sha256": "587708af07b42bc83769951be94ca92905b7868c312cd17b8cf004aef348ae2b",
+      "bytes": 2750
+    },
+    {
       "path": "hermes-agent-self-evolution/docs/OMP-PRIME-CODING-RUNBOOK.md",
       "sha256": "53cdacdd7cefbeb401e5aa57adcf02af83539394532c1ccec2fee0236353c27d",
       "bytes": 3956
@@ -439,6 +485,11 @@
       "path": "hermes-agent-self-evolution/docs/model-profile-switching-contract.md",
       "sha256": "83419dc00b673729865b6b9959fa5ceb634d07d905d84b54497780cd5f6af045",
       "bytes": 4501
+    },
+    {
+      "path": "hermes-agent-self-evolution/docs/operations/EXECUTION-AND-REVIEW-ROUTING.md",
+      "sha256": "b9d9422b34f4ff13c0d318e8f964d99297eab2973279f8e247a7d670ddffa149",
+      "bytes": 6226
     },
     {
       "path": "hermes-agent-self-evolution/docs/plans/2026-05-22-g-managed-telegram-profile.md",
@@ -562,8 +613,8 @@
     },
     {
       "path": "hermes-agent-self-evolution/prime_bridge/adaptive_parallel_activation.py",
-      "sha256": "a0cf81c9cd5a70724fd59d5dbd11d7333f159f9561ac8734a55d0503377ea67e",
-      "bytes": 27216
+      "sha256": "ed6d30c384f69f5767560fd3d4c52c6af83096c933be4b2ce15fdc500c19d4e2",
+      "bytes": 27344
     },
     {
       "path": "hermes-agent-self-evolution/prime_bridge/adaptive_parallel_paths.py",
@@ -571,9 +622,14 @@
       "bytes": 1418
     },
     {
+      "path": "hermes-agent-self-evolution/prime_bridge/adaptive_production_authorization.py",
+      "sha256": "05da7381d80536ccb7f573ec9287ab9b0c30580f9328c7e63256cd6f05ee799e",
+      "bytes": 15859
+    },
+    {
       "path": "hermes-agent-self-evolution/prime_bridge/adaptive_review/adapters.py",
-      "sha256": "4fcbba9e59e3f9e6201aadd5799d0ee7e36beb1cf1e7859c318c0b12e1a3b61a",
-      "bytes": 5784
+      "sha256": "40e812276d52195845f5d2c09786f1b6ab5f8d864632bcc107541ba520900e7b",
+      "bytes": 5886
     },
     {
       "path": "hermes-agent-self-evolution/prime_bridge/adaptive_review/budget_approval.py",
@@ -582,13 +638,13 @@
     },
     {
       "path": "hermes-agent-self-evolution/prime_bridge/adaptive_review/budget_exception.py",
-      "sha256": "b2e20fd24236b592b52b30b110d7eea371b9dd6c624d2f1db14e4ba3a6902558",
-      "bytes": 9232
+      "sha256": "ff8e12b310fd57910a737678a4aad9e020839d846c4d5aae2a734bfdfb856afa",
+      "bytes": 11349
     },
     {
       "path": "hermes-agent-self-evolution/prime_bridge/adaptive_review/careers.py",
-      "sha256": "5f0b61bed38013d66d7f46ed36ff47f8063cef8c9f1c66a111f46e529ea5ac77",
-      "bytes": 11490
+      "sha256": "ba7e3fef071849a12b1894a5ff0e9d0028854bee7835d122e336c5961dd28254",
+      "bytes": 11535
     },
     {
       "path": "hermes-agent-self-evolution/prime_bridge/adaptive_review/catalog.py",
@@ -607,8 +663,8 @@
     },
     {
       "path": "hermes-agent-self-evolution/prime_bridge/adaptive_review/controller.py",
-      "sha256": "f0acb1fc57fe3a15ea1042c197d4962d3819e8590e98d5205e9f409e8d6137b7",
-      "bytes": 49450
+      "sha256": "dac90ad616b01097c83e02f7e7ef5de08c0a52fa57934cd6189ccfcce83e9c15",
+      "bytes": 51788
     },
     {
       "path": "hermes-agent-self-evolution/prime_bridge/adaptive_review/event_hooks.py",
@@ -624,6 +680,26 @@
       "path": "hermes-agent-self-evolution/prime_bridge/adaptive_review/gsd_adapter.py",
       "sha256": "49c5e3490e033a9962cb7a6ee5a53f3019594983d47dc474bd5b2a6dee05b8fc",
       "bytes": 3500
+    },
+    {
+      "path": "hermes-agent-self-evolution/prime_bridge/adaptive_review/harness_ingress.py",
+      "sha256": "1a70018f0b169c765bfb17230d140ae029931ad3fd73c2f6da10a147c4ca3ae8",
+      "bytes": 7718
+    },
+    {
+      "path": "hermes-agent-self-evolution/prime_bridge/adaptive_review/herdr_client.py",
+      "sha256": "46777b2f7101c5f4c366bbf27e6926df2a4b51f5c636755e8eef5fd3432352fe",
+      "bytes": 8540
+    },
+    {
+      "path": "hermes-agent-self-evolution/prime_bridge/adaptive_review/herdr_isolation.py",
+      "sha256": "b9cf0febe7de96a8ff68408972d537ae867e1985921247acee84f826321a27b4",
+      "bytes": 4667
+    },
+    {
+      "path": "hermes-agent-self-evolution/prime_bridge/adaptive_review/herdr_transport.py",
+      "sha256": "5b7100f4c0b882303f31193d89732df937bf877fe2aa9a2c94a1e748b17b9801",
+      "bytes": 16810
     },
     {
       "path": "hermes-agent-self-evolution/prime_bridge/adaptive_review/host.py",
@@ -692,8 +768,8 @@
     },
     {
       "path": "hermes-agent-self-evolution/prime_bridge/adaptive_review/runner.py",
-      "sha256": "eefee09cc1c0ab1c871872d0e9af75ec624a6128962d3891b91e5fe0a437f806",
-      "bytes": 22207
+      "sha256": "9eedfaa4b771f9d5d38f3c629e745924c9c7e9b8a9fcb5801afc169f59f23b5d",
+      "bytes": 22258
     },
     {
       "path": "hermes-agent-self-evolution/prime_bridge/adaptive_review/s4_dispatch.py",
@@ -707,8 +783,18 @@
     },
     {
       "path": "hermes-agent-self-evolution/prime_bridge/adaptive_review/transport.py",
-      "sha256": "b2f79404f83d6360dcf547ce47fba6fd653c2fca2340c85247aeb60f288deb69",
-      "bytes": 12661
+      "sha256": "8df0717e8b7d5b8521e36a497334a59e66df2b388a708364f06092ad8196692c",
+      "bytes": 13126
+    },
+    {
+      "path": "hermes-agent-self-evolution/prime_bridge/adaptive_review/transport_registry.py",
+      "sha256": "480e24dba3abf4c1978d2f78e1033fc52dd0f55b85d7b53e20f91457ac53cb7b",
+      "bytes": 503
+    },
+    {
+      "path": "hermes-agent-self-evolution/prime_bridge/adaptive_switch.py",
+      "sha256": "30be5c7bf4f9ea2434ac2dbfc792cb2867e76256f7783643cf92beb104aab296",
+      "bytes": 13559
     },
     {
       "path": "hermes-agent-self-evolution/prime_bridge/admission.py",
@@ -737,8 +823,8 @@
     },
     {
       "path": "hermes-agent-self-evolution/prime_bridge/capability_broker.py",
-      "sha256": "b0d11eca756e54ac3e6441e2465ef3712c1fc0aafb56c35411e62984674ba92b",
-      "bytes": 8989
+      "sha256": "452d6581874fc3ac9a84ed7a25f6e0163f7fd4ad44b305b4f7b0436e47b173f2",
+      "bytes": 10412
     },
     {
       "path": "hermes-agent-self-evolution/prime_bridge/capability_client.py",
@@ -846,6 +932,11 @@
       "bytes": 16112
     },
     {
+      "path": "hermes-agent-self-evolution/prime_bridge/harness_registry.py",
+      "sha256": "9a4757060c7e8ebdec57f37a5ded3b2ea791b2d001b411d58a13dfe94cf4ee3e",
+      "bytes": 1209
+    },
+    {
       "path": "hermes-agent-self-evolution/prime_bridge/hermes_mcp_client.py",
       "sha256": "a0c9f759061583465d951128e8ef785691c3a0015f75f7f0e81a98002242e2d2",
       "bytes": 4045
@@ -902,8 +993,8 @@
     },
     {
       "path": "hermes-agent-self-evolution/prime_bridge/mcp_server.py",
-      "sha256": "452c94acc640f2c284cbd51a3c5486e3b6e90164241a37c241a22121b90c51ca",
-      "bytes": 141868
+      "sha256": "cd17ad564a29a9474d3b3f5c38b3729c3d746547ec67f83a45185ced5099f8d8",
+      "bytes": 142174
     },
     {
       "path": "hermes-agent-self-evolution/prime_bridge/model_route.py",
@@ -964,6 +1055,16 @@
       "path": "hermes-agent-self-evolution/prime_bridge/operations.py",
       "sha256": "cb42668fb1ab56de1863ec0e8253ea19a08e829e1e24d53b86467d95ff2d95b8",
       "bytes": 1722
+    },
+    {
+      "path": "hermes-agent-self-evolution/prime_bridge/orca_control.py",
+      "sha256": "d006914915bb25e9293f89aed86c15918ef3fa6d99e0cd5ce6e48efd84868d1c",
+      "bytes": 2742
+    },
+    {
+      "path": "hermes-agent-self-evolution/prime_bridge/orchestration_switch.py",
+      "sha256": "36efc97ee2e8f02b7d55c84d44e7377d6eb269af4460f2bc176b8d39197b4f72",
+      "bytes": 15492
     },
     {
       "path": "hermes-agent-self-evolution/prime_bridge/prime_rpc_worker.py",
@@ -1081,9 +1182,44 @@
       "bytes": 1256
     },
     {
+      "path": "hermes-agent-self-evolution/schemas/adaptive-code-review-finding.schema.json",
+      "sha256": "03ac192c58e8aad2d72f0314c905d0705205b5b815fb4d49de4a437eb44b005e",
+      "bytes": 795
+    },
+    {
+      "path": "hermes-agent-self-evolution/schemas/adaptive-code-review-policy.schema.json",
+      "sha256": "353530adfa1ff19d2d0253304b6c37c4502679d21f1be1def00a57dc56f66392",
+      "bytes": 12705
+    },
+    {
+      "path": "hermes-agent-self-evolution/schemas/adaptive-code-review-receipt.schema.json",
+      "sha256": "ab3196ea910f452ed1a0a7bb092ae0730f71db9fbc54fe5102d4687d3b82ba03",
+      "bytes": 7415
+    },
+    {
       "path": "hermes-agent-self-evolution/schemas/adaptive-parallel-policy.schema.json",
       "sha256": "f5a5b84cff57962f0db139a235df4cde0c66f91d3919c8cdb8851b2e3e4c02ac",
       "bytes": 3138
+    },
+    {
+      "path": "hermes-agent-self-evolution/schemas/evaluator-harness-request.schema.json",
+      "sha256": "a9c207026ebd633e7f5e9b7d4757ea894d4376959980af9a942d6bdac256c4a6",
+      "bytes": 2242
+    },
+    {
+      "path": "hermes-agent-self-evolution/schemas/herdr-review-request.schema.json",
+      "sha256": "08b405376ea7b92e4bf3e0cce7fffbc1247f830a6ff8142d7177ed297c8a8e53",
+      "bytes": 2716
+    },
+    {
+      "path": "hermes-agent-self-evolution/schemas/herdr-review-result.schema.json",
+      "sha256": "2398f5f82fb38d6e8a6d3c1ce45027f2b43eb4de79ffdb5a0f98505822a3dba9",
+      "bytes": 2283
+    },
+    {
+      "path": "hermes-agent-self-evolution/scripts/_shared_runtime.py",
+      "sha256": "3ffd9036324ae632daf6cd36d1cf83b99de28a9fa09fde7a970ce54badec573d",
+      "bytes": 1387
     },
     {
       "path": "hermes-agent-self-evolution/scripts/acquire-prime-agent-source.sh",
@@ -1096,6 +1232,11 @@
       "bytes": 4164
     },
     {
+      "path": "hermes-agent-self-evolution/scripts/adaptive-code-review.py",
+      "sha256": "5d4225c3706b96ee0cd9f54a875bf97b3faa5a015320a5d6074df510dfb8c7b9",
+      "bytes": 483
+    },
+    {
       "path": "hermes-agent-self-evolution/scripts/apply-hermes-profile-to-wsl.sh",
       "sha256": "d70053361b9a9fecb45a87f7ab07647f3f9ceb5a23ff9dc1e028b70f22c8f6d4",
       "bytes": 24818
@@ -1104,6 +1245,11 @@
       "path": "hermes-agent-self-evolution/scripts/audit-prime-profile-overlays.py",
       "sha256": "c2f74a18f3ee43e889e232cde8bb045c016d1d77792262eb2f415e6150b640c6",
       "bytes": 4408
+    },
+    {
+      "path": "hermes-agent-self-evolution/scripts/bootstrap-herdr.py",
+      "sha256": "e2de19e24a84bc9ef0906222cc98bd38299d0410bff48812b136a23eb37e5b06",
+      "bytes": 10480
     },
     {
       "path": "hermes-agent-self-evolution/scripts/capture-prime-desktop-attestation.ps1",
@@ -1176,6 +1322,16 @@
       "bytes": 3401
     },
     {
+      "path": "hermes-agent-self-evolution/scripts/herdr-codex-reviewer.py",
+      "sha256": "48e4c947f26663bb8f0a4096dd7171ac927a2e1352f464f970eb25a82662a527",
+      "bytes": 7683
+    },
+    {
+      "path": "hermes-agent-self-evolution/scripts/herdr-reviewer-launcher.py",
+      "sha256": "ca9c152342cfb22e2ecafa6551cad39c9da775e9d686b7669ad5b5652fdb006c",
+      "bytes": 2495
+    },
+    {
       "path": "hermes-agent-self-evolution/scripts/install-autolearn-cron.sh",
       "sha256": "cb5ffefa05fbb7591f5528336f8c6b3abc882f0574eb61b39f832a4fc2983f64",
       "bytes": 656
@@ -1194,6 +1350,11 @@
       "path": "hermes-agent-self-evolution/scripts/maintenance/run-weekly-maintenance.py",
       "sha256": "a0cd0dde2dfb60cc5823d7498ca07dcd9d8682b067b7c7f2d78b5f367266474a",
       "bytes": 1473
+    },
+    {
+      "path": "hermes-agent-self-evolution/scripts/manage-herdr-review.py",
+      "sha256": "98ca0b71c409b56a76d0163032d76901516536bc95c6c912775ce5127a17d8a8",
+      "bytes": 31099
     },
     {
       "path": "hermes-agent-self-evolution/scripts/omp/controlled-sidecar.mjs",
@@ -1231,9 +1392,24 @@
       "bytes": 327
     },
     {
+      "path": "hermes-agent-self-evolution/scripts/orchestration-control.py",
+      "sha256": "41135bca4c7f409df2ebf13a5b33f87a01ff731a9af9d004add6a1a27d0190ce",
+      "bytes": 5306
+    },
+    {
+      "path": "hermes-agent-self-evolution/scripts/prime-code-execute.py",
+      "sha256": "6166c3f627ed9375e8446a6be870956aac29a080cec24e9f515122495fec2a0f",
+      "bytes": 51683
+    },
+    {
       "path": "hermes-agent-self-evolution/scripts/prime-emergency-disable.py",
       "sha256": "1aa460176b36b3ee5b3cdcb3f88e76d85d7658462cb448cce43ac0bc2baf5249",
       "bytes": 1420
+    },
+    {
+      "path": "hermes-agent-self-evolution/scripts/probe-herdr-evaluator.py",
+      "sha256": "b09c32a8080ec1104108f6d95506cc95c34bbb6732c016b953700f5d726f1323",
+      "bytes": 5270
     },
     {
       "path": "hermes-agent-self-evolution/scripts/probe-omp-feasibility.py",
@@ -1336,6 +1512,21 @@
       "bytes": 1991
     },
     {
+      "path": "hermes-agent-self-evolution/tests/adaptive_review/test_budget_exception.py",
+      "sha256": "6a8764d0e70139a2235b85948dbb7689bbc9f4a139baa61a61da4778646b2ee2",
+      "bytes": 12663
+    },
+    {
+      "path": "hermes-agent-self-evolution/tests/adaptive_review/test_controller.py",
+      "sha256": "1f3cac56bfc1c82252b43cd546309f8dcf1a0dfd7fcd03639a905fd7e1be6593",
+      "bytes": 30040
+    },
+    {
+      "path": "hermes-agent-self-evolution/tests/contract/test_evaluator_harness_interoperability.py",
+      "sha256": "1ef9b764a5c63460ac8e47a1814ca34e90c7b4f82e1b6e97c72bcd28fea77023",
+      "bytes": 3330
+    },
+    {
       "path": "hermes-agent-self-evolution/tests/fixtures/model_routes/agent_recursion.json",
       "sha256": "f843a92f691e229289a676a17dba823a765a58957b8270d735ed71541cfd5732",
       "bytes": 249
@@ -1401,6 +1592,46 @@
       "bytes": 23499
     },
     {
+      "path": "hermes-agent-self-evolution/tests/integration/test_herdr_activation_lifecycle.py",
+      "sha256": "2664253279e29fdcf09cfbac80f0b8187837f0e884a4fb0981f81036604ab18f",
+      "bytes": 9859
+    },
+    {
+      "path": "hermes-agent-self-evolution/tests/integration/test_herdr_bootstrap.py",
+      "sha256": "33ed25ce505610ebee6dc99d014a828ae9ed32642c799cf24784169d2e6b6e6f",
+      "bytes": 2734
+    },
+    {
+      "path": "hermes-agent-self-evolution/tests/integration/test_herdr_evaluator_capability_binding.py",
+      "sha256": "4d927b39b21c04a136316383c1d6d2b9e092f44cb9c6cbd85ac04e42b74b7b4d",
+      "bytes": 7031
+    },
+    {
+      "path": "hermes-agent-self-evolution/tests/integration/test_herdr_evaluator_isolation.py",
+      "sha256": "1c91699b9ff70c6cb5242573c65a864aa2024dc046beb6b684b3780d32c2ce6b",
+      "bytes": 2331
+    },
+    {
+      "path": "hermes-agent-self-evolution/tests/integration/test_herdr_evaluator_panel.py",
+      "sha256": "499a763fc033c46c3e2adf07eb92345ea10d6882dc5d1305dcf501bc2118606f",
+      "bytes": 2668
+    },
+    {
+      "path": "hermes-agent-self-evolution/tests/integration/test_herdr_evaluator_probe.py",
+      "sha256": "2dc45f09a29cb6d828b6d000e14956102d5fdb09be3926ad94b2cf0396c3e2c0",
+      "bytes": 5370
+    },
+    {
+      "path": "hermes-agent-self-evolution/tests/integration/test_herdr_evaluator_qualification.py",
+      "sha256": "4955c0452bb8c5b72656c3c80c1c465514e168b276257e4c28fbcc15cd7fe9fd",
+      "bytes": 11472
+    },
+    {
+      "path": "hermes-agent-self-evolution/tests/integration/test_herdr_evaluator_transport.py",
+      "sha256": "c2cbea5e79cd171c339370a4ef4953328dbf4814e85a914e789332058d40c47a",
+      "bytes": 7241
+    },
+    {
       "path": "hermes-agent-self-evolution/tests/integration/test_maintenance_ledger.py",
       "sha256": "0bf0548fbedb6a7b0ac8e61864bdb85b9999b2510b05fb081e348296a7ddd4b0",
       "bytes": 758
@@ -1424,6 +1655,11 @@
       "path": "hermes-agent-self-evolution/tests/integration/test_omp_worker.py",
       "sha256": "d0ea0cc1a2b6436779e70a4afcd6be147f6ccf93a6941de7087a17308183deb0",
       "bytes": 10007
+    },
+    {
+      "path": "hermes-agent-self-evolution/tests/integration/test_orchestration_switch.py",
+      "sha256": "9e3fab0c76ee04922032b015d689840dacb15774bc893d076b784be2fd7a54b3",
+      "bytes": 7809
     },
     {
       "path": "hermes-agent-self-evolution/tests/integration/test_prime_attestation_contract.py",
@@ -1636,6 +1872,16 @@
       "bytes": 2692
     },
     {
+      "path": "hermes-agent-self-evolution/tests/unit/test_adaptive_review_transport_admission.py",
+      "sha256": "7ee80c5eb0b60d6c77cb8bbb31e801e88d74fb16fd3e922d1ef465cdfcc229a3",
+      "bytes": 2425
+    },
+    {
+      "path": "hermes-agent-self-evolution/tests/unit/test_herdr_review_schemas.py",
+      "sha256": "9ca97db4141995b227817f3529e307786c7e6879190498a4eea5e37a951f599d",
+      "bytes": 4187
+    },
+    {
       "path": "ops/backup-projects-chunked-core.sh",
       "sha256": "0c4e7211f9f4315b12581d5aca6e1cac168344946bbf83a0429d3223bf10caec",
       "bytes": 12890
@@ -1744,6 +1990,96 @@
       "path": "ops/write-daily-recovery-manifest.ps1",
       "sha256": "7032c5ca5622bf5301c1b9a22b24490b67b839711c8024b40507839ddfd59fca",
       "bytes": 3119
+    },
+    {
+      "path": "skills-shared/brainstorm-council/agents/bc-anthropologist.md",
+      "sha256": "68177accc137df22ba94ad55217112c096f8c8e10e17253ff068b1388dce86aa",
+      "bytes": 2598
+    },
+    {
+      "path": "skills-shared/brainstorm-council/agents/bc-chaos-mathematician.md",
+      "sha256": "e37fc3503fa23a9b847295c2a04f5500bfc5c841b15fcf995820594c68a82b07",
+      "bytes": 2724
+    },
+    {
+      "path": "skills-shared/brainstorm-council/agents/bc-economist.md",
+      "sha256": "c514ec879aac53f2718b081ac224cb6be49ec016c25f90c5e69a413768136150",
+      "bytes": 2739
+    },
+    {
+      "path": "skills-shared/brainstorm-council/agents/bc-engineer.md",
+      "sha256": "a38d24a955615e7be7ec05097a86f41eb92905829ba3fcae038e5de371615f96",
+      "bytes": 2536
+    },
+    {
+      "path": "skills-shared/brainstorm-council/agents/bc-evolutionary-biologist.md",
+      "sha256": "a6d76fce2ca41c884629108254867ed4f3be749a325ac9fadc0dc617c74298bf",
+      "bytes": 2668
+    },
+    {
+      "path": "skills-shared/brainstorm-council/agents/bc-game-theorist.md",
+      "sha256": "bcc27530e9215a56a6ba5a0a3d930921eb91ecadbedc22d4e3a0d162b14ea514",
+      "bytes": 2674
+    },
+    {
+      "path": "skills-shared/brainstorm-council/agents/bc-linguist.md",
+      "sha256": "425be270d2e0fd87e1324e0e61f6ca4d35fa9acbb0e127b8eeb11bea7c9e6acf",
+      "bytes": 2581
+    },
+    {
+      "path": "skills-shared/brainstorm-council/agents/bc-mythologist.md",
+      "sha256": "1c8f829c44f16fd123453625ffdc04384a477be6a3cc30481ac00395c0e8dec6",
+      "bytes": 2706
+    },
+    {
+      "path": "skills-shared/brainstorm-council/agents/bc-phenomenologist.md",
+      "sha256": "1c66524f8df370f0da71d97f2fc21df72f9cbf0fe61755c4fb5cb4d4f02d2593",
+      "bytes": 2571
+    },
+    {
+      "path": "skills-shared/brainstorm-council/agents/bc-physicist.md",
+      "sha256": "669894fef2553a46a5fdc683a627a9c2f4ca01eb6492e1d77d25b9a7768f4940",
+      "bytes": 2645
+    },
+    {
+      "path": "skills-shared/brainstorm-council/agents/bc-psychoanalyst.md",
+      "sha256": "926ebd78b7bc1bbed9b6e346904f00f6e113cd4173922d734ca8e7cb70f5197d",
+      "bytes": 2540
+    },
+    {
+      "path": "skills-shared/brainstorm-council/agents/bc-structuralist.md",
+      "sha256": "398fa664a31651eb0f886e56ce288faf040de57eda6a773b018757b2ba935056",
+      "bytes": 2550
+    },
+    {
+      "path": "skills-shared/evidence-integrity-audit/SKILL.md",
+      "sha256": "fa909f24f719b613d4d7f39779709910f0c306064f439d2a048e344e02128857",
+      "bytes": 6878
+    },
+    {
+      "path": "skills-shared/improve-codebase-architecture/SKILL.md",
+      "sha256": "27693f3cb97bfac55700d0d5a918276abf4eda7756d1a19ea09c1db5b0abfa77",
+      "bytes": 5304
+    },
+    {
+      "path": "skills-shared/improve/SKILL.md",
+      "sha256": "f5869d0655fbf0e9e55737591ce4fcc19b160f9d4436c46df46bd84843afbd7d",
+      "bytes": 14847
+    },
+    {
+      "path": "skills-shared/ponytail/skills/ponytail-audit/SKILL.md",
+      "sha256": "c0f03b6e1d95809f74e989f4bc51a6959ce98696aef0e334f0c5c332f9504bd5",
+      "bytes": 1587
+    },
+    {
+      "path": "skills-shared/ponytail/skills/ponytail-debt/SKILL.md",
+      "sha256": "83dc090d3c4ad4cf1fcde236e607c4c4c4c42700fb68e7856041bdac69a7df17",
+      "bytes": 1706
+    },
+    {
+      "path": "skills-shared/ponytail/skills/ponytail-review/SKILL.md",
+      "sha256": "f77338e574a8ca0a7f7a8964322c39a88bc16536e13c707b7fd57ec50848f36a",
+      "bytes": 2318
     },
     {
       "path": "skills-shared/ponytail/skills/ponytail/SKILL.md",

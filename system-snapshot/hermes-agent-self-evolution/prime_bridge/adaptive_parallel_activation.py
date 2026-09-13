@@ -66,8 +66,8 @@ def _sha256(path: Path) -> str:
     return hashlib.sha256(path.read_bytes()).hexdigest()
 
 
-def _policy_contract_sha256(path: Path) -> str:
-    value = json.loads(path.read_text(encoding="utf-8"))
+def policy_contract_digest(value: Mapping[str, Any]) -> str:
+    value = json.loads(json.dumps(value))
     value.pop("activation_state", None)
     for layer in ("execution", "reviewer"):
         if isinstance(value.get(layer), dict):
@@ -83,6 +83,10 @@ def _policy_contract_sha256(path: Path) -> str:
     return hashlib.sha256(json.dumps(
         value, sort_keys=True, separators=(",", ":"),
     ).encode()).hexdigest()
+
+
+def _policy_contract_sha256(path: Path) -> str:
+    return policy_contract_digest(json.loads(path.read_text(encoding="utf-8")))
 
 
 def _atomic(path: Path, value: Mapping[str, Any]) -> None:

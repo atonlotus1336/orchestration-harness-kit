@@ -14,10 +14,10 @@ from types import MappingProxyType
 
 from .adapters import _safe_path
 from .catalog import load_frozen_catalog
+from .careers import CareerAssignmentError, ReviewerCall, assign_careers
 from .policy import load_policy
 from .prompts import review_prompt, finding_schema
 from .proofs import HostCheck, HostTestVerifier
-from .transport import JsonReviewTransport
 
 EXPANDABLE = {"max_context_bytes", "max_estimated_input_tokens", "max_total_tokens"}
 CUMULATIVE = {"max_model_calls": "model_requests", "max_estimated_input_tokens": "estimated_input_units",
@@ -95,13 +95,69 @@ def _context(owner, *, workspace, evidence, pipeline, scope, current_identity, l
                 if v not in {"facts", "deterministic_checks", "receipt", "triggered_specialist"}}
     if set(ids) != expected or not ids or not all(catalog.verify_skill(v) for v in ids):
         raise ValueError("mandatory reviewer catalog is incomplete or stale")
-    transport = JsonReviewTransport(**owner.config["provider"])
-    transport.validate()
+    _, career_qualifications, career_controls, _ = owner._adaptive_review_inputs(
+        pipeline, lineage=lineage, harness=evidence["harness"],
+    )
+    career_by_reviewer = {reviewer_id: None for reviewer_id in ids}
+    if career_controls["career_enabled"]:
+        try:
+            assignment = assign_careers(
+                catalog,
+                pipeline,
+                (
+                    ReviewerCall(
+                        reviewer_id,
+                        catalog.reviewers[reviewer_id].obligations,
+                        catalog.reviewers[reviewer_id].obligations,
+                    )
+                    for reviewer_id in ids
+                ),
+                career_qualifications,
+                purpose=str(career_controls["purpose"]),
+                career_enabled=True,
+                candidate_canary_authorized=career_controls[
+                    "candidate_canary_authorized"
+                ],
+                now_epoch=career_controls["now_epoch"],
+                model_route=str(career_controls["model_route"]),
+                workload_class=str(career_controls["workload_class"]),
+                layer_configuration=str(career_controls["layer_configuration"]),
+            )
+        except (CareerAssignmentError, TypeError, ValueError) as exc:
+            raise ValueError("career assignment failed closed validation") from exc
+        career_by_reviewer = assignment.by_reviewer
+    transports = owner._reviewer_transports(
+        catalog,
+        workspace=root,
+        evidence=evidence,
+        pipeline=pipeline,
+        delivery_number=ledger["deliveries"] + 1,
+    )
     registered = owner.config.get("checks", {}).get(str(root), {})
     verifier = HostTestVerifier(root, {k: HostCheck(**v) for k, v in registered.items()}, sources) if registered else None
     descriptions = verifier.descriptions() if verifier else ()
-    packets = {name: transport.payload(bind_review_context(review_prompt(name, catalog.reviewers[name].lens, finding_schema(), descriptions), review_context),
-                                      contents, remaining["max_output_tokens"]) for name in ids}
+    packets = {}
+    for name in ids:
+        career_id = career_by_reviewer.get(name)
+        prompt = review_prompt(
+            name,
+            catalog.reviewers[name].lens,
+            finding_schema(),
+            descriptions,
+            career=(catalog.careers[career_id] if career_id else None),
+            career_enabled=career_id is not None,
+            temperament_enabled=(
+                career_id is not None and career_controls["temperament_enabled"]
+            ),
+            shadow_enabled=(
+                career_id is not None and career_controls["career_shadow_pass"]
+            ),
+        )
+        packets[name] = transports[name].payload(
+            bind_review_context(prompt, review_context),
+            contents,
+            remaining["max_output_tokens"],
+        )
     from .packets import admit_packets, finalize_packets
     packets = finalize_packets(packets, remaining)
     plan = admit_packets(packets, max_request_bytes=remaining["max_context_bytes"],

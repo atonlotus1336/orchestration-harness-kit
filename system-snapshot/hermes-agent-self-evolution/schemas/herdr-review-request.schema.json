@@ -1,0 +1,129 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "herdr-review-request.schema.json",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "receipt_id",
+    "attempt_id",
+    "reviewer_id",
+    "s_level",
+    "packet_sha256",
+    "source_identity",
+    "source_hashes",
+    "rubric",
+    "content",
+    "deadline_ms",
+    "reserved_budget"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "1.0"
+    },
+    "receipt_id": {
+      "$ref": "#/definitions/id"
+    },
+    "attempt_id": {
+      "$ref": "#/definitions/id"
+    },
+    "reviewer_id": {
+      "$ref": "#/definitions/id"
+    },
+    "s_level": {
+      "enum": [
+        "S1",
+        "S2",
+        "S3",
+        "S4"
+      ]
+    },
+    "packet_sha256": {
+      "$ref": "#/definitions/sha256"
+    },
+    "source_identity": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 512
+    },
+    "source_hashes": {
+      "type": "object",
+      "minProperties": 1,
+      "maxProperties": 200,
+      "propertyNames": {
+        "pattern": "^(?!/)(?!.*(?:^|/)\\.\\.(?:/|$))[^\\\\:]+$"
+      },
+      "additionalProperties": {
+        "$ref": "#/definitions/sha256"
+      }
+    },
+    "rubric": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 32768
+    },
+    "content": {
+      "type": "object",
+      "minProperties": 1,
+      "maxProperties": 200,
+      "propertyNames": {
+        "pattern": "^(?!/)(?!.*(?:^|/)\\.\\.(?:/|$))[^\\\\:]+$"
+      },
+      "additionalProperties": {
+        "type": "string",
+        "maxLength": 1048576
+      }
+    },
+    "deadline_ms": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 3600000
+    },
+    "reserved_budget": {
+      "$ref": "#/definitions/budget"
+    }
+  },
+  "definitions": {
+    "id": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9._-]{1,128}$"
+    },
+    "sha256": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "budget": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "max_context_bytes",
+        "max_model_calls",
+        "max_output_tokens",
+        "max_total_tokens",
+        "max_elapsed_seconds"
+      ],
+      "properties": {
+        "max_context_bytes": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "max_model_calls": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "max_output_tokens": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "max_total_tokens": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "max_elapsed_seconds": {
+          "type": "integer",
+          "minimum": 1
+        }
+      }
+    }
+  }
+}

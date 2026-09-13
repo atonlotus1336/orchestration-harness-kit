@@ -72,6 +72,52 @@ BUILTIN_RECIPIENT_PLACEHOLDERS = {
     "__WSL_DISTRO__",
 }
 
+HERDR_EVALUATOR_PATHS = {
+    ".gitignore",
+    "config/adaptive-reviewer-catalog.json",
+    "config/adaptive-review-runtime.json",
+    "config/adaptive-review-gsd-hooks.json",
+    "config/adaptive-code-review-policy.json",
+    "config/evaluator-harness-adapters.json",
+    "config/herdr-evaluator-adapters.json",
+    "config/herdr-runtime-lock.json",
+    "docs/HERDR-EVALUATOR-PROVIDER.md",
+    "docs/HERDR-INSTALLATION.md",
+    "docs/operations/EXECUTION-AND-REVIEW-ROUTING.md",
+    "prime_bridge/adaptive_parallel_activation.py",
+    "prime_bridge/adaptive_production_authorization.py",
+    "prime_bridge/adaptive_switch.py",
+    "schemas/adaptive-code-review-receipt.schema.json",
+    "schemas/adaptive-code-review-policy.schema.json",
+    "schemas/adaptive-code-review-finding.schema.json",
+    "schemas/evaluator-harness-request.schema.json",
+    "schemas/herdr-review-request.schema.json",
+    "schemas/herdr-review-result.schema.json",
+    "scripts/_shared_runtime.py",
+    "scripts/adaptive-code-review.py",
+    "scripts/bootstrap-herdr.py",
+    "scripts/orchestration-control.py",
+    "scripts/prime-code-execute.py",
+    "scripts/herdr-codex-reviewer.py",
+    "scripts/herdr-reviewer-launcher.py",
+    "scripts/manage-herdr-review.py",
+    "scripts/probe-herdr-evaluator.py",
+    "tests/adaptive_review/test_budget_exception.py",
+    "tests/adaptive_review/test_controller.py",
+    "tests/contract/test_evaluator_harness_interoperability.py",
+    "tests/integration/test_herdr_activation_lifecycle.py",
+    "tests/integration/test_herdr_bootstrap.py",
+    "tests/integration/test_herdr_evaluator_capability_binding.py",
+    "tests/integration/test_herdr_evaluator_isolation.py",
+    "tests/integration/test_herdr_evaluator_panel.py",
+    "tests/integration/test_herdr_evaluator_probe.py",
+    "tests/integration/test_herdr_evaluator_qualification.py",
+    "tests/integration/test_herdr_evaluator_transport.py",
+    "tests/integration/test_orchestration_switch.py",
+    "tests/unit/test_adaptive_review_transport_admission.py",
+    "tests/unit/test_herdr_review_schemas.py",
+}
+
 
 def scrub_personal_surface_blocks(text: str) -> str:
     """Remove project-specific surface rows while retaining the system graph."""
@@ -113,6 +159,9 @@ def hermes_selected(relative: Path) -> bool:
         return False
     top = relative.parts[0] if relative.parts else ""
     name = relative.name.lower()
+
+    if posix in HERDR_EVALUATOR_PATHS:
+        return True
 
     if top in {"prime_bridge", "evolution"}:
         return True
@@ -177,8 +226,32 @@ def workspace_support_selected(relative: Path) -> bool:
     )
 
 
+ADAPTIVE_REVIEW_SKILL_DEPENDENCIES = {
+    "brainstorm-council/agents/bc-anthropologist.md",
+    "brainstorm-council/agents/bc-chaos-mathematician.md",
+    "brainstorm-council/agents/bc-economist.md",
+    "brainstorm-council/agents/bc-engineer.md",
+    "brainstorm-council/agents/bc-evolutionary-biologist.md",
+    "brainstorm-council/agents/bc-game-theorist.md",
+    "brainstorm-council/agents/bc-linguist.md",
+    "brainstorm-council/agents/bc-mythologist.md",
+    "brainstorm-council/agents/bc-phenomenologist.md",
+    "brainstorm-council/agents/bc-physicist.md",
+    "brainstorm-council/agents/bc-psychoanalyst.md",
+    "brainstorm-council/agents/bc-structuralist.md",
+    "evidence-integrity-audit/SKILL.md",
+    "improve-codebase-architecture/SKILL.md",
+    "improve/SKILL.md",
+    "ponytail/skills/ponytail-audit/SKILL.md",
+    "ponytail/skills/ponytail-debt/SKILL.md",
+    "ponytail/skills/ponytail-review/SKILL.md",
+}
+
+
 def skill_dependency_selected(relative: Path) -> bool:
-    return relative.as_posix() == "ponytail/skills/ponytail/SKILL.md"
+    return relative.as_posix() in (
+        ADAPTIVE_REVIEW_SKILL_DEPENDENCIES | {"ponytail/skills/ponytail/SKILL.md"}
+    )
 
 
 def git_value(root: Path, *args: str) -> str | None:

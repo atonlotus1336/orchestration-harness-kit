@@ -1,0 +1,22 @@
+{
+  "schema_version": "1.0",
+  "mode": "off",
+  "runtime_lock": "config/herdr-runtime-lock.json",
+  "fixed_launcher": "scripts/herdr-reviewer-launcher.py",
+  "targets": {
+    "windows": {
+      "executable": "__WINDOWS_WORKSPACE__/herdr/herdr.cmd",
+      "qualified": true
+    },
+    "wsl": {
+      "executable": null,
+      "qualified": false
+    }
+  },
+  "reviewers": {},
+  "retention": {
+    "success_seconds": 0,
+    "ambiguous_seconds": 86400
+  },
+  "note": "No reviewer commands are configured. Mode off prevents process creation."
+}

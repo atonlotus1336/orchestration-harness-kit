@@ -13,11 +13,29 @@ import sys
 import threading
 import time
 from dataclasses import dataclass
-from typing import Mapping
+from typing import Mapping, Protocol, runtime_checkable
 from urllib.parse import urlsplit
 
 class BudgetViolation(ValueError):
     pass
+
+
+@runtime_checkable
+class ReportOnlyReviewTransport(Protocol):
+    """Narrow behavior shared by host-owned report-only transports."""
+
+    def validate(self) -> None:
+        ...
+
+    def payload(
+        self, skill: str, contents: Mapping[str, str], output_cap: int
+    ) -> bytes:
+        ...
+
+    def run(
+        self, skill: str, contents: Mapping[str, str], budget: "ReviewBudgetTracker"
+    ) -> tuple[dict, ...]:
+        ...
 
 class ReviewBudgetTracker:
     def __init__(self, limits: Mapping[str, int], *, allow_parallel: bool = False):
@@ -208,6 +226,7 @@ class JsonReviewTransport:
             if process is not None and process.poll() is None:
                 process.kill();process.communicate()
             raise
+
 
 def _worker():
     # Fixed trusted worker: exactly one HTTP request, no retry or redirect.

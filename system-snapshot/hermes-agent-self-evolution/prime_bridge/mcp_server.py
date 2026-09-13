@@ -19,6 +19,10 @@ from typing import Any
 import yaml
 
 from prime_bridge.capability_broker import CapabilityBroker
+from prime_bridge.adaptive_review.herdr_transport import (
+    ConfiguredHerdrReviewStarter,
+    HerdrReviewCapabilityService,
+)
 from prime_bridge.capability_ledger import CapabilityLedger
 from prime_bridge.capability_policy import CapabilityPolicy
 from prime_bridge.coding_execution import build_coding_prompt, write_receipt
@@ -567,6 +571,9 @@ class PrimeToolService:
             approval_ttl_seconds=self.capability_policy.approval_ttl_seconds,
         )
         self.capability_adapter = HermesMCPClient(profile_config)
+        self.herdr_review_service = HerdrReviewCapabilityService(
+            starter=ConfiguredHerdrReviewStarter()
+        )
         self.learning_policy = PromotionPolicy.load(learning_policy_path)
         self.learning_ledger = LearningLedger(
             learning_ledger_path or ledger_path.with_name("learning.sqlite3"),
@@ -997,7 +1004,7 @@ class PrimeToolService:
             broker = CapabilityBroker(
                 self.capability_policy, self.capability_ledger,
                 self.capability_adapter, job_ledger=self.ledger,
-                internal_handlers={"prime-learning": self.learning_service.call, "omp-worker": self.omp_service.call, "review-budget": self.review_budget_approval},
+                internal_handlers={"prime-learning": self.learning_service.call, "omp-worker": self.omp_service.call, "review-budget": self.review_budget_approval, "herdr-reviewer": self.herdr_review_service.call},
             )
             return ContainedPrimeWorker(
                 repo_root=ROOT, runtime_authority=RUNTIME_AUTHORITY,

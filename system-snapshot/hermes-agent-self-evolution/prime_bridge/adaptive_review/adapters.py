@@ -7,7 +7,8 @@ from pathlib import PurePosixPath, PureWindowsPath
 from typing import Callable, Mapping
 
 from .models import Verdict
-from .transport import JsonReviewTransport, ReviewBudgetTracker
+from .transport import ReportOnlyReviewTransport, ReviewBudgetTracker
+from .transport_registry import is_admitted_report_only_transport
 
 
 class CapabilityViolation(RuntimeError):
@@ -104,7 +105,7 @@ class ReportOnlyProvider:
 
     invoke: Callable[[ReportOnlyContext], object] | None = None
     attestation: ProviderAttestation = ProviderAttestation()
-    transport: JsonReviewTransport | None = None
+    transport: ReportOnlyReviewTransport | None = None
 
 
 class ReviewerAdapter:
@@ -131,7 +132,8 @@ class ReviewerAdapter:
             return ReviewOutcome(Verdict.INCONCLUSIVE, violations=("incomplete pre-review hashes",))
         if not provider.attestation.report_only:
             return ReviewOutcome(Verdict.INCONCLUSIVE, violations=("provider is not report-only",))
-        if type(provider.transport) is not JsonReviewTransport or provider.invoke is not None or budget is None:
+        if (not is_admitted_report_only_transport(provider.transport)
+                or provider.invoke is not None or budget is None):
             return ReviewOutcome(Verdict.INCONCLUSIVE, violations=("unmetered reviewer callback is forbidden",))
         import hashlib
         expected = {p: hashlib.sha256(self.contents[p].encode()).hexdigest() for p in self.capability.readable_files if p in self.contents}

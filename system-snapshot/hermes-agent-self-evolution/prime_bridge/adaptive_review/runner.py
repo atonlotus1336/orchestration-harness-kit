@@ -17,7 +17,8 @@ from .careers import (
     assign_careers,
 )
 from .models import Pipeline, Verdict
-from .transport import JsonReviewTransport, ReviewBudgetTracker, BudgetViolation
+from .transport import ReviewBudgetTracker, BudgetViolation
+from .transport_registry import is_admitted_report_only_transport
 from .policy import load_policy
 from .prompts import review_prompt, finding_schema as canonical_schema
 from .receipts import ParallelReviewProvenance
@@ -215,7 +216,7 @@ class Runner:
                     return self._blocked("selected reviewer provider is missing")
                 if not provider.attestation.report_only:
                     return self._blocked("selected reviewer provider is not report-only")
-                if type(provider.transport) is not JsonReviewTransport or provider.invoke is not None:
+                if not is_admitted_report_only_transport(provider.transport) or provider.invoke is not None:
                     return self._blocked("selected reviewer has no owned bounded transport")
                 provider.transport.validate()
                 capability = self.catalog.capability_for(reviewer.reviewer_id)

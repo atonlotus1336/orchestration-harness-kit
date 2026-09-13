@@ -1,0 +1,24 @@
+{
+  "schema_version": "1.0",
+  "activation_state": "inactive",
+  "release": "0.9.0",
+  "source_commit": "9ad65d9031e8cb16a7b553c0e6f74809e9811e92",
+  "expected_version_output": "herdr 0.9.0",
+  "schema_sha256": "7ae4593be31915e2cd851c61fe59687556a2ebaaad4142fba5a9edbc9bafe7d9",
+  "required_methods": [
+    "workspace.create",
+    "command.invoke",
+    "agent.start",
+    "agent.prompt",
+    "agent.wait",
+    "events.subscribe",
+    "events.wait"
+  ],
+  "executables": {
+    "windows": "__WINDOWS_WORKSPACE__/herdr/herdr.cmd",
+    "windows_direct": "__WINDOWS_WORKSPACE__/herdr/.lapart-herdr/herdr.exe",
+    "wsl": null
+  },
+  "runnable": false,
+  "note": "Provider-free schema is pinned; activation remains inactive and runnable remains false until an approved rollout change."
+}

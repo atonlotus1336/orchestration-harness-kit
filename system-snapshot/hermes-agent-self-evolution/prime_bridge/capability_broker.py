@@ -9,6 +9,9 @@ from typing import Any, Protocol
 
 from prime_bridge.capability_ledger import CapabilityLedger, CapabilityLedgerError
 from prime_bridge.capability_policy import CapabilityPolicy, CapabilityPolicyError
+from prime_bridge.orchestration_switch import (
+    HARNESS_REGISTRY, SwitchControlError, operation_permitted,
+)
 
 
 class CapabilityAdapter(Protocol):
@@ -34,6 +37,8 @@ class CapabilityBroker:
         adapter: CapabilityAdapter, *, job_ledger: Any | None = None,
         internal_handlers: dict[str, Callable[[str, dict[str, Any], dict[str, str]], Awaitable[Any]]] | None = None,
         lease_guard: CapabilityLeaseGuard | None = None,
+        switch_state_path=None,
+        operation_guards: dict[str, tuple[str, str]] | None = None,
     ):
         self.policy = policy
         self.ledger = ledger
@@ -41,6 +46,15 @@ class CapabilityBroker:
         self.job_ledger = job_ledger
         self.internal_handlers = dict(internal_handlers or {})
         self.lease_guard = lease_guard
+        self.switch_state_path = switch_state_path
+        self.operation_guards = {
+            "memory.search": ("memory", "recall"),
+            "rag.search": ("rag", "query"),
+            "learning.record": ("learning", "record"),
+            "learning.propose": ("learning", "propose"),
+            "herdr.reviewer.start": ("herdr-review", "start"),
+            **dict(operation_guards or {}),
+        }
 
     def _policy_revision(self) -> str:
         material = {
@@ -64,11 +78,26 @@ class CapabilityBroker:
             self.job_ledger.note(job_id, kind, data)
 
     async def handle(self, request: dict[str, Any]) -> dict[str, Any]:
-        if not isinstance(request, dict) or set(request) - {"job_id", "profile", "alias", "arguments", "request_id", "lease_token"}:
+        if not isinstance(request, dict) or set(request) - {"job_id", "profile", "harness", "alias", "arguments", "request_id", "lease_token"}:
             raise CapabilityBrokerError("invalid capability request")
         job_id, profile, alias = request.get("job_id"), request.get("profile"), request.get("alias")
         if not all(isinstance(value, str) for value in (job_id, profile, alias)):
             raise CapabilityBrokerError("invalid capability request identity")
+        harness = request.get("harness")
+        if harness is None:
+            harness = profile if profile in HARNESS_REGISTRY else "hermes"
+        if harness not in HARNESS_REGISTRY:
+            raise CapabilityBrokerError("invalid capability request harness")
+        guarded = self.operation_guards.get(alias)
+        if guarded is not None:
+            try:
+                if not operation_permitted(
+                        guarded[0], harness, guarded[1], self.switch_state_path):
+                    raise CapabilityBrokerError(
+                        f"{guarded[0]} switch denies {guarded[1]}")
+            except SwitchControlError as exc:
+                raise CapabilityBrokerError(
+                    "orchestration switch state is invalid") from exc
         active_request_id: str | None = None
         try:
             decision = self.policy.decision(alias)
@@ -129,7 +158,7 @@ class CapabilityBroker:
                 })
                 result = await self.internal_handlers[decision.server](
                     decision.tool, arguments.value(), {
-                        "job_id": job_id, "profile": profile, "request_id": request_id,
+                        "job_id": job_id, "profile": profile, "harness": harness, "request_id": request_id,
                         "capability_receipt": capability_receipt,
                     },
                 )

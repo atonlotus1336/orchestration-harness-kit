@@ -1,0 +1,113 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "herdr-review-result.schema.json",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "receipt_id",
+    "attempt_id",
+    "reviewer_id",
+    "packet_sha256",
+    "source_identity",
+    "findings",
+    "finish_reason",
+    "usage",
+    "started_at",
+    "finished_at"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "1.0"
+    },
+    "receipt_id": {
+      "$ref": "#/definitions/id"
+    },
+    "attempt_id": {
+      "$ref": "#/definitions/id"
+    },
+    "reviewer_id": {
+      "$ref": "#/definitions/id"
+    },
+    "packet_sha256": {
+      "$ref": "#/definitions/sha256"
+    },
+    "source_identity": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 512
+    },
+    "findings": {
+      "type": "array",
+      "maxItems": 200,
+      "items": {
+        "$ref": "adaptive-code-review-finding.schema.json"
+      }
+    },
+    "finish_reason": {
+      "enum": [
+        "stop",
+        "length",
+        "content_filter",
+        "cancelled",
+        "error"
+      ]
+    },
+    "usage": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "prompt_tokens",
+        "completion_tokens",
+        "total_tokens"
+      ],
+      "properties": {
+        "prompt_tokens": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "completion_tokens": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "total_tokens": {
+          "type": "integer",
+          "minimum": 0
+        }
+      }
+    },
+    "started_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "finished_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "herdr_refs": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "workspace_id": {
+          "$ref": "#/definitions/id"
+        },
+        "pane_id": {
+          "$ref": "#/definitions/id"
+        },
+        "agent_id": {
+          "$ref": "#/definitions/id"
+        }
+      }
+    }
+  },
+  "definitions": {
+    "id": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9._-]{1,128}$"
+    },
+    "sha256": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    }
+  }
+}

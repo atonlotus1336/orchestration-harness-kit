@@ -11,9 +11,11 @@ from .policy import load_policy
 from .proofs import HostCheck, HostTestVerifier
 from .runner import Runner
 from .transport import JsonReviewTransport
+from .herdr_transport import HerdrReviewTransport
 
 from .. import adaptive_parallel_paths as state_paths
 
+ROOT = Path(__file__).resolve().parents[2]
 ADAPTIVE_POLICY_PATH = state_paths.policy_path()
 CAREER_QUALIFICATION_FIELDS = {
     "reviewer_id", "career_id", "covered_obligations", "state",
@@ -63,7 +65,7 @@ class Controller:
         self.vault=Path(vault_root)
         self.catalog_path=Path(catalog_path)
         self.config=dict(config)
-        if set(config)-{"schema_version","provider","harness_modes","approved_workspaces","checks","max_deliveries","required_environment","automatic_s4","budget_exceptions_enabled","career_qualifications"}:
+        if set(config)-{"schema_version","provider","harness_modes","approved_workspaces","checks","max_deliveries","required_environment","automatic_s4","budget_exceptions_enabled","career_qualifications","reviewer_transports","herdr_evaluator_config"}:
             raise ValueError("unknown completion configuration field")
         career_qualifications = config.get("career_qualifications", [])
         if (
@@ -438,6 +440,50 @@ class Controller:
         except (OSError, ValueError, KeyError, TypeError, ImportError):
             return review_policy, (), neutral_controls, source_sha256
 
+    def _reviewer_transports(
+        self, catalog, *, workspace, evidence, pipeline, delivery_number,
+    ):
+        provider = self.config.get("provider", {})
+        if set(provider) - {"endpoint", "model", "credential_env", "reasoning_effort"}:
+            raise ValueError("unknown provider field")
+        json_transport = JsonReviewTransport(**provider)
+        try:
+            json_transport.validate()
+        except ValueError as exc:
+            raise ValueError("review provider configuration unavailable") from exc
+        selections = self.config.get("reviewer_transports", {})
+        if (
+            not isinstance(selections, dict)
+            or set(selections) - set(catalog.reviewers)
+            or any(value not in {"json", "herdr"} for value in selections.values())
+        ):
+            raise ValueError("reviewer transport selection is invalid")
+        transports = {}
+        for reviewer_id in catalog.reviewers:
+            if selections.get(reviewer_id, "json") == "json":
+                transports[reviewer_id] = json_transport
+                continue
+            try:
+                transport = HerdrReviewTransport.from_configuration(
+                    Path(self.config.get(
+                        "herdr_evaluator_config",
+                        ROOT / "config/herdr-evaluator-adapters.json",
+                    )),
+                    repository=workspace,
+                    receipt_id=evidence["run_id"],
+                    attempt_id=(
+                        f"{evidence['run_id']}-{delivery_number}-{reviewer_id}"
+                    ),
+                    reviewer_id=reviewer_id,
+                    s_level=str(getattr(pipeline, "value", pipeline)),
+                    source_identity=evidence["after"]["identity"],
+                )
+                transport.validate()
+            except (OSError, ValueError) as exc:
+                raise ValueError("Herdr reviewer configuration unavailable") from exc
+            transports[reviewer_id] = transport
+        return transports
+
     def _resolution_binding(self, workspace, evidence, scope):
         return {"workspace":str(Path(workspace).resolve()), "harness":evidence["harness"],
                 "session":evidence["binding"].get("session_binding_sha256"),
@@ -724,12 +770,20 @@ class Controller:
                         return material_hashes(workspace, review_context['changes'], requested, limits['max_context_bytes'])
                     if current_identity()!=evidence["after"]["identity"]:return refuse("source changed during packet construction")
                     catalog=load_frozen_catalog(self.catalog_path,vault_root=self.vault,readable_files=paths)
-                    provider=self.config.get("provider",{})
-                    if set(provider)-{"endpoint","model","credential_env","reasoning_effort"}:return refuse("unknown provider field")
-                    transport=JsonReviewTransport(**provider)
-                    try:transport.validate()
-                    except ValueError:return refuse("review provider configuration unavailable")
-                    providers={key:ReportOnlyProvider(transport=transport) for key in catalog.reviewers}
+                    try:
+                        transports = self._reviewer_transports(
+                            catalog,
+                            workspace=workspace,
+                            evidence=evidence,
+                            pipeline=pipeline,
+                            delivery_number=ledger["deliveries"] + 1,
+                        )
+                    except ValueError as exc:
+                        return refuse(str(exc))
+                    providers = {
+                        key: ReportOnlyProvider(transport=transport)
+                        for key, transport in transports.items()
+                    }
                     registered=self.config.get("checks",{}).get(str(workspace),{})
                     verifier=HostTestVerifier(workspace,{k:HostCheck(**v) for k,v in registered.items()},source_hashes,
                         required_capabilities=evidence['binding'].get('required_capabilities', ()),
@@ -815,7 +869,7 @@ class Controller:
                             self._signed(scheduler_feedback),
                         )
                         value["adaptive_parallel_feedback"] = scheduler_feedback
-                except (OSError, ValueError, KeyError, TypeError, RuntimeError):
+                except (OSError, ValueError, KeyError, TypeError, RuntimeError, ImportError):
                     value["adaptive_parallel_feedback"] = {
                         "status": "UNAVAILABLE", "promotion_performed": False,
                     }

@@ -32,3 +32,4 @@
 - Next gate: commit the allowlisted token-compute and Cursor extension changesets
   after confirmation. Publication, tagging, pushing, repository visibility, and
   provider/production activation remain separately authorized operations. No Phase 83.
+- Herdr evaluator private-kit packaging: clean restore, pinned install, Codex-only supervised canary, 63-test provider-free suite, and atomic rollback passed; portable state is inactive across nine harnesses; awaiting merge-update confirmation before commit and push.

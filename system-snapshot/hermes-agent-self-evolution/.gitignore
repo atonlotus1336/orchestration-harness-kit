@@ -1,0 +1,36 @@
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+dist/
+build/
+.eggs/
+*.egg
+.venv/
+venv/
+.env
+.env.local
+local-env.cmd
+
+# Generated eval datasets (local, not shared)
+datasets/**/*.jsonl
+datasets/**/*.json
+!datasets/.gitkeep
+
+# Evolution snapshots
+snapshots/
+*.pkl
+output/
+.cache/
+
+# Machine-specific signed adaptive grants and activation history.
+.state/adaptive-parallel/
+.state/herdr-review/
+.planning/adaptive-parallel-qualification.json
+.planning/adaptive-parallel-activation-receipts/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo

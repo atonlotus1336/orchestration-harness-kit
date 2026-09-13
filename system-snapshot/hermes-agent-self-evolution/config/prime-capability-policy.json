@@ -52,6 +52,24 @@
       "approval": "required",
       "server": "omp-adapter",
       "tool": "hash_edit_preview"
+    },
+    "omp.worker.run": {
+      "classification": "action",
+      "approval": "auto",
+      "server": "omp-worker",
+      "tool": "run"
+    },
+    "orca.worker.start": {
+      "classification": "action",
+      "approval": "required",
+      "server": "orca-worker",
+      "tool": "start"
+    },
+    "herdr.reviewer.start": {
+      "classification": "action",
+      "approval": "required",
+      "server": "herdr-reviewer",
+      "tool": "start"
     }
   }
 }

@@ -67,6 +67,7 @@ _STATE_PURPOSES = {
     "candidate": {"canary"},
     "canary_qualified": {"canary", "pilot"},
     "production_qualified": {"canary", "pilot", "production"},
+    "production_authorized": {"production"},
     "disabled": set(),
 }
 _REASON_ORDER = (

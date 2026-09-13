@@ -1,0 +1,100 @@
+{
+  "schema_version": "1.0",
+  "qualified_at_utc": "2026-09-13T00:31:23.724458Z",
+  "scope": "herdr-evaluator-private-kit-clean-restore",
+  "provider_model_calls": 0,
+  "source": {
+    "integration_commit": "cb289bf5755f79729c87b17039bf434cb22b84da",
+    "portability_sync_commit": "7bb86808c00e853e522a3ffaf4aa886857324141",
+    "herdr_release": "0.9.0",
+    "herdr_release_tag_commit": "b99002ac99b09e00b4ca692436cb15a6b0d676f1",
+    "windows_asset_sha256": "b4508c445de1c1a68c760a01735da2aba2fa214b2aafd4b07f732e49b2a64b11"
+  },
+  "checks": {
+    "empty_workspace_restore": {
+      "status": "PASS",
+      "verified_files": 439,
+      "writes": 439,
+      "conflicts": 0
+    },
+    "portable_defaults": {
+      "status": "PASS",
+      "mode": "off",
+      "runtime_runnable": false,
+      "harnesses_off": 9
+    },
+    "bootstrap_dry_run": {
+      "status": "PASS",
+      "filesystem_changes": 0
+    },
+    "pinned_install": {
+      "status": "PASS",
+      "version_output": "herdr 0.9.0",
+      "activation_changed": false
+    },
+    "inactive_probe": {
+      "status": "READY",
+      "reason": "QUALIFIED_INACTIVE"
+    },
+    "windows_configuration": {
+      "status": "PASS",
+      "configured_reviewers": 6,
+      "mode": "off"
+    },
+    "codex_supervised_canary": {
+      "status": "PASS",
+      "codex": "supervised",
+      "other_harnesses_off": 8,
+      "probe": "READY"
+    },
+    "provider_free_tests": {
+      "status": "PASS",
+      "passed": 63,
+      "skipped": 2
+    },
+    "rollback": {
+      "status": "PASS",
+      "mode": "off",
+      "runtime_runnable": false,
+      "harnesses_off": 9
+    },
+    "no_rebuild_on_toggle": {
+      "status": "PASS",
+      "binary_digest_unchanged": true,
+      "binary_mtime_unchanged": true,
+      "binary_size_unchanged": true
+    },
+    "snapshot_selection": {
+      "status": "PASS",
+      "required_paths": 46,
+      "reviewer_dependencies": 18,
+      "denied_runtime_paths": 3
+    },
+    "snapshot_restore_selftest": {
+      "status": "PASS",
+      "verified_files": 439,
+      "conflicts": 0
+    },
+    "python_compilation": {
+      "status": "PASS"
+    },
+    "dry_run_safety_gate": {
+      "status": "PASS",
+      "passed": 32
+    },
+    "full_repository_privacy_scan": {
+      "status": "PASS"
+    },
+    "diff_check": {
+      "status": "PASS"
+    }
+  },
+  "final_state": {
+    "installed": true,
+    "configured": true,
+    "mode": "off",
+    "runtime_activation_state": "inactive",
+    "runtime_runnable": false,
+    "all_harnesses_off": true
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "schema_version": "1.0",
+  "rollout_mode": "shadow",
+  "workflow": {
+    "identity": "gsd-execute-phase/58ff5fe1",
+    "expected_sha256": "58ff5fe110ce957f08532e5e0a4abf03cd96aaf71ce9bad90189a8d40b05a7ac"
+  },
+  "hooks": [
+    {
+      "boundary": "plan",
+      "anchor": "[checkpoint] phase {PHASE_NUMBER} wave {N}/{M} plan {plan_id} complete ({P}/{Q} plans done)\n   [checkpoint] phase {PHASE_NUMBER} wave {N}/{M} plan {plan_id} failed ({P}/{Q} plans done)\n   [checkpoint] phase {PHASE_NUMBER} wave {N}/{M} plan {plan_id} checkpoint ({P}/{Q} plans done)\n   ```",
+      "block": "<!-- BEGIN adaptive-review:gsd-shadow:plan -->\n**Adaptive review shadow callback — completed plan:** After the plan completion spot-check succeeds, derive the exact plan path set from that plan's PLAN/SUMMARY and commits. Never use the whole dirty tree. Run `__WSL_WORKSPACE__/hermes-agent-self-evolution/scripts/adaptive-code-review.py evaluate --scope plan --required-level S1` with one `--path` per exact path and store its JSON under `.planning/review-evidence/shadow-events/plan/`. If exact scope is unavailable, record `INCONCLUSIVE`. This callback is non-authoritative, cannot gate completion, cannot remediate, and cannot start S4; an S4 recommendation is notification-only.\n<!-- END adaptive-review:gsd-shadow:plan -->"
+    },
+    {
+      "boundary": "wave_close",
+      "anchor": "[checkpoint] phase {PHASE_NUMBER} wave {N}/{M} complete, {P}/{Q} plans done ({wave_success}/{wave_plan_count} ok)\n   ```",
+      "block": "<!-- BEGIN adaptive-review:gsd-shadow:wave_close -->\n**Adaptive review shadow callback — wave close:** Aggregate identity-matching completed-plan receipts first. Evaluate only uncovered exact paths at checkpoint scope (S0-S1). Never reread covered content or absorb unrelated dirty paths. Store the non-authoritative result under `.planning/review-evidence/shadow-events/checkpoint/`; `INCONCLUSIVE` is visible but does not gate the wave. No automatic fix or S4 is permitted.\n<!-- END adaptive-review:gsd-shadow:wave_close -->"
+    },
+    {
+      "boundary": "phase",
+      "anchor": "<step name=\"code_review_gate\" required=\"true\">",
+      "block": "<!-- BEGIN adaptive-review:gsd-shadow:phase -->\n**Adaptive review shadow callback — completed phase:** Before the fixed review, aggregate compatible plan receipts and evaluate only uncovered cross-plan seams at phase scope (S0-S3). Write a non-authoritative shadow result under `.planning/review-evidence/shadow-events/phase/`. The existing `gsd-code-review` invocation below remains the sole authoritative owner and adaptive metrics must not duplicate its metrics. Shadow results never gate closure, invoke remediation, or start S4.\n<!-- END adaptive-review:gsd-shadow:phase -->"
+    }
+  ]
+}

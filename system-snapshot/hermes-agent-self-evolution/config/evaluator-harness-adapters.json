@@ -1,0 +1,45 @@
+{
+  "schema_version": "1.0",
+  "activation_state": "inactive",
+  "contract_schema": "schemas/evaluator-harness-request.schema.json",
+  "result_schema": "schemas/adaptive-code-review-receipt.schema.json",
+  "adapters": {
+    "codex": {
+      "normalized_name": "codex",
+      "contract_version": "1.0"
+    },
+    "hermes": {
+      "normalized_name": "hermes",
+      "contract_version": "1.0"
+    },
+    "claude-code": {
+      "normalized_name": "claude-code",
+      "contract_version": "1.0"
+    },
+    "moa": {
+      "normalized_name": "moa",
+      "contract_version": "1.0"
+    },
+    "cursor": {
+      "normalized_name": "cursor",
+      "contract_version": "1.0"
+    },
+    "dsh": {
+      "normalized_name": "dsh",
+      "contract_version": "1.0"
+    },
+    "pi": {
+      "normalized_name": "pi",
+      "contract_version": "1.0"
+    },
+    "opencode": {
+      "normalized_name": "opencode",
+      "contract_version": "1.0"
+    },
+    "antigravity": {
+      "normalized_name": "antigravity",
+      "contract_version": "1.0"
+    }
+  },
+  "note": "Normalization only. Harness adapters cannot select or launch a reviewer transport."
+}

@@ -1,0 +1,551 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Adaptive code review policy",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "rollout_mode",
+    "scopes",
+    "selection",
+    "pipelines",
+    "budgets",
+    "overlap_groups",
+    "blocking_proof_forms",
+    "advisory_only_without_blocking_proof",
+    "content_identity_fields",
+    "notification",
+    "execution_review_separation",
+    "evaluation_hooks",
+    "parallel_review"
+  ],
+  "properties": {
+    "$schema": {
+      "type": "string"
+    },
+    "schema_version": {
+      "const": "1.0"
+    },
+    "rollout_mode": {
+      "enum": [
+        "shadow",
+        "advisory",
+        "enforced_phase",
+        "manual_system"
+      ]
+    },
+    "parallel_review": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["strategy", "activation_state", "max_concurrent_reviewers", "initial_ceiling", "broad_audit_ceiling", "broad_audit_requires_separate_qualification", "preserve_selected_members", "preserve_model_call_budgets"],
+      "properties": {
+        "strategy": {"const": "adaptive"},
+        "activation_state": {"enum": ["inactive", "shadow", "review", "production"]},
+        "max_concurrent_reviewers": {"$ref": "#/definitions/reviewerConcurrency"},
+        "initial_ceiling": {"$ref": "#/definitions/reviewerConcurrency"},
+        "broad_audit_ceiling": {"const": 8},
+        "broad_audit_requires_separate_qualification": {"const": true},
+        "preserve_selected_members": {"const": true},
+        "preserve_model_call_budgets": {"const": true}
+      }
+    },
+    "scopes": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "checkpoint",
+        "plan",
+        "phase",
+        "system"
+      ],
+      "properties": {
+        "checkpoint": {
+          "$ref": "#/definitions/scope"
+        },
+        "plan": {
+          "$ref": "#/definitions/scope"
+        },
+        "phase": {
+          "$ref": "#/definitions/scope"
+        },
+        "system": {
+          "$ref": "#/definitions/scope"
+        }
+      }
+    },
+    "selection": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "unknown_rule",
+        "thresholds"
+      ],
+      "properties": {
+        "unknown_rule": {
+          "const": "promote_or_inconclusive"
+        },
+        "thresholds": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "S0",
+            "S1",
+            "S2",
+            "S3",
+            "S4"
+          ],
+          "properties": {
+            "S0": {
+              "type": "object"
+            },
+            "S1": {
+              "type": "object"
+            },
+            "S2": {
+              "type": "object"
+            },
+            "S3": {
+              "type": "object"
+            },
+            "S4": {
+              "type": "object"
+            }
+          }
+        }
+      }
+    },
+    "pipelines": {
+      "$ref": "#/definitions/pipelineMap"
+    },
+    "budgets": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "S0",
+        "S1",
+        "S2",
+        "S3",
+        "S4"
+      ],
+      "properties": {
+        "S0": {
+          "$ref": "#/definitions/budget"
+        },
+        "S1": {
+          "$ref": "#/definitions/budget"
+        },
+        "S2": {
+          "$ref": "#/definitions/budget"
+        },
+        "S3": {
+          "$ref": "#/definitions/budget"
+        },
+        "S4": {
+          "$ref": "#/definitions/budget"
+        }
+      }
+    },
+    "overlap_groups": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "changed_scope_simplicity",
+        "same_identity_exclusion"
+      ],
+      "properties": {
+        "changed_scope_simplicity": {
+          "type": "array",
+          "uniqueItems": true,
+          "minItems": 2,
+          "items": {
+            "type": "string"
+          }
+        },
+        "same_identity_exclusion": {
+          "type": "array",
+          "uniqueItems": true,
+          "minItems": 2,
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "blocking_proof_forms": {
+      "type": "array",
+      "uniqueItems": true,
+      "minItems": 1,
+      "items": {
+        "type": "string"
+      }
+    },
+    "advisory_only_without_blocking_proof": {
+      "type": "array",
+      "uniqueItems": true,
+      "minItems": 1,
+      "items": {
+        "type": "string"
+      }
+    },
+    "content_identity_fields": {
+      "type": "array",
+      "uniqueItems": true,
+      "minItems": 6,
+      "items": {
+        "type": "string"
+      }
+    },
+    "notification": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "states",
+        "required_fields",
+        "s4_actions"
+      ],
+      "properties": {
+        "states": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "string"
+          }
+        },
+        "required_fields": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "string"
+          }
+        },
+        "s4_actions": {
+          "type": "array",
+          "const": [
+            "Run now",
+            "Later",
+            "Skip"
+          ]
+        }
+      }
+    },
+    "execution_review_separation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "execution_lanes",
+        "review_pipelines",
+        "mapping"
+      ],
+      "properties": {
+        "execution_lanes": {
+          "type": "array",
+          "const": [
+            "T0",
+            "T1",
+            "T2",
+            "T3",
+            "T4"
+          ]
+        },
+        "review_pipelines": {
+          "type": "array",
+          "const": [
+            "S0",
+            "S1",
+            "S2",
+            "S3",
+            "S4"
+          ]
+        },
+        "mapping": {
+          "const": "none"
+        }
+      }
+    },
+    "evaluation_hooks": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "automatic",
+        "model_calls",
+        "architecture_delta",
+        "learning_candidate"
+      ],
+      "properties": {
+        "automatic": {
+          "const": true
+        },
+        "model_calls": {
+          "const": 0
+        },
+        "architecture_delta": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "always_for",
+            "cross_subsystem_minimum",
+            "structural_path_tokens"
+          ],
+          "properties": {
+            "always_for": {
+              "type": "array",
+              "const": [
+                "S3",
+                "S4"
+              ]
+            },
+            "cross_subsystem_minimum": {
+              "type": "integer",
+              "minimum": 2
+            },
+            "structural_path_tokens": {
+              "type": "array",
+              "minItems": 1,
+              "uniqueItems": true,
+              "items": {
+                "type": "string",
+                "minLength": 1
+              }
+            }
+          }
+        },
+        "learning_candidate": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "automatic",
+            "direct_promotion",
+            "require_prevention_test",
+            "deduplicate"
+          ],
+          "properties": {
+            "automatic": {
+              "const": true
+            },
+            "direct_promotion": {
+              "const": false
+            },
+            "require_prevention_test": {
+              "const": true
+            },
+            "deduplicate": {
+              "const": true
+            }
+          }
+        }
+      }
+    },
+    "change_contract": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "rollout_mode",
+        "s0",
+        "s1_plus"
+      ],
+      "properties": {
+        "rollout_mode": {
+          "const": "shadow"
+        },
+        "s0": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "model_calls",
+            "semantic_hunk_analysis",
+            "collect"
+          ],
+          "properties": {
+            "model_calls": {
+              "const": 0
+            },
+            "semantic_hunk_analysis": {
+              "const": false
+            },
+            "collect": {
+              "type": "array",
+              "uniqueItems": true,
+              "minItems": 1,
+              "items": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "s1_plus": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "additional_model_calls",
+            "reuse_existing_reviewer_call",
+            "checks"
+          ],
+          "properties": {
+            "additional_model_calls": {
+              "const": 0
+            },
+            "reuse_existing_reviewer_call": {
+              "const": true
+            },
+            "checks": {
+              "type": "array",
+              "uniqueItems": true,
+              "minItems": 1,
+              "items": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "reviewerConcurrency": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["S0", "S1", "S2", "S3", "S4"],
+      "properties": {
+        "S0": {"type": "integer", "minimum": 0, "maximum": 0},
+        "S1": {"type": "integer", "minimum": 1, "maximum": 1},
+        "S2": {"type": "integer", "minimum": 1, "maximum": 2},
+        "S3": {"type": "integer", "minimum": 1, "maximum": 4},
+        "S4": {"type": "integer", "minimum": 1, "maximum": 4}
+      }
+    },
+    "level": {
+      "enum": [
+        "S0",
+        "S1",
+        "S2",
+        "S3",
+        "S4"
+      ]
+    },
+    "scope": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "allowed",
+        "minimum"
+      ],
+      "properties": {
+        "allowed": {
+          "type": "array",
+          "uniqueItems": true,
+          "minItems": 1,
+          "items": {
+            "$ref": "#/definitions/level"
+          }
+        },
+        "minimum": {
+          "$ref": "#/definitions/level"
+        },
+        "s4_confirmation_required": {
+          "type": "boolean"
+        },
+        "incremental": {
+          "type": "boolean"
+        },
+        "manual_only": {
+          "type": "boolean"
+        }
+      }
+    },
+    "pipelineMap": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "S0",
+        "S1",
+        "S2",
+        "S3",
+        "S4"
+      ],
+      "properties": {
+        "S0": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "S1": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "S2": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "S3": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "S4": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "budget": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "max_files",
+        "max_context_bytes",
+        "max_model_calls",
+        "max_estimated_input_tokens",
+        "max_tool_calls",
+        "max_elapsed_seconds",
+        "max_output_tokens",
+        "max_total_tokens"
+      ],
+      "properties": {
+        "max_files": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "max_context_bytes": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "max_model_calls": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "max_estimated_input_tokens": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "max_tool_calls": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "max_elapsed_seconds": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "max_lens_excerpts": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "max_output_tokens": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "max_total_tokens": {
+          "type": "integer",
+          "minimum": 0
+        }
+      }
+    }
+  }
+}

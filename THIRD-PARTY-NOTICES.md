@@ -11,6 +11,7 @@ proprietary terms. Their original licenses control.
 | [Hermes Agent Self-Evolution](https://github.com/NousResearch/hermes-agent-self-evolution) | Modified, sanitized source under `system-snapshot/hermes-agent-self-evolution/` | MIT; Copyright (c) 2026 Nous Research |
 | [Prime Agent](https://github.com/PrimeIntellect-ai/prime-agent) | Pinned external source/runtime used by the governed Prime bridge | MIT; Copyright (c) 2025 Mario Zechner; Copyright (c) 2026 Prime Intellect |
 | [Oh My Pi](https://github.com/can1357/oh-my-pi) (`@oh-my-pi/pi-coding-agent`) | Pinned OMP coding-sidecar dependency | MIT; Copyright (c) 2025 Mario Zechner; Copyright (c) 2025-2026 Can Bölük; Copyright (c) 2026 Stencil Labs, Inc. |
+| [Herdr](https://github.com/herdrdev/herdr) | Pinned external reviewer-process host; binaries and upstream source are not bundled | Apache License 2.0; retain the upstream license and notices when redistributing Herdr itself |
 | [DSPy](https://github.com/stanfordnlp/dspy) and [GEPA](https://github.com/gepa-ai/gepa) | Dependencies referenced by Hermes Agent Self-Evolution | MIT; consult each dependency's distributed metadata for its exact notice |
 | [Darwinian Evolver](https://github.com/imbue-ai/darwinian_evolver) | Optional external CLI only; no source is bundled by this kit | AGPL-3.0; use remains subject to the upstream license |
 

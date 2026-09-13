@@ -58,7 +58,7 @@ verification provides a separate review path.
 | [`modules/token-compute-optimization/`](modules/token-compute-optimization/) | One provider-free budget, depth, cache, rendering, accounting, and rollback profile for every adapter | Reduce wasted context and calls without weakening quality gates or capability discovery |
 | [`modules/additive-parallel/`](modules/additive-parallel/) | Immutable v1 max-two read-only behavior plus inactive adaptive v2 execution, transactional recipient switches, staged reviewer concurrency, and catalog-bound career methods | Test bounded scaling while recipient adapters retain provider, S-selector, completion, and activation authority |
 | [`modules/verified-maintenance/`](modules/verified-maintenance/) | Daily, weekly, and monthly improvement windows that start only after a successful backup | Keep self-improvement recoverable, sandboxed, and human-approved |
-| [`system-snapshot/`](system-snapshot/) | The actual sanitized Prime/OMP, Hermes Telegram, auto-learning, autoexperiment, maintenance, backup, and restore implementation | Preserve the recent systemic updates rather than only their portable interfaces |
+| [`system-snapshot/`](system-snapshot/) | The actual sanitized Prime/OMP, Herdr evaluator, Hermes Telegram, auto-learning, autoexperiment, maintenance, backup, and restore implementation | Preserve the recent systemic updates rather than only their portable interfaces |
 
 ## Start here: one PC
 

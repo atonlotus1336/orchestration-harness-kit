@@ -21,6 +21,8 @@ scripts used by the owner's system.
 - Autoexperiment research policy, contracts, adapters, templates, authority
   constitution, and system surface graph required by the control plane.
 - Verified maintenance policy, runner, ledger, scheduler, runbook, and tests.
+- Herdr evaluator transport, governed reviewer starter, S0-S4 boundary,
+  Windows/WSL lifecycle controls, schemas, runbook, and provider-free tests.
 
 The exact file list and SHA-256 hashes are in
 `system-snapshot/SNAPSHOT-MANIFEST.json`.
@@ -31,6 +33,7 @@ The exact file list and SHA-256 hashes are in
 - API tokens, credentials, private keys, and Telegram bot secrets
 - runtime ledgers, logs, caches, generated reports, and mutable state
 - signed/live evidence receipts tied to a particular machine
+- Herdr and Codex binaries, reviewer sessions, and machine-local activation state
 - three adversarial tests containing fake token-shaped strings
 - personal project surfaces and project-specific maintenance jobs
 
@@ -93,6 +96,15 @@ python tools/sync-private-system-snapshot.py `
 
 The exporter fails closed when it finds token-shaped credentials and regenerates
 the hash manifest on success.
+
+The Herdr integration restores as code and inactive portable policy. Install the
+pinned Herdr release from its official distribution, configure the local reviewer
+bridge, and activate a harness only after the recipient-local provider-free tests
+pass. Follow `hermes-agent-self-evolution/docs/HERDR-INSTALLATION.md` for the
+dry-run-first, checksum-pinned Herdr 0.9.0 bootstrap. Bootstrap never activates
+the evaluator. Verify the packaged boundary with:
+
+    python tools/test-herdr-snapshot-selection.py
 
 For the complete recipient activation and live acceptance sequence, see
 [`PRIME-OMP-CLIENT-SETUP.md`](PRIME-OMP-CLIENT-SETUP.md).

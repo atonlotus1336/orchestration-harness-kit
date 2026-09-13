@@ -1,0 +1,108 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "evaluator-harness-request.schema.json",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "harness",
+    "goal_id",
+    "receipt_id",
+    "attempt_id",
+    "source_identity",
+    "source_hashes",
+    "rubric",
+    "content",
+    "deadline_ms",
+    "reserved_budget",
+    "capability_attestation"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "1.0"
+    },
+    "harness": {
+      "type": "string",
+      "minLength": 1
+    },
+    "goal_id": {
+      "$ref": "#/definitions/id"
+    },
+    "receipt_id": {
+      "$ref": "#/definitions/id"
+    },
+    "attempt_id": {
+      "$ref": "#/definitions/id"
+    },
+    "source_identity": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 512
+    },
+    "source_hashes": {
+      "type": "object",
+      "minProperties": 1,
+      "maxProperties": 200,
+      "additionalProperties": {
+        "$ref": "#/definitions/sha256"
+      }
+    },
+    "rubric": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 32768
+    },
+    "content": {
+      "type": "object",
+      "minProperties": 1,
+      "maxProperties": 200,
+      "additionalProperties": {
+        "type": "string",
+        "maxLength": 1048576
+      }
+    },
+    "deadline_ms": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 3600000
+    },
+    "reserved_budget": {
+      "$ref": "herdr-review-request.schema.json#/definitions/budget"
+    },
+    "capability_attestation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "tool_names",
+        "source_mounted",
+        "patch_channel",
+        "arbitrary_command"
+      ],
+      "properties": {
+        "tool_names": {
+          "type": "array",
+          "maxItems": 0
+        },
+        "source_mounted": {
+          "const": false
+        },
+        "patch_channel": {
+          "const": false
+        },
+        "arbitrary_command": {
+          "const": false
+        }
+      }
+    }
+  },
+  "definitions": {
+    "id": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9._-]{1,128}$"
+    },
+    "sha256": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    }
+  }
+}
