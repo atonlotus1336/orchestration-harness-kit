@@ -33,10 +33,11 @@ If the handshake succeeds and reports discovered tools, reload MCP inside
 Hermes and open a new session. Restart Claude Code or Codex after changing
 their MCP configuration because those harnesses snapshot tools at startup.
 
-Run `modules/prime-omp/diagnose-prime-omp.py` to distinguish a failed MCP
-handshake from a stale session snapshot. For OMP readiness, run the canonical
-feasibility probe. `omp-runtime-lock.json` is provenance and contains no live
-`status` or `runnable_image` fields.
+Run `modules/prime-omp/diagnose-prime-omp.py --config <local-config>` for
+provider-free structural status. Add `--deep` to distinguish a failed MCP
+handshake from a stale session snapshot and pass the canonical feasibility probe
+for live OMP readiness. `omp-runtime-lock.json` records provenance rather than
+live `status` or `runnable_image` fields.
 
 For an installed kit, the same check is available through doctor:
 

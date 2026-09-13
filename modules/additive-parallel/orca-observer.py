@@ -23,17 +23,30 @@ def main(argv=None):
         owner = PortableOrcaObserverSwitch(args.state_root)
         if args.command == "status":
             result = owner.status()
+            targets = HARNESS_REGISTRY
         else:
             targets = resolve_targets(
                 HARNESS_REGISTRY, global_selector=args.global_selector,
                 harnesses=tuple(args.harness or ()),
             )
             result = owner.set(targets, turn_on=args.command == "on")
+        outcome = result.get("result", result.get("global", "INVALID"))
+        payload = {
+            "command": args.command,
+            "status": outcome,
+            "targets": list(targets),
+            "result": result,
+            "activation_changes": len(result.get("changed_harnesses", [])),
+        }
     except Exception as exc:
-        result = {"result": "INVALID", "reason": type(exc).__name__}
-    print(json.dumps(result, sort_keys=True))
-    outcome = result.get("result", result.get("global", "INVALID"))
-    return 0 if outcome in {"ACTIVE", "INACTIVE", "PARTIAL"} else 3
+        payload = {
+            "command": args.command,
+            "status": "INVALID",
+            "activation_changes": 0,
+            "reason": type(exc).__name__,
+        }
+    print(json.dumps(payload, sort_keys=True))
+    return 0 if payload["status"] in {"ACTIVE", "INACTIVE", "PARTIAL"} else 3
 
 
 if __name__ == "__main__":

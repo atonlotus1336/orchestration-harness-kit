@@ -44,9 +44,9 @@ bash scripts/acquire-prime-agent-source.sh
 bash scripts/check-prime-install.sh
 ```
 
-The source acquisition is pinned and checksum-verified. The install checker
+The source-acquisition step uses a pinned, checksum-verified source. The install checker
 will remain `MISSING` until the recipient separately installs the reviewed
-Prime executable and its non-secret provenance manifest as described in
+Prime executable and its non-secret provenance manifest according to
 `docs/prime-integration/install-contract.md`. This is intentional: the kit does
 not execute an upstream installer or inherit provider credentials.
 
@@ -72,15 +72,23 @@ Render candidates first, inspect them, then activate with a backup:
 Restart the affected Hermes gateway or open a new Hermes session. Existing
 sessions retain their old MCP tool snapshot.
 
-## 4. Prove the three live boundaries
+## 4. Check structural status, then prove the live boundaries
 
-Do not infer live readiness from a config file or from
-`omp-runtime-lock.json`.
+Start with the read-only, provider-free status:
 
 ```bash
-hermes --profile workspace mcp test prime-agent
-
 python modules/prime-omp/diagnose-prime-omp.py \
+  --config /path/to/prime-omp-local.json
+```
+
+Use `--verify-binaries` for a local checksum comparison. Neither command
+contacts a model or MCP server.
+
+Run the deep diagnostic only when you require fresh live evidence. Do not infer
+live readiness from a config file or from `omp-runtime-lock.json`.
+
+```bash
+python modules/prime-omp/diagnose-prime-omp.py --deep \
   --profile workspace \
   --omp-probe /mnt/d/AgentWorkspace/hermes-agent-self-evolution/scripts/probe-omp-feasibility.py \
   --omp-python "$HOME/.hermes/hermes-agent/venv/bin/python"
@@ -90,8 +98,8 @@ Acceptance requires all of the following:
 
 - `prime_mcp=CONNECTED`: Hermes completed the MCP handshake and discovered
   Prime tools.
-- A newly opened session contains a `prime_` tool such as `prime_delegate`;
-  an older session may correctly report `STALE`.
+- A newly opened session contains a `prime_` tool such as `prime_delegate`.
+  An older session may correctly report `STALE`.
 - `omp_runtime=READY`: the canonical feasibility probe admitted the pinned,
   contained OhMyPi runtime. A lock file alone is provenance, not runtime
   evidence.
@@ -99,7 +107,7 @@ Acceptance requires all of the following:
 For the OMP image, relay, and live SDK gates, follow the restored
 `docs/OMP-PRIME-CODING-RUNBOOK.md`. Do not mark a client deployment complete
 until one harmless disposable-worktree job returns a patch and Hermes, rather
-than the worker, performs the final apply and verification.
+than the worker, applies and verifies the patch.
 
 ## Repository acceptance test
 
@@ -109,8 +117,8 @@ Maintainers should run this before distributing the Git revision:
 python tools/verify-prime-omp-client-path.py --selftest
 ```
 
-It restores into a temporary client workspace, proves that an omitted WSL
-distro is rejected, renders a Hermes overlay while preserving existing
+It restores into a temporary client workspace, rejects an omitted WSL
+distro, and renders a Hermes overlay while preserving existing
 providers/memory/toolsets/MCP servers, and syntax-checks the restored MCP
 source inventory without assuming that
 the maintainer test interpreter is the recipient's Hermes environment. The
@@ -118,4 +126,4 @@ dependency import, live Prime handshake, and OMP execution remain explicit
 recipient-machine gates.
 
 In the contract-only public payload, the same command returns `SKIPPED` with a
-pointer to the authorized full-Git path; this is not a Prime readiness result.
+pointer to the authorized full-Git path. This is not a Prime readiness result.

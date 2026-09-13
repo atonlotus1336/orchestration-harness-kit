@@ -197,7 +197,7 @@ def _build_repo(path: Path) -> None:
     )
     _git(path, "init")
     _git(path, "config", "user.name", "Orca Qualification")
-    _git(path, "config", "user.email", "orca-qualification@example.invalid")
+    _git(path, "config", "user.email", "orca-qualification.invalid")
     _git(path, "add", ".")
     _git(path, "commit", "-m", "qualification fixture")
 

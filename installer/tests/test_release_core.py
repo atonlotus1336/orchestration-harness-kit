@@ -162,7 +162,7 @@ def test_prime_omp_diagnostic_named_failure_cases():
     )
     result = json.loads(proc.stdout)
     assert proc.returncode == 0
-    assert result == {"cases": 4, "failures": []}
+    assert result == {"cases": 6, "failures": []}
 
 
 def test_git_clone_prime_omp_client_path():

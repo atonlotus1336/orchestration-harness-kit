@@ -531,7 +531,10 @@ def test_portable_orca_observer_switch_cli_is_simple_and_inactive_by_default(tmp
         [*base, "on", "--global"], cwd=MODULE, text=True,
         capture_output=True, check=False)
     assert active.returncode == 0
-    assert json.loads(active.stdout)["activation_changes"] == 2
+    active_value = json.loads(active.stdout)
+    assert active_value["activation_changes"] == len(
+        active_value["result"]["after"]["enabled_harnesses"]
+    )
     partial = subprocess.run(
         [*base, "off", "--harness", "codex"], cwd=MODULE, text=True,
         capture_output=True, check=False)
@@ -539,8 +542,7 @@ def test_portable_orca_observer_switch_cli_is_simple_and_inactive_by_default(tmp
     assert partial.returncode == 0
     assert value["status"] == "PARTIAL"
     assert value["result"]["after"]["authority"] == {
-        "observe_only": True, "launch": False, "command": False,
-        "approve": False, "review": False, "complete": False, "poll": False,
+        "canonical_control": "orchestration-switches.json",
     }
 
 

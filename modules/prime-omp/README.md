@@ -64,13 +64,22 @@ its own. Its built-in self-test exercises every one of those failure cases:
 python verify-prime-omp-contract.py --selftest
 ```
 
-## Diagnose a missing Prime or OMP tool
+## Check status, then escalate only when needed
 
-The connector, the current chat's tool snapshot, and the OMP runtime are three
-different boundaries. Test them separately:
+Routine status reads the prepared local configuration and makes no MCP or model
+calls:
 
 ```bash
-python diagnose-prime-omp.py \
+python diagnose-prime-omp.py --config prime-omp-local.json
+```
+
+Add `--verify-binaries` when you want a local checksum comparison. This is
+still provider-free, but it can take longer for large executables.
+
+Use the deep diagnostic only when fresh live evidence is required:
+
+```bash
+python diagnose-prime-omp.py --deep \
   --hermes-bin /path/to/hermes \
   --profile workspace \
   --session-tools-json /path/to/session-tools.json \
@@ -81,10 +90,8 @@ python diagnose-prime-omp.py \
 The session-tools file is optional. It may be a JSON string list or an object
 with a `tools` list. If Prime's MCP handshake succeeds but that list has no
 Prime tool, `session_tools` is `STALE` and the next action is
-`RELOAD_MCP_AND_OPEN_NEW_SESSION`. Do not inspect `omp-runtime-lock.json` for
-live status; pass the canonical feasibility probe. If the Hermes executable
-and its Python live in the same directory, the diagnostic selects that Python
-automatically. Otherwise, provide `--omp-python` explicitly.
+`RELOAD_MCP_AND_OPEN_NEW_SESSION`. A runtime lock records provenance; the
+deep diagnostic uses the canonical feasibility probe for live readiness.
 
 Run the diagnostic's named failure cases without a Hermes installation:
 

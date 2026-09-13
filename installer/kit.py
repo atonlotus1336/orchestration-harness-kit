@@ -626,6 +626,7 @@ def command_doctor(args) -> int:
         diagnostic = target / "modules" / "prime-omp" / "diagnose-prime-omp.py"
         command = [
             sys.executable, str(diagnostic),
+            "--deep",
             "--hermes-bin", args.hermes_bin,
             "--profile", args.profile,
         ]
