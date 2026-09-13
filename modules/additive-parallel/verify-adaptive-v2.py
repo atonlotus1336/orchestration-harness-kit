@@ -325,6 +325,9 @@ def verify(source_workspace: Path | None = None) -> list[str]:
     execution_source = (MODULE / "prime_bridge/orca_execution.py").read_text(encoding="utf-8")
     operator_source = (MODULE / "prime_bridge/orca_operator.py").read_text(encoding="utf-8")
     qualifier_source = (MODULE / "scripts/qualify-orca-coding.py").read_text(encoding="utf-8")
+    front_door = MODULE / "scripts/orca-control.py"
+    front_source = front_door.read_text(encoding="utf-8") if front_door.is_file() else ""
+    docs_source = (MODULE / "docs/ORCA-EXECUTION-PROVIDER.md").read_text(encoding="utf-8")
     production_contract = (
         "adapter_launch", "ORCA_ADAPTER_QUALIFICATION_MISMATCH",
         "ELIGIBLE_ORCA_LANES", "automatic_dispatch_authorized",
@@ -343,6 +346,25 @@ def verify(source_workspace: Path | None = None) -> list[str]:
         failures.append("portable Hermes Orca worktree interop is incomplete")
     if ('"--orca", default=None' not in operator_source):
         failures.append("Orca operator does not default to governed discovery")
+    front_contract = (
+        'choices=("status", "on", "off", "doctor")',
+        "PRIORITY_HARNESSES", "DEFERRED_HARNESSES",
+        'context.control.set("off", targets)',
+        '"ACTIVE" if considered and active == considered',
+        "qualify-orca-coding.py --harness",
+    )
+    if any(fragment not in front_source for fragment in front_contract):
+        failures.append("human-facing Orca control contract is incomplete")
+    documented = (
+        "python scripts/orca-control.py status",
+        "python scripts/orca-control.py on",
+        "python scripts/orca-control.py off",
+        "python scripts/orca-control.py doctor",
+    )
+    if any(command not in docs_source for command in documented):
+        failures.append("human-facing Orca commands are not documented")
+    if "scripts/orchestration-control.py --json orca" in docs_source:
+        failures.append("Orca documentation still advertises the legacy front door")
     if ("ORCA_AB_QUALIFICATION_EXPIRED" in selector_source
             or "timedelta(days=7)" in qualifier_source):
         failures.append("portable Orca qualification still has calendar expiry")

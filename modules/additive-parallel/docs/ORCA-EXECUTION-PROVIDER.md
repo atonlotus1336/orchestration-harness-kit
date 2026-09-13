@@ -38,13 +38,29 @@ The unified switch has one Orca row per harness:
 - `full`: all supported Orca lifecycle operations, still bounded by approval,
   worktree scope, budgets, evidence, and evaluator controls.
 
-Examples:
+Use the human-facing front door. It discovers the canonical switch state,
+Prime ledger, provider catalog, and workspace automatically:
 
 ```text
-python scripts/orchestration-control.py --json orca full --global
-python scripts/orchestration-control.py --json orca off --harness hermes
-python scripts/orchestration-control.py --json status --feature orca
+python scripts/orca-control.py status
+python scripts/orca-control.py on
+python scripts/orca-control.py off
+python scripts/orca-control.py doctor
+python scripts/orca-control.py on --harness hermes
 ```
+
+The default target set is Codex, Hermes, MOA, Cursor, DSH, Pi, and OpenCode.
+Claude Code and Antigravity remain registered but are deferred; inspect them
+explicitly with `--all-harnesses` without counting them in priority rollout
+readiness. `status` and `doctor` report real runtime and production
+qualification as `ACTIVE`, `PARTIAL`, or `BLOCKED`, followed by the exact next
+action for each harness. `--json` is available for automation. Advanced path
+overrides remain available but are not required for the standard installation.
+
+`orca-control off` always uses the lifecycle controller: it quiesces new work,
+drains existing workers, verifies zero remain, and only then records `off`.
+The lower-level `orchestration-control.py` remains available for compatibility
+and other orchestration features, but it is not the normal Orca interface.
 
 The legacy Orca observer command remains as a compatibility facade. It now
 reads and writes the same unified state and does not create a second switch:

@@ -43,6 +43,7 @@ MANAGED_FILES = (
     "prime_bridge/parallel_provider.py",
     "prime_bridge/parallel_provider_manager.py",
     "scripts/manage-orca.py",
+    "scripts/orca-control.py",
     "scripts/qualify-orca-coding.py",
     "scripts/manage-parallel-provider.py",
     "scripts/orca-observer.py",

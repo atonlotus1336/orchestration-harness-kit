@@ -30,6 +30,23 @@ adapter registry, and the authority contract in
 the provider deliberately will not invent those authorities. Installation and
 staging remain inactive and perform no Orca or model call.
 
+After staging into a compatible recipient, use one Orca front door. It finds
+the standard switch state, Prime ledger, provider catalog, and workspace:
+
+```text
+python scripts/orca-control.py status
+python scripts/orca-control.py on
+python scripts/orca-control.py off
+python scripts/orca-control.py doctor
+python scripts/orca-control.py on --harness hermes
+```
+
+Commands target Codex, Hermes, MOA, Cursor, DSH, Pi, and OpenCode by default.
+Claude Code and Antigravity remain registered but deferred; include them only
+for inspection with `--all-harnesses`. `off` always uses recipient-owned
+quiesce, drain, and zero-worker verification. The lower-level portable switch
+below remains a provider-free contract, not the normal production Orca UI.
+
 The kit also exports an inactive-by-default unified switch contract for route,
 review, learning, autonomy, memory, token-compute, and RAG:
 
@@ -110,7 +127,8 @@ runtime probe, host signing authority, and a recipient-local qualification.
 
 Production selection requires two or more admitted scopes and binds the signed
 qualification to the exact harness, route fingerprint, adapter launch type,
-parallel ceiling, and expiry. Automatic worker starts use exact-argument,
+parallel ceiling, Orca executable, adapter content, and qualification contract.
+Automatic worker starts use exact-argument,
 single-use preauthorization. The global `orca.worker.start` capability remains
 approval-required outside that qualified path. Results remain isolated
 proposals which the parent applies serially and verifies as a batch.
@@ -118,8 +136,8 @@ proposals which the parent applies serially and verifies as a batch.
 No `.state` directory, HMAC, route receipt, job ledger, user-specific executable
 path, or production adapter status is shipped. The included adapter registry is
 portable and `configured` only. Recipients qualify their own subscription-backed
-runtime with `scripts/qualify-orca-coding.py`; failure or expiry falls back to
-the existing native route before an Orca side effect.
+runtime with `scripts/qualify-orca-coding.py`; a missing or materially stale
+qualification falls back to the existing native route before an Orca side effect.
 ### Move or remove Orca
 
 Orca implements the generic `ParallelWorkerProvider` contract and is loaded

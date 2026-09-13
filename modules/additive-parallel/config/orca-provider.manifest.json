@@ -32,6 +32,7 @@
     "prime_bridge/orca_observer_switch.py",
     "prime_bridge/orca_operator.py",
     "scripts/manage-orca.py",
+    "scripts/orca-control.py",
     "scripts/orca-observer.py",
     "scripts/orca-spawn.mjs",
     "config/orca-harness-adapters.json",

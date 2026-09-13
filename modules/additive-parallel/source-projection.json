@@ -134,7 +134,7 @@
       "portable_contract": "config/orca-provider.manifest.json",
       "source_path": "config/orca-provider.manifest.json",
       "source_repository": "hermes-agent-self-evolution",
-      "source_sha256": "5c1cb636ce979c7217a388d3aecad64f030d15a802697571ef3016a0ca3537bc"
+      "source_sha256": "c7ac270796611a61d97d07d788c980b3956db34853845059fc23ebceb9119739"
     },
     {
       "portable_contract": "scripts/manage-parallel-provider.py",
@@ -179,10 +179,16 @@
       "source_sha256": "52a446aa4427036909f0f8470243f5beb65da43b571c3636a970cf7d025970cb"
     },
     {
+      "portable_contract": "scripts/orca-control.py#status,on,off,doctor",
+      "source_path": "scripts/orca-control.py",
+      "source_repository": "hermes-agent-self-evolution",
+      "source_sha256": "f728cec61d3909d03b7da41c9bfa5960d2a2bb6b1ad29a44535d35bf59a9d525"
+    },
+    {
       "portable_contract": "docs/ORCA-EXECUTION-PROVIDER.md",
       "source_path": "docs/ORCA-EXECUTION-PROVIDER.md",
       "source_repository": "hermes-agent-self-evolution",
-      "source_sha256": "5f176ba3ec0f8418bbcdefc7298ff7f384eab3d2e133f42660671b4c90e3b880"
+      "source_sha256": "508503192a1702f759d16276939f28fdf15d2afa55baa095b16a57ede460173f"
     }
   ],
   "schema": "lapart.adaptive-v2-source-projection.v1"
