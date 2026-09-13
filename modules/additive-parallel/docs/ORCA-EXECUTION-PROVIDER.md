@@ -62,6 +62,108 @@ drains existing workers, verifies zero remain, and only then records `off`.
 The lower-level `orchestration-control.py` remains available for compatibility
 and other orchestration features, but it is not the normal Orca interface.
 
+## Small-model build and setup runbook
+
+Follow this sequence literally. Do not infer readiness from files, switch intent,
+or an earlier session.
+
+### 1. Identify the environment
+
+Set `<source-runtime-root>` to the source system's runtime checkout. A
+portable checkout contains `modules/additive-parallel`; staging copies managed
+code but never copies state, qualifications, credentials, ledgers, routes, or
+process identities. There is no separate Orca service to build per harness.
+
+Start an installed-runtime check with:
+
+```text
+python scripts/orca-control.py doctor
+```
+
+For Hermes in WSL:
+
+```bash
+cd <source-runtime-root>
+python3 scripts/orca-control.py doctor --harness hermes
+```
+
+### 2. Interpret readiness literally
+
+- `ACTIVE`: every selected harness is `full`, runtime/probe READY, and
+  production-qualified for the current material.
+- `PARTIAL`: only some selected harnesses are ACTIVE. Read every row.
+- `BLOCKED`: no selected harness is usable. A `full` switch can still be
+  intent only.
+- `configured` is not production qualification.
+- `Deferred` is a non-target. Claude Code and Antigravity remain deferred
+  unless the user requests them separately.
+
+Execute only the row's corrective action. Stop if an executable, subscription,
+identity, signing authority, or verified baseline is unavailable. Never
+substitute a provider or pay-per-token route.
+
+### 3. Stage a portable build
+
+From the private kit repository, verify first, preview staging, then apply only
+after reviewing the target paths:
+
+```text
+python modules/additive-parallel/verify-additive-parallel.py --json
+python modules/additive-parallel/verify-adaptive-v2.py --source-workspace <workspace-containing-source-repositories> --json
+python modules/additive-parallel/manage-adaptive-v2.py stage --target <recipient-root> --backup-root <recipient-data>/adaptive-backups
+python modules/additive-parallel/manage-adaptive-v2.py stage --target <recipient-root> --backup-root <recipient-data>/adaptive-backups --apply --yes
+```
+
+Change to `<recipient-root>` and run
+`python scripts/orca-control.py doctor`. A staged build starts inactive.
+Never edit switch JSON to manufacture ACTIVE.
+
+### 4. Qualify only when authorized
+
+Qualification runs real coding canaries and may consume a subscription-backed
+model. Run it only when `doctor` requests it and the user authorizes the
+harness, route, and local-state change. The repository root must be on
+`PYTHONPATH`.
+
+[PowerShell]
+
+```powershell
+cd <source-runtime-root>
+$env:PYTHONPATH = (Get-Location).Path + [IO.Path]::PathSeparator + $env:PYTHONPATH
+python scripts/qualify-orca-coding.py --harness codex --model gpt-5.6-luna --adapter-launch native --promote-registry
+```
+
+[WSL/bash]
+
+```bash
+cd <source-runtime-root>
+PYTHONPATH="$PWD" python3 scripts/qualify-orca-coding.py --harness hermes --profile workspace --promote-registry
+```
+
+Do not invent `<verified-baseline.json>`. Qualifications remain valid until a
+material route, adapter, executable, contract, or ceiling changes.
+
+### 5. Activate, use, stop, and verify
+
+After qualification, run `doctor --harness <name>`, then
+`on --harness <name>`, then `status --harness <name>`. Claim activation
+only when the final result is `ACTIVE`. Coding work still enters
+`scripts/prime-code-execute.py`; do not call Orca workers directly.
+
+```text
+python scripts/orca-control.py off --harness hermes
+```
+
+A successful stop reports `drain=DRAINED; remaining=0`. On
+`QUIESCE_FAILED`, `DRAIN_REQUIRED`, or `DRAIN_INCOMPLETE`, leave Orca
+quiesced and inspect the canonical ledger. Never edit SQLite or delete state.
+
+After code or documentation changes, run the canonical Orca integration tests
+and both kit verifiers. Update portable projection hashes when canonical bytes
+change. Keep source-system commits local because its configured origin belongs
+to its owner; publish exports only to the recipient's GitHub repository after
+confirmation.
+
 The legacy Orca observer command remains as a compatibility facade. It now
 reads and writes the same unified state and does not create a second switch:
 
@@ -172,12 +274,10 @@ against exactly one durable run/task dispatch. If Codex is ready with the task
 still present as a draft, the provider submits that same draft once. It never
 stops and duplicates an ambiguous dispatch.
 
-Qualification can be run with a subscription-backed Luna route:
-
-```text
-python scripts/qualify-orca-coding.py --harness codex --model gpt-5.6-luna --adapter-launch native --promote-registry
-python scripts/qualify-orca-coding.py --harness hermes --profile workspace --promote-registry
-```
+Run qualification only with the shell-specific, repository-root
+`PYTHONPATH` setup in the small-model runbook above. A bare
+`python scripts/qualify-orca-coding.py` command can fail to import the
+recipient's `prime_bridge` package.
 
 The qualifier selects the configured adapter for the named harness, compares
 two real native coding canaries with the same two-worktree Orca workload, and

@@ -47,6 +47,11 @@ for inspection with `--all-harnesses`. `off` always uses recipient-owned
 quiesce, drain, and zero-worker verification. The lower-level portable switch
 below remains a provider-free contract, not the normal production Orca UI.
 
+Small models and first-time operators must follow the literal build, setup,
+readiness, qualification, drain, and verification sequence in
+`docs/ORCA-EXECUTION-PROVIDER.md#small-model-build-and-setup-runbook`.
+Never infer `ACTIVE` from installed files or a `full` switch alone.
+
 The kit also exports an inactive-by-default unified switch contract for route,
 review, learning, autonomy, memory, token-compute, and RAG:
 

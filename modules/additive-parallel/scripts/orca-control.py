@@ -101,7 +101,8 @@ def _action(harness: str, desired: str, runtime: dict[str, Any],
                 f"python scripts/orca-control.py doctor --harness {harness}"
             )
         return (
-            "Run governed A/B qualification: python "
+            "From <source-runtime-root> with that root on PYTHONPATH, run "
+            "governed A/B qualification: python "
             f"scripts/qualify-orca-coding.py --harness {harness} "
             "--native-baseline <verified-baseline.json> --promote-registry"
         )

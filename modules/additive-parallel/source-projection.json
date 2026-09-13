@@ -182,13 +182,13 @@
       "portable_contract": "scripts/orca-control.py#status,on,off,doctor",
       "source_path": "scripts/orca-control.py",
       "source_repository": "hermes-agent-self-evolution",
-      "source_sha256": "f728cec61d3909d03b7da41c9bfa5960d2a2bb6b1ad29a44535d35bf59a9d525"
+      "source_sha256": "dd4bc8f4f644b43b8f53fa776d2267ab0d8803b4d676d4e6d3d1680b0c351187"
     },
     {
       "portable_contract": "docs/ORCA-EXECUTION-PROVIDER.md",
       "source_path": "docs/ORCA-EXECUTION-PROVIDER.md",
       "source_repository": "hermes-agent-self-evolution",
-      "source_sha256": "508503192a1702f759d16276939f28fdf15d2afa55baa095b16a57ede460173f"
+      "source_sha256": "c9af1ee3330090bfc5674f06876d424023c6a26641c0e2181bcb4000977b0576"
     }
   ],
   "schema": "lapart.adaptive-v2-source-projection.v1"

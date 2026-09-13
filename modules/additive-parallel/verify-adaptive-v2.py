@@ -352,6 +352,7 @@ def verify(source_workspace: Path | None = None) -> list[str]:
         'context.control.set("off", targets)',
         '"ACTIVE" if considered and active == considered',
         "qualify-orca-coding.py --harness",
+        "source-runtime-root",
     )
     if any(fragment not in front_source for fragment in front_contract):
         failures.append("human-facing Orca control contract is incomplete")
@@ -363,6 +364,16 @@ def verify(source_workspace: Path | None = None) -> list[str]:
     )
     if any(command not in docs_source for command in documented):
         failures.append("human-facing Orca commands are not documented")
+    runbook_contract = (
+        "## Small-model build and setup runbook",
+        "A staged build starts inactive",
+        "configured` is not production qualification",
+        "drain=DRAINED; remaining=0",
+        "source-system commits local",
+        "publish exports only to the recipient",
+    )
+    if any(fragment not in docs_source for fragment in runbook_contract):
+        failures.append("small-model Orca build/setup runbook is incomplete")
     if "scripts/orchestration-control.py --json orca" in docs_source:
         failures.append("Orca documentation still advertises the legacy front door")
     if ("ORCA_AB_QUALIFICATION_EXPIRED" in selector_source
