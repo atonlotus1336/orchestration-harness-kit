@@ -27,9 +27,9 @@ optional modules you enable later; neither becomes a second storage writer.
 
 ## Shared authority and work routing
 
-![Nine peer harnesses, including DeepSeek (DSH), share one authority core. T2 executes through governed OMP independently. Deterministic execution evidence feeds one S0-S4 evaluator whose internal controls route, admit budgets, run any required reviewers, and validate results before due goalposts govern completion. Each installation qualifies its own native paths.](assets/harness-fusion-hierarchy.png)
+![Peer harnesses share one authority core. T2 executes through governed OMP independently. Deterministic execution evidence feeds one S0-S4 evaluator whose internal controls route, admit budgets, run any required reviewers, and validate results before due goalposts govern completion. Each installation qualifies its own native paths.](assets/harness-fusion-hierarchy.png)
 
-All nine harnesses connect as peers to the shared orchestration core. The left
+The peer harnesses connect to the shared orchestration core. The left
 side shows authority precedence, with evidence supporting factual claims.
 The right side shows execution routing, Prime Agent coordinating OMP workers,
 and deterministic execution evidence feeding one S0-S4 review evaluator. Its
@@ -37,6 +37,19 @@ preflight, budget, invocation, and result-validation controls are internal to
 that evaluator. Work continues
 until the endpoint passes or a loop limit triggers the escape hatch. Human
 verification provides a separate review path.
+
+## MARM retrieval and governed parallelism
+
+![MARM uses five intent-routed retrieval lanes backed by a derived ontology sidecar while governed parallelism routes bounded work through T0-T4, evidence aggregation, review, goalposts, and a human checkpoint.](assets/marm-parallelism-architecture.png)
+
+MARM adds five retrieval lanes: exact, semantic, document, relationship, and
+multi-hop. MemoryWeaver remains canonical; the ontology is a derived,
+disposable sidecar that enriches relationship and multi-hop queries without
+overwriting primary semantic ranking. GraphRAG remains available only for
+manual diagnostics while unverified; LightRAG is not in the production path.
+On the execution side, T0-T4 routing uses bounded parallel workers only where
+appropriate, aggregates deterministic evidence, and cannot cut over without
+goalpost evaluation and a human checkpoint.
 
 ## What's in the box (plain-language tour)
 
