@@ -14,8 +14,10 @@ backup. This gate makes that structurally impossible instead of "hopefully caugh
   showing how to add your own "never again" rules (each cites the incident behind it).
 - `dry-run-gate.py` — the hook. Reads the policy, checks every shell command and
   file write, stays silent for safe ones, asks/denies for dangerous ones.
-- `test-dry-run-gate.py` — the proof. 32 cases: every rule fires on its named
-  trigger, safe commands pass untouched.
+- `test-dry-run-gate.py` — the proof. 63 cases: every rule fires on its named
+  trigger, safe commands pass untouched, and read-only or document-only
+  commands that merely *mention* a dangerous string stay silent (policy
+  `1.1.0-template` + hook v3, 2026-10-15).
 
 ## Install just this part (Claude Code, ~2 minutes)
 

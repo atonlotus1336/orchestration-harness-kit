@@ -1,6 +1,7 @@
 {
-  "version": "1.0.0-template",
-  "updated": "2026-07-31",
+  "version": "1.1.0-template",
+  "updated": "2026-10-15",
+  "changelog": "1.1.0 (2026-10-15): truncating-config-overwrite no longer fires on appends (>>), stream merges (2>&1), arrows (->, =>) or redirects into temp/scratch folders. The hook additionally ignores heredoc bodies written to plain documents and read-only search segments (grep/rg/findstr/Select-String), and the safe-prefix shortcut no longer covers chained, piped or heredoc commands. 1.0.0 (2026-07-31): first template.",
   "notes": "TEMPLATE destructive-command policy. Generic rules ship verbatim; the example-incident-deny rule shows how to encode your own incident-derived deny classes. EDIT the protected/protected_write path patterns to YOUR vault before use. Every rule MUST keep a failing_input (a gate that cannot name a failing input is void). Verdicts: ask (escalate to human) | deny (requires incident citation).",
   "safe_prefixes": [
     "git status",
@@ -134,7 +135,7 @@
     },
     {
       "id": "truncating-config-overwrite",
-      "pattern": ">\\s*(?!/dev/null)[^\\s|;&]*\\.(env|key|pem|yaml|yml|json|md)\\b",
+      "pattern": "(?<![>=\\-])>(?![>&])\\s*(?!/dev/null)(?![^\\s|;&]*(?i:[\\\\/]tmp[\\\\/]|[\\\\/]temp[\\\\/]|scratchpad|\\$TMPDIR|\\$env:TEMP|%TEMP%))[^\\s|;&]*\\.(env|key|pem|yaml|yml|json|md)\\b",
       "effect": "truncating overwrite of a config/credential/doc file",
       "irreversibility": "MED",
       "verdict": "ask",

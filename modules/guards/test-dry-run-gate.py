@@ -13,6 +13,11 @@ Cases:
      and a protected path -> must still fire (disposable must not mask).
   5. Fallback: GUARD_POLICY pointed at a missing file -> embedded
      rules still fire on rm -rf.
+  6. Precision regressions (policy 1.1.0 / hook v3): read-only and
+     document-only commands stay silent; executable variants keep their
+     verdict; a safe prefix no longer exempts a chained command.
+  7. Fallback precision: the embedded docker rule (not in the template
+     policy) ignores read-only mentions of a service name.
 Exit 0 = all pass; nonzero = failures listed.
 """
 import json
@@ -35,6 +40,54 @@ NEGATIVE_CONTROLS = [
 ]
 
 MIXED_TARGET = ("Bash", {"command": "rm -rf scratchpad /data/example-vault/Memory"})
+
+# 6. precision regressions (policy 1.1.0 + hook v3, 2026-10-15).
+# Each row: (command, expected verdict or None for silent). The first block
+# was over-blocked before 1.1.0; the second block must keep firing. DENY is
+# the template's example deny rule; swap in your own incident class.
+DENY = "mytool daemon run --replace"
+PRECISION = [
+    # --- must now be silent (or downgraded) ---
+    ("grep -rn mytool-daemon docs/", None),
+    ("python x.py > /tmp/out.json", None),
+    ("python x.py > /home/alice/scratchpad/out.json", None),
+    ("echo x >> notes.md", None),
+    ("python -c \"print('a -> b.md')\"", None),
+    ("cmd 2>&1 | tee log.txt", None),
+    ('grep -n "%s" docs/a.md 2>/dev/null' % DENY, None),
+    ("cat > /tmp/notes.md <<'EOF'\nquote: %s\nEOF" % DENY, None),
+    ("cat > notes.md <<'EOF'\nquote: %s\nEOF" % DENY, "ask"),  # doc overwrite: ask, not deny
+    # --- must keep firing ---
+    ("echo x > /data/example-vault/example-app/config.yaml", "ask"),
+    ("python x.py > out.json", "ask"),
+    ('grep x f > /data/example-vault/out.md', "ask"),
+    ("grep -l x f | xargs rm -rf /data/example-vault/Memory", "ask"),
+    ("grep -n x f; %s" % DENY, "deny"),
+    ("bash -lc 'grep -n x f; %s'" % DENY, "deny"),
+    ('grep "$(%s)" f' % DENY, "deny"),
+    ('rg --pre "%s" x' % DENY, "deny"),
+    ("cat <<'EOF' | bash\n%s\nEOF" % DENY, "deny"),
+    ("cat > run.sh <<'EOF'\n%s\nEOF" % DENY, "deny"),
+    ("python3 - <<'PY'\nimport os; os.system('%s')\nPY" % DENY, "deny"),
+    ("cat > /tmp/n.md <<EOF\nok\nEOF\n%s" % DENY, "deny"),  # real command after the body
+    # --- safe-prefix chaining hole (found 2026-10-15) ---
+    ("ls && rm -rf /data/example-vault/Memory", "ask"),
+    ("cat f; %s" % DENY, "deny"),
+    ("echo ok | %s" % DENY, "deny"),
+    ("ls -la /data/example-vault", None),  # a single safe command stays silent
+]
+
+# 7. the embedded fallback's docker rule (policy 1.1.0 alternation fix): the
+# bare service name must no longer match read-only status/log/grep commands.
+NO_POLICY = {"GUARD_POLICY": "/nonexistent/policy.json"}
+FALLBACK_PRECISION = [
+    ("systemctl --user status hermes-gateway.service", None),
+    ("journalctl --user -u hermes-gateway -n 5", None),
+    ("docker logs hermes-gateway", None),
+    ("docker rm -f hermes-gateway", "ask"),
+    ("docker restart --time 30 hermes-gateway", "ask"),
+    ("docker compose -f c.yml stop hermes-gateway", "ask"),
+]
 
 
 def run_gate(tool, tool_input, env_override=None):
@@ -103,9 +156,29 @@ def main():
     else:
         failures.append("mixed-target regression: expected ask, got %s" % got)
 
+    # 6. precision regressions
+    for cmd, expected in PRECISION:
+        got = run_gate("Bash", {"command": cmd})
+        label = cmd.replace("\n", " \\n ")[:44]
+        if got == expected:
+            passes += 1
+            print("PASS  precision %-44s -> %s" % (label, got or "silent"))
+        else:
+            failures.append("precision: expected %s, got %s (input: %r)" % (expected, got, cmd))
+
+    # 7. fallback precision (embedded docker rule)
+    for cmd, expected in FALLBACK_PRECISION:
+        got = run_gate("Bash", {"command": cmd}, env_override=NO_POLICY)
+        if got == expected:
+            passes += 1
+            print("PASS  fallback-precision %-35s -> %s" % (cmd[:35], got or "silent"))
+        else:
+            failures.append("fallback precision: expected %s, got %s (input: %r)"
+                            % (expected, got, cmd))
+
     # 5. embedded fallback still guards when the JSON is gone
     got = run_gate("Bash", {"command": "rm -rf /data/example-vault/Memory"},
-                   env_override={"GUARD_POLICY": "/nonexistent/policy.json"})
+                   env_override=NO_POLICY)
     if got == "ask":
         passes += 1
         print("PASS  fallback (policy missing)            -> ask")

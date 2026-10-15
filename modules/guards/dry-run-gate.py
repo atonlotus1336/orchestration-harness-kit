@@ -16,6 +16,11 @@ Register in Claude Code settings.json:
 The embedded fallback below mirrors the generic rules so a missing/unreadable
 policy file degrades safely instead of crashing tool calls. EDIT the
 example-vault patterns (here and in the JSON) to your real vault paths.
+
+v3 (2026-10-15): policy 1.1.0 precision fixes, plus strip_inert_text():
+  heredoc bodies written to plain documents and read-only search segments
+  are not scanned (both rules fail toward firing; see the v3 note below),
+  and a safe prefix no longer exempts a chained, piped or heredoc command.
 """
 import json
 import os
@@ -46,7 +51,7 @@ FALLBACK_RULES = [
     (r"\bDELETE\s+FROM\b(?![^\n]*\bWHERE\b)", "delete every row (no WHERE clause)", "HIGH"),
     (r"\bdocker\s+(system\s+prune|volume\s+(rm|prune)|image\s+prune)",
      "delete docker volumes/images - persisted container data", "HIGH"),
-    (r"\bdocker\s+(rm|stop|kill)\s+[^\n]*hermes|hermes-gateway",
+    (r"\bdocker\s+(?:container\s+|compose\s+(?:[^\n|;&]*?\s)?)?(?:rm|stop|kill|restart|down)\b[^\n]*\bhermes",
      "stop or remove the Hermes gateway container", "MED"),
     (r"\bChoco|\bwinget\s+uninstall|\bapt(-get)?\s+(remove|purge)|\bpip\s+uninstall",
      "uninstall software", "MED"),
@@ -54,7 +59,9 @@ FALLBACK_RULES = [
      "change security or ACL settings", "MED"),
     (r"\bnetsh\b[^\n]*firewall|\bNew-NetFirewallRule\b|\bSet-SmbShare\b|\bNew-SmbShare\b",
      "change firewall or network share exposure", "MED"),
-    (r">\s*(?!/dev/null)[^\s|;&]*\.(env|key|pem|yaml|yml|json|md)\b",
+    (r"(?<![>=\-])>(?![>&])\s*(?!/dev/null)"
+     r"(?![^\s|;&]*(?i:[\\/]tmp[\\/]|[\\/]temp[\\/]|scratchpad|\$TMPDIR|\$env:TEMP|%TEMP%))"
+     r"[^\s|;&]*\.(env|key|pem|yaml|yml|json|md)\b",
      "truncating overwrite of a config/credential/doc file", "MED"),
 ]
 FALLBACK_PROTECTED = [
@@ -105,14 +112,97 @@ def machine_allows(rule):
     return os.environ.get("COMPUTERNAME", "").upper() in [m.upper() for m in allowed]
 
 
+# --- v3 (2026-10-15): ignore text that cannot execute -----------------------
+# Only two kinds of text are treated as inert, and both fail toward FIRING:
+#   1. A heredoc body fed by plain `cat`/`tee` (no pipe) into document files
+#      only. A body piped to a shell, fed to an interpreter, or written to a
+#      script/config file is still scanned, because it can run later.
+#   2. A read-only search segment (grep/rg/findstr/Select-String...) with no
+#      redirect, command substitution, process substitution or --pre hook.
+# Anything ambiguous stays scanned. Split points inside quotes over-split,
+# which only ever exposes MORE text to the rules.
+DOC_EXTS = (".md", ".markdown", ".txt", ".rst", ".html", ".csv", ".log")
+SEARCH_TOOLS = {"grep", "egrep", "fgrep", "rg", "ag", "ack", "findstr",
+                "select-string", "sls"}
+HEREDOC_RE = re.compile(r"<<(-?)\s*(['\"]?)([A-Za-z_][A-Za-z0-9_]*)\2")
+SEGMENT_SPLIT = re.compile(r"(\n|&&|\|\||;|\|)")
+PREFIX_WORD = re.compile(r"^(sudo|command|timeout|\d+[smh]?|[A-Za-z_]\w*=\S*)$")
+
+
+def _lead_words(segment):
+    words = segment.strip().split()
+    while words and PREFIX_WORD.match(words[0]):
+        words = words[1:]
+    return words
+
+
+def _heredoc_feeds_document(header_line):
+    """True when the heredoc on this line only feeds cat/tee into documents."""
+    seg = next((s for s in re.split(r"&&|\|\||;", header_line) if "<<" in s), "")
+    if "|" in seg:
+        return False
+    words = _lead_words(seg)
+    if not words or words[0] not in ("cat", "tee"):
+        return False
+    if words[0] == "cat":
+        targets = re.findall(r">>?\s*([^\s<>]+)", seg)
+    else:
+        pre = seg.split("<<")[0].split()
+        after = pre[pre.index("tee") + 1:] if "tee" in pre else []
+        targets = [t for t in after if not t.startswith("-") and ">" not in t]
+    targets = [t.strip("'\"") for t in targets]
+    return bool(targets) and all(t.lower().endswith(DOC_EXTS) for t in targets)
+
+
+def _is_search_segment(segment):
+    # discarding output (2>/dev/null, 2>&1, 2>$null) is not a write
+    probe = re.sub(r"\d?>\s*/dev/null|\d?>&\d|\d?>\s*\$null", "", segment)
+    if any(tok in probe for tok in ("$(", "`", "<(", ">", "--pre")):
+        return False
+    words = _lead_words(segment)
+    return bool(words) and words[0].lower() in SEARCH_TOOLS
+
+
+def strip_inert_text(command):
+    """Blank text that cannot execute; see the v3 note above."""
+    lines, out, i = command.split("\n"), [], 0
+    while i < len(lines):
+        line = lines[i]
+        out.append(line)
+        i += 1
+        m = HEREDOC_RE.search(line)
+        if not m:
+            continue
+        delim, tab_strip = m.group(3), m.group(1) == "-"
+        inert = _heredoc_feeds_document(line)
+        while i < len(lines):
+            body = lines[i]
+            # lenient end match ends the body early = scans more, never less
+            end = (body.lstrip("\t") if tab_strip else body).strip() == delim
+            out.append(body if (end or not inert) else "")
+            i += 1
+            if end:
+                break
+    parts = SEGMENT_SPLIT.split("\n".join(out))
+    for k in range(0, len(parts), 2):
+        if _is_search_segment(parts[k]):
+            parts[k] = ""
+    return "".join(parts)
+
+
 def analyze_command(command, policy):
     """Return (effects, worst, protected_hits, verdict, deny_msgs) or None."""
     stripped = command.strip()
-    # A safe prefix only proves safety when nothing is redirected: 'echo' is
-    # benign, 'echo x > config.yaml' truncates the target (found by test R4).
-    if stripped.startswith(tuple(policy.get("safe_prefixes", []))) and ">" not in command:
+    # A safe prefix only proves safety for ONE simple command: 'echo' is
+    # benign, 'echo x > config.yaml' truncates the target (found by test R4),
+    # and 'ls && rm -rf ...' or 'cat <<EOF | bash' chain a second command
+    # (found 2026-10-15). Any redirect, chain, pipe, heredoc, newline or
+    # substitution disables the shortcut.
+    if (stripped.startswith(tuple(policy.get("safe_prefixes", [])))
+            and not re.search(r"[>;|&\n`]|\$\(|<<", command)):
         return None
 
+    command = strip_inert_text(command)
     effects, worst, verdict, deny_msgs = [], None, "ask", []
     for rule in policy["rules"]:
         if machine_allows(rule):

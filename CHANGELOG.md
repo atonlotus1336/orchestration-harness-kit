@@ -4,6 +4,14 @@
 
 ### Fixed
 
+- Guards policy `1.1.0-template` + hook v3 (2026-10-15): the
+  truncating-overwrite rule no longer fires on appends (`>>`), stream merges
+  (`2>&1`), arrows (`->`, `=>`) or redirects into temp/scratch folders; the
+  embedded fallback's docker rule no longer matches read-only commands that
+  merely name the service; heredoc bodies written to plain documents and
+  read-only search segments (grep/rg/findstr/Select-String) are not scanned;
+  a safe prefix (`ls`, `cat`, `echo`...) no longer exempts a chained, piped
+  or heredoc command. 31 new replayed cases (63 total).
 - Adaptive parallel `on` and `off` now use the same recipient-adapter
   transaction and verify external state before changing paper state.
 - Failed compensation reports `FAILED_ROLLED_BACK` only after exact runtime

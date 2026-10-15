@@ -76,6 +76,14 @@ behavior that only works with a frontier model driving.
   renders disabled local role files and verifies the storage/bind contract.
 - **Docs re-curation:** `docs/` copies lag their upstream originals; they
   are curated per-file, not auto-synced.
+- **Guards precision (shipped 2026-10-15):** policy `1.1.0-template` + hook
+  v3. Heredoc bodies written to plain documents and read-only search
+  segments are not scanned, the safe-prefix shortcut no longer covers a
+  chained/piped/heredoc command, and the truncating-overwrite rule ignores
+  appends, stream merges, arrows and temp/scratch targets. Each fix ships
+  with a replayed case in `modules/guards/test-dry-run-gate.py` (63 cases).
+  Upstream policy changes are ported by hand into the scrubbed kit copies,
+  never copied wholesale.
 - **Messaging:** more reference adapters welcome (Discord/Slack examples)
   but only as templates with credentials wired externally.
 
