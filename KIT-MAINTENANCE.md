@@ -108,6 +108,8 @@ explicitly supplied. Review the files locally before the first commit.
 
 ```bash
 python modules/guards/test-dry-run-gate.py          # expect: 67 passed, 0 failed
+python tools/check-doc-counts.py                    # expect: doc counts match (fails on a stale count in any doc)
+python tools/check-doc-counts.py --selftest         # expect: selftest passed
 python -m py_compile modules/recipe-miner/recipe-miner.py modules/messaging/generic-adapter.py
 # adapter live-check against any OpenAI-compatible backend you run:
 GATEWAY_URL=http://127.0.0.1:11434/v1 MODEL=<model> \

@@ -154,6 +154,13 @@ def verify_claims() -> list[str]:
     return failures
 
 
+def verify_doc_counts() -> list[str]:
+    spec = importlib.util.spec_from_file_location("doc_counts", ROOT / "tools/check-doc-counts.py")
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    return ["doc count:" + failure for failure in module.check(ROOT, module.suite_count(ROOT))]
+
+
 def _qualifier():
     spec = importlib.util.spec_from_file_location("release_qualifier", ROOT / "tools/qualify-clean-room.py")
     module = importlib.util.module_from_spec(spec)
@@ -208,7 +215,7 @@ def validate_pair(receipts: list[dict], source_hash: str, commit: str, qualifier
 
 
 def verify(receipt_paths: list[Path] | None = None, require_committed: bool = False, visibility: str = "private") -> tuple[list[str], dict]:
-    failures = verify_documents() + verify_claims()
+    failures = verify_documents() + verify_claims() + verify_doc_counts()
     privacy_hits = scan_public_payload(ROOT)
     if privacy_hits:
         failures.append(f"public payload privacy:{len(privacy_hits)}")

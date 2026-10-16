@@ -2,7 +2,17 @@
 
 ## Unreleased
 
+### Added
+
+- `tools/check-doc-counts.py`: runs the dry-run-gate suite and fails when
+  README.md, modules/guards/README.md, AGENTS.md or KIT-MAINTENANCE.md
+  states a different test count, or when one of their count phrases is
+  reworded away. `--selftest` replays the failing inputs.
+  `verify-release-readiness.py` reports a stale count as a HOLD.
+
 ### Fixed
+
+- README.md part table said the guards self-test has 32 cases; it has 67.
 
 - Guards hook: `MultiEdit` (`file_path`) and `NotebookEdit` (`notebook_path`)
   now reach the same protected-write check as `Write`/`Edit`. Before, the

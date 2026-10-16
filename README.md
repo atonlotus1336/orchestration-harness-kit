@@ -117,7 +117,7 @@ distributed to clients.
 
 | Part | Depends on | Standalone test |
 |---|---|---|
-| guards | nothing (Python stdlib) | its self-test, 32 cases |
+| guards | nothing (Python stdlib) | its self-test, 67 cases |
 | reasoning-shapes | nothing (they're documents) | follow one on a hard question |
 | messaging | any OpenAI-compatible endpoint | `GATEWAY_URL=... python modules/messaging/generic-adapter.py "hi"` |
 | topology | nothing | `python modules/topology/configure-topology.py --selftest` |

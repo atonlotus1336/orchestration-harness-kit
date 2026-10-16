@@ -29,6 +29,10 @@ public-payload privacy, historical-source boundary, commit metadata posture, and
 inactive production policy. Historical holds are reported as holds; they are not
 silently converted into public-release proof.
 
+`check-doc-counts.py` runs `modules/guards/test-dry-run-gate.py` and fails when
+a doc states a different test count. Run it with `--selftest` to replay its
+failing inputs. `verify-release-readiness.py` calls it.
+
 ## The philosophy (why this isn't just "being careful")
 
 - **Allowlist-in, never scrub-out**: only explicitly named files can enter the
