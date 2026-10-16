@@ -96,7 +96,7 @@ worked. The safety gate is the best first pick: two files, no dependencies,
 30 seconds:
 
 ```bash
-python modules/guards/test-dry-run-gate.py   # see it pass its own 32 tests first
+python modules/guards/test-dry-run-gate.py   # see it pass its own 67 tests first
 ```
 
 **Path B — the portable SDK.** Follow [`docs/QUICK-START.md`](docs/QUICK-START.md):

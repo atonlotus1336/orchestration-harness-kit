@@ -18,6 +18,8 @@ Cases:
      verdict; a safe prefix no longer exempts a chained command.
   7. Fallback precision: the embedded docker rule (not in the template
      policy) ignores read-only mentions of a service name.
+  8. MultiEdit (file_path) and NotebookEdit (notebook_path) reach the same
+     protected_write check as Write/Edit.
 Exit 0 = all pass; nonzero = failures listed.
 """
 import json
@@ -175,6 +177,21 @@ def main():
         else:
             failures.append("fallback precision: expected %s, got %s (input: %r)"
                             % (expected, got, cmd))
+
+    # 8. MultiEdit (file_path) and NotebookEdit (notebook_path) reach the same
+    # protected_write check as Write/Edit.
+    for tool, ti, expected in [
+        ("MultiEdit", {"file_path": "/data/example-vault/.env"}, "ask"),
+        ("NotebookEdit", {"notebook_path": "/home/alice/.claude/hooks/x.ipynb"}, "ask"),
+        ("MultiEdit", {"file_path": "/data/other-project/notes/index.md"}, None),
+        ("NotebookEdit", {"notebook_path": "/data/other-project/.planning/scratch.ipynb"}, None),
+    ]:
+        got = run_gate(tool, ti)
+        if got == expected:
+            passes += 1
+            print("PASS  %-12s %-34s -> %s" % (tool, list(ti.values())[0][:34], got or "silent"))
+        else:
+            failures.append("%s: expected %s, got %s (input: %r)" % (tool, expected, got, ti))
 
     # 5. embedded fallback still guards when the JSON is gone
     got = run_gate("Bash", {"command": "rm -rf /data/example-vault/Memory"},

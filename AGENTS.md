@@ -81,7 +81,10 @@ behavior that only works with a frontier model driving.
   segments are not scanned, the safe-prefix shortcut no longer covers a
   chained/piped/heredoc command, and the truncating-overwrite rule ignores
   appends, stream merges, arrows and temp/scratch targets. Each fix ships
-  with a replayed case in `modules/guards/test-dry-run-gate.py` (63 cases).
+  with a replayed case in `modules/guards/test-dry-run-gate.py` (67 cases).
+  The hook also covers `MultiEdit` (`file_path`) and `NotebookEdit`
+  (`notebook_path`) like `Write`/`Edit`; register the matcher as
+  `Bash|PowerShell|Write|Edit|MultiEdit|NotebookEdit`.
   Upstream policy changes are ported by hand into the scrubbed kit copies,
   never copied wholesale.
 - **Messaging:** more reference adapters welcome (Discord/Slack examples)

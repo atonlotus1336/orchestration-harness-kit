@@ -9,7 +9,7 @@ verdicts: "ask" (default; a false positive costs one keypress) or "deny"
 (reserved for command classes with incident history - cite the incident).
 
 Register in Claude Code settings.json:
-  "hooks": {"PreToolUse": [{"matcher": "Bash|PowerShell|Write|Edit",
+  "hooks": {"PreToolUse": [{"matcher": "Bash|PowerShell|Write|Edit|MultiEdit|NotebookEdit",
     "hooks": [{"type": "command", "command": "python /path/to/dry-run-gate.py",
                "timeout": 10}]}]}
 
@@ -253,8 +253,9 @@ def main():
     tool = payload.get("tool_name", "")
     policy, source = load_policy()
 
-    if tool in ("Write", "Edit"):
-        file_path = payload.get("tool_input", {}).get("file_path", "")
+    if tool in ("Write", "Edit", "MultiEdit", "NotebookEdit"):
+        tool_input = payload.get("tool_input", {})
+        file_path = tool_input.get("file_path") or tool_input.get("notebook_path") or ""
         if not file_path:
             sys.exit(0)
         label = analyze_write(file_path, policy)

@@ -4,6 +4,12 @@
 
 ### Fixed
 
+- Guards hook: `MultiEdit` (`file_path`) and `NotebookEdit` (`notebook_path`)
+  now reach the same protected-write check as `Write`/`Edit`. Before, the
+  hook ignored both tools even when the registered matcher included them.
+  The README matcher example now lists both tools. 4 new replayed cases
+  (67 total).
+
 - Guards policy `1.1.0-template` + hook v3 (2026-10-15): the
   truncating-overwrite rule no longer fires on appends (`>>`), stream merges
   (`2>&1`), arrows (`->`, `=>`) or redirects into temp/scratch folders; the

@@ -14,10 +14,11 @@ backup. This gate makes that structurally impossible instead of "hopefully caugh
   showing how to add your own "never again" rules (each cites the incident behind it).
 - `dry-run-gate.py` — the hook. Reads the policy, checks every shell command and
   file write, stays silent for safe ones, asks/denies for dangerous ones.
-- `test-dry-run-gate.py` — the proof. 63 cases: every rule fires on its named
-  trigger, safe commands pass untouched, and read-only or document-only
+- `test-dry-run-gate.py` — the proof. 67 cases: every rule fires on its named
+  trigger, safe commands pass untouched, read-only or document-only
   commands that merely *mention* a dangerous string stay silent (policy
-  `1.1.0-template` + hook v3, 2026-10-15).
+  `1.1.0-template` + hook v3, 2026-10-15), and `MultiEdit` / `NotebookEdit`
+  targets get the same protected-write check as `Write` / `Edit`.
 
 ## Install just this part (Claude Code, ~2 minutes)
 
@@ -28,7 +29,7 @@ backup. This gate makes that structurally impossible instead of "hopefully caugh
    ```
 3. Register the hook in your `~/.claude/settings.json`:
    ```json
-   "hooks": {"PreToolUse": [{"matcher": "Bash|PowerShell|Write|Edit",
+   "hooks": {"PreToolUse": [{"matcher": "Bash|PowerShell|Write|Edit|MultiEdit|NotebookEdit",
      "hooks": [{"type": "command", "command": "python /path/to/dry-run-gate.py", "timeout": 10}]}]}
    ```
 4. Open a NEW session (hooks load at startup) and try `rm -rf something-precious` —
