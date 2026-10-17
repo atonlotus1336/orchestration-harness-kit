@@ -33,7 +33,7 @@ kit files). The author-side loop:
 6. `git add -A && git commit` — the pre-commit tripwire re-scans the staged
    payload against the private denylist. It has caught tokens the preview
    scan structurally cannot see (untracked-at-sync files, case variants).
-   When the guards suite or a doc that states its test count is staged, the
+   When you stage the guards suite or a doc that states its test count, the
    hook also runs `tools/check-doc-counts.py` against the staged copies and
    blocks a stale count.
 7. `git push` (remote is a PRIVATE repo until a deliberate publish decision).
