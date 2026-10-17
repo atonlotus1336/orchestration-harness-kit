@@ -9,6 +9,9 @@
   states a different test count, or when one of their count phrases is
   reworded away. `--selftest` replays the failing inputs.
   `verify-release-readiness.py` reports a stale count as a HOLD.
+- `.githooks/pre-commit` runs `tools/check-doc-counts.py` when the guards
+  suite or a doc that states its count is staged. It checks the staged
+  copies, so a partial stage is judged on what the commit will contain.
 
 ### Fixed
 

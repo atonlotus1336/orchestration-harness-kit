@@ -83,7 +83,8 @@ behavior that only works with a frontier model driving.
   appends, stream merges, arrows and temp/scratch targets. Each fix ships
   with a replayed case in `modules/guards/test-dry-run-gate.py` (67 cases).
   When the case count changes, update every doc that states it;
-  `python tools/check-doc-counts.py` fails until they all match the suite.
+  `python tools/check-doc-counts.py` fails until they all match the suite,
+  and the pre-commit hook runs it whenever one of those files is staged.
   The hook also covers `MultiEdit` (`file_path`) and `NotebookEdit`
   (`notebook_path`) like `Write`/`Edit`; register the matcher as
   `Bash|PowerShell|Write|Edit|MultiEdit|NotebookEdit`.

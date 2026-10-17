@@ -43,3 +43,28 @@ if [ "$leak" -ne 0 ]; then
   exit 1
 fi
 echo "pre-commit tripwire clean."
+
+# Doc-count gate: when the guards suite or a doc that states its test count is
+# staged, run tools/check-doc-counts.py against the STAGED copies, so a partial
+# stage is judged on what the commit will actually contain.
+COUNT_FILES='^(README\.md|AGENTS\.md|KIT-MAINTENANCE\.md|tools/check-doc-counts\.py|modules/guards/.*)$'
+if printf '%s\n' "$staged" | grep -qE "$COUNT_FILES"; then
+  PY=""
+  for candidate in python python3; do
+    if "$candidate" -c 'import sys' >/dev/null 2>&1; then PY="$candidate"; break; fi
+  done
+  if [ -z "$PY" ]; then
+    echo "COMMIT BLOCKED: the doc-count check needs Python (python or python3 on PATH)."
+    exit 1
+  fi
+  tmp=$(mktemp -d)
+  trap 'rm -rf "$tmp"' EXIT
+  git ls-files | grep -E "$COUNT_FILES" \
+    | git checkout-index --stdin --prefix="$tmp/"
+  if ! "$PY" "$tmp/tools/check-doc-counts.py"; then
+    echo "----------------------------------------------------------------"
+    echo "COMMIT BLOCKED. A doc states a dry-run-gate test count the suite does not report."
+    echo "Update the lines listed above, stage them, and commit again."
+    exit 1
+  fi
+fi
